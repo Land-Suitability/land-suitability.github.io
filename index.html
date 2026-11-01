@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logistics &amp; Transportation | AIAE</title>
+  <meta name="description" content="Move produce from farm to collection centre to buyer, on time and at the lowest cost.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+</head>
+<body class="d-move">
+<!--
+  Stage 11 page. This file lives on branch `stage/11-logistics-transport` and is published at /stages/11-logistics-transport/.
+  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#vision">Vision</a>
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/#platform">Platform</a>
+      <a href="/#pilot">Pilot</a>
+      <a href="/#partners">Partners</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / Stage 11</p>
+
+  <section class="stage-hero">
+    <span class="pill">Move</span>
+    <h1>11. Logistics &amp; Transportation</h1>
+    <p class="lead">Move produce from farm to collection centre to buyer, on time and at the lowest cost.</p>
+    <div class="meta">
+      <span class="status">Status: skeleton</span>
+      <span>Branch <code>stage/11-logistics-transport</code></span>
+    </div>
+  </section>
+
+  <section id="position">
+    <h2>Position in the chain</h2>
+    <div class="flow">
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring, Forecasting &amp; Risk</a><a class="chip" href="/stages/10-storage-aggregation/">10. Storage, Processing &amp; Aggregation</a></div></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>This stage</h3><p>Logistics &amp; Transportation</p></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/12-market-distribution/">12. Market Distribution &amp; Customer Network</a></div></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>Key questions</h2>
+    <ul class="list-clean"><li>What is the cheapest, most reliable route for each shipment?</li><li>Are trucks available when harvest peaks?</li><li>Which alternative routes exist if a road is closed?</li></ul>
+  </section>
+
+  <section id="scope">
+    <div class="grid cols-2">
+      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Farm-to-collection-centre transport</li><li>Collection-centre-to-market distribution</li><li>Vehicle availability</li><li>Route optimisation and alternative routes</li><li>Cost estimation, delivery scheduling and tracking</li></ul></div>
+      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>OpenStreetMap road network</li><li>Transport operator data</li><li>Stock levels (stage 10)</li></ul></div>
+      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Shipment schedule</li><li>Route plans</li><li>Transport cost per tonne</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Transport cost per tonne</li><li>On-time delivery rate</li></ul></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+  </section>
+
+  <section id="methods">
+    <h2>Methods and tools</h2>
+    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>Roadmap and status</h2>
+    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+  </section>
+
+  <nav class="pager" aria-label="Stage navigation">
+    <a class="btn" href="/stages/10-storage-aggregation/">&larr; 10. Storage, Processing &amp; Aggregation</a>
+    <a class="btn" href="/stages/12-market-distribution/">12. Market Distribution &amp; Customer Network &rarr;</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. From Land Intelligence to Market Delivery.</span>
+    <span>Stage 11 of 12</span>
+  </div>
+</footer>
+</body>
+</html>
