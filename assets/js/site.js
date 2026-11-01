@@ -113,6 +113,7 @@
       { title: "Data spine: every hand-off", href: "/data-spine.html", sub: "Which stage sends which record to which", icon: "d-move", domain: "" },
       { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" },
       { title: "Calculators: one per stage", href: "/tools.html", sub: "Suitability, water, contracts, storage, settlement…", icon: "d-produce", domain: "" },
+      { title: "Findings: what the demos show", href: "/findings.html", sub: "One chart per stage, synthetic data", icon: "d-sell", domain: "" },
       { title: "Concept brief (2-page PDF)", href: "/brief.html", sub: "Printable summary for partners", icon: "d-sell", domain: "" }
     ];
     // full-text: sections of every stage page, fetched once when the palette is first opened

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Findings | AIAE</title>
+  <meta name="description" content="Twelve findings from the stage demos of the Amhara Integrated Agriculture Ecosystem, each as a small chart: what the methods show on synthetic data.">
+  <link rel="canonical" href="https://land-suitability.github.io/findings.html">
+  <meta property="og:title" content="Twelve findings, one per stage">
+  <meta property="og:description" content="What each stage's demo shows, in one chart each. Synthetic data, real methods.">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .find-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-top: 22px; }
+    .finding { background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--d); border-radius: 14px; padding: 14px 16px 12px;
+      display: flex; flex-direction: column; gap: 8px; color: var(--d); }
+    .finding h3 { margin: 0; font-size: 18px; line-height: 1.3; color: var(--text); }
+    .finding p { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+    .f-meta { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--d); text-decoration: none; }
+    .f-meta:hover { text-decoration: underline; }
+    .f-meta .icon { width: 26px; height: 26px; padding: 4px; border-radius: 8px; background: var(--d-bg); }
+    .fchart { width: 100%; height: auto; overflow: visible; }
+    .fchart .bar { fill: currentColor; } .fchart .bar.mute { fill: var(--muted); opacity: .35; } .fchart .bar.soft { fill: currentColor; opacity: .22; }
+    .fchart .bar:hover { opacity: .8; } .fchart .bar.mute:hover { opacity: .55; }
+    .fchart .lab { fill: var(--muted); font-size: 12px; } .fchart .lab.strong { fill: var(--text); font-weight: 700; }
+    .fchart .val { fill: var(--text); font-size: 12.5px; font-weight: 700; }
+    .fchart .axis { stroke: var(--border); stroke-width: 1; }
+    .fchart .ln { fill: none; stroke-width: 2; } .fchart .ln.s1 { stroke: currentColor; } .fchart .ln.s2 { stroke: #c4521f; } .fchart .ln.ref { stroke: var(--muted); stroke-dasharray: 4 4; }
+    .fchart .pt { fill: transparent; } .fchart .pt.s1:hover { fill: currentColor; } .fchart .pt.s2:hover { fill: #c4521f; } .fchart .pt.ref:hover { fill: var(--muted); }
+    .fchart .lab.end { fill: var(--text); font-weight: 600; }
+    .fleg { font-size: 12.5px !important; display: flex; align-items: center; gap: 4px 14px; flex-wrap: wrap; } .fleg span { white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+    .fleg .sw { width: 12px; height: 12px; border-radius: 3px; background: var(--d); display: inline-block; } .fleg .sw.soft { opacity: .3; }
+    .fstat { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 0 4px; }
+    .fstat b { font-size: 54px; line-height: 1; font-weight: 900; color: var(--d); }
+    .fstat span { font-weight: 700; color: var(--text); margin-top: 4px; } .fstat small { color: var(--muted); font-size: 13px; }
+    .find-note { margin-top: 26px; }
+    :root[data-theme="dark"] .fchart .ln.s2, :root[data-theme="dark"] .fchart .pt.s2:hover { stroke: #e0703c; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .fchart .ln.s2 { stroke: #e0703c; } }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:6px">
+    <span class="eyebrow">What the demos show</span>
+    <h1>Twelve findings, one per stage</h1>
+    <p class="lead">Each stage page runs its method on synthetic data. Here is the one result from each that changes a decision, as a small chart. Hover any bar or point for its value; follow a stage link for the full demo and the code.</p>
+  </section>
+  <div class="page-banner" role="img" aria-label="Illustrated strip of the highland chain" style="background-position: 62% 66%"></div>
+  <section class="find-grid" aria-label="Findings">
+    <article class="finding d-plan reveal">
+      <a class="f-meta" href="/stages/01-land-intelligence/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg>Stage 01 · Land Intelligence</a>
+      <h3>Two sound methods disagree eightfold on the best land</h3>
+      <svg viewBox="0 0 320 66" class="fchart" role="img" aria-label="FAO limiting: 7.0%; AHP weighted: 54.8%"><text class="lab" x="110" y="21" text-anchor="end">FAO limiting</text><rect class="bar" x="118" y="10" width="19.9" height="16" rx="4"><title>FAO limiting: 7.0%</title></rect><text class="val" x="143.9" y="22">7.0%</text><text class="lab" x="110" y="51" text-anchor="end">AHP weighted</text><rect class="bar" x="118" y="40" width="156.0" height="16" rx="4"><title>AHP weighted: 54.8%</title></rect><text class="val" x="280.0" y="52">54.8%</text></svg>
+      <p>Share of the synthetic landscape rated S1 for teff. Both agree on what is not suitable; field trials must settle the rest.</p>
+    </article>
+    <article class="finding d-plan reveal">
+      <a class="f-meta" href="/stages/02-water-resources/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg>Stage 02 · Water Resource Assessment</a>
+      <h3>February and March set the limit, not the season total</h3>
+      <svg viewBox="0 0 320 150" class="fchart" role="img" aria-label="Sustainable supply and Irrigation demand by month"><line class="axis" x1="8" x2="312" y1="122" y2="122"/><rect class="bar soft" x="14.0" y="18.0" width="17.7" height="104.0" rx="3"><title>Nov Sustainable supply: 490 thousand m³</title></rect><rect class="bar" x="33.7" y="119.0" width="17.7" height="3.0" rx="3"><title>Nov Irrigation demand: 14 thousand m³</title></rect><text class="lab" x="31.7" y="138" text-anchor="middle">Nov</text><rect class="bar soft" x="57.4" y="36.3" width="17.7" height="85.7" rx="3"><title>Dec Sustainable supply: 404 thousand m³</title></rect><rect class="bar" x="77.1" y="108.5" width="17.7" height="13.5" rx="3"><title>Dec Irrigation demand: 64 thousand m³</title></rect><text class="lab" x="75.1" y="138" text-anchor="middle">Dec</text><rect class="bar soft" x="100.9" y="51.1" width="17.7" height="70.9" rx="3"><title>Jan Sustainable supply: 334 thousand m³</title></rect><rect class="bar" x="120.6" y="76.5" width="17.7" height="45.5" rx="3"><title>Jan Irrigation demand: 215 thousand m³</title></rect><text class="lab" x="118.6" y="138" text-anchor="middle">Jan</text><rect class="bar soft" x="144.3" y="66.0" width="17.7" height="56.0" rx="3"><title>Feb Sustainable supply: 264 thousand m³</title></rect><rect class="bar" x="164.0" y="66.0" width="17.7" height="56.0" rx="3"><title>Feb Irrigation demand: 264 thousand m³</title></rect><text class="lab strong" x="162.0" y="138" text-anchor="middle">Feb</text><text class="val" x="162.0" y="60.0" text-anchor="middle">full</text><rect class="bar soft" x="187.7" y="74.9" width="17.7" height="47.1" rx="3"><title>Mar Sustainable supply: 222 thousand m³</title></rect><rect class="bar" x="207.4" y="74.9" width="17.7" height="47.1" rx="3"><title>Mar Irrigation demand: 222 thousand m³</title></rect><text class="lab strong" x="205.4" y="138" text-anchor="middle">Mar</text><text class="val" x="205.4" y="68.9" text-anchor="middle">full</text><rect class="bar soft" x="231.1" y="79.3" width="17.7" height="42.7" rx="3"><title>Apr Sustainable supply: 201 thousand m³</title></rect><rect class="bar" x="250.9" y="89.8" width="17.7" height="32.2" rx="3"><title>Apr Irrigation demand: 152 thousand m³</title></rect><text class="lab" x="248.9" y="138" text-anchor="middle">Apr</text><rect class="bar soft" x="274.6" y="68.9" width="17.7" height="53.1" rx="3"><title>May Sustainable supply: 250 thousand m³</title></rect><rect class="bar" x="294.3" y="107.1" width="17.7" height="14.9" rx="3"><title>May Irrigation demand: 70 thousand m³</title></rect><text class="lab" x="292.3" y="138" text-anchor="middle">May</text></svg><p class="fleg"><span><i class="sw soft"></i> Sustainable supply</span><span><i class="sw"></i> Irrigation demand</span><span>thousand m³ per month</span></p>
+      <p>The best wheat and onion mix fills February and March exactly; a seasonal water budget would have looked twice as roomy.</p>
+    </article>
+    <article class="finding d-plan reveal">
+      <a class="f-meta" href="/stages/03-climate-intelligence/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-03"/></svg>Stage 03 · Climate</a>
+      <h3>A 150-day maize fits only two years in three</h3>
+      <svg viewBox="0 0 320 126" class="fchart" role="img" aria-label="Early teff: 100%; Late teff: 97%; Bread wheat: 90%; Maize (mid): 67%"><text class="lab" x="110" y="21" text-anchor="end">Early teff</text><rect class="bar mute" x="118" y="10" width="163.2" height="16" rx="4"><title>Early teff: 100%</title></rect><text class="val" x="287.2" y="22">100%</text><text class="lab" x="110" y="51" text-anchor="end">Late teff</text><rect class="bar mute" x="118" y="40" width="157.8" height="16" rx="4"><title>Late teff: 97%</title></rect><text class="val" x="281.8" y="52">97%</text><text class="lab" x="110" y="81" text-anchor="end">Bread wheat</text><rect class="bar mute" x="118" y="70" width="146.9" height="16" rx="4"><title>Bread wheat: 90%</title></rect><text class="val" x="270.9" y="82">90%</text><text class="lab" x="110" y="111" text-anchor="end">Maize (mid)</text><rect class="bar" x="118" y="100" width="108.9" height="16" rx="4"><title>Maize (mid): 67%</title></rect><text class="val" x="232.9" y="112">67%</text></svg>
+      <p>Share of 30 synthetic years in which the season is at least as long as the crop cycle.</p>
+    </article>
+    <article class="finding d-plan reveal">
+      <a class="f-meta" href="/stages/04-crop-planning/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg>Stage 04 · Crop Selection</a>
+      <h3>One more cubic metre of March water is worth about 50 birr</h3>
+      <div class="fstat"><b>≈ 50</b><span>birr per m³</span><small>shadow price of March water in the cluster plan</small></div>
+      <p>The planner also flags contracts that cannot be met before anyone plants.</p>
+    </article>
+    <article class="finding d-plan reveal">
+      <a class="f-meta" href="/stages/05-market-intelligence/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-05"/></svg>Stage 05 · Market Intelligence</a>
+      <h3>A price band keeps both sides in the contract</h3>
+      <svg viewBox="0 0 320 96" class="fchart" role="img" aria-label="Fixed price: 76.9%; Fixed + advance: 86.5%; Band ±15%: 98.0%"><text class="lab" x="110" y="21" text-anchor="end">Fixed price</text><rect class="bar mute" x="118" y="10" width="120.0" height="16" rx="4"><title>Fixed price: 76.9%</title></rect><text class="val" x="244.0" y="22">76.9%</text><text class="lab" x="110" y="51" text-anchor="end">Fixed + advance</text><rect class="bar mute" x="118" y="40" width="134.9" height="16" rx="4"><title>Fixed + advance: 86.5%</title></rect><text class="val" x="258.9" y="52">86.5%</text><text class="lab" x="110" y="81" text-anchor="end">Band ±15%</text><rect class="bar" x="118" y="70" width="152.9" height="16" rx="4"><title>Band ±15%: 98.0%</title></rect><text class="val" x="276.9" y="82">98.0%</text></svg>
+      <p>Share of 20,000 simulated delivery months in which neither side walks away.</p>
+    </article>
+    <article class="finding d-produce reveal">
+      <a class="f-meta" href="/stages/06-input-coordination/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-06"/></svg>Stage 06 · Input</a>
+      <h3>Order 53 days ahead to be on time 9 times in 10</h3>
+      <div class="fstat"><b>53</b><span>days before planting</span><small>order date from the union for a 90% on-time chance</small></div>
+      <p>Shortfalls are flagged in March, while there is still time to find another supplier.</p>
+    </article>
+    <article class="finding d-produce reveal">
+      <a class="f-meta" href="/stages/07-farm-production/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg>Stage 07 · Farm Implementation</a>
+      <h3>Top dressing is the operation that slips</h3>
+      <svg viewBox="0 0 320 156" class="fchart" role="img" aria-label="Land prep: 92%; Planting: 81%; Basal fert.: 71%; Weeding: 84%; Top dressing: 57%"><text class="lab" x="110" y="21" text-anchor="end">Land prep</text><rect class="bar mute" x="118" y="10" width="156.6" height="16" rx="4"><title>Land prep: 92%</title></rect><text class="val" x="280.6" y="22">92%</text><text class="lab" x="110" y="51" text-anchor="end">Planting</text><rect class="bar mute" x="118" y="40" width="137.5" height="16" rx="4"><title>Planting: 81%</title></rect><text class="val" x="261.5" y="52">81%</text><text class="lab" x="110" y="81" text-anchor="end">Basal fert.</text><rect class="bar mute" x="118" y="70" width="121.5" height="16" rx="4"><title>Basal fert.: 71%</title></rect><text class="val" x="245.5" y="82">71%</text><text class="lab" x="110" y="111" text-anchor="end">Weeding</text><rect class="bar mute" x="118" y="100" width="144.0" height="16" rx="4"><title>Weeding: 84%</title></rect><text class="val" x="268.0" y="112">84%</text><text class="lab" x="110" y="141" text-anchor="end">Top dressing</text><rect class="bar" x="118" y="130" width="97.8" height="16" rx="4"><title>Top dressing: 57%</title></rect><text class="val" x="221.8" y="142">57%</text></svg>
+      <p>Operations done on time in the synthetic cluster. Late urea (stage 06) is the main reason.</p>
+    </article>
+    <article class="finding d-produce reveal">
+      <a class="f-meta" href="/stages/08-monitoring-risk/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-08"/></svg>Stage 08 · Monitoring, Forecasting</a>
+      <h3>Every pest-hit plot was warned by day 70</h3>
+      <svg viewBox="0 0 320 90" class="fchart" role="img" aria-label="6 of 6 pest-hit plots warned by day 70"><circle class="bar" cx="40" cy="38" r="17"><title>Plot 1: warned by day 70</title></circle><path d="M33 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle class="bar" cx="88" cy="38" r="17"><title>Plot 2: warned by day 70</title></circle><path d="M81 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle class="bar" cx="136" cy="38" r="17"><title>Plot 3: warned by day 70</title></circle><path d="M129 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle class="bar" cx="184" cy="38" r="17"><title>Plot 4: warned by day 70</title></circle><path d="M177 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle class="bar" cx="232" cy="38" r="17"><title>Plot 5: warned by day 70</title></circle><path d="M225 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle class="bar" cx="280" cy="38" r="17"><title>Plot 6: warned by day 70</title></circle><path d="M273 38 l5 5 l9 -10" fill="none" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text class="lab" x="160" y="80" text-anchor="middle">pest-hit plots warned by day 70</text></svg>
+      <p>And the season forecast landed within 1 t of the simulated truth.</p>
+    </article>
+    <article class="finding d-move reveal">
+      <a class="f-meta" href="/stages/09-harvest-postharvest/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-09"/></svg>Stage 09 · Harvest</a>
+      <h3>Harvest order alone removes all late plots</h3>
+      <svg viewBox="0 0 320 66" class="fchart" role="img" aria-label="First come: 19 plots; Deadline first: 0 plots"><text class="lab" x="110" y="21" text-anchor="end">First come</text><rect class="bar" x="118" y="10" width="134.4" height="16" rx="4"><title>First come: 19 plots</title></rect><text class="val" x="258.4" y="22">19 plots</text><text class="lab" x="110" y="51" text-anchor="end">Deadline first</text><rect class="bar mute" x="118" y="40" width="3.0" height="16" rx="4"><title>Deadline first: 0 plots</title></rect><text class="val" x="127.0" y="52">0 plots</text></svg>
+      <p>Plots harvested after their ripeness window, same crews and capacity. Tarpaulins add about 6% value.</p>
+    </article>
+    <article class="finding d-move reveal">
+      <a class="f-meta" href="/stages/10-storage-aggregation/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-10"/></svg>Stage 10 · Storage, Processing</a>
+      <h3>Hermetic bags turn storage into a gain</h3>
+      <svg viewBox="0 0 320 160" class="fchart" role="img" aria-label="Hermetic bags, Sell at harvest, Traditional by month sold"><line class="axis" x1="8" x2="228" y1="132" y2="132"/><text class="lab" x="8.0" y="148" text-anchor="middle">Nov</text><text class="lab" x="63.0" y="148" text-anchor="middle">Jan</text><text class="lab" x="118.0" y="148" text-anchor="middle">Mar</text><text class="lab" x="173.0" y="148" text-anchor="middle">May</text><text class="lab" x="228.0" y="148" text-anchor="middle">Jul</text><path class="ln s1" d="M8.0,55.6L35.5,91.0L63.0,73.1L90.5,55.6L118.0,49.8L145.5,55.6L173.0,16.0L200.5,27.6L228.0,33.5"/><circle class="pt s1" cx="8.0" cy="55.6" r="7"><title>Hermetic bags, sold in Nov: 95,000 birr/t</title></circle><circle class="pt s1" cx="35.5" cy="91.0" r="7"><title>Hermetic bags, sold in Dec: 88,988 birr/t</title></circle><circle class="pt s1" cx="63.0" cy="73.1" r="7"><title>Hermetic bags, sold in Jan: 92,020 birr/t</title></circle><circle class="pt s1" cx="90.5" cy="55.6" r="7"><title>Hermetic bags, sold in Feb: 95,002 birr/t</title></circle><circle class="pt s1" cx="118.0" cy="49.8" r="7"><title>Hermetic bags, sold in Mar: 95,977 birr/t</title></circle><circle class="pt s1" cx="145.5" cy="55.6" r="7"><title>Hermetic bags, sold in Apr: 94,991 birr/t</title></circle><circle class="pt s1" cx="173.0" cy="16.0" r="7"><title>Hermetic bags, sold in May: 101,725 birr/t</title></circle><circle class="pt s1" cx="200.5" cy="27.6" r="7"><title>Hermetic bags, sold in Jun: 99,747 birr/t</title></circle><circle class="pt s1" cx="228.0" cy="33.5" r="7"><title>Hermetic bags, sold in Jul: 98,746 birr/t</title></circle><path class="ln ref" d="M8.0,55.6L35.5,55.6L63.0,55.6L90.5,55.6L118.0,55.6L145.5,55.6L173.0,55.6L200.5,55.6L228.0,55.6"/><circle class="pt ref" cx="8.0" cy="55.6" r="7"><title>Sell at harvest, sold in Nov: 95,000 birr/t</title></circle><circle class="pt ref" cx="35.5" cy="55.6" r="7"><title>Sell at harvest, sold in Dec: 95,000 birr/t</title></circle><circle class="pt ref" cx="63.0" cy="55.6" r="7"><title>Sell at harvest, sold in Jan: 95,000 birr/t</title></circle><circle class="pt ref" cx="90.5" cy="55.6" r="7"><title>Sell at harvest, sold in Feb: 95,000 birr/t</title></circle><circle class="pt ref" cx="118.0" cy="55.6" r="7"><title>Sell at harvest, sold in Mar: 95,000 birr/t</title></circle><circle class="pt ref" cx="145.5" cy="55.6" r="7"><title>Sell at harvest, sold in Apr: 95,000 birr/t</title></circle><circle class="pt ref" cx="173.0" cy="55.6" r="7"><title>Sell at harvest, sold in May: 95,000 birr/t</title></circle><circle class="pt ref" cx="200.5" cy="55.6" r="7"><title>Sell at harvest, sold in Jun: 95,000 birr/t</title></circle><circle class="pt ref" cx="228.0" cy="55.6" r="7"><title>Sell at harvest, sold in Jul: 95,000 birr/t</title></circle><path class="ln s2" d="M8.0,55.6L35.5,101.5L63.0,94.7L90.5,88.8L118.0,94.3L145.5,110.1L173.0,85.6L200.5,106.6L228.0,122.1"/><circle class="pt s2" cx="8.0" cy="55.6" r="7"><title>Traditional, sold in Nov: 95,000 birr/t</title></circle><circle class="pt s2" cx="35.5" cy="101.5" r="7"><title>Traditional, sold in Dec: 87,205 birr/t</title></circle><circle class="pt s2" cx="63.0" cy="94.7" r="7"><title>Traditional, sold in Jan: 88,355 birr/t</title></circle><circle class="pt s2" cx="90.5" cy="88.8" r="7"><title>Traditional, sold in Feb: 89,361 birr/t</title></circle><circle class="pt s2" cx="118.0" cy="94.3" r="7"><title>Traditional, sold in Mar: 88,435 birr/t</title></circle><circle class="pt s2" cx="145.5" cy="110.1" r="7"><title>Traditional, sold in Apr: 85,737 birr/t</title></circle><circle class="pt s2" cx="173.0" cy="85.6" r="7"><title>Traditional, sold in May: 89,900 birr/t</title></circle><circle class="pt s2" cx="200.5" cy="106.6" r="7"><title>Traditional, sold in Jun: 86,337 birr/t</title></circle><circle class="pt s2" cx="228.0" cy="122.1" r="7"><title>Traditional, sold in Jul: 83,700 birr/t</title></circle><text class="lab end" x="236" y="37.5">Hermetic bags</text><text class="lab end" x="236" y="59.6">Sell at harvest</text><text class="lab end" x="236" y="126.1">Traditional</text></svg>
+      <p>Net value of a tonne of teff by month sold: +7% by May in hermetic bags; traditional bags never beat selling at harvest.</p>
+    </article>
+    <article class="finding d-move reveal">
+      <a class="f-meta" href="/stages/11-logistics-transport/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-11"/></svg>Stage 11 · Logistics</a>
+      <h3>Shared routes cut collection cost by 14%</h3>
+      <svg viewBox="0 0 320 66" class="fchart" role="img" aria-label="Truck per load: 93,675 birr; Shared routes: 80,142 birr"><text class="lab" x="110" y="21" text-anchor="end">Truck per load</text><rect class="bar mute" x="118" y="10" width="112.8" height="16" rx="4"><title>Truck per load: 93,675 birr</title></rect><text class="val" x="236.8" y="22">93,675 birr</text><text class="lab" x="110" y="51" text-anchor="end">Shared routes</text><rect class="bar" x="118" y="40" width="96.5" height="16" rx="4"><title>Shared routes: 80,142 birr</title></rect><text class="val" x="220.5" y="52">80,142 birr</text></svg>
+      <p>Dry-season cost to collect 176 t: 23 trips become 19. Rainy-season detours add up to 96% on some kebeles.</p>
+    </article>
+    <article class="finding d-sell reveal">
+      <a class="f-meta" href="/stages/12-market-distribution/#demo"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-12"/></svg>Stage 12 · Market Distribution</a>
+      <h3>The honest income gain is smaller than the naive one</h3>
+      <svg viewBox="0 0 320 66" class="fchart" role="img" aria-label="Before vs after: 14,722 birr; vs comparison: 8,795 birr"><text class="lab" x="110" y="21" text-anchor="end">Before vs after</text><rect class="bar mute" x="118" y="10" width="112.8" height="16" rx="4"><title>Before vs after: 14,722 birr</title></rect><text class="val" x="236.8" y="22">14,722 birr</text><text class="lab" x="110" y="51" text-anchor="end">vs comparison</text><rect class="bar" x="118" y="40" width="67.4" height="16" rx="4"><title>vs comparison: 8,795 birr</title></rect><text class="val" x="191.4" y="52">8,795 birr</text></svg>
+      <p>Income gain per household. Comparing with non-pilot kebeles removes the good-year effect.</p>
+    </article>
+  </section>
+  <div class="callout find-note"><strong>Synthetic data.</strong> Every number here comes from generated landscapes, weather, prices and households. They show how the methods behave and which decisions they inform; real values come from the pilot.</div>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>All results from synthetic demos. No personal farmer data is used anywhere on this site.</span><span><a href="/tools.html">Calculators</a> · <a href="/">Back to the hub</a></span></div></div>
+</footer>
+</body>
+</html>

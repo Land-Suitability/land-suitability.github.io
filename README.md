@@ -48,6 +48,7 @@ how-it-works.html              one season told in 13 steps with a scrolling seas
 data-spine.html                interactive arc diagram of every hand-off between stages
 glossary.html                  plain-language glossary with search
 tools.html                     index of the twelve stage calculators ("Try it" sections)
+findings.html                  one chart per stage demo result (synthetic data)
 brief.html                     two-page concept brief (rendered to assets/AIAE-concept-brief.pdf)
 404.html, robots.txt, sitemap.xml
 stages.json                    single source of truth: project, domains, 12 stages
