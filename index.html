@@ -63,6 +63,7 @@
       <a class="chip" href="#amhara">Amhara context</a>
       <a class="chip" href="#data">Data</a>
       <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#try">Try it</a>
       <a class="chip" href="#outputs">Outputs</a>
       <a class="chip" href="#validation">Validation</a>
       <a class="chip" href="#roadmap">Roadmap</a>
@@ -226,6 +227,88 @@
     </div>
     <div class="callout"><strong>What this shows.</strong> The two rule-based methods agree on what is <em>not</em> suitable (N), but disagree strongly on S1. The FAO method is strict because one moderate factor is enough to downgrade land; the weighted method lets strong factors partly offset a weaker one. Deciding which behaviour matches reality is exactly what field validation must settle, and it is why both are kept side by side.</div>
     <div class="callout"><strong>Deep model check.</strong> Pre-trained for 150 steps on the weighted-overlay labels, the PyTorch model reproduces them at 97 to 98% agreement with a mean confidence of about 0.9. This was measured on the same synthetic landscape, so it only shows that the pipeline works end to end. Its real test comes from held-out field data.</div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: how suitable is my plot?</h2>
+    <p class="section-intro">Describe one plot and compare the three Meher crops with the indicative bands. Each factor gets a score from 1 (optimum) to 0 (not suitable); the FAO method takes the worst factor, the weighted method averages them with the AHP weights and caps the result one class above the worst factor. Same rules as <code>score_factor()</code> and <code>assess_grid()</code> in <code>src/land_intel/scoring.py</code>.</p>
+    <div class="calc" id="calc-s01">
+      <div>
+      <div class="field"><label for="alt">Altitude</label><output id="alt-o"></output><input type="range" id="alt" min="800" max="3500" step="10" value="2350" data-unit="m"></div>
+      <div class="field"><label for="rain">Growing-season rainfall</label><output id="rain-o"></output><input type="range" id="rain" min="200" max="1800" step="10" value="820" data-unit="mm"></div>
+      <div class="field"><label for="temp">Mean growing-season temperature</label><output id="temp-o"></output><input type="range" id="temp" min="6" max="32" step="0.5" value="17" data-unit="°C"></div>
+      <div class="field"><label for="slope">Slope</label><output id="slope-o"></output><input type="range" id="slope" min="0" max="40" step="1" value="6" data-unit="%"></div>
+      <div class="field"><label for="ph">Soil pH</label><output id="ph-o"></output><input type="range" id="ph" min="4.0" max="9.0" step="0.1" value="5.3" data-unit=""><small>Below 5.5 is acidic; liming is the usual fix.</small></div>
+      <div class="field"><label for="drain">Drainage (1 very poor to 5 well drained)</label><output id="drain-o"></output><input type="range" id="drain" min="1" max="5" step="0.5" value="3" data-unit=""></div>
+      <div class="field"><label for="depth">Effective soil depth</label><output id="depth-o"></output><input type="range" id="depth" min="10" max="150" step="5" value="80" data-unit="cm"></div>
+      <div class="field"><label for="soc">Soil organic carbon</label><output id="soc-o"></output><input type="range" id="soc" min="0.2" max="4" step="0.1" value="1.4" data-unit="%"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s01-big"></div>
+        <div class="table-wrap"><table id="s01-t" style="width:100%;border-collapse:collapse;font-size:14px"></table></div>
+        <div class="verdict" id="s01-v"></div>
+        <p class="note">Indicative bands, to be calibrated with regional trials. Not advice for a real field.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = r.value + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s01");
+    if (!root) return;
+    try {
+      bindOut(root);
+      var I = Infinity;
+      // [code, label, weight, s1_low, s1_high, s2_low, s2_high, s3_low, s3_high]
+      var P = {
+        "Teff": [["alt", "altitude", .12, 1700, 2400, 1400, 2700, 1000, 3000], ["rain", "rainfall", .22, 450, 1000, 350, 1300, 300, 1600], ["temp", "temperature", .16, 16, 24, 13, 27, 10, 30],
+          ["slope", "slope", .18, -I, 8, -I, 15, -I, 30], ["ph", "soil pH", .10, 5.5, 7.5, 5.0, 8.0, 4.5, 8.5], ["drain", "drainage", .08, 2, 5, 1.5, 5, 1, 5], ["depth", "soil depth", .08, 50, I, 30, I, 20, I], ["soc", "organic carbon", .06, 1.5, I, .8, I, .4, I]],
+        "Bread wheat": [["alt", "altitude", .14, 1900, 2800, 1600, 3000, 1400, 3300], ["rain", "rainfall", .18, 500, 900, 400, 1100, 300, 1400], ["temp", "temperature", .16, 12, 22, 10, 25, 7, 28],
+          ["slope", "slope", .16, -I, 8, -I, 15, -I, 30], ["ph", "soil pH", .12, 6.0, 7.5, 5.5, 8.0, 5.0, 8.5], ["drain", "drainage", .12, 4, 5, 3, 5, 2, 5], ["depth", "soil depth", .07, 75, I, 50, I, 25, I], ["soc", "organic carbon", .05, 1.5, I, .8, I, .4, I]],
+        "Maize": [["alt", "altitude", .12, 1500, 2200, 1000, 2400, 500, 2700], ["rain", "rainfall", .20, 700, 1200, 550, 1500, 400, 1800], ["temp", "temperature", .16, 18, 28, 15, 32, 12, 35],
+          ["slope", "slope", .16, -I, 8, -I, 15, -I, 30], ["ph", "soil pH", .12, 5.5, 7.5, 5.0, 8.0, 4.5, 8.5], ["drain", "drainage", .10, 4, 5, 3, 5, 2, 5], ["depth", "soil depth", .08, 75, I, 50, I, 30, I], ["soc", "organic carbon", .06, 1.5, I, .8, I, .4, I]]
+      };
+      var CLS = ["N", "S3", "S2", "S1"], COL = ["#b3161a", "#c26a00", "#2f7d4a", "#1f5f35"];
+      function upper(v, e1, e2, e3) {          // score and rank when values above e1 get worse
+        if (!isFinite(e1) || v <= e1) return [1, 3];
+        if (v <= e2) return [isFinite(e2) ? 1 - 0.34 * (v - e1) / Math.max(e2 - e1, 1e-9) : 1, 2];
+        if (v <= e3) return [isFinite(e3) ? 0.66 - 0.33 * (v - e2) / Math.max(e3 - e2, 1e-9) : 0.66, 1];
+        return [0, 0];
+      }
+      function factor(v, r) { var h = upper(v, r[4], r[6], r[8]), l = upper(-v, -r[3], -r[5], -r[7]); return [Math.min(h[0], l[0]), Math.min(h[1], l[1])]; }
+      function assess(rows) {
+        var ws = 0, sc = 0, worst = 3, lim = null, ls = 2;
+        rows.forEach(function (r) { var f = factor(num(r[0]), r); ws += r[2]; sc += r[2] * f[0]; if (f[1] < worst) worst = f[1]; if (f[0] < ls) { ls = f[0]; lim = r[1]; } });
+        sc /= ws;
+        var rank = sc >= .8 ? 3 : sc >= .6 ? 2 : sc >= .4 ? 1 : 0;
+        rank = Math.min(rank, worst === 0 ? 0 : worst + 1);
+        if (worst === 0) sc = Math.min(sc, .39);
+        return { fao: worst, wlc: rank, score: sc, lim: ls < 1 ? lim : null };
+      }
+      function pill(k) { return '<b style="display:inline-block;min-width:2.4em;text-align:center;padding:1px 6px;border-radius:6px;color:#fff;background:' + COL[k] + '">' + CLS[k] + "</b>"; }
+      function update() {
+        var res = Object.keys(P).map(function (c) { var a = assess(P[c]); a.crop = c; return a; });
+        var best = res.slice().sort(function (a, b) { return b.wlc - a.wlc || b.score - a.score; })[0];
+        $("s01-big").innerHTML = best.crop + " fits best<small>weighted score " + fmt(best.score, 2) + ", class " + CLS[best.wlc] + "</small>";
+        var td = 'style="padding:6px;border-top:1px solid var(--border)"';
+        $("s01-t").innerHTML = '<tr><th style="text-align:left;padding:6px">Crop</th><th style="text-align:left;padding:6px">FAO limiting</th><th style="text-align:left;padding:6px">Weighted</th><th style="text-align:left;padding:6px">Main limit</th></tr>' +
+          res.map(function (a) { return "<tr><td " + td + ">" + a.crop + "</td><td " + td + ">" + pill(a.fao) + "</td><td " + td + ">" + pill(a.wlc) + " " + fmt(a.score, 2) + "</td><td " + td + ">" + (a.lim || "none") + "</td></tr>"; }).join("");
+        var v = $("s01-v"), fix = num("ph") < 5.5 || num("drain") < 4;
+        v.className = "verdict " + (best.wlc >= 2 ? "good" : best.wlc === 1 ? "warn" : "bad");
+        v.textContent = best.wlc === 0 ? "Not suitable for any of the three crops as described." :
+          (fix ? "Part of the limit is fixable: " + (num("ph") < 5.5 ? "liming raises pH" : "") + (num("ph") < 5.5 && num("drain") < 4 ? " and " : "") + (num("drain") < 4 ? "broad-bed drainage helps wheat and maize" : "") + "." :
+           "The limits here are mostly permanent (terrain or climate): choose the crop to fit the land.");
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s01]", e); }
+    })();
+    </script>
+    </div>
   </section>
 
   <section id="outputs">
