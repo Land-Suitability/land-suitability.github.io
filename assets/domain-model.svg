@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="420" fill="#fbfaf6"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <text x="500" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 02 domain model</text>
+  <g font-size="12" fill="#222">
+    <rect x="30" y="55" width="220" height="120" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+    <text x="140" y="76" text-anchor="middle" font-weight="bold">ClusterWaterContext</text>
+    <line x1="30" y1="84" x2="250" y2="84" stroke="#2f5d8a"/>
+    <text x="42" y="102">cluster_id (from stage 01)</text>
+    <text x="42" y="120">latitude, altitude</text>
+    <text x="42" y="138">irrigable_area_ha (stage 01)</text>
+    <text x="42" y="156">sources: WaterSource[ ]</text>
+
+    <rect x="30" y="225" width="220" height="165" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+    <text x="140" y="246" text-anchor="middle" font-weight="bold">WaterSource (entity)</text>
+    <line x1="30" y1="254" x2="250" y2="254" stroke="#2f5d8a"/>
+    <text x="42" y="272">kind: river | wells |</text>
+    <text x="42" y="288">borehole | pond</text>
+    <text x="42" y="306">confidence: measured |</text>
+    <text x="42" y="322">modelled | indicative</text>
+    <text x="42" y="340">env. flow fraction, recharge</text>
+    <text x="42" y="356">share, pump capacity</text>
+    <text x="42" y="376">sustainable_monthly_m3()</text>
+
+    <rect x="320" y="55" width="210" height="120" rx="8" fill="#e3efdd" stroke="#3f6b34"/>
+    <text x="425" y="76" text-anchor="middle" font-weight="bold">IrrigatedCropPlan (value)</text>
+    <line x1="320" y1="84" x2="530" y2="84" stroke="#3f6b34"/>
+    <text x="332" y="102">crop: CropCoefficients</text>
+    <text x="332" y="120">planting month, day</text>
+    <text x="332" y="138">method: furrow | basin |</text>
+    <text x="332" y="154">sprinkler | drip (efficiency)</text>
+
+    <rect x="320" y="225" width="210" height="120" rx="8" fill="#e3efdd" stroke="#3f6b34"/>
+    <text x="425" y="246" text-anchor="middle" font-weight="bold">CropCoefficients (value)</text>
+    <line x1="320" y1="254" x2="530" y2="254" stroke="#3f6b34"/>
+    <text x="332" y="272">Kc ini, mid, end</text>
+    <text x="332" y="290">stage lengths (days)</text>
+    <text x="332" y="308">FAO-56 typical values</text>
+    <text x="332" y="326">(adjust to local varieties)</text>
+
+    <rect x="600" y="55" width="160" height="120" rx="8" fill="#f1e8d6" stroke="#8a6d3b"/>
+    <text x="680" y="76" text-anchor="middle" font-weight="bold">Climate inputs</text>
+    <line x1="600" y1="84" x2="760" y2="84" stroke="#8a6d3b"/>
+    <text x="612" y="102">MonthlySeries:</text>
+    <text x="612" y="120">rain, Tmin, Tmax</text>
+    <text x="612" y="138">(from stage 03)</text>
+
+    <rect x="600" y="225" width="370" height="165" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+    <text x="785" y="246" text-anchor="middle" font-weight="bold">WaterBudget (output contract to stage 04)</text>
+    <line x1="600" y1="254" x2="970" y2="254" stroke="#9a4a28"/>
+    <text x="612" y="274">cluster_id, season, confidence (weakest source)</text>
+    <text x="612" y="294">supply_m3[12]: sustainable supply per month</text>
+    <text x="612" y="314">demand_m3_per_ha{crop}[12]</text>
+    <text x="612" y="334">binding_month{crop}, max_area_ha{crop}</text>
+    <text x="612" y="354">seasonal_supply_m3</text>
+    <text x="612" y="376" fill="#6d3218">Stage 04 uses 12 monthly constraints, not one total</text>
+
+    <rect x="810" y="55" width="160" height="120" rx="8" fill="#1f2a20"/>
+    <text x="890" y="80" text-anchor="middle" font-weight="bold" fill="#fff">Services</text>
+    <text x="822" y="104" fill="#e7ebe4">et0_hargreaves()</text>
+    <text x="822" y="124" fill="#e7ebe4">irrigation_demand()</text>
+    <text x="822" y="144" fill="#e7ebe4">build_budget()</text>
+    <text x="822" y="164" fill="#e7ebe4">check_allocation()</text>
+  </g>
+  <g stroke="#555" stroke-width="1.8" fill="none">
+    <line x1="140" y1="175" x2="140" y2="223" marker-end="url(#a)"/>
+    <line x1="425" y1="175" x2="425" y2="223" marker-end="url(#a)"/>
+    <line x1="250" y1="300" x2="598" y2="300" marker-end="url(#a)"/>
+    <line x1="530" y1="120" x2="808" y2="120" marker-end="url(#a)" stroke-dasharray="4,3"/>
+    <line x1="890" y1="175" x2="890" y2="223" marker-end="url(#a)"/>
+  </g>
+  <g font-size="11" fill="#555">
+    <text x="148" y="205">1..* sources</text>
+    <text x="433" y="205">uses</text>
+    <text x="400" y="292">supply</text>
+    <text x="898" y="205">produces</text>
+  </g>
+</svg>

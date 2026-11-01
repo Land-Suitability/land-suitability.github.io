@@ -4,14 +4,48 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Water Resource Assessment | AIAE</title>
-  <meta name="description" content="How much water is actually available for each cluster, in each season, and at what sustainable rate?">
+  <meta name="description" content="Stage 02: how much water each planning cluster can use sustainably, month by month, and how many hectares that can irrigate.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root {
+      color-scheme: light;
+      --surface-1: #fcfcfb; --text-primary: #0b0b0b; --text-secondary: #52514e; --grid: #e6e4de;
+      --series-1: #2a78d6; --series-2: #eb6834;
+      background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;
+      position: relative;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:where(:not([data-theme="light"])) .viz-root {
+        color-scheme: dark; --surface-1: #1a1a19; --text-primary: #f0efec; --text-secondary: #c3c2b7; --grid: #34332f;
+        --series-1: #3987e5; --series-2: #d95926;
+      }
+    }
+    :root[data-theme="dark"] .viz-root {
+      color-scheme: dark; --surface-1: #1a1a19; --text-primary: #f0efec; --text-secondary: #c3c2b7; --grid: #34332f;
+      --series-1: #3987e5; --series-2: #d95926;
+    }
+    .viz-title { margin: 0 0 4px; font-size: 16px; color: var(--text-primary); }
+    .viz-sub { margin: 0 0 12px; font-size: 13px; color: var(--text-secondary); }
+    .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+    .sw.line { height: 2px; border-radius: 0; background: var(--text-primary); width: 18px; }
+    #water-chart svg { width: 100%; height: auto; display: block; }
+    .tip { position: absolute; pointer-events: none; background: var(--surface-1); color: var(--text-primary);
+           border: 1px solid var(--grid); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.5;
+           box-shadow: 0 4px 14px rgba(0,0,0,.12); display: none; min-width: 170px; }
+    .tip b { display: block; margin-bottom: 2px; }
+    .tip .r { display: flex; justify-content: space-between; gap: 12px; }
+    details.table-view { margin-top: 12px; }
+    details.table-view summary { cursor: pointer; color: var(--text-secondary); font-size: 14px; }
+  </style>
 </head>
 <body class="d-plan">
 <!--
-  Stage 02 page. This file lives on branch `stage/02-water-resources` and is published at /stages/02-water-resources/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 02 page. Lives on branch `stage/02-water-resources`, published at /stages/02-water-resources/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +68,256 @@
   <section class="stage-hero">
     <span class="pill">Plan</span>
     <h1>02. Water Resource Assessment</h1>
-    <p class="lead">How much water is actually available for each cluster, in each season, and at what sustainable rate?</p>
+    <p class="lead">How much water can each planning cluster use, in each month, without harming the river, the aquifer or downstream users? And how many hectares of which crop can that water irrigate?</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/02-water-resources</code></span>
     </div>
+    <div class="stats">
+      <div class="stat"><b>12</b><span>monthly limits per cluster, not one total</span></div>
+      <div class="stat"><b>4</b><span>source types: river, wells, borehole, pond</span></div>
+      <div class="stat"><b>FAO-56</b><span>crop water method (ET0 x Kc)</span></div>
+      <div class="stat"><b>3</b><span>confidence levels on every estimate</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#methods">Methods</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#data">Data</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#outputs">Outputs</a>
+      <a class="chip" href="#validation">Validation</a>
+      <a class="chip" href="#roadmap">Roadmap</a>
+      <a class="chip" href="#code">Code</a>
+    </nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Land Intelligence &amp; Suitability</a><a class="chip" href="/stages/03-climate-intelligence/">03. Climate &amp; Seasonal Intelligence</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Land Intelligence (irrigable land, clusters)</a><a class="chip" href="/stages/03-climate-intelligence/">03. Climate (rain, temperature)</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Water Resource Assessment</p></div>
+      <div class="card"><h3>This stage</h3><p>Sustainable monthly supply versus crop irrigation demand, per planning cluster and season.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a><a class="chip" href="/stages/06-input-coordination/">06. Inputs (irrigation equipment)</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>What surface and groundwater can each cluster use sustainably?</li><li>How does seasonal water demand compare with supply?</li><li>Where would irrigation investment unlock the most suitable land?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Surface water: rivers, lakes, reservoirs, streams</li><li>Groundwater availability and sustainable extraction (requires hydrogeological field data)</li><li>Watershed and catchment assessment</li><li>Existing irrigation infrastructure and accessibility</li><li>Water demand versus supply balance</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Sentinel-1 / Sentinel-2 water masks</li><li>CHIRPS rainfall</li><li>Hydrological models</li><li>Borehole and geophysical surveys</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Cluster x season water budgets (m3)</li><li>Irrigation opportunity map</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Water productivity (kg per m3)</li><li>Share of plans within the sustainable water budget</li></ul></div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a household whose income arrives unevenly through the year. The annual total can look comfortable while one lean month still leaves the family short. Water works the same way. In the Amhara highlands most rain falls in the Kiremt months (June to September), and irrigation happens in the dry months when rivers are lowest. So the lean month, not the seasonal total, decides how many hectares can be irrigated.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>No plan without water</h3><p>Stage 04 cannot promise a buyer 300 tonnes of irrigated wheat if February flows support only half the area.</p></div>
+      <div class="card"><h3>Sustainable by design</h3><p>Environmental flows stay in the river and only a share of groundwater recharge is used, so this season's plan does not undermine the next.</p></div>
+      <div class="card"><h3>Honest about uncertainty</h3><p>Satellites show surface water and vegetation, but cannot measure groundwater by themselves. Every estimate carries a confidence label.</p></div>
     </div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean">
+      <li>How much water can each cluster use sustainably in each month of the dry and Belg seasons?</li>
+      <li>How much water does each candidate crop need per hectare, month by month?</li>
+      <li>Which month limits irrigation, and how many hectares of each crop does the water support?</li>
+      <li>Where would storage, wells or efficient irrigation unlock the most suitable land?</li>
+    </ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">The <strong>WaterBudget</strong> is the contract with stage 04. It carries twelve monthly supply values and per-hectare demand curves, so the planner can check every month instead of one seasonal number.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: ClusterWaterContext holds WaterSources; IrrigatedCropPlans use CropCoefficients; climate inputs and services produce a WaterBudget for stage 04."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>WaterSource</td><td>Entity</td><td>A river diversion, set of shallow wells, borehole or pond, with its sustainability rules and confidence level.</td></tr>
+          <tr><td>Sustainable supply</td><td>Derived value</td><td>Monthly volume after keeping environmental flow, limiting groundwater to a share of recharge and applying pump or canal capacity.</td></tr>
+          <tr><td>CropCoefficients</td><td>Value object</td><td>FAO-56 crop coefficient curve (Kc) and growth-stage lengths.</td></tr>
+          <tr><td>IrrigatedCropPlan</td><td>Value object</td><td>A crop, its planting date and irrigation method (which sets efficiency).</td></tr>
+          <tr><td>Gross irrigation demand</td><td>Derived value</td><td>Water to abstract per hectare per month: (ETc minus effective rain) divided by efficiency.</td></tr>
+          <tr><td>WaterBudget</td><td>Value object (output)</td><td>Monthly supply, demand per crop, binding month, maximum area per crop and overall confidence.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <figure class="diagram"><img src="assets/water-balance.svg" alt="Supply side: physical sources, sustainability filters, infrastructure limits. Demand side: ET0, crop coefficient, effective rain, efficiency. Compared month by month."></figure>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Demand: FAO-56 crop water requirement</h3>
+        <ul class="list-clean">
+          <li><strong>ET0</strong>, the water a reference grass would use, from temperature and latitude (Hargreaves, FAO-56 eq. 52). Penman-Monteith replaces it where weather stations allow.</li>
+          <li><strong>ETc = ET0 &times; Kc</strong>, using the crop coefficient curve across growth stages.</li>
+          <li><strong>Effective rain</strong> (USDA-SCS method) is subtracted, only for days the crop is in the field.</li>
+          <li><strong>Gross demand</strong> = net requirement &divide; efficiency (furrow about 0.6, drip about 0.9).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Supply: what can be used sustainably</h3>
+        <ul class="list-clean">
+          <li><strong>Rivers</strong>: monthly flow from gauges or a rainfall-runoff model, minus an environmental flow reserve, capped by diversion capacity.</li>
+          <li><strong>Groundwater</strong>: a share of annual recharge, which must come from field hydrogeology (well tests, water levels, geophysics). Satellite data alone cannot establish it.</li>
+          <li><strong>Ponds and reservoirs</strong>: storage carried from the rains into the dry season, minus evaporation.</li>
+          <li><strong>Existing users</strong>: agreed shares of downstream users and water-user associations are reserved first.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Strongly seasonal rainfall</h3><p>Most rain falls from June to September. Rivers that flood in August can shrink to a trickle by March, exactly when dry-season wheat and vegetables need the most water.</p></div>
+      <div class="card"><h3>Lake Tana sub-basin</h3><p>The lake and its tributaries, and the floodplains around it, are a natural focus for irrigation. Any abstraction must respect the lake, its wetlands and downstream users in the Abay basin.</p></div>
+      <div class="card"><h3>Shallow groundwater on the plains</h3><p>Lake-shore plains with shallow water tables support hand-dug wells and motor pumps, often for onion and vegetables. Unregulated pumping can lower water tables, so recharge-based limits matter.</p></div>
+      <div class="card"><h3>Existing schemes and associations</h3><p>Medium and small-scale irrigation schemes and water-user associations already allocate water. The budget reserves their shares and works with them rather than around them.</p></div>
+      <div class="card"><h3>Highland catchment degradation</h3><p>Erosion on steep land raises sediment loads, which fills ponds and canals. Catchment conservation (bunds, terraces, area closures) protects the water supply itself.</p></div>
+      <div class="card"><h3>Belg and dry-season windows</h3><p>Belg rains (February to May) support some areas; elsewhere irrigation runs from November to May. Season choice changes both demand and the binding month.</p></div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Confidence</th></tr></thead>
+        <tbody>
+          <tr><td>Rainfall</td><td>CHIRPS v2, local stations</td><td>~5 km, points</td><td>Effective rain, runoff modelling</td><td>Modelled</td></tr>
+          <tr><td>Temperature</td><td>ERA5-Land, TerraClimate, stations</td><td>~4 to 9 km</td><td>ET0 (Hargreaves, Penman-Monteith)</td><td>Modelled</td></tr>
+          <tr><td>Streamflow</td><td>National hydrological gauging stations; global flood reanalysis where ungauged</td><td>points, ~5 km</td><td>Monthly river supply</td><td>Measured where gauged</td></tr>
+          <tr><td>Surface water extent</td><td>JRC Global Surface Water, Sentinel-1 and Sentinel-2 water masks</td><td>10 to 30 m</td><td>Ponds, reservoirs, seasonal water</td><td>Indicative</td></tr>
+          <tr><td>Catchments and streams</td><td>Copernicus DEM, HydroSHEDS</td><td>30 to 90 m</td><td>Catchment delineation, diversion points</td><td>Modelled</td></tr>
+          <tr><td>Groundwater storage trend</td><td>GRACE / GRACE-FO</td><td>~300 km</td><td>Regional context only</td><td>Indicative</td></tr>
+          <tr><td>Wells and boreholes</td><td>Regional water bureau records, field inventory</td><td>points</td><td>Water levels, yields, recharge estimates</td><td>Measured</td></tr>
+          <tr><td>Crop water use check</td><td>Sentinel-2 based evapotranspiration, field measurements</td><td>10 to 30 m</td><td>Validating demand estimates</td><td>Modelled</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: a synthetic lake-shore cluster</h2>
+    <p class="section-intro">A made-up cluster at 11.8&deg; N and 1800 m, with a small river diversion (30% of flow kept as environmental flow, 450,000 m&sup3;/month canal capacity) and shallow wells (40% of recharge). It plans dry-season irrigated wheat (planted mid-November) and onion (planted in January), both with furrow irrigation. <strong>No real gauge, well or farmer data.</strong></p>
+
+    <div class="viz-root" id="water-viz">
+      <h3 class="viz-title">Monthly irrigation demand versus sustainable supply</h3>
+      <p class="viz-sub">Best mix under monthly limits: 43.9 ha wheat + 58.4 ha onion. Thousand m&sup3; per month, water year from October.</p>
+      <div class="legend" aria-hidden="true">
+        <span><i class="sw" style="background:var(--series-1)"></i>Irrigated wheat demand</span>
+        <span><i class="sw" style="background:var(--series-2)"></i>Onion demand</span>
+        <span><i class="sw line"></i>Sustainable supply</span>
+      </div>
+      <div id="water-chart" role="img" aria-label="Stacked bars of monthly wheat and onion irrigation demand with a step line of sustainable supply. Demand reaches supply in February and March."></div>
+      <div class="tip" id="water-tip"></div>
+      <details class="table-view">
+        <summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px">
+          <table>
+            <thead><tr><th>Month</th><th class="num">Supply</th><th class="num">Wheat</th><th class="num">Onion</th><th class="num">Spare</th></tr></thead>
+            <tbody>
+              <tr><td>Oct</td><td class="num">490,000</td><td class="num">0</td><td class="num">0</td><td class="num">490,000</td></tr>
+              <tr><td>Nov</td><td class="num">490,000</td><td class="num">14,170</td><td class="num">0</td><td class="num">475,830</td></tr>
+              <tr><td>Dec</td><td class="num">404,000</td><td class="num">63,707</td><td class="num">0</td><td class="num">340,293</td></tr>
+              <tr><td>Jan</td><td class="num">334,000</td><td class="num">114,526</td><td class="num">100,087</td><td class="num">119,387</td></tr>
+              <tr><td>Feb</td><td class="num">264,000</td><td class="num">119,208</td><td class="num">144,792</td><td class="num">0</td></tr>
+              <tr><td>Mar</td><td class="num">222,000</td><td class="num">54,694</td><td class="num">167,306</td><td class="num">0</td></tr>
+              <tr><td>Apr</td><td class="num">201,000</td><td class="num">0</td><td class="num">151,555</td><td class="num">49,445</td></tr>
+              <tr><td>May</td><td class="num">250,000</td><td class="num">0</td><td class="num">70,143</td><td class="num">179,857</td></tr>
+              <tr><td>Jun to Sep</td><td class="num">490,000 each</td><td class="num">0</td><td class="num">0</td><td class="num">490,000 each</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card">
+        <h3>Each crop alone</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Crop</th><th class="num">Gross demand</th><th class="num">Max area</th><th>Limited by</th></tr></thead>
+            <tbody>
+              <tr><td>Irrigated wheat (130 days)</td><td class="num">834 mm</td><td class="num">97.3 ha</td><td>February</td></tr>
+              <tr><td>Onion (150 days)</td><td class="num">1,085 mm</td><td class="num">77.5 ha</td><td>April</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Why monthly limits matter</h3>
+        <p>A proposed mix of <strong>70 ha wheat + 40 ha onion</strong> uses about 1.0 million m&sup3; over November to May, against 2.2 million m&sup3; available. On a seasonal basis it looks easy. Month by month it fails: <strong>February is short</strong>, when wheat is at peak demand, onion is growing fast and the river is low. The optimiser instead picks 43.9 ha wheat and 58.4 ha onion, with February and March fully used.</p>
+      </div>
+    </div>
+    <div class="callout"><strong>Lesson for stage 04.</strong> The production planner must use twelve monthly water constraints, not a single seasonal water budget. Staggered planting dates and drip irrigation on high-value crops are the two cheapest ways to relieve the binding month.</div>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Monthly water budgets</h3><p>Per cluster and season: sustainable supply, demand per hectare per crop, binding month and maximum area, for stage 04.</p></div>
+      <div class="card"><h3>Irrigation opportunity map</h3><p>Suitable land (stage 01) within reach of water, ranked by the extra hectares each intervention would unlock.</p></div>
+      <div class="card"><h3>Investment signals</h3><p>Where storage, wells, canal lining or drip kits would relieve the binding month, for stage 06 and partners.</p></div>
+    </div>
+    <p style="margin-top:20px">Example record sent to stage 04 (synthetic, abbreviated):</p>
+<pre><code>{
+  "cluster_id": "CLUSTER-DEMO-A",
+  "season": "dry",
+  "confidence": "indicative",
+  "supply_m3":         [334000, 264000, 222000, 201000, 250000, 490000, ...],
+  "demand_m3_per_ha": {
+    "irrigated_wheat": [2607, 2714, 1245, 0, 0, 0, 0, 0, 0, 0, 323, 1450],
+    "onion":           [1713, 2478, 2864, 2594, 1201, 0, 0, 0, 0, 0, 0, 0]
+  },
+  "binding_month": {"irrigated_wheat": "Feb", "onion": "Apr"},
+  "max_area_ha":   {"irrigated_wheat": 97.3, "onion": 77.5}
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation, uncertainty and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>How estimates are checked</h3>
+        <ul class="list-clean">
+          <li>Flow measurements at diversion points in the dry season, compared with modelled flows</li>
+          <li>Monthly water-level monitoring in a sample of wells to detect over-abstraction</li>
+          <li>Hargreaves ET0 checked against Penman-Monteith where a full weather station exists</li>
+          <li>Actual water applied (stage 07 records) compared with estimated demand</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Indicators (KPIs)</h3>
+        <ul class="list-clean">
+          <li>Water productivity: kg of crop per m&sup3; applied</li>
+          <li>Share of production plans within the monthly sustainable budget (target 100%)</li>
+          <li>Dry-season well water levels stable year on year</li>
+          <li>Share of supply estimates at "measured" or "modelled" confidence</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap">
+      <div class="card phase"><h3>Methodology v0.1</h3><ul><li>Domain model, FAO-56 demand, sustainable supply</li><li>Monthly budget and allocation check</li><li>Synthetic demo and tests</li><li><strong>Status: done</strong></li></ul></div>
+      <div class="card phase"><h3>Pilot inventory</h3><ul><li>Map rivers, diversions, wells and ponds in the pilot woreda</li><li>Collect gauge records and well data</li><li>Meet water-user associations and record existing shares</li></ul></div>
+      <div class="card phase"><h3>Model and measure</h3><ul><li>Rainfall-runoff model for ungauged streams</li><li>Dry-season flow measurements</li><li>Recharge estimates with hydrogeologists</li><li>Penman-Monteith where data allow</li></ul></div>
+      <div class="card phase"><h3>Integrate</h3><ul><li>Monthly constraints in the stage 04 planner</li><li>Irrigation opportunity map</li><li>Season-by-season recalibration</li></ul></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/water_res/domain.py     domain model (sources, crop plans, budget contract)
+src/water_res/hydrology.py  Ra, Hargreaves ET0, FAO-56 Kc curve, effective rainfall, irrigation demand
+src/water_res/budget.py     sustainable supply, monthly budget, binding month, allocation check
+src/demo.py                 synthetic lake-shore cluster demo (writes assets/demo-water-budget.json)
+tests/test_water.py         unit tests (includes FAO-56 Example 8 for radiation)</code></pre>
+<pre><code>git switch stage/02-water-resources
+python3 src/demo.py
+python3 tests/test_water.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +332,87 @@
     <span>Stage 02 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.getElementById("water-viz");
+  var host = document.getElementById("water-chart");
+  var tip = document.getElementById("water-tip");
+  if (!root || !host || !tip) return;
+
+  function draw(d) {
+    var order = [9, 10, 11, 0, 1, 2, 3, 4, 5, 6, 7, 8];          // water year Oct..Sep
+    var W = Math.max(320, Math.min(720, host.clientWidth || 720)), H = W < 500 ? 260 : 320;
+    var m = { t: 22, r: 8, b: 30, l: W < 500 ? 40 : 52 };
+    var iw = W - m.l - m.r, ih = H - m.t - m.b, n = order.length, step = iw / n, bw = step * 0.62;
+    var wheat = d.demand_m3.irrigated_wheat, onion = d.demand_m3.onion, sup = d.supply_m3;
+    var max = Math.max.apply(null, sup.concat(order.map(function (i) { return wheat[i] + onion[i]; })));
+    var top = Math.ceil(max / 100000) * 100000;
+    function y(v) { return m.t + ih - (v / top) * ih; }
+    function x(k) { return m.l + k * step; }
+    var s = [];
+    for (var g = 0; g <= top; g += 100000) {
+      s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)" stroke-width="1"/>');
+      s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + (g ? g / 1000 + 'k' : '0') + '</text>');
+    }
+    function seg(x0, y0, y1, color, roundTop) {          // bar segment, 4px rounded top on the top segment
+      var h = y0 - y1; if (h <= 0.5) return "";
+      var r = roundTop ? Math.min(4, h, bw / 2) : 0;
+      return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') +
+             'H' + (x0 + bw - r) + (r ? 'Q' + (x0 + bw) + ',' + y1 + ' ' + (x0 + bw) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+    }
+    order.forEach(function (i, k) {
+      var x0 = x(k) + (step - bw) / 2, base = y(0), yw = y(wheat[i]), yo = y(wheat[i] + onion[i]);
+      var hasOnion = onion[i] > 0;
+      s.push(seg(x0, base, yw, "var(--series-1)", !hasOnion));
+      if (hasOnion) s.push(seg(x0, wheat[i] > 0 ? yw - 2 : base, yo, "var(--series-2)", true));   // 2px surface gap
+      s.push('<text x="' + (x(k) + step / 2) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + d.months[i] + '</text>');
+    });
+    var p = "M" + x(0) + "," + y(sup[order[0]]) + "H" + x(1);    // supply as a step line
+    for (var k = 1; k < n; k++) p += "V" + y(sup[order[k]]) + "H" + x(k + 1);
+    s.push('<path d="' + p + '" fill="none" stroke="var(--text-primary)" stroke-width="2"/>');
+    s.push('<text x="' + (x(0) + 4) + '" y="' + (y(sup[order[0]]) - 6) + '" font-size="12" fill="var(--text-primary)">Sustainable supply</text>');
+    var feb = order.indexOf(1);
+    s.push('<text x="' + (x(feb) + step / 2) + '" y="' + (y(sup[1]) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">binding</text>');
+    order.forEach(function (i, k) {                        // hit targets wider than the marks
+      s.push('<rect class="hit" data-i="' + i + '" x="' + x(k) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>');
+    });
+    host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+
+    function fmt(v) { return Math.round(v).toLocaleString("en-US"); }
+    host.querySelectorAll(".hit").forEach(function (r) {
+      r.addEventListener("mousemove", function (ev) {
+        var i = +r.dataset.i, spare = sup[i] - wheat[i] - onion[i];
+        tip.innerHTML = '<b>' + d.months[i] + '</b>' +
+          '<div class="r"><span>Wheat</span><span>' + fmt(wheat[i]) + ' m³</span></div>' +
+          '<div class="r"><span>Onion</span><span>' + fmt(onion[i]) + ' m³</span></div>' +
+          '<div class="r"><span>Supply</span><span>' + fmt(sup[i]) + ' m³</span></div>' +
+          '<div class="r"><span>Spare</span><span>' + fmt(spare) + ' m³</span></div>';
+        var box = root.getBoundingClientRect();
+        tip.style.display = "block";
+        var left = ev.clientX - box.left + 14;
+        if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+        tip.style.left = left + "px";
+        tip.style.top = (ev.clientY - box.top + 10) + "px";
+        r.setAttribute("fill", "rgba(127,127,127,.08)");
+      });
+      r.addEventListener("mouseleave", function () { tip.style.display = "none"; r.setAttribute("fill", "transparent"); });
+    });
+  }
+
+  fetch("assets/demo-water-budget.json")
+    .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
+    .then(function (d) {
+      draw(d);
+      var last = host.clientWidth;
+      window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(d); } });
+    })
+    .catch(function (e) {
+      host.innerHTML = '<p style="color:var(--text-secondary)">Chart data could not be loaded (' + e.message + '). See the table below.</p>';
+      if (window.console) console.error("[water chart]", e);
+    });
+})();
+</script>
 </body>
 </html>
