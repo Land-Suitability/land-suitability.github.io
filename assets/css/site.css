@@ -366,8 +366,9 @@ figure.diagram figcaption { color: #5d665e; font-size: 14px; padding: 8px 8px 4p
 .chain-nav .cn .icon { width: 18px; height: 18px; color: var(--d); }
 .chain-nav .cn:hover { background: var(--d-bg); color: var(--text); }
 .chain-nav .cn.cur { background: var(--d-bg); color: var(--text); border-color: var(--d); }
-.stage-hero.has-art { display: grid; grid-template-columns: 1fr minmax(240px, 420px); grid-template-areas: "text art"; column-gap: 28px; align-items: center; }
+.stage-hero.has-art { display: grid; grid-template-columns: 1fr minmax(240px, 380px); grid-template-areas: "text art"; column-gap: 28px; align-items: center; }
 .stage-hero.has-art > *:not(.stage-art) { grid-column: 1; }
+.stage-hero.has-art > .pill { justify-self: start; }
 .stage-hero .stage-art { grid-area: art; grid-row: 1 / span 8; width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--border);
   box-shadow: 0 8px 30px rgba(31, 42, 32, .12); background: #eaf2ea; }
 @media (max-width: 860px) {
@@ -375,3 +376,6 @@ figure.diagram figcaption { color: #5d665e; font-size: 14px; padding: 8px 8px 4p
   .stage-hero .stage-art { margin: 6px 0 14px; max-height: 240px; object-fit: cover; }
 }
 .toc .chip.active { background: var(--d-bg, var(--surface-2)); border-color: var(--d, var(--accent)); font-weight: 700; }
+.stage-thumb { display: block; width: calc(100% + 36px); max-width: none; margin: -18px -18px 6px; aspect-ratio: 16 / 8; object-fit: cover;
+  object-position: center 70%; border-bottom: 1px solid var(--border); background: #eaf2ea; transition: transform .4s ease; }
+.stage-card:hover .stage-thumb { transform: scale(1.03); }

@@ -28,6 +28,15 @@
   function pad(n) { return String(n).padStart(2, "0"); }
   function currentSlug() { var m = location.pathname.match(/^\/stages\/([^/]+)\//); return m ? m[1] : null; }
 
+  // stage branches carry an older text badge; show the shared logo everywhere
+  function brandLogo() {
+    var mark = document.querySelector(".brand .brand-mark");
+    if (!mark) return;
+    var img = document.createElement("img");
+    img.className = "brand-logo"; img.src = "/assets/img/favicon.svg"; img.alt = "";
+    mark.replaceWith(img);
+  }
+
   function favicon() {
     if (document.querySelector('link[rel="icon"]')) return;
     var l = document.createElement("link");
@@ -207,7 +216,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage];
+    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();

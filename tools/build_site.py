@@ -141,6 +141,7 @@ def render_grid(domains: list[Domain], stages: list[Stage], prefix: str) -> str:
         for s in (x for x in stages if x.domain == d.id):
             cards.append(
                 f'        <a class="card stage-card" href="{s.url}">\n'
+                f'          <img class="stage-thumb" src="/assets/img/stages/{s.slug}.svg" alt="" loading="lazy" width="640" height="400">\n'
                 f'          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-{s.padded}"/></svg>'
                 f'<span class="stage-num">Stage {s.padded} <span class="status">{esc(s.status)}</span></span></span>\n'
                 f'          <h3>{esc(s.title)}</h3>\n'
