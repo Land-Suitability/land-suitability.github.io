@@ -1,0 +1,208 @@
+{
+ "kebeles": [
+  "Kebele 1",
+  "Kebele 2",
+  "Kebele 3",
+  "Kebele 4"
+ ],
+ "planting": [
+  91.0,
+  92.5,
+  54.1,
+  86.2
+ ],
+ "top_dress": [
+  72.4,
+  63.4,
+  23.7,
+  72.4
+ ],
+ "by_code": {
+  "land_prep": 91.9,
+  "planting": 80.7,
+  "basal_fert": 71.3,
+  "weeding": 84.5,
+  "top_dress": 57.4
+ },
+ "weeks": [
+  "11 May",
+  "01 Jun",
+  "15 Jun",
+  "22 Jun",
+  "06 Jul",
+  "20 Jul",
+  "03 Aug"
+ ],
+ "workload": {
+  "land_prep": [
+   179,
+   0,
+   340,
+   0,
+   0,
+   0,
+   0
+  ],
+  "planting": [
+   0,
+   179,
+   0,
+   0,
+   340,
+   0,
+   0
+  ],
+  "weeding": [
+   0,
+   0,
+   0,
+   179,
+   0,
+   179,
+   340
+  ],
+  "top_dress": [
+   0,
+   0,
+   0,
+   0,
+   179,
+   0,
+   340
+  ]
+ },
+ "assigned": {
+  "teff_meher": 180.4,
+  "maize_meher": 93.6
+ },
+ "plots": 519,
+ "households": 260,
+ "visits": [
+  {
+   "plot_id": "P-0202-0",
+   "kebele": "Kebele 3",
+   "priority": 105.8,
+   "reasons": [
+    "land_prep missing",
+    "planting",
+    "basal_fert",
+    "top_dress"
+   ]
+  },
+  {
+   "plot_id": "P-0230-0",
+   "kebele": "Kebele 3",
+   "priority": 100.0,
+   "reasons": [
+    "planting",
+    "basal_fert",
+    "weeding missing",
+    "top_dress missing"
+   ]
+  },
+  {
+   "plot_id": "P-0178-0",
+   "kebele": "Kebele 3",
+   "priority": 94.8,
+   "reasons": [
+    "planting",
+    "basal_fert",
+    "weeding",
+    "top_dress"
+   ]
+  },
+  {
+   "plot_id": "P-0114-0",
+   "kebele": "Kebele 3",
+   "priority": 91.0,
+   "reasons": [
+    "basal_fert",
+    "weeding missing",
+    "top_dress missing"
+   ]
+  },
+  {
+   "plot_id": "P-0174-2",
+   "kebele": "Kebele 3",
+   "priority": 84.2,
+   "reasons": [
+    "planting",
+    "basal_fert missing",
+    "weeding",
+    "top_dress"
+   ]
+  },
+  {
+   "plot_id": "P-0086-1",
+   "kebele": "Kebele 3",
+   "priority": 80.2,
+   "reasons": [
+    "planting",
+    "basal_fert missing",
+    "top_dress missing"
+   ]
+  },
+  {
+   "plot_id": "P-0022-0",
+   "kebele": "Kebele 3",
+   "priority": 79.2,
+   "reasons": [
+    "planting",
+    "basal_fert",
+    "weeding",
+    "top_dress"
+   ]
+  },
+  {
+   "plot_id": "P-0098-1",
+   "kebele": "Kebele 3",
+   "priority": 78.9,
+   "reasons": [
+    "basal_fert missing",
+    "weeding missing",
+    "top_dress missing"
+   ]
+  },
+  {
+   "plot_id": "P-0216-2",
+   "kebele": "Kebele 1",
+   "priority": 78.3,
+   "reasons": [
+    "land_prep",
+    "basal_fert",
+    "weeding"
+   ]
+  },
+  {
+   "plot_id": "P-0094-1",
+   "kebele": "Kebele 3",
+   "priority": 77.9,
+   "reasons": [
+    "planting",
+    "basal_fert missing",
+    "weeding"
+   ]
+  },
+  {
+   "plot_id": "P-0058-0",
+   "kebele": "Kebele 3",
+   "priority": 77.4,
+   "reasons": [
+    "land_prep",
+    "basal_fert",
+    "top_dress"
+   ]
+  },
+  {
+   "plot_id": "P-0046-0",
+   "kebele": "Kebele 3",
+   "priority": 74.8,
+   "reasons": [
+    "land_prep missing",
+    "planting missing",
+    "basal_fert",
+    "top_dress"
+   ]
+  }
+ ]
+}

@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Farm Implementation &amp; Production | AIAE</title>
-  <meta name="description" content="Carry out the plan in the field with registered farmers, mapped plots and extension support.">
+  <meta name="description" content="Stage 07: from cluster plan to household plots, an operations calendar for every plot, adherence tracking and prioritised extension visits.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-produce">
 <!--
-  Stage 07 page. This file lives on branch `stage/07-farm-production` and is published at /stages/07-farm-production/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 07 page. Lives on branch `stage/07-farm-production`, published at /stages/07-farm-production/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +56,144 @@
   <section class="stage-hero">
     <span class="pill">Produce</span>
     <h1>07. Farm Implementation &amp; Production</h1>
-    <p class="lead">Carry out the plan in the field with registered farmers, mapped plots and extension support.</p>
+    <p class="lead">The plan meets the field. Stage 07 turns cluster targets into plot-level assignments with willing households, gives every plot an operations calendar, tracks what development agents report, and sends extension staff where help matters most.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/07-farm-production</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>519</b><span>plots assigned in the demo</span></div><div class="stat"><b>260</b><span>households involved</span></div><div class="stat"><b>5</b><span>operation types tracked</span></div><div class="stat"><b>12</b><span>priority visits per week</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a><a class="chip" href="/stages/06-input-coordination/">06. Input &amp; Resource Coordination</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Cluster plan</a><a class="chip" href="/stages/06-input-coordination/">06. Inputs at the store</a><a class="chip" href="/stages/01-land-intelligence/">01. Plot suitability</a><a class="chip" href="/stages/02-water-resources/">02. Irrigation schedule</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Farm Implementation &amp; Production</p></div>
+      <div class="card"><h3>This stage</h3><p>Plot assignments, operations calendars, adherence scoring and extension visit priorities.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring, Forecasting &amp; Risk</a><a class="chip" href="/stages/09-harvest-postharvest/">09. Harvest &amp; Post-harvest Management</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/08-monitoring-risk/">08. What was planted where and when</a><a class="chip" href="/stages/09-harvest-postharvest/">09. Expected maturity</a><a class="chip" href="/stages/04-crop-planning/">04. Area gaps and realised plan</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>Is each cluster planting the planned crop, on time?</li><li>Are irrigation and fertilizer schedules followed?</li><li>What training and support do farmers need?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Farmer registration and plot mapping</li><li>Land preparation and planting schedules</li><li>Crop management and irrigation scheduling</li><li>Fertilizer and pesticide management</li><li>Extension services, training and field visits</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Farmer registry</li><li>Field visit forms (mobile)</li><li>Plot GPS boundaries</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Field activity records</li><li>Plan adherence reports</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Plan adherence rate</li><li>Farmers trained</li><li>Yield per hectare</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a school timetable for every plot. The plan says which subject (crop) each classroom (plot) teaches this term, the timetable says when each lesson (operation) happens, and the teacher's register (field reports) shows which lessons actually took place. The head teacher (extension) visits the classes falling behind first.</p>
+    <div class="grid cols-3"><div class="card"><h3>Households decide</h3><p>Only households willing to grow a crop are assigned it, and each plot goes to the crop it suits comparatively best.</p></div><div class="card"><h3>Timing matters</h3><p>Late planting and late top dressing are among the biggest yield losses; tracking them per plot shows where to act.</p></div><div class="card"><h3>Scarce extension time</h3><p>Development agents serve many households. Risk-based visit lists put their time where the most value is at stake.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>Which household plots carry which crop this season, and is the cluster target met?</li><li>What should happen on each plot, and when?</li><li>Which operations are late or missing, where, and why?</li><li>Which plots should development agents visit this week?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">Households and their plots meet the cluster plan in <strong>PlotAssignments</strong>. Operation templates turn them into a calendar; <strong>FieldReports</strong> close the loop into adherence scores and visit tasks.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: households hold plots; the cluster plan, templates and field reports feed the operations service, which produces adherence and visit tasks."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>Household</td><td>Entity</td><td>A farming household with a pseudonymous ID, kebele, willingness per crop and plots.</td></tr><tr><td>HouseholdPlot</td><td>Entity</td><td>A plot with area and suitability per crop option from stage 01.</td></tr><tr><td>PlotAssignment</td><td>Value object</td><td>The crop option and area a plot carries this season.</td></tr><tr><td>OperationTemplate</td><td>Value object</td><td>A crop's agronomic steps relative to planting, with tolerance windows and repeats.</td></tr><tr><td>FieldReport</td><td>Input</td><td>A development agent's record of an operation and its date, or that it was not done.</td></tr><tr><td>Adherence / VisitTask</td><td>Output</td><td>On-time shares and a ranked list of plots to visit, with reasons.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Plan to plots by comparative advantage</h3><p>Each plot goes first to the option it suits better than the household's other willing options, then by suitability, until each cluster target is met. Like a coach giving each player the position they play best relative to the rest of the team. Unmet hectares are reported back to stage 04.</p></div>
+      <div class="card"><h3>Operations calendar</h3><p>Templates define land preparation, planting, basal fertilizer, weeding, top dressing and irrigation rounds relative to planting day, each with a tolerance window. Planting dates come from the planting windows (03) and input arrival (06).</p></div>
+      <div class="card"><h3>Adherence</h3><p>Only operations whose window has closed are scored. Done within the window counts as on time; late or missing does not. Shares are reported per plot, operation type and kebele.</p></div>
+      <div class="card"><h3>Visit priority</h3><p>Risk = (1 &minus; adherence) &times; area &times; value per hectare, plus a weight for missing steps. The top plots up to agents' weekly capacity become the visit list, each with the reasons to discuss.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Development agents</h3><p>Kebele-level development agents and farmer training centres are the backbone of extension; the system supports their work rather than replacing it.</p></div><div class="card"><h3>Farmer groups</h3><p>Development groups and model farmers spread practices; visit lists can target a group leader to reach several households.</p></div><div class="card"><h3>Oxen and labour peaks</h3><p>Land preparation with oxen and hand weeding create labour peaks; the workload chart shows when they collide.</p></div><div class="card"><h3>Rainy-season access</h3><p>Some kebeles become hard to reach in July and August, which shows up as delays; mobile reporting and local agents help.</p></div><div class="card"><h3>Row planting and timing</h3><p>Practices such as row planting of teff and timely top dressing are promoted; adherence data shows where they take hold.</p></div><div class="card"><h3>Women farmers</h3><p>Women-headed households often face labour and input constraints; adherence and support can be reported by group to keep inclusion visible.</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Household and plot registry</td><td>Kebele registration, land-use certificates, GPS mapping</td><td>plot</td><td>Assignments</td><td>Restricted, pseudonymised</td></tr><tr><td>Suitability</td><td>Stage 01</td><td>plot</td><td>Assignment ranking</td><td>Project</td></tr><tr><td>Field reports</td><td>Development agents' mobile forms</td><td>plot, operation</td><td>Adherence</td><td>Project</td></tr><tr><td>Input arrival</td><td>Stage 06 purchase orders</td><td>cluster</td><td>Feasible operation dates</td><td>Project</td></tr><tr><td>Satellite planting detection</td><td>Stage 08 (Sentinel-1/2)</td><td>plot</td><td>Cross-checking reports</td><td>Project</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: cluster A Meher season</h2>
+    <p class="section-intro">260 synthetic households (pseudonymous IDs) with 1 to 3 plots each in four kebeles. Target from stage 04: 180 ha teff and 120 ha maize. Reports are simulated up to 31 August, with poorer road access in kebele 3 and urea often late. <strong>No real farmer data.</strong></p>
+    <div class="grid cols-2">
+      <div class="card"><h3>Assignment result</h3><p>519 plots of 260 households assigned: teff 180.4 ha, maize 93.6 ha. The households have about 273 ha in total, so the maize target is short by about 26 ha: stage 04 is told to recruit more households or reduce the target.</p></div>
+      <div class="card"><h3>On time, by operation</h3><p>Land preparation 91.9%, planting 80.7%, basal fertilizer 71.3%, weeding 84.5%, top dressing 57.4%. Late urea (stage 06) is the main reason top dressing slips.</p></div>
+    </div>
+    <div class="viz-root" data-chart id="adh-chart">
+      <h3 class="viz-title">Operations done on time, by kebele</h3>
+      <p class="viz-sub">Synthetic reports up to 31 August. Kebele 3 (poor rainy-season road access) falls behind on both.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Planting on time</span><span><i class="sw" style="background:var(--series-2)"></i>Top dressing on time</span></div>
+      <div class="chart-host" role="img" aria-label="Grouped bars: planting on time about 85 to 92% in kebeles 1, 2 and 4 but 54% in kebele 3; top dressing 63 to 72% versus 24% in kebele 3."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["Kebele 1", "Kebele 2", "Kebele 3", "Kebele 4"], "xlabel": "Kebele", "series": [{"name": "Planting on time", "values": [91.0, 92.5, 54.1, 86.2]}, {"name": "Top dressing on time", "values": [72.4, 63.4, 23.7, 72.4]}], "unit": "%", "dp": 1, "yMin": 0, "yMax": 100}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Kebele</th><th class="num">Planting on time</th><th class="num">Top dressing on time</th></tr></thead>
+          <tbody><tr><td>Kebele 1</td><td class="num">91.0</td><td class="num">72.4</td></tr><tr><td>Kebele 2</td><td class="num">92.5</td><td class="num">63.4</td></tr><tr><td>Kebele 3</td><td class="num">54.1</td><td class="num">23.7</td></tr><tr><td>Kebele 4</td><td class="num">86.2</td><td class="num">72.4</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (%).</p>
+      </details>
+    </div>
+    <div class="viz-root" data-chart id="work-chart">
+      <h3 class="viz-title">Field workload by week</h3>
+      <p class="viz-sub">Planned plot operations per week across the cluster: the peaks show when labour, oxen and agents are stretched.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Land preparation</span><span><i class="sw" style="background:var(--series-2)"></i>Planting</span><span><i class="sw" style="background:var(--series-3)"></i>Weeding</span><span><i class="sw" style="background:var(--series-4)"></i>Top dressing</span></div>
+      <div class="chart-host" role="img" aria-label="Stacked weekly bars of land preparation, planting, weeding and top dressing operations from May to August, with peaks around planting."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "stacked", "categories": ["11 May", "01 Jun", "15 Jun", "22 Jun", "06 Jul", "20 Jul", "03 Aug"], "xlabel": "Week starting", "series": [{"name": "Land preparation", "values": [179, 0, 340, 0, 0, 0, 0]}, {"name": "Planting", "values": [0, 179, 0, 0, 340, 0, 0]}, {"name": "Weeding", "values": [0, 0, 0, 179, 0, 179, 340]}, {"name": "Top dressing", "values": [0, 0, 0, 0, 179, 0, 340]}], "unit": "plot operations"}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Week starting</th><th class="num">Land preparation</th><th class="num">Planting</th><th class="num">Weeding</th><th class="num">Top dressing</th></tr></thead>
+          <tbody><tr><td>11 May</td><td class="num">179</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td>01 Jun</td><td class="num">0</td><td class="num">179</td><td class="num">0</td><td class="num">0</td></tr><tr><td>15 Jun</td><td class="num">340</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr><tr><td>22 Jun</td><td class="num">0</td><td class="num">0</td><td class="num">179</td><td class="num">0</td></tr><tr><td>06 Jul</td><td class="num">0</td><td class="num">340</td><td class="num">0</td><td class="num">179</td></tr><tr><td>20 Jul</td><td class="num">0</td><td class="num">0</td><td class="num">179</td><td class="num">0</td></tr><tr><td>03 Aug</td><td class="num">0</td><td class="num">0</td><td class="num">340</td><td class="num">340</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (plot operations).</p>
+      </details>
+    </div>
+    <details class="table-view" style="margin-top:12px"><summary>This week's visit list (top 8)</summary>
+      <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Plot</th><th>Kebele</th><th class="num">Priority</th><th>Reasons</th></tr></thead><tbody><tr><td>P-0202-0</td><td>Kebele 3</td><td class='num'>105.8</td><td>land_prep missing, planting, basal_fert, top_dress</td></tr><tr><td>P-0230-0</td><td>Kebele 3</td><td class='num'>100.0</td><td>planting, basal_fert, weeding missing, top_dress missing</td></tr><tr><td>P-0178-0</td><td>Kebele 3</td><td class='num'>94.8</td><td>planting, basal_fert, weeding, top_dress</td></tr><tr><td>P-0114-0</td><td>Kebele 3</td><td class='num'>91.0</td><td>basal_fert, weeding missing, top_dress missing</td></tr><tr><td>P-0174-2</td><td>Kebele 3</td><td class='num'>84.2</td><td>planting, basal_fert missing, weeding, top_dress</td></tr><tr><td>P-0086-1</td><td>Kebele 3</td><td class='num'>80.2</td><td>planting, basal_fert missing, top_dress missing</td></tr><tr><td>P-0022-0</td><td>Kebele 3</td><td class='num'>79.2</td><td>planting, basal_fert, weeding, top_dress</td></tr><tr><td>P-0098-1</td><td>Kebele 3</td><td class='num'>78.9</td><td>basal_fert missing, weeding missing, top_dress missing</td></tr></tbody></table></div>
+    </details>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Plot assignments</h3><p>Which plot carries which crop, for stage 08 monitoring and stage 09 harvest planning.</p></div><div class="card"><h3>Adherence dashboard</h3><p>On-time shares by operation and kebele, for coordinators and stage 06 (input timing).</p></div><div class="card"><h3>Visit lists</h3><p>Weekly, ranked, with reasons, for development agents.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;plot_id&quot;: &quot;P-0202-0&quot;,
+  &quot;kebele&quot;: &quot;Kebele 3&quot;,
+  &quot;option_id&quot;: &quot;teff_meher&quot;,
+  &quot;adherence&quot;: 0.0,
+  &quot;issues&quot;: [
+    &quot;land_prep missing&quot;,
+    &quot;planting&quot;,
+    &quot;basal_fert&quot;,
+    &quot;top_dress&quot;
+  ],
+  &quot;visit_priority&quot;: 105.8
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Spot checks of agent reports against farmer interviews and satellite planting dates (08)</li><li>Assignments compared with what was actually planted</li><li>Adherence compared with final yields: does on-time top dressing raise yield?</li><li>Visit outcomes recorded: did adherence improve after visits?</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Plan adherence rate (on-time operations)</li><li>Share of target area planted as planned</li><li>Farmers trained and visited (by gender)</li><li>Yield per hectare by adherence level</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>Comparative-advantage assignment</li><li>Calendars and adherence</li><li>Visit prioritisation</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Registration</h3><ul><li>Register households and map plots with development agents</li><li>Consent and data protection procedures</li></ul></div><div class="card phase"><h3>Mobile reporting</h3><ul><li>Offline mobile forms for agents</li><li>SMS reminders to farmers before key operations</li></ul></div><div class="card phase"><h3>Learning</h3><ul><li>Link adherence to yield (08, 12)</li><li>Tune templates per crop and zone</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/farm_ops/domain.py       domain model (households, plots, assignments, templates, reports, visits)
+src/farm_ops/operations.py   assignment, calendar, adherence, visit prioritisation
+src/demo.py                  cluster A demo (writes assets/demo-farm.json)
+tests/test_farm.py           unit tests</code></pre>
+<pre><code>git switch stage/07-farm-production
+python3 src/demo.py
+python3 tests/test_farm.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +208,104 @@
     <span>Stage 07 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>

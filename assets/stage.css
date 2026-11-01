@@ -1,0 +1,39 @@
+/* Stage 01 local styles. Shared tokens and layout come from /assets/css/site.css on the hub. */
+
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--surface-2); font-weight: 700; white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.stats { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); margin-top: 20px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.stat b { display: block; font-size: 28px; line-height: 1.1; color: var(--d, var(--accent)); }
+.stat span { color: var(--muted); font-size: 14px; }
+
+.callout { border-left: 4px solid var(--d, var(--accent)); background: var(--surface); padding: 14px 18px;
+           border-radius: 0 var(--radius) var(--radius) 0; margin: 16px 0; }
+.callout.warn { border-left-color: #c58a1b; }
+
+pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:not(pre) > code { background: var(--surface-2); padding: 1px 6px; border-radius: 5px; font-size: .92em; }
+
+.cls { display: inline-block; min-width: 28px; text-align: center; font-weight: 700; font-size: 12px;
+       border-radius: 6px; padding: 1px 6px; color: #fff; }
+.cls.s1 { background: #1a9641; } .cls.s2 { background: #7fbf4d; } .cls.s3 { background: #e08a2c; } .cls.n { background: #d7191c; }
+
+.compare { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+main section { scroll-margin-top: 72px; }
+
+/* AHP calculator */
+.ahp-grid { display: grid; gap: 10px; }
+.ahp-row { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 10px; align-items: center; font-size: 14px; }
+.ahp-row .left { text-align: right; }
+.ahp-row input[type=range] { width: 100%; accent-color: var(--accent); }
+.ahp-row output { display: block; text-align: center; color: var(--muted); font-size: 12px; }
+@media (max-width: 600px) { .ahp-row { grid-template-columns: 1fr; } .ahp-row .left { text-align: left; } }
+.bar { height: 10px; background: var(--d, var(--accent)); border-radius: 5px; }

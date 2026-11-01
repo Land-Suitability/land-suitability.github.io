@@ -7,6 +7,23 @@ This branch contains **only** the content for stage 07 of the
 Amhara Integrated Agriculture Ecosystem operating chain. Everything at the root of this branch is
 published under `/stages/07-farm-production/`.
 
+## What is here (v0.1)
+
+| Path | Content |
+|---|---|
+| `index.html` | Stage page: purpose, domain model, assignment/calendar/adherence/visit methods, Amhara context, data, interactive adherence and workload charts, outputs, validation, roadmap |
+| `src/farm_ops/` | Python package: domain model, comparative-advantage plot assignment, operations calendar, adherence, visit prioritisation |
+| `src/demo.py` | Cluster A Meher demo with synthetic households (writes assets/demo-farm.json) |
+| `tests/test_farm.py` | Unit tests |
+
+```bash
+pip install numpy
+python3 src/demo.py
+python3 tests/test_farm.py
+```
+
+Households are identified only by pseudonymous IDs. Never commit names, phone numbers or exact plot coordinates of real farmers.
+
 ## Rules
 
 - `index.html` at the branch root is the stage's landing page. Keep it.
