@@ -363,6 +363,13 @@
       // stage icon in the hero pill
       var pill = hero && hero.querySelector(".pill");
       if (pill && !pill.querySelector("svg")) pill.insertAdjacentHTML("afterbegin", icon("d-" + me.domain));
+
+      // cross-links from this stage's calculator and demo to the hub's collections
+      [["try", "/tools.html", "All 12 calculators"], ["demo", "/findings.html", "All 12 findings at a glance"]].forEach(function (x) {
+        var sec = document.getElementById(x[0]);
+        if (!sec || sec.querySelector(".xlink")) return;
+        sec.insertAdjacentHTML("beforeend", '<p class="xlink"><a class="chip" href="' + x[1] + '">' + x[2] + ' <span aria-hidden="true">&rarr;</span></a></p>');
+      });
     }).catch(function (e) { log("stage navigator", e); });
 
     // scroll spy on the on-page table of contents
