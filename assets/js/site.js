@@ -157,6 +157,49 @@
     update();
   }
 
+  // ---------------- lightbox for diagrams (click to enlarge, Esc to close)
+  function lightbox() {
+    var imgs = document.querySelectorAll("figure.diagram img, img.zoomable");
+    if (!imgs.length) return;
+    var box = document.createElement("div");
+    box.className = "lightbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "Enlarged diagram");
+    box.innerHTML = '<button class="lb-close" type="button" aria-label="Close">&times;</button><div><img alt=""><div class="lb-cap"></div></div>';
+    document.body.appendChild(box);
+    var big = box.querySelector("img"), cap = box.querySelector(".lb-cap"), last = null;
+    function close() { box.classList.remove("open"); if (last) last.focus(); }
+    imgs.forEach(function (im) {
+      im.setAttribute("tabindex", "0");
+      im.setAttribute("role", "button");
+      im.setAttribute("aria-label", "Enlarge: " + (im.alt || "diagram"));
+      function open() {
+        last = im; big.src = im.currentSrc || im.src; big.alt = im.alt;
+        var fc = im.closest("figure") && im.closest("figure").querySelector("figcaption");
+        cap.textContent = fc ? fc.textContent : (im.alt || "");
+        box.classList.add("open"); box.querySelector(".lb-close").focus();
+      }
+      im.addEventListener("click", open);
+      im.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+    box.addEventListener("click", function (e) { if (e.target === box || e.target === big || e.target.classList.contains("lb-close")) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && box.classList.contains("open")) close(); });
+  }
+
+  // ---------------- animated numbers (counts up once when visible)
+  function countUp() {
+    var els = document.querySelectorAll("[data-count]");
+    if (!els.length || !("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        var el = en.target, end = parseFloat(el.dataset.count), t0 = null, dur = 900;
+        function step(t) { if (!t0) t0 = t; var k = Math.min(1, (t - t0) / dur); el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(step); }
+        requestAnimationFrame(step);
+      });
+    }, { threshold: .6 });
+    els.forEach(function (e) { io.observe(e); });
+  }
+
   // ---------------- keyboard access to horizontally scrollable tables
   function scrollableTables() {
     document.querySelectorAll(".table-wrap, .spine-wrap").forEach(function (w) {
@@ -246,7 +289,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables];
+    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();

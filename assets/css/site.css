@@ -406,3 +406,34 @@ figure.diagram figcaption { color: #5d665e; font-size: 14px; padding: 8px 8px 4p
 .hotspot.d-plan { background: #74582a; } .hotspot.d-produce { background: #3f6b34; }
 .hotspot.d-move { background: #2f5d8a; } .hotspot.d-sell { background: #9a4a28; }
 .hotspot::before { border-color: currentColor; color: inherit; }
+
+/* smooth cross-page transitions (supporting browsers) */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .25s; }
+
+/* illustrations a little softer in dark mode */
+:root[data-theme="dark"] .scene img, :root[data-theme="dark"] .stage-thumb, :root[data-theme="dark"] .stage-art,
+:root[data-theme="dark"] .step-thumb, :root[data-theme="dark"] .pager-card img { filter: brightness(.88) saturate(.95); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .scene img, :root:not([data-theme="light"]) .stage-thumb, :root:not([data-theme="light"]) .stage-art,
+  :root:not([data-theme="light"]) .step-thumb, :root:not([data-theme="light"]) .pager-card img { filter: brightness(.88) saturate(.95); }
+}
+
+/* diagram lightbox */
+figure.diagram img, .zoomable { cursor: zoom-in; }
+.lightbox { position: fixed; inset: 0; z-index: 60; background: rgba(10, 15, 10, .82); display: none; padding: 24px; }
+.lightbox.open { display: grid; place-items: center; }
+.lightbox img { width: min(1300px, 94vw); max-height: 84vh; height: auto; object-fit: contain; background: #fbfaf6; border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.4); cursor: zoom-out; }
+.lightbox .lb-cap { color: #e7ebe4; margin-top: 12px; font-size: 14px; text-align: center; max-width: 900px; }
+.lightbox .lb-close { position: absolute; top: 14px; right: 16px; width: 42px; height: 42px; border-radius: 50%; border: 0;
+  background: rgba(255,255,255,.15); color: #fff; font-size: 24px; cursor: pointer; }
+
+/* explore by question */
+.qgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+.qcard { display: flex; gap: 12px; align-items: flex-start; padding: 16px; border-radius: 14px; border: 1px solid var(--border);
+  background: var(--surface); text-decoration: none; color: var(--text); transition: border-color .15s ease, transform .15s ease; }
+.qcard:hover { border-color: var(--d); transform: translateY(-2px); }
+.qcard .icon { width: 36px; height: 36px; padding: 7px; border-radius: 10px; background: var(--d-bg); color: var(--d); }
+.qcard b { display: block; font-size: 15.5px; line-height: 1.35; }
+.qcard small { color: var(--muted); font-size: 13px; }
