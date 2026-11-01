@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Climate &amp; Seasonal Intelligence | AIAE</title>
-  <meta name="description" content="When does the season start and end, and what weather risks does it carry?">
+  <meta name="description" content="Stage 03: when the rains start and end, how long the season lasts, and the dry-spell, frost and drought risks for planning.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-plan">
 <!--
-  Stage 03 page. This file lives on branch `stage/03-climate-intelligence` and is published at /stages/03-climate-intelligence/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 03 page. Lives on branch `stage/03-climate-intelligence`, published at /stages/03-climate-intelligence/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +56,161 @@
   <section class="stage-hero">
     <span class="pill">Plan</span>
     <h1>03. Climate &amp; Seasonal Intelligence</h1>
-    <p class="lead">When does the season start and end, and what weather risks does it carry?</p>
+    <p class="lead">When do the rains really start, when do they end, and how risky is this season? Stage 03 turns decades of weather records into probabilities a planner, an extension agent and a farmer can act on.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/03-climate-intelligence</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>p80</b><span>planting dates set for 8 years in 10</span></div><div class="stat"><b>3</b><span>risks: dry spell, frost, drought</span></div><div class="stat"><b>30</b><span>years of daily data per location</span></div><div class="stat"><b>2</b><span>seasons: Meher and Belg</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><span class="chip">Entry point</span></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><span class="chip">Entry point (weather records, forecasts)</span><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring (in-season observations)</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Climate &amp; Seasonal Intelligence</p></div>
+      <div class="card"><h3>This stage</h3><p>Onset, cessation, season length and climate risks per location, as probabilities.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/02-water-resources/">02. Water Resource Assessment</a><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring, Forecasting &amp; Risk</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Land (temperature, rainfall factors)</a><a class="chip" href="/stages/02-water-resources/">02. Water (rain, ET0 inputs)</a><a class="chip" href="/stages/04-crop-planning/">04. Crop planning (planting window, variety cycle)</a><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring (early warning)</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>When will Meher and Belg rains start and stop this year?</li><li>What is the drought, flood and frost risk per cluster?</li><li>How long is the effective growing season?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Historical weather analysis</li><li>Rainfall onset and cessation prediction</li><li>Temperature, humidity and evapotranspiration</li><li>Drought, flood and frost risk</li><li>Growing-season length; Meher and Belg planting windows</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>CHIRPS</li><li>ERA5</li><li>Local weather stations</li><li>Seasonal forecasts</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Seasonal climate outlook per cluster</li><li>Planting windows</li><li>Risk scenarios</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Onset forecast error (days)</li><li>Lead time of drought alerts</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a bus timetable built from years of observations. Nobody knows exactly when tomorrow's bus will arrive, but thirty years of records let you say "it has come before 9:10 on 8 days out of 10". Stage 03 does the same for the rains: it does not predict one date, it gives the odds, so plans hold up in most years and not only in average ones.</p>
+    <div class="grid cols-3"><div class="card"><h3>Plant on real rains</h3><p>A heavy shower in May followed by three dry weeks is a false start that kills seedlings. The onset rule checks for this before calling the season open.</p></div><div class="card"><h3>Match variety to season</h3><p>A 150-day maize in a location where the season reaches 150 days only two years in three is a gamble; an early variety may be the better plan.</p></div><div class="card"><h3>Warn early</h3><p>Frost above about 2,800 to 3,000 m, dry spells during establishment and drought years all change what stages 04 and 08 should do.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>When do the Meher (and Belg) rains start and end at each location, in most years?</li><li>Which crop cycle lengths fit the season with acceptable risk?</li><li>How likely are dry spells during crop establishment, frost at high altitude and seasonal drought?</li><li>How should this year's seasonal forecast shift those probabilities?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">Weather records go in; a <strong>ClimateOutlook</strong> comes out. The onset rule is a value object so that its definition is explicit, versioned and agreed with agronomists, rather than hidden in code.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: DailyClimate and OnsetRule feed season analytics, which produce SeasonRecords, CropCycleFits and a ClimateOutlook."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>DailyClimate</td><td>Input</td><td>Daily rainfall and minimum/maximum temperature for one location over many years.</td></tr><tr><td>OnsetRule</td><td>Value object</td><td>Agreed definition of season start and end: rainfall threshold, false-start check, earliest date, soil bucket for the end.</td></tr><tr><td>SeasonRecord</td><td>Value object</td><td>One year's season: onset, end, length, total rain, longest establishment dry spell, frost days.</td></tr><tr><td>CropCycleFit</td><td>Value object</td><td>Probability that the season is at least as long as a crop's cycle.</td></tr><tr><td>ClimateOutlook</td><td>Value object (output)</td><td>Planting window percentiles, season length, crop-cycle fit, dry-spell, frost and drought risks.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Onset of the rains</h3><p>The first rainy day after 15 May (Meher) on which at least <strong>20 mm falls within 3 days on at least 2 rain days</strong>, provided <strong>no dry spell longer than 7 days follows within 30 days</strong>. The second condition filters out false starts. Thresholds are a common agro-climatic definition and are set per location with agronomists.</p></div>
+      <div class="card"><h3>End of the season</h3><p>A simple soil water bucket (100 mm capacity, 4 mm/day evaporation) runs through the year. After 1 September, the season ends on the first day the bucket is empty. Season length = end minus onset.</p></div>
+      <div class="card"><h3>Risks</h3><p><strong>Dry spells</strong>: longest run of days under 1 mm in the 60 days after onset. <strong>Frost</strong>: days with minimum temperature below 2 &deg;C, adjusted to each altitude with a lapse rate of 6.5 &deg;C per km. <strong>Drought</strong>: Standardised Precipitation Index (SPI) of seasonal rainfall, gamma-fitted; SPI &le; &minus;1 marks a drought year.</p></div>
+      <div class="card"><h3>From records to decisions</h3><p>Percentiles turn records into commitments: the <strong>80th percentile onset</strong> is the date by which the rains have started in 8 years out of 10, used for input delivery deadlines (stage 06). Seasonal forecasts (terciles: below, near, above normal) shift these probabilities for the coming season.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Two rainy seasons</h3><p>Most of the region depends on the Kiremt rains (June to September) for the Meher harvest. The short Belg rains (February to May) matter in eastern and north-eastern areas such as parts of the Wollo zones.</p></div><div class="card"><h3>Altitude drives temperature</h3><p>From hot lowlands below 1,500 m to cool highlands above 3,000 m, temperature falls about 6.5 &deg;C per km. Frost risk and slow crop growth dominate at the top of the range.</p></div><div class="card"><h3>Variable onset in the east</h3><p>Eastern escarpment and Belg-dependent areas see more erratic onsets and dry spells than the wetter western highlands, so planting windows must be location-specific.</p></div><div class="card"><h3>Sparse stations</h3><p>Long daily station records are limited, so satellite rainfall (CHIRPS) and reanalysis temperature (ERA5) are blended with the available national meteorological stations.</p></div><div class="card"><h3>Seasonal forecasts</h3><p>The national meteorological agency issues seasonal outlooks; the system translates them into adjusted planting windows rather than replacing them.</p></div><div class="card"><h3>Climate trends</h3><p>Warming shifts suitable altitude bands for crops such as maize and wheat upward over time; stage 01 profiles are re-run with updated climate inputs.</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Daily rainfall</td><td>National meteorological stations; CHIRPS v2 (blended)</td><td>points; ~5 km</td><td>Onset, end, dry spells, SPI</td><td>By agreement; open</td></tr><tr><td>Daily temperature</td><td>Stations; ERA5-Land; TerraClimate (monthly)</td><td>points; ~9 km</td><td>Frost, ET0, crop growth</td><td>By agreement; open</td></tr><tr><td>Elevation</td><td>Copernicus DEM GLO-30</td><td>30 m</td><td>Lapse-rate downscaling of temperature</td><td>Open</td></tr><tr><td>Seasonal forecasts</td><td>National meteorological agency; regional climate centre outlooks</td><td>zones</td><td>Shifting planting-window odds</td><td>Public</td></tr><tr><td>Farmer observations</td><td>Field agents (stage 07), farmer reports</td><td>kebeles</td><td>Ground truth for onset and false starts</td><td>Project</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: 30 synthetic years at 2,000 m</h2>
+    <p class="section-intro">Thirty years of daily weather generated with a Markov-chain rainfall model tuned to a highland Kiremt pattern. <strong>Not real station data.</strong> It shows how the outlook is built and read.</p>
+    <div class="viz-root" data-chart id="onset-chart">
+      <h3 class="viz-title">When have the Meher rains started?</h3>
+      <p class="viz-sub">Share of the 30 synthetic years in which onset has occurred by each date. Median onset 07 Jun; 80% of years by 14 Jun.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw line" style="background:var(--series-1)"></i>Rains started</span><span><i class="sw line" style="background:var(--text-primary)"></i>80% planning threshold</span></div>
+      <div class="chart-host" role="img" aria-label="Line rising from 7% of years by 20 May to 100% by early July, crossing 80% in mid June."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "line", "categories": ["20 May", "27 May", "03 Jun", "10 Jun", "17 Jun", "24 Jun", "01 Jul", "08 Jul", "15 Jul", "22 Jul", "29 Jul", "05 Aug", "12 Aug", "19 Aug"], "xlabel": "By date", "series": [{"name": "Rains started", "values": [6.7, 36.7, 43.3, 70.0, 83.3, 93.3, 93.3, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]}], "ref": {"name": "80% planning threshold", "values": [80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80], "flat": true, "dash": true}, "unit": "% of years", "dp": 1, "yMin": 0, "yMax": 100}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>By date</th><th class="num">Rains started</th><th class="num">80% planning threshold</th></tr></thead>
+          <tbody><tr><td>20 May</td><td class="num">6.7</td><td class="num">80.0</td></tr><tr><td>27 May</td><td class="num">36.7</td><td class="num">80.0</td></tr><tr><td>03 Jun</td><td class="num">43.3</td><td class="num">80.0</td></tr><tr><td>10 Jun</td><td class="num">70.0</td><td class="num">80.0</td></tr><tr><td>17 Jun</td><td class="num">83.3</td><td class="num">80.0</td></tr><tr><td>24 Jun</td><td class="num">93.3</td><td class="num">80.0</td></tr><tr><td>01 Jul</td><td class="num">93.3</td><td class="num">80.0</td></tr><tr><td>08 Jul</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>15 Jul</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>22 Jul</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>29 Jul</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>05 Aug</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>12 Aug</td><td class="num">100.0</td><td class="num">80.0</td></tr><tr><td>19 Aug</td><td class="num">100.0</td><td class="num">80.0</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (% of years).</p>
+      </details>
+    </div>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div><div class="viz-root" data-chart id="fit-chart">
+      <h3 class="viz-title">Is the season long enough for the crop?</h3>
+      <p class="viz-sub">Share of years in which the growing season (onset to end of soil water) is at least the crop cycle length.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Season long enough</span></div>
+      <div class="chart-host" role="img" aria-label="Bars: early teff 100%, late teff 97%, bread wheat 90%, mid-altitude maize 67%."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["teff (early)", "teff (late)", "bread wheat", "maize (mid)"], "xlabel": "Crop (cycle)", "series": [{"name": "Season long enough", "values": [100.0, 96.7, 90.0, 66.7]}], "unit": "% of years", "dp": 1, "yMin": 0, "yMax": 100}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Crop (cycle)</th><th class="num">Season long enough</th></tr></thead>
+          <tbody><tr><td>teff (early)</td><td class="num">100.0</td></tr><tr><td>teff (late)</td><td class="num">96.7</td></tr><tr><td>bread wheat</td><td class="num">90.0</td></tr><tr><td>maize (mid)</td><td class="num">66.7</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (% of years).</p>
+      </details>
+    </div></div>
+      <div class="card" style="margin-top:12px">
+        <h3>Outlook summary</h3>
+        <div class="table-wrap"><table><tbody>
+          <tr><td>Onset: 20% / median / 80% of years by</td><td>24 May / 07 Jun / 14 Jun</td></tr>
+          <tr><td>Median end of season</td><td>06 Nov</td></tr>
+          <tr><td>Median season length</td><td>158 days</td></tr>
+          <tr><td>Drought years (SPI &le; &minus;1)</td><td>17%</td></tr>
+          <tr><td>Frost in season at 2,000 / 2,600 / 3,000 m</td><td>0% / 30% / 100% of years</td></tr>
+        </tbody></table></div>
+        <p style="margin-top:12px">Reading it: a 150-day maize fits only two years in three here, while early and late teff and bread wheat fit in 9 or more years out of 10. Stage 04 should prefer shorter-cycle varieties unless the plan accepts that risk.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Planting windows</h3><p>Onset percentiles per location and season, for planting advice (stage 07) and input deadlines (stage 06).</p></div><div class="card"><h3>Crop-cycle fit</h3><p>Probability that each variety's cycle fits the season, used by stages 01 and 04.</p></div><div class="card"><h3>Risk layers</h3><p>Dry-spell, frost-by-altitude and drought probabilities, used for variety choice and stage 08 alerts.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;location_id&quot;: &quot;CLUSTER-DEMO&quot;,
+  &quot;season&quot;: &quot;meher&quot;,
+  &quot;years_used&quot;: 30,
+  &quot;onset_p20&quot;: &quot;24 May&quot;,
+  &quot;onset_p50&quot;: &quot;07 Jun&quot;,
+  &quot;onset_p80&quot;: &quot;14 Jun&quot;,
+  &quot;cessation_p50&quot;: &quot;06 Nov&quot;,
+  &quot;length_p50_days&quot;: 158,
+  &quot;crop_cycle_fit&quot;: {
+    &quot;teff (early)&quot;: 1.0,
+    &quot;teff (late)&quot;: 0.9670000000000001,
+    &quot;bread wheat&quot;: 0.9,
+    &quot;maize (mid)&quot;: 0.667
+  },
+  &quot;frost_risk_by_altitude&quot;: {
+    &quot;2000&quot;: 0.0,
+    &quot;2600&quot;: 0.3,
+    &quot;3000&quot;: 1.0,
+    &quot;3300&quot;: 1.0
+  },
+  &quot;drought_years_share&quot;: 0.17
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Detected onsets compared with farmer-reported planting rains in pilot kebeles</li><li>CHIRPS and ERA5 checked against station records (bias, wet-day frequency)</li><li>Season length checked against observed crop maturity (stage 08)</li><li>Forecast-adjusted windows scored after each season (were 8 in 10 right?)</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Share of farmers planting within the advised window</li><li>Onset forecast error (days)</li><li>Re-sowing rate after false starts (should fall)</li><li>Lead time of frost and dry-spell alerts</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>Onset, end, dry-spell, frost, SPI</li><li>Outlook contract</li><li>Synthetic demo and tests</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Pilot data</h3><ul><li>Blend station, CHIRPS and ERA5 data for the pilot woreda</li><li>Validate against station records</li></ul></div><div class="card phase"><h3>Calibrate</h3><ul><li>Agree onset thresholds with agronomists and farmers</li><li>Add Belg rules for Belg areas</li></ul></div><div class="card phase"><h3>Forecast-informed</h3><ul><li>Translate seasonal forecasts into adjusted windows</li><li>Feed alerts to stage 08</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/climate_intel/domain.py     domain model (onset rule, season record, outlook contract)
+src/climate_intel/seasons.py    onset, cessation, dry spells, frost, SPI, outlook
+src/climate_intel/synthetic.py  Markov-chain weather generator (demos and tests only)
+src/demo.py                     30-year synthetic demo (writes assets/demo-climate.json)
+tests/test_climate.py           unit tests</code></pre>
+<pre><code>git switch stage/03-climate-intelligence
+python3 src/demo.py
+python3 tests/test_climate.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +225,104 @@
     <span>Stage 03 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>

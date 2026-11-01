@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 03 domain model</text>
+<line x1="250" y1="105" x2="530" y2="105" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="396" y="101" font-size="11" fill="#555">input</text>
+<line x1="500" y1="105" x2="530" y2="105" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="521" y="101" font-size="11" fill="#555">applies</text>
+<line x1="530" y1="144" x2="250" y2="242" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="396" y="188" font-size="11" fill="#555">per year</text>
+<line x1="250" y1="276" x2="280" y2="275" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="677" y1="160" x2="722" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="706" y="188" font-size="11" fill="#555">produces</text>
+<line x1="500" y1="276" x2="530" y2="278" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="30" y="50" width="220" height="110" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">DailyClimate</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#8a6d3b"/>
+<text x="42" y="96" font-size="12" fill="#222">station_id, altitude</text>
+<text x="42" y="113" font-size="12" fill="#222">rain_mm[years, 365]</text>
+<text x="42" y="130" font-size="12" fill="#222">tmin, tmax[years, 365]</text>
+<text x="42" y="147" font-size="12" fill="#222">(stations, CHIRPS, ERA5)</text>
+<rect x="280" y="50" width="220" height="110" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">OnsetRule (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#2f5d8a"/>
+<text x="292" y="96" font-size="12" fill="#222">season: meher | belg</text>
+<text x="292" y="113" font-size="12" fill="#222">20 mm in 3 days, 2 rain days</text>
+<text x="292" y="130" font-size="12" fill="#222">no dry spell &gt; 7 d in 30 d</text>
+<text x="292" y="147" font-size="12" fill="#222">bucket 100 mm, 4 mm/day</text>
+<rect x="530" y="50" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Season analytics</text>
+<text x="542" y="96" font-size="12" fill="#e7ebe4">detect_onset()</text>
+<text x="542" y="113" font-size="12" fill="#e7ebe4">detect_cessation()</text>
+<text x="542" y="130" font-size="12" fill="#e7ebe4">season_records()</text>
+<text x="542" y="147" font-size="12" fill="#e7ebe4">spi(), build_outlook()</text>
+<rect x="30" y="225" width="220" height="110" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="140.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">SeasonRecord (value)</text>
+<line x1="30" y1="253" x2="250" y2="253" stroke="#2f5d8a"/>
+<text x="42" y="271" font-size="12" fill="#222">onset, cessation, length</text>
+<text x="42" y="288" font-size="12" fill="#222">total_mm</text>
+<text x="42" y="305" font-size="12" fill="#222">longest dry spell (60 d)</text>
+<text x="42" y="322" font-size="12" fill="#222">frost days at altitude</text>
+<rect x="280" y="225" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">CropCycleFit (value)</text>
+<line x1="280" y1="253" x2="500" y2="253" stroke="#2f5d8a"/>
+<text x="292" y="271" font-size="12" fill="#222">crop, cycle_days</text>
+<text x="292" y="288" font-size="12" fill="#222">probability season</text>
+<text x="292" y="305" font-size="12" fill="#222">is long enough</text>
+<rect x="530" y="225" width="470" height="127" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="765.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">ClimateOutlook (output)</text>
+<line x1="530" y1="253" x2="1000" y2="253" stroke="#9a4a28"/>
+<text x="542" y="271" font-size="12" fill="#222">onset p20 / p50 / p80 (planting window)</text>
+<text x="542" y="288" font-size="12" fill="#222">cessation p50, length p50</text>
+<text x="542" y="305" font-size="12" fill="#222">crop-cycle fit per crop</text>
+<text x="542" y="322" font-size="12" fill="#222">dry-spell, frost-by-altitude, drought risk</text>
+<text x="542" y="339" font-size="12" fill="#222">to stages 01, 02, 04, 08</text>
+</svg>
