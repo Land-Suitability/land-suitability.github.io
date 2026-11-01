@@ -448,3 +448,5 @@ figure.diagram img, .zoomable { cursor: zoom-in; }
 }
 .swipe-hint { display: none; color: var(--muted); font-size: 13px; margin: 6px 0 0; }
 @media (pointer: coarse) { .wheel-hint .kbd-tip, .tool-btn kbd { display: none; } }
+
+.nav a { white-space: nowrap; }

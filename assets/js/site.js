@@ -28,6 +28,22 @@
   function pad(n) { return String(n).padStart(2, "0"); }
   function currentSlug() { var m = location.pathname.match(/^\/stages\/([^/]+)\//); return m ? m[1] : null; }
 
+  // stage branches carry an older nav whose hub anchors have changed; give every stage page the current nav
+  function stageNav() {
+    if (!currentSlug()) return;
+    var nav = document.querySelector(".site-header .nav");
+    if (!nav) return;
+    nav.querySelectorAll("a").forEach(function (a) { a.remove(); });
+    var links = [["/#loop", "The loop"], ["/#chain", "Stages"], ["/how-it-works.html", "How it works"], ["/data-spine.html", "Data spine"], ["/glossary.html", "Glossary"]];
+    var first = nav.firstChild;
+    links.forEach(function (l) {
+      var a = document.createElement("a");
+      a.href = l[0]; a.textContent = l[1];
+      if (l[0] === "/#chain") a.setAttribute("aria-current", "page");
+      nav.insertBefore(a, first);
+    });
+  }
+
   // stage branches carry an older text badge; show the shared logo everywhere
   function brandLogo() {
     var mark = document.querySelector(".brand .brand-mark");
@@ -329,7 +345,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp];
+    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();
