@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}} | {{project_short}}</title>
+  <meta name="description" content="{{summary}}">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+</head>
+<body class="d-{{domain_id}}">
+<!--
+  Stage {{number_padded}} page. This file lives on branch `{{branch}}` and is published at /stages/{{slug}}/.
+  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">{{project_short}}</span><span>{{project_name}}</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#vision">Vision</a>
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/#platform">Platform</a>
+      <a href="/#pilot">Pilot</a>
+      <a href="/#partners">Partners</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / Stage {{number_padded}}</p>
+
+  <section class="stage-hero">
+    <span class="pill">{{domain_title}}</span>
+    <h1>{{number_padded}}. {{title}}</h1>
+    <p class="lead">{{summary}}</p>
+    <div class="meta">
+      <span class="status">Status: skeleton</span>
+      <span>Branch <code>{{branch}}</code></span>
+    </div>
+  </section>
+
+  <section id="position">
+    <h2>Position in the chain</h2>
+    <div class="flow">
+      <div class="card"><h3>Receives from</h3><div class="chips">{{upstream_chips}}</div></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>This stage</h3><p>{{title}}</p></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>Feeds into</h3><div class="chips">{{downstream_chips}}</div></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>Key questions</h2>
+    <ul class="list-clean">{{questions}}</ul>
+  </section>
+
+  <section id="scope">
+    <div class="grid cols-2">
+      <div class="card"><h3>Scope and components</h3><ul class="list-clean">{{components}}</ul></div>
+      <div class="card"><h3>Data sources</h3><ul class="list-clean">{{data_sources}}</ul></div>
+      <div class="card"><h3>Outputs</h3><ul class="list-clean">{{outputs}}</ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean">{{kpis}}</ul></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+  </section>
+
+  <section id="methods">
+    <h2>Methods and tools</h2>
+    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>Roadmap and status</h2>
+    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+  </section>
+
+  <nav class="pager" aria-label="Stage navigation">
+    {{prev_link}}
+    {{next_link}}
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>{{project_name}}. {{tagline}}.</span>
+    <span>Stage {{number_padded}} of 12</span>
+  </div>
+</footer>
+</body>
+</html>

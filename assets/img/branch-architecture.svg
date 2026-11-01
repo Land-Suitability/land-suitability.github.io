@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" font-family="Helvetica, Arial, sans-serif">
+  <rect width="960" height="470" fill="#fbfaf6"/>
+  <text x="480" y="32" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2a20">One repository, 13 branches, one assembled Pages site</text>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+
+  <!-- hub -->
+  <rect x="30" y="60" width="260" height="170" rx="12" fill="#e3efdd" stroke="#3f6b34" stroke-width="2"/>
+  <text x="160" y="86" text-anchor="middle" font-weight="bold" font-size="15">main (hub branch)</text>
+  <g font-size="12.5" fill="#222">
+    <text x="48" y="112">index.html  (portal)</text>
+    <text x="48" y="132">assets/  (shared CSS, JS, images)</text>
+    <text x="48" y="152">stages.json  (stage registry)</text>
+    <text x="48" y="172">stages/&lt;slug&gt;/  (placeholders)</text>
+    <text x="48" y="192">tools/  (generators)</text>
+    <text x="48" y="212">.github/workflows/pages.yml</text>
+  </g>
+
+  <!-- stage branches -->
+  <g font-size="12" fill="#222">
+    <rect x="30" y="255" width="260" height="190" rx="12" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="2"/>
+    <text x="160" y="280" text-anchor="middle" font-weight="bold" font-size="15">stage/* branches (x12)</text>
+    <text x="48" y="305">stage/01-land-intelligence</text>
+    <text x="48" y="323">stage/02-water-resources</text>
+    <text x="48" y="341">stage/03-climate-intelligence</text>
+    <text x="48" y="359">...</text>
+    <text x="48" y="377">stage/12-market-distribution</text>
+    <text x="48" y="403" fill="#5d4a25">each: index.html, README.md,</text>
+    <text x="48" y="421" fill="#5d4a25">.github/workflows/notify-hub.yml</text>
+  </g>
+
+  <!-- workflow -->
+  <rect x="370" y="160" width="220" height="130" rx="12" fill="#1f2a20"/>
+  <text x="480" y="192" text-anchor="middle" font-weight="bold" font-size="15" fill="#fff">pages.yml</text>
+  <g font-size="12" fill="#e7ebe4">
+    <text x="388" y="218">1. copy hub to /</text>
+    <text x="388" y="238">2. for each stage branch:</text>
+    <text x="400" y="256">copy to /stages/&lt;slug&gt;/</text>
+    <text x="388" y="276">3. deploy to GitHub Pages</text>
+  </g>
+  <line x1="290" y1="150" x2="368" y2="200" stroke="#3f6b34" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="300" y="148" font-size="11" fill="#3f6b34">push</text>
+  <line x1="290" y1="340" x2="368" y2="265" stroke="#8a6d3b" stroke-width="2.5" stroke-dasharray="6,4" marker-end="url(#a)"/>
+  <text x="292" y="330" font-size="11" fill="#8a6d3b">push → dispatch</text>
+
+  <!-- site -->
+  <rect x="660" y="60" width="270" height="385" rx="12" fill="#dde8f3" stroke="#2f5d8a" stroke-width="2"/>
+  <text x="795" y="86" text-anchor="middle" font-weight="bold" font-size="15">land-suitability.github.io</text>
+  <g font-size="12.5" fill="#222" font-family="Menlo, monospace">
+    <text x="678" y="118">/                   hub portal</text>
+    <text x="678" y="140">/assets/            shared</text>
+    <text x="678" y="162">/build-info.json    sources</text>
+    <text x="678" y="196">/stages/01-land-intelligence/</text>
+    <text x="678" y="218">/stages/02-water-resources/</text>
+    <text x="678" y="240">/stages/03-climate-intelligence/</text>
+    <text x="678" y="262">/stages/04-crop-planning/</text>
+    <text x="678" y="284">/stages/05-market-intelligence/</text>
+    <text x="678" y="306">/stages/06-input-coordination/</text>
+    <text x="678" y="328">/stages/07-farm-production/</text>
+    <text x="678" y="350">/stages/08-monitoring-risk/</text>
+    <text x="678" y="372">/stages/09-harvest-postharvest/</text>
+    <text x="678" y="394">/stages/10-storage-aggregation/</text>
+    <text x="678" y="416">/stages/11-logistics-transport/</text>
+    <text x="678" y="438">/stages/12-market-distribution/</text>
+  </g>
+  <line x1="590" y1="225" x2="658" y2="225" stroke="#2f5d8a" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="595" y="215" font-size="11" fill="#2f5d8a">deploy</text>
+</svg>

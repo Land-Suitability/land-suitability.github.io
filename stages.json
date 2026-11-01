@@ -1,0 +1,307 @@
+{
+  "project": {
+    "name": "Amhara Integrated Agriculture Ecosystem",
+    "short_name": "AIAE",
+    "tagline": "From Land Intelligence to Market Delivery",
+    "site_url": "https://land-suitability.github.io",
+    "repo": "Land-Suitability/land-suitability.github.io",
+    "hub_branch": "main",
+    "stage_branch_prefix": "stage/"
+  },
+  "domains": [
+    {"id": "plan",    "title": "Plan",          "question": "What should be grown where, and for whom?"},
+    {"id": "produce", "title": "Produce",       "question": "Is the plan being carried out, and is it on track?"},
+    {"id": "move",    "title": "Move",          "question": "Does produce reach the buyer with minimal loss?"},
+    {"id": "sell",    "title": "Sell & Learn",  "question": "Did farmers earn more, and what changes next season?"}
+  ],
+  "stages": [
+    {
+      "number": 1,
+      "slug": "01-land-intelligence",
+      "title": "Land Intelligence & Suitability",
+      "domain": "plan",
+      "summary": "Where can each crop grow, and how well? The root layer that every later stage builds on.",
+      "questions": [
+        "Which plots are S1, S2, S3 or N for each candidate crop and season?",
+        "What are the soil, slope and erosion constraints on each plot?",
+        "How are smallholder plots grouped into planning clusters, given land-use certificates?"
+      ],
+      "components": [
+        "Land availability and land-use certificate (tenure) records",
+        "Soil properties: fertility, pH, texture, drainage, depth",
+        "Topography: elevation, slope, aspect, erosion risk",
+        "Satellite land-cover and land-use analysis",
+        "Land suitability classification (FAO framework, MCDA/AHP, ML/DL)"
+      ],
+      "data_sources": ["Sentinel-2", "Landsat", "SRTM / Copernicus DEM", "SoilGrids / EthioSIS", "Field soil samples"],
+      "outputs": ["Plot x crop suitability scores with uncertainty", "Constraint maps", "Planning clusters"],
+      "kpis": ["Suitability model accuracy against field trials", "Share of pilot plots mapped and classified"],
+      "upstream": [],
+      "downstream": ["04-crop-planning", "02-water-resources"]
+    },
+    {
+      "number": 2,
+      "slug": "02-water-resources",
+      "title": "Water Resource Assessment",
+      "domain": "plan",
+      "summary": "How much water is actually available for each cluster, in each season, and at what sustainable rate?",
+      "questions": [
+        "What surface and groundwater can each cluster use sustainably?",
+        "How does seasonal water demand compare with supply?",
+        "Where would irrigation investment unlock the most suitable land?"
+      ],
+      "components": [
+        "Surface water: rivers, lakes, reservoirs, streams",
+        "Groundwater availability and sustainable extraction (requires hydrogeological field data)",
+        "Watershed and catchment assessment",
+        "Existing irrigation infrastructure and accessibility",
+        "Water demand versus supply balance"
+      ],
+      "data_sources": ["Sentinel-1 / Sentinel-2 water masks", "CHIRPS rainfall", "Hydrological models", "Borehole and geophysical surveys"],
+      "outputs": ["Cluster x season water budgets (m3)", "Irrigation opportunity map"],
+      "kpis": ["Water productivity (kg per m3)", "Share of plans within the sustainable water budget"],
+      "upstream": ["01-land-intelligence", "03-climate-intelligence"],
+      "downstream": ["04-crop-planning"]
+    },
+    {
+      "number": 3,
+      "slug": "03-climate-intelligence",
+      "title": "Climate & Seasonal Intelligence",
+      "domain": "plan",
+      "summary": "When does the season start and end, and what weather risks does it carry?",
+      "questions": [
+        "When will Meher and Belg rains start and stop this year?",
+        "What is the drought, flood and frost risk per cluster?",
+        "How long is the effective growing season?"
+      ],
+      "components": [
+        "Historical weather analysis",
+        "Rainfall onset and cessation prediction",
+        "Temperature, humidity and evapotranspiration",
+        "Drought, flood and frost risk",
+        "Growing-season length; Meher and Belg planting windows"
+      ],
+      "data_sources": ["CHIRPS", "ERA5", "Local weather stations", "Seasonal forecasts"],
+      "outputs": ["Seasonal climate outlook per cluster", "Planting windows", "Risk scenarios"],
+      "kpis": ["Onset forecast error (days)", "Lead time of drought alerts"],
+      "upstream": [],
+      "downstream": ["02-water-resources", "04-crop-planning", "08-monitoring-risk"]
+    },
+    {
+      "number": 4,
+      "slug": "04-crop-planning",
+      "title": "Crop Selection & Production Planning",
+      "domain": "plan",
+      "summary": "The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.",
+      "questions": [
+        "Which crop and variety should each cluster plant, on how many hectares, and when?",
+        "Which plan maximises farmer net income within land, water and demand limits?",
+        "What rotation and intercropping keep soils healthy?"
+      ],
+      "components": [
+        "Matching crops to soil, water and agroecology",
+        "Variety and maturity-period evaluation",
+        "Expected yield and profitability comparison",
+        "Seasonal production plan optimisation (market-backwards)",
+        "Rotation and intercropping strategy"
+      ],
+      "data_sources": ["Stage 1 to 3 outputs", "Stage 5 demand signals", "Variety trial data"],
+      "outputs": ["Seasonal Production Plan (cluster x crop x variety x hectares x planting date)"],
+      "kpis": ["Planned versus realised net income", "Share of contracted demand covered by the plan"],
+      "upstream": ["01-land-intelligence", "02-water-resources", "03-climate-intelligence", "05-market-intelligence"],
+      "downstream": ["06-input-coordination", "07-farm-production"]
+    },
+    {
+      "number": 5,
+      "slug": "05-market-intelligence",
+      "title": "Market Intelligence & Demand Forecasting",
+      "domain": "plan",
+      "summary": "Start with the market: who buys what, how much, at what quality, when and at what price.",
+      "questions": [
+        "What will buyers demand at harvest time, and at what price?",
+        "Which buyers can sign offtake agreements before planting?",
+        "Which competing production areas affect prices?"
+      ],
+      "components": [
+        "Domestic and regional demand assessment",
+        "Wholesalers, retailers, processors and exporters",
+        "Historical and current price analysis",
+        "Harvest-time demand and price forecasting",
+        "Pre-season offtake agreements"
+      ],
+      "data_sources": ["Market price surveys", "ECX data where relevant", "Buyer interviews", "Trade statistics"],
+      "outputs": ["Demand signals (crop, tonnes, grade, delivery window, price)", "Offtake contracts"],
+      "kpis": ["Share of produce sold through planned agreements", "Price forecast error"],
+      "upstream": ["12-market-distribution"],
+      "downstream": ["04-crop-planning"]
+    },
+    {
+      "number": 6,
+      "slug": "06-input-coordination",
+      "title": "Input & Resource Coordination",
+      "domain": "produce",
+      "summary": "Make sure seed, fertilizer, equipment and finance arrive before they are needed.",
+      "questions": [
+        "What inputs does the plan require, by cluster and by date?",
+        "Which suppliers can deliver on time, and with what lead time?",
+        "Which farmers need credit or insurance to take part?"
+      ],
+      "components": [
+        "Certified seed and appropriate varieties",
+        "Fertilizers and soil amendments",
+        "Mechanisation and irrigation equipment",
+        "Agricultural finance and insurance",
+        "Supplier and distribution network"
+      ],
+      "data_sources": ["Production plan (stage 4)", "Supplier catalogues", "Cooperative union records"],
+      "outputs": ["Input requirement schedule", "Planned and actual delivery log"],
+      "kpis": ["Share of inputs delivered before planting date", "Average delivery delay (days)"],
+      "upstream": ["04-crop-planning"],
+      "downstream": ["07-farm-production"]
+    },
+    {
+      "number": 7,
+      "slug": "07-farm-production",
+      "title": "Farm Implementation & Production",
+      "domain": "produce",
+      "summary": "Carry out the plan in the field with registered farmers, mapped plots and extension support.",
+      "questions": [
+        "Is each cluster planting the planned crop, on time?",
+        "Are irrigation and fertilizer schedules followed?",
+        "What training and support do farmers need?"
+      ],
+      "components": [
+        "Farmer registration and plot mapping",
+        "Land preparation and planting schedules",
+        "Crop management and irrigation scheduling",
+        "Fertilizer and pesticide management",
+        "Extension services, training and field visits"
+      ],
+      "data_sources": ["Farmer registry", "Field visit forms (mobile)", "Plot GPS boundaries"],
+      "outputs": ["Field activity records", "Plan adherence reports"],
+      "kpis": ["Plan adherence rate", "Farmers trained", "Yield per hectare"],
+      "upstream": ["04-crop-planning", "06-input-coordination"],
+      "downstream": ["08-monitoring-risk", "09-harvest-postharvest"]
+    },
+    {
+      "number": 8,
+      "slug": "08-monitoring-risk",
+      "title": "Monitoring, Forecasting & Risk",
+      "domain": "produce",
+      "summary": "Watch crops from space and from the field, forecast yields and raise early warnings.",
+      "questions": [
+        "Is crop development on track for each cluster?",
+        "Where are water stress, pests or disease emerging?",
+        "How much will each cluster harvest, and when?"
+      ],
+      "components": [
+        "Satellite crop monitoring (NDVI, EVI, SAR)",
+        "Pest and disease surveillance",
+        "Drought and water-stress monitoring",
+        "Yield forecasting (temporal deep learning)",
+        "Early warning and intervention"
+      ],
+      "data_sources": ["Sentinel-1", "Sentinel-2", "Field observations", "Stage 3 climate outlook"],
+      "outputs": ["Yield forecasts per cluster", "Alerts", "Harvest timing estimates"],
+      "kpis": ["Yield forecast error", "Alert-to-action time"],
+      "upstream": ["03-climate-intelligence", "07-farm-production"],
+      "downstream": ["09-harvest-postharvest", "11-logistics-transport"]
+    },
+    {
+      "number": 9,
+      "slug": "09-harvest-postharvest",
+      "title": "Harvest & Post-harvest Management",
+      "domain": "move",
+      "summary": "Harvest at the right time, keep quality high and make every lot traceable.",
+      "questions": [
+        "When should each cluster harvest to meet delivery windows?",
+        "Are labour and machinery available at that time?",
+        "Where are post-harvest losses happening?"
+      ],
+      "components": [
+        "Harvest scheduling",
+        "Labour and machinery coordination",
+        "Sorting, grading and quality control",
+        "Drying, packaging and handling",
+        "Loss prevention and lot traceability"
+      ],
+      "data_sources": ["Yield forecasts (stage 8)", "Quality inspection records"],
+      "outputs": ["Traceable harvest lots", "Quality grades", "Loss records"],
+      "kpis": ["Post-harvest loss (%)", "Share of lots meeting buyer grade"],
+      "upstream": ["07-farm-production", "08-monitoring-risk"],
+      "downstream": ["10-storage-aggregation"]
+    },
+    {
+      "number": 10,
+      "slug": "10-storage-aggregation",
+      "title": "Storage, Processing & Aggregation",
+      "domain": "move",
+      "summary": "Aggregate smallholder lots into buyer-sized volumes, store safely and add value.",
+      "questions": [
+        "Where should collection centres and storage be located?",
+        "How much capacity is needed, and when?",
+        "Which processing steps add the most value?"
+      ],
+      "components": [
+        "Warehouses and collection centres",
+        "Grain storage and cold storage",
+        "Processing and value addition",
+        "Cooperative aggregation",
+        "Quality certification and inventory management"
+      ],
+      "data_sources": ["Harvest lots (stage 9)", "Facility inventory", "Cooperative records"],
+      "outputs": ["Aggregated stock by grade", "Inventory levels", "Facility utilisation"],
+      "kpis": ["Storage loss (%)", "Facility utilisation (%)"],
+      "upstream": ["09-harvest-postharvest"],
+      "downstream": ["11-logistics-transport"]
+    },
+    {
+      "number": 11,
+      "slug": "11-logistics-transport",
+      "title": "Logistics & Transportation",
+      "domain": "move",
+      "summary": "Move produce from farm to collection centre to buyer, on time and at the lowest cost.",
+      "questions": [
+        "What is the cheapest, most reliable route for each shipment?",
+        "Are trucks available when harvest peaks?",
+        "Which alternative routes exist if a road is closed?"
+      ],
+      "components": [
+        "Farm-to-collection-centre transport",
+        "Collection-centre-to-market distribution",
+        "Vehicle availability",
+        "Route optimisation and alternative routes",
+        "Cost estimation, delivery scheduling and tracking"
+      ],
+      "data_sources": ["OpenStreetMap road network", "Transport operator data", "Stock levels (stage 10)"],
+      "outputs": ["Shipment schedule", "Route plans", "Transport cost per tonne"],
+      "kpis": ["Transport cost per tonne", "On-time delivery rate"],
+      "upstream": ["08-monitoring-risk", "10-storage-aggregation"],
+      "downstream": ["12-market-distribution"]
+    },
+    {
+      "number": 12,
+      "slug": "12-market-distribution",
+      "title": "Market Distribution & Customer Network",
+      "domain": "sell",
+      "summary": "Deliver to buyers, settle payments fairly and on time, and feed results back into the next season.",
+      "questions": [
+        "Were orders delivered in full, on time and at grade?",
+        "Were farmers paid on time?",
+        "What do buyers want differently next season?"
+      ],
+      "components": [
+        "Farmer, cooperative and buyer matching",
+        "Contracts with processors, supermarkets, institutions and exporters",
+        "Order, payment and delivery management",
+        "Customer feedback",
+        "Outcome measurement (income, losses, market access)"
+      ],
+      "data_sources": ["Deliveries and payments", "Buyer feedback", "Household surveys (baseline and follow-up)"],
+      "outputs": ["Settled deliveries", "Farmer payments", "Outcome indicators for the learning loop"],
+      "kpis": ["Farmer net income change", "Share of farmers paid on time", "Repeat buyer rate"],
+      "upstream": ["11-logistics-transport"],
+      "downstream": ["05-market-intelligence"]
+    }
+  ]
+}

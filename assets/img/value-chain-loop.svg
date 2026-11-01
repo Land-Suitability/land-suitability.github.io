@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="620" fill="#fbfaf6"/>
+  <text x="500" y="36" text-anchor="middle" font-size="22" font-weight="bold" fill="#2d3a2e">Agricultural Development Network: layered chain with a learning loop</text>
+
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <marker id="b" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#b5651d"/>
+    </marker>
+  </defs>
+
+  <!-- Layer boxes -->
+  <g font-size="13" fill="#222">
+    <rect x="30" y="80" width="165" height="250" rx="12" fill="#e3d5b8" stroke="#8a6d3b"/>
+    <text x="112" y="105" text-anchor="middle" font-weight="bold" font-size="15">1. Land</text>
+    <text x="45" y="135">Soil, terrain, climate</text>
+    <text x="45" y="157">Water availability</text>
+    <text x="45" y="179">Land cover / tenure</text>
+    <text x="45" y="210" font-style="italic">Land suitability</text>
+    <text x="45" y="228" font-style="italic">assessment (FAO,</text>
+    <text x="45" y="246" font-style="italic">MCDA, ML / DL)</text>
+    <text x="45" y="285" fill="#5b4a2a">Output: where can</text>
+    <text x="45" y="303" fill="#5b4a2a">what grow, how well</text>
+
+    <rect x="220" y="80" width="165" height="250" rx="12" fill="#cfe5c4" stroke="#4f7a3a"/>
+    <text x="302" y="105" text-anchor="middle" font-weight="bold" font-size="15">2. Production</text>
+    <text x="235" y="135">Crop / variety choice</text>
+    <text x="235" y="157">Inputs: seed, fertilizer</text>
+    <text x="235" y="179">Irrigation, mechanization</text>
+    <text x="235" y="201">Extension advice</text>
+    <text x="235" y="285" fill="#2f4f22">Output: yield,</text>
+    <text x="235" y="303" fill="#2f4f22">quality, risk</text>
+
+    <rect x="410" y="80" width="165" height="250" rx="12" fill="#c8dcef" stroke="#3a6a96"/>
+    <text x="492" y="105" text-anchor="middle" font-weight="bold" font-size="15">3. Post-harvest</text>
+    <text x="425" y="135">Storage, drying</text>
+    <text x="425" y="157">Aggregation (co-ops)</text>
+    <text x="425" y="179">Processing, grading</text>
+    <text x="425" y="201">Transport / roads</text>
+    <text x="425" y="285" fill="#24476a">Output: losses</text>
+    <text x="425" y="303" fill="#24476a">avoided, value added</text>
+
+    <rect x="600" y="80" width="165" height="250" rx="12" fill="#f2d3c4" stroke="#a5532e"/>
+    <text x="682" y="105" text-anchor="middle" font-weight="bold" font-size="15">4. Market</text>
+    <text x="615" y="135">Local / export markets</text>
+    <text x="615" y="157">Prices, contracts</text>
+    <text x="615" y="179">Credit, insurance</text>
+    <text x="615" y="201">Digital platforms</text>
+    <text x="615" y="285" fill="#6d3218">Output: income,</text>
+    <text x="615" y="303" fill="#6d3218">food access</text>
+
+    <rect x="790" y="80" width="180" height="250" rx="12" fill="#ddd3ec" stroke="#5e4a8a"/>
+    <text x="880" y="105" text-anchor="middle" font-weight="bold" font-size="15">5. Outcomes</text>
+    <text x="805" y="135">Food security</text>
+    <text x="805" y="157">Livelihoods, jobs</text>
+    <text x="805" y="179">Soil and water health</text>
+    <text x="805" y="201">Climate resilience</text>
+    <text x="805" y="285" fill="#3d2d60">Output: impact</text>
+    <text x="805" y="303" fill="#3d2d60">evidence</text>
+  </g>
+
+  <!-- Forward arrows -->
+  <g stroke="#555" stroke-width="2.5" marker-end="url(#a)">
+    <line x1="195" y1="205" x2="218" y2="205"/>
+    <line x1="385" y1="205" x2="408" y2="205"/>
+    <line x1="575" y1="205" x2="598" y2="205"/>
+    <line x1="765" y1="205" x2="788" y2="205"/>
+  </g>
+
+  <!-- Cross-cutting enablers band -->
+  <rect x="30" y="360" width="940" height="95" rx="12" fill="#efefef" stroke="#888" stroke-dasharray="6,4"/>
+  <text x="500" y="385" text-anchor="middle" font-weight="bold" font-size="15" fill="#333">Cross-cutting enablers (the "network" part)</text>
+  <g font-size="13" fill="#333">
+    <text x="50" y="415">Actors: farmers, co-ops, universities, research institutes, extension, NGOs, government, private sector</text>
+    <text x="50" y="438">Shared infrastructure: open data platform, remote sensing pipeline, field trial network, model registry, policy dashboard</text>
+  </g>
+
+  <!-- Feedback loop -->
+  <path d="M880,330 C880,560 112,560 112,332" fill="none" stroke="#b5651d" stroke-width="3" stroke-dasharray="10,6" marker-end="url(#b)"/>
+  <text x="500" y="520" text-anchor="middle" font-size="14" font-weight="bold" fill="#b5651d">Learning loop: observed yields, prices and impacts recalibrate the suitability models</text>
+  <text x="500" y="542" text-anchor="middle" font-size="12" fill="#b5651d">(this closes the chain into a network that improves itself every season)</text>
+
+  <text x="500" y="600" text-anchor="middle" font-size="11" fill="#777">Brainstorm sketch: land suitability is the root node; every downstream link adds data back to it.</text>
+</svg>

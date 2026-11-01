@@ -1,0 +1,86 @@
+# Amhara Integrated Agriculture Ecosystem (AIAE)
+
+**From Land Intelligence to Market Delivery.**
+Website: https://land-suitability.github.io
+
+An end-to-end agricultural ecosystem concept, piloted in the Amhara Region of Ethiopia, that connects
+land, water, climate, crops, farmers, markets, infrastructure, transport and customers into one
+coordinated value chain. Core principle: plan backwards from the market to the land, then execute
+forwards from land preparation to the final customer.
+
+## Repository architecture
+
+Each of the 12 stages of the operating chain has its own branch and its own page.
+
+![Branch architecture](assets/img/branch-architecture.svg)
+
+| Branch | Content | Published at |
+|---|---|---|
+| `main` (hub) | Portal, shared design system, `stages.json`, tools, Pages workflow | `/` |
+| `stage/01-land-intelligence` | Stage 01 content | `/stages/01-land-intelligence/` |
+| `stage/02-water-resources` | Stage 02 content | `/stages/02-water-resources/` |
+| `stage/03-climate-intelligence` | Stage 03 content | `/stages/03-climate-intelligence/` |
+| `stage/04-crop-planning` | Stage 04 content | `/stages/04-crop-planning/` |
+| `stage/05-market-intelligence` | Stage 05 content | `/stages/05-market-intelligence/` |
+| `stage/06-input-coordination` | Stage 06 content | `/stages/06-input-coordination/` |
+| `stage/07-farm-production` | Stage 07 content | `/stages/07-farm-production/` |
+| `stage/08-monitoring-risk` | Stage 08 content | `/stages/08-monitoring-risk/` |
+| `stage/09-harvest-postharvest` | Stage 09 content | `/stages/09-harvest-postharvest/` |
+| `stage/10-storage-aggregation` | Stage 10 content | `/stages/10-storage-aggregation/` |
+| `stage/11-logistics-transport` | Stage 11 content | `/stages/11-logistics-transport/` |
+| `stage/12-market-distribution` | Stage 12 content | `/stages/12-market-distribution/` |
+
+GitHub Pages publishes one site per repository, so `.github/workflows/pages.yml` on the hub assembles
+the hub and every stage branch into a single site. Each stage branch carries a small
+`notify-hub.yml` workflow that triggers a rebuild whenever that branch is pushed. A stage without a
+branch yet is served from its placeholder in `stages/<slug>/` on the hub.
+
+## Layout of the hub branch
+
+```
+index.html                     portal page (stage grid generated from stages.json)
+stages.json                    single source of truth: project, domains, 12 stages
+assets/css/site.css            shared design system (light and dark theme)
+assets/js/site.js              theme toggle, mobile navigation
+assets/img/                    SVG diagrams
+stages/<slug>/index.html       generated placeholder page for each stage
+templates/stage.html           template for stage pages
+templates/stage-branch/        files seeded into every new stage branch
+tools/build_site.py            validate stages.json, regenerate grid and placeholders
+tools/create_stage_branches.py create the 12 orphan stage branches
+.github/workflows/pages.yml    assemble all branches and deploy
+```
+
+## Common tasks
+
+```bash
+# Validate the stage registry
+python3 tools/build_site.py --check
+
+# After editing stages.json: regenerate the hub grid and placeholder pages
+python3 tools/build_site.py
+
+# Create the stage branches (skips any that already exist), then push them
+python3 tools/create_stage_branches.py --push
+
+# Preview locally (absolute /assets paths need a server at the repo root)
+python3 -m http.server 8000   # then open http://localhost:8000
+```
+
+## One-time GitHub setup
+
+1. Make `main` the default branch.
+2. Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+3. Settings → Actions → General → Workflow permissions: allow workflows to run (default read is fine,
+   the workflows request the permissions they need).
+
+## Working on a stage
+
+```bash
+git fetch origin stage/04-crop-planning
+git switch stage/04-crop-planning
+# edit index.html, add docs/, assets/, src/ ...
+git push
+```
+
+Shared styling, the portal and `stages.json` are changed on `main` only.

@@ -1,0 +1,105 @@
+# Assembles ONE GitHub Pages site from many branches:
+#   default (hub) branch      ->  /
+#   stage/<slug> branches     ->  /stages/<slug>/
+# A stage without a branch yet falls back to the placeholder in the hub's stages/<slug>/.
+#
+# Runs on pushes to the hub branch, and when a stage branch's notify-hub workflow dispatches it.
+# One-time repo setting required: Settings -> Pages -> Build and deployment -> Source: "GitHub Actions".
+
+name: Assemble and deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Why this build was triggered (e.g. 'stage/01-land-intelligence updated')"
+        required: false
+        default: "manual"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out hub branch
+        uses: actions/checkout@v4
+        with:
+          path: hub
+
+      - name: Validate stages.json
+        run: python3 hub/tools/build_site.py --check
+
+      - name: Assemble site
+        env:
+          REASON: ${{ github.event.inputs.reason || 'push to hub' }}
+        run: |
+          set -euo pipefail
+          echo "Build reason: ${REASON}"
+          mkdir -p _site
+
+          # 1) hub content, without repo-only folders
+          tar -C hub --exclude=.git --exclude=.github --exclude=tools --exclude=templates --exclude=CLAUDE.md -cf - . | tar -C _site -xf -
+
+          # 2) overlay each stage branch that exists
+          cd hub
+          prefix=$(python3 -c "import json;print(json.load(open('stages.json'))['project']['stage_branch_prefix'])")
+          slugs=$(python3 -c "import json;print(' '.join(s['slug'] for s in json.load(open('stages.json'))['stages']))")
+          remote_branches=$(git ls-remote --heads origin "${prefix}*" | awk '{print $2}' | sed 's#refs/heads/##')
+          echo "Stage branches found on remote:"; echo "${remote_branches:-  (none)}"
+
+          status="["
+          for slug in $slugs; do
+            branch="${prefix}${slug}"
+            target="../_site/stages/${slug}"
+            if echo "$remote_branches" | grep -qx "$branch"; then
+              git fetch --depth 1 origin "refs/heads/${branch}:refs/remotes/origin/${branch}"
+              rm -rf "$target" && mkdir -p "$target"
+              git archive "refs/remotes/origin/${branch}" | tar -x -C "$target"
+              rm -rf "$target/.github"
+              if [ ! -f "$target/index.html" ]; then
+                echo "::warning::${branch} has no index.html at its root"
+              fi
+              src="branch"; sha=$(git rev-parse --short "refs/remotes/origin/${branch}")
+            else
+              src="placeholder"; sha=""
+            fi
+            echo "  ${slug}: ${src} ${sha}"
+            status="${status}{\"slug\":\"${slug}\",\"source\":\"${src}\",\"commit\":\"${sha}\"},"
+          done
+
+          # warn about stage/* branches not registered in stages.json
+          for b in $remote_branches; do
+            s="${b#${prefix}}"
+            echo " $slugs " | grep -q " ${s} " || echo "::warning::Branch ${b} is not listed in stages.json and was not published"
+          done
+
+          status="${status%,}]"
+          echo "{\"built_at\":\"$(date -u +%FT%TZ)\",\"hub_commit\":\"$(git rev-parse --short HEAD)\",\"stages\":${status}}" > ../_site/build-info.json
+          cat ../_site/build-info.json
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    # Pages only deploys from the default branch (github-pages environment protection)
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

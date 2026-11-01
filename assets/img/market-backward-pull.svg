@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="560" fill="#fbfaf6"/>
+  <text x="500" y="34" text-anchor="middle" font-size="21" font-weight="bold" fill="#2d3a2e">Plan backwards from the market, execute forwards from the land</text>
+  <defs>
+    <marker id="p" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a5532e"/></marker>
+    <marker id="e" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4f7a3a"/></marker>
+    <marker id="f" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a6a96"/></marker>
+  </defs>
+
+  <text x="40" y="78" font-size="14" font-weight="bold" fill="#a5532e">PLANNING (pull): right to left, before the season</text>
+  <g font-size="12.5" fill="#222">
+    <rect x="800" y="95" width="165" height="110" rx="10" fill="#f2d3c4" stroke="#a5532e"/>
+    <text x="882" y="118" text-anchor="middle" font-weight="bold">1. Buyer demand</text>
+    <text x="812" y="142">What, how much,</text><text x="812" y="160">what quality, when,</text><text x="812" y="178">at what price</text>
+
+    <rect x="610" y="95" width="165" height="110" rx="10" fill="#f6e3c4" stroke="#b07a2a"/>
+    <text x="692" y="118" text-anchor="middle" font-weight="bold">2. Logistics check</text>
+    <text x="622" y="142">Collection centre,</text><text x="622" y="160">storage, truck cost</text><text x="622" y="178">per tonne</text>
+
+    <rect x="420" y="95" width="165" height="110" rx="10" fill="#cfe5c4" stroke="#4f7a3a"/>
+    <text x="502" y="118" text-anchor="middle" font-weight="bold">3. Crop and variety</text>
+    <text x="432" y="142">Maturity window that</text><text x="432" y="160">hits delivery date,</text><text x="432" y="178">margin per ha</text>
+
+    <rect x="230" y="95" width="165" height="110" rx="10" fill="#c8dcef" stroke="#3a6a96"/>
+    <text x="312" y="118" text-anchor="middle" font-weight="bold">4. Water and climate</text>
+    <text x="242" y="142">Water budget, Meher /</text><text x="242" y="160">Belg / dry season,</text><text x="242" y="178">drought risk</text>
+
+    <rect x="40" y="95" width="165" height="110" rx="10" fill="#e3d5b8" stroke="#8a6d3b"/>
+    <text x="122" y="118" text-anchor="middle" font-weight="bold">5. Land suitability</text>
+    <text x="52" y="142">Which plots are S1/S2</text><text x="52" y="160">for that crop,</text><text x="52" y="178">tenure, slope</text>
+  </g>
+  <g stroke="#a5532e" stroke-width="2.5" marker-end="url(#p)">
+    <line x1="800" y1="150" x2="777" y2="150"/><line x1="610" y1="150" x2="587" y2="150"/>
+    <line x1="420" y1="150" x2="397" y2="150"/><line x1="230" y1="150" x2="207" y2="150"/>
+  </g>
+
+  <!-- optimisation core -->
+  <rect x="300" y="235" width="400" height="70" rx="12" fill="#2d3a2e"/>
+  <text x="500" y="262" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">Seasonal Production Plan (optimiser)</text>
+  <text x="500" y="285" text-anchor="middle" font-size="12" fill="#e8e8e8">max farmer net income  s.t.  land, water, suitability, buyer demand</text>
+  <line x1="122" y1="205" x2="300" y2="262" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="882" y1="205" x2="700" y2="262" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <text x="40" y="345" font-size="14" font-weight="bold" fill="#4f7a3a">EXECUTION (push): left to right, during the season</text>
+  <g font-size="12.5" fill="#222">
+    <rect x="40" y="360" width="165" height="70" rx="10" fill="#eef5ea" stroke="#4f7a3a"/><text x="122" y="390" text-anchor="middle">Inputs delivered</text><text x="122" y="408" text-anchor="middle">on time</text>
+    <rect x="230" y="360" width="165" height="70" rx="10" fill="#eef5ea" stroke="#4f7a3a"/><text x="312" y="390" text-anchor="middle">Plant, irrigate,</text><text x="312" y="408" text-anchor="middle">monitor (satellite)</text>
+    <rect x="420" y="360" width="165" height="70" rx="10" fill="#eef5ea" stroke="#4f7a3a"/><text x="502" y="390" text-anchor="middle">Yield forecast,</text><text x="502" y="408" text-anchor="middle">harvest schedule</text>
+    <rect x="610" y="360" width="165" height="70" rx="10" fill="#eef5ea" stroke="#4f7a3a"/><text x="692" y="390" text-anchor="middle">Aggregate, grade,</text><text x="692" y="408" text-anchor="middle">store, transport</text>
+    <rect x="800" y="360" width="165" height="70" rx="10" fill="#eef5ea" stroke="#4f7a3a"/><text x="882" y="390" text-anchor="middle">Deliver, get paid,</text><text x="882" y="408" text-anchor="middle">pay farmers</text>
+  </g>
+  <g stroke="#4f7a3a" stroke-width="2.5" marker-end="url(#e)">
+    <line x1="205" y1="395" x2="228" y2="395"/><line x1="395" y1="395" x2="418" y2="395"/>
+    <line x1="585" y1="395" x2="608" y2="395"/><line x1="775" y1="395" x2="798" y2="395"/>
+  </g>
+  <line x1="500" y1="305" x2="122" y2="358" stroke="#4f7a3a" stroke-width="2" marker-end="url(#e)"/>
+
+  <!-- feedback -->
+  <path d="M882,430 C882,520 500,530 500,307" fill="none" stroke="#3a6a96" stroke-width="2.5" stroke-dasharray="8,5" marker-end="url(#f)"/>
+  <text x="640" y="505" font-size="13" font-weight="bold" fill="#3a6a96">Actual yields, prices, losses, payment delays</text>
+  <text x="640" y="523" font-size="12" fill="#3a6a96">recalibrate next season's plan and the suitability model</text>
+</svg>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Land Intelligence &amp; Suitability | AIAE</title>
+  <meta name="description" content="Where can each crop grow, and how well? The root layer that every later stage builds on.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+</head>
+<body class="d-plan">
+<!--
+  Stage 01 page. This file lives on branch `stage/01-land-intelligence` and is published at /stages/01-land-intelligence/.
+  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#vision">Vision</a>
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/#platform">Platform</a>
+      <a href="/#pilot">Pilot</a>
+      <a href="/#partners">Partners</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / Stage 01</p>
+
+  <section class="stage-hero">
+    <span class="pill">Plan</span>
+    <h1>01. Land Intelligence &amp; Suitability</h1>
+    <p class="lead">Where can each crop grow, and how well? The root layer that every later stage builds on.</p>
+    <div class="meta">
+      <span class="status">Status: skeleton</span>
+      <span>Branch <code>stage/01-land-intelligence</code></span>
+    </div>
+  </section>
+
+  <section id="position">
+    <h2>Position in the chain</h2>
+    <div class="flow">
+      <div class="card"><h3>Receives from</h3><div class="chips"><span class="chip">Entry point</span></div></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>This stage</h3><p>Land Intelligence &amp; Suitability</p></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a><a class="chip" href="/stages/02-water-resources/">02. Water Resource Assessment</a></div></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>Key questions</h2>
+    <ul class="list-clean"><li>Which plots are S1, S2, S3 or N for each candidate crop and season?</li><li>What are the soil, slope and erosion constraints on each plot?</li><li>How are smallholder plots grouped into planning clusters, given land-use certificates?</li></ul>
+  </section>
+
+  <section id="scope">
+    <div class="grid cols-2">
+      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Land availability and land-use certificate (tenure) records</li><li>Soil properties: fertility, pH, texture, drainage, depth</li><li>Topography: elevation, slope, aspect, erosion risk</li><li>Satellite land-cover and land-use analysis</li><li>Land suitability classification (FAO framework, MCDA/AHP, ML/DL)</li></ul></div>
+      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Sentinel-2</li><li>Landsat</li><li>SRTM / Copernicus DEM</li><li>SoilGrids / EthioSIS</li><li>Field soil samples</li></ul></div>
+      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Plot x crop suitability scores with uncertainty</li><li>Constraint maps</li><li>Planning clusters</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Suitability model accuracy against field trials</li><li>Share of pilot plots mapped and classified</li></ul></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+  </section>
+
+  <section id="methods">
+    <h2>Methods and tools</h2>
+    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>Roadmap and status</h2>
+    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+  </section>
+
+  <nav class="pager" aria-label="Stage navigation">
+    <span></span>
+    <a class="btn" href="/stages/02-water-resources/">02. Water Resource Assessment &rarr;</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. From Land Intelligence to Market Delivery.</span>
+    <span>Stage 01 of 12</span>
+  </div>
+</footer>
+</body>
+</html>

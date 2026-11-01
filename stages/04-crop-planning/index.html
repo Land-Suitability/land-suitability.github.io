@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crop Selection &amp; Production Planning | AIAE</title>
+  <meta name="description" content="The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+</head>
+<body class="d-plan">
+<!--
+  Stage 04 page. This file lives on branch `stage/04-crop-planning` and is published at /stages/04-crop-planning/.
+  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#vision">Vision</a>
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/#platform">Platform</a>
+      <a href="/#pilot">Pilot</a>
+      <a href="/#partners">Partners</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / Stage 04</p>
+
+  <section class="stage-hero">
+    <span class="pill">Plan</span>
+    <h1>04. Crop Selection &amp; Production Planning</h1>
+    <p class="lead">The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.</p>
+    <div class="meta">
+      <span class="status">Status: skeleton</span>
+      <span>Branch <code>stage/04-crop-planning</code></span>
+    </div>
+  </section>
+
+  <section id="position">
+    <h2>Position in the chain</h2>
+    <div class="flow">
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Land Intelligence &amp; Suitability</a><a class="chip" href="/stages/02-water-resources/">02. Water Resource Assessment</a><a class="chip" href="/stages/03-climate-intelligence/">03. Climate &amp; Seasonal Intelligence</a><a class="chip" href="/stages/05-market-intelligence/">05. Market Intelligence &amp; Demand Forecasting</a></div></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>This stage</h3><p>Crop Selection &amp; Production Planning</p></div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/06-input-coordination/">06. Input &amp; Resource Coordination</a><a class="chip" href="/stages/07-farm-production/">07. Farm Implementation &amp; Production</a></div></div>
+    </div>
+  </section>
+
+  <section id="questions">
+    <h2>Key questions</h2>
+    <ul class="list-clean"><li>Which crop and variety should each cluster plant, on how many hectares, and when?</li><li>Which plan maximises farmer net income within land, water and demand limits?</li><li>What rotation and intercropping keep soils healthy?</li></ul>
+  </section>
+
+  <section id="scope">
+    <div class="grid cols-2">
+      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Matching crops to soil, water and agroecology</li><li>Variety and maturity-period evaluation</li><li>Expected yield and profitability comparison</li><li>Seasonal production plan optimisation (market-backwards)</li><li>Rotation and intercropping strategy</li></ul></div>
+      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Stage 1 to 3 outputs</li><li>Stage 5 demand signals</li><li>Variety trial data</li></ul></div>
+      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Seasonal Production Plan (cluster x crop x variety x hectares x planting date)</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Planned versus realised net income</li><li>Share of contracted demand covered by the plan</li></ul></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+  </section>
+
+  <section id="methods">
+    <h2>Methods and tools</h2>
+    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>Roadmap and status</h2>
+    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+  </section>
+
+  <nav class="pager" aria-label="Stage navigation">
+    <a class="btn" href="/stages/03-climate-intelligence/">&larr; 03. Climate &amp; Seasonal Intelligence</a>
+    <a class="btn" href="/stages/05-market-intelligence/">05. Market Intelligence &amp; Demand Forecasting &rarr;</a>
+  </nav>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. From Land Intelligence to Market Delivery.</span>
+    <span>Stage 04 of 12</span>
+  </div>
+</footer>
+</body>
+</html>
