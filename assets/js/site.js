@@ -86,7 +86,7 @@
     var back = document.createElement("div");
     back.className = "palette-backdrop";
     back.innerHTML = '<div class="palette" role="dialog" aria-modal="true" aria-label="Jump to a stage">' +
-      '<input type="search" placeholder="Type a stage, topic or number… (e.g. water, 08, contract)" aria-label="Search stages">' +
+      '<input type="search" placeholder="Search stages and their content… (e.g. hermetic, shadow price, 08)" aria-label="Search the site">' +
       '<ul role="listbox"></ul><div class="foot">↑ ↓ to move · Enter to open · Esc to close</div></div>';
     document.body.appendChild(back);
     var input = back.querySelector("input"), list = back.querySelector("ul"), items = [], sel = 0;
@@ -98,6 +98,38 @@
       { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" },
       { title: "Concept brief (2-page PDF)", href: "/brief.html", sub: "Printable summary for partners", icon: "d-sell", domain: "" }
     ];
+    // full-text: sections of every stage page, fetched once when the palette is first opened
+    var sections = null, sectionsLoading = null;
+    function loadSections() {
+      if (sectionsLoading) return sectionsLoading;
+      sectionsLoading = stages().then(function (d) {
+        return Promise.all(d.stages.map(function (st) {
+          return fetch("/stages/" + st.slug + "/").then(function (r) { return r.ok ? r.text() : ""; }).then(function (html) {
+            var doc = new DOMParser().parseFromString(html, "text/html"), out = [];
+            doc.querySelectorAll("main section[id]").forEach(function (sec) {
+              var h = sec.querySelector("h2"); if (!h) return;
+              var clone = sec.cloneNode(true);
+              clone.querySelectorAll("script, style, noscript, svg, .tip").forEach(function (x) { x.remove(); });
+              // a space at every element boundary so words from adjacent cells or headings do not run together
+              var raw = clone.innerHTML.replace(/<[^>]+>/g, " ");
+              var text = new DOMParser().parseFromString(raw, "text/html").documentElement.textContent.replace(/\s+/g, " ").trim();
+              out.push({ title: pad(st.number) + " · " + h.textContent.trim(), href: "/stages/" + st.slug + "/#" + sec.id,
+                sub: st.title, icon: "i-" + pad(st.number), domain: st.domain, hay: (h.textContent + " " + text).toLowerCase(), section: true, text: text });
+            });
+            return out;
+          }).catch(function () { return []; });
+        }));
+      }).then(function (lists) { sections = [].concat.apply([], lists); if (back.classList.contains("open")) render(input.value); });
+      return sectionsLoading;
+    }
+    function snippet(text, words) {
+      var low = text.toLowerCase(), i = -1;
+      words.some(function (w) { i = low.indexOf(w); return i !== -1; });
+      if (i === -1) return "";
+      var from = Math.max(0, i - 50), str = (from ? "… " : "") + text.slice(from, i + 90) + "…";
+      return str.replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; });
+    }
+
     function render(q) {
       q = (q || "").toLowerCase().trim();
       list.innerHTML = "";
@@ -109,19 +141,26 @@
               (s.components || []).join(" ") + " " + s.domain).toLowerCase() };
         }).concat(extra.map(function (x) { x.hay = (x.title + " " + x.sub).toLowerCase(); return x; }));
         var words = q.split(/\s+/).filter(Boolean);
-        all.filter(function (x) { return words.every(function (w) { return x.hay.indexOf(w) !== -1; }); }).forEach(function (x) {
+        var hits = all.filter(function (x) { return words.every(function (w) { return x.hay.indexOf(w) !== -1; }); });
+        if (words.length && sections) {
+          var inHead = function (x) { var t = x.title.toLowerCase(); return words.some(function (w) { return t.indexOf(w) !== -1; }) ? 0 : 1; };
+          hits = hits.concat(sections.filter(function (x) { return words.every(function (w) { return x.hay.indexOf(w) !== -1; }); })
+            .sort(function (a, b) { return inHead(a) - inHead(b); })
+            .slice(0, 25).map(function (x) { var c = Object.create(x); c.sub = x.sub + (snippet(x.text, words) ? " · " + snippet(x.text, words) : ""); return c; }));
+        }
+        hits.forEach(function (x) {
           var li = document.createElement("li");
           var style = x.domain ? ' style="--d:var(' + DOMAIN_VAR[x.domain] + ");--d-bg:var(" + DOMAIN_VAR[x.domain] + '-bg)"' : "";
           li.innerHTML = '<a href="' + x.href + '"' + style + ">" + icon(x.icon) + "<span>" + x.title + "<small>" + x.sub + "</small></span></a>";
           list.appendChild(li);
           items.push(li.firstChild);
         });
-        if (!items.length) list.innerHTML = '<li style="padding:14px;color:var(--muted)">No match. Try "water", "price" or a number.</li>';
+        if (!items.length) list.innerHTML = '<li style="padding:14px;color:var(--muted)">' + (sections ? 'No match. Try "water", "price" or a number.' : "Searching inside the stage pages…") + "</li>";
         sel = 0; mark();
       }).catch(function (e) { list.innerHTML = '<li style="padding:14px">Could not load the stage list.</li>'; log("palette", e); });
     }
     function mark() { items.forEach(function (a, i) { a.classList.toggle("sel", i === sel); if (i === sel) a.scrollIntoView({ block: "nearest" }); }); }
-    function open() { back.classList.add("open"); input.value = ""; render(""); setTimeout(function () { input.focus(); }, 10); }
+    function open() { back.classList.add("open"); input.value = ""; render(""); loadSections(); setTimeout(function () { input.focus(); }, 10); }
     function close() { back.classList.remove("open"); btn.focus(); }
     btn.addEventListener("click", open);
     back.addEventListener("click", function (e) { if (e.target === back) close(); });
