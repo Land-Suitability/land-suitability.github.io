@@ -95,7 +95,8 @@
       { title: "Home: the landscape and the loop", href: "/", sub: "Hub portal", icon: "u-loop", domain: "" },
       { title: "How it works, step by step", href: "/how-it-works.html", sub: "The story of one season", icon: "d-plan", domain: "" },
       { title: "Data spine: every hand-off", href: "/data-spine.html", sub: "Which stage sends which record to which", icon: "d-move", domain: "" },
-      { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" }
+      { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" },
+      { title: "Concept brief (2-page PDF)", href: "/brief.html", sub: "Printable summary for partners", icon: "d-sell", domain: "" }
     ];
     function render(q) {
       q = (q || "").toLowerCase().trim();

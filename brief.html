@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concept Brief | AIAE</title>
+  <meta name="description" content="Two-page concept brief of the Amhara Integrated Agriculture Ecosystem: the problem, the approach, the twelve stages, the platform, the pilot and what the demos show.">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <style>
+    @page { size: A4; margin: 0; }
+    :root { --ink: #1f2a20; --muted: #5d665e; --line: #ddd8cb; --plan: #74582a; --produce: #3f6b34; --move: #2f5d8a; --sell: #9a4a28; --bg: #fbfaf6; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Ethiopic", Arial, sans-serif; color: var(--ink); background: #e9e7e0; }
+    .page { width: 210mm; height: 297mm; margin: 10mm auto; background: var(--bg); position: relative; overflow: hidden; padding: 14mm 14mm 12mm; box-shadow: 0 4px 24px rgba(0,0,0,.12);
+      page-break-after: always; break-after: page; display: flex; flex-direction: column; }
+    @media print { h1 .g { background: none; color: var(--produce); }
+      body { background: none; } .page { margin: 0; box-shadow: none; } .noprint { display: none !important; } }
+    .top { display: flex; justify-content: space-between; align-items: center; font-size: 9pt; color: var(--muted); }
+    .top .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; color: var(--ink); }
+    .top img { width: 22px; height: 22px; border-radius: 5px; }
+    h1 { font-size: 24pt; line-height: 1.05; margin: 6mm 0 2.5mm; letter-spacing: -.01em; }
+    h1 .g { background: linear-gradient(90deg, var(--plan), var(--produce) 40%, var(--move) 75%, var(--sell)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { font-size: 10pt; line-height: 1.42; color: #3c463d; margin: 0 0 4mm; }
+    .hero { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+    .hero img { width: 100%; height: 52mm; object-fit: cover; object-position: center 78%; display: block; }
+    .page > * { flex-shrink: 0; }
+    h2 { font-size: 12.5pt; margin: 4mm 0 2mm; display: flex; align-items: center; gap: 6px; }
+    h2 .bar { width: 4px; height: 14pt; border-radius: 2px; background: var(--produce); }
+    p, li { font-size: 9pt; line-height: 1.4; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+    .box { border: 1px solid var(--line); border-radius: 8px; padding: 3mm 4mm; background: #fff; }
+    .box h3 { margin: 0 0 1.5mm; font-size: 10.5pt; }
+    .box ol, .box ul { margin: 0; padding-left: 4.5mm; }
+    .push { border-top: 3px solid #b5651d; } .pull { border-top: 3px solid var(--produce); }
+    .stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; }
+    .st { border: 1px solid var(--line); border-top: 3px solid var(--d); border-radius: 6px; padding: 2mm 2.5mm; background: #fff; }
+    .st b { display: flex; align-items: center; gap: 4px; font-size: 8.8pt; line-height: 1.2; }
+    .st b svg { width: 13px; height: 13px; color: var(--d); flex-shrink: 0; }
+    .st span { display: block; font-size: 7.2pt; color: var(--muted); line-height: 1.35; margin-top: 1mm; }
+    .d-plan { --d: var(--plan); } .d-produce { --d: var(--produce); } .d-move { --d: var(--move); } .d-sell { --d: var(--sell); }
+    .foot { margin-top: auto; display: flex; justify-content: space-between; font-size: 8pt; color: var(--muted); border-top: 1px solid var(--line); padding-top: 2.5mm; }
+    .arch img { width: 100%; max-height: 74mm; object-fit: contain; display: block; border: 1px solid var(--line); border-radius: 8px; background: #fbfaf6; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; }
+    .tl { border: 1px solid var(--line); border-radius: 6px; padding: 2.5mm; background: #fff; position: relative; }
+    .tl .w { font-size: 7.5pt; font-weight: 800; color: var(--produce); text-transform: uppercase; letter-spacing: .05em; }
+    .tl b { display: block; font-size: 9pt; margin: .5mm 0 1mm; }
+    .tl ul { margin: 0; padding-left: 4mm; } .tl li { font-size: 7.8pt; line-height: 1.35; }
+    table { width: 100%; border-collapse: collapse; font-size: 8pt; background: #fff; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    th, td { text-align: left; padding: 1.1mm 2.2mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: #f3f1ea; font-size: 8pt; }
+    tr:last-child td { border-bottom: none; }
+    .note { font-size: 8pt; color: var(--muted); }
+    .bar-btn { position: fixed; top: 12px; right: 12px; display: flex; gap: 8px; }
+    .bar-btn a, .bar-btn button { font: 600 14px system-ui; padding: 8px 14px; border-radius: 8px; border: 1px solid #ccc; background: #fff; color: #1f2a20; text-decoration: none; cursor: pointer; }
+    .bar-btn .primary { background: #3f6b34; color: #fff; border-color: #3f6b34; }
+  </style>
+</head>
+<body>
+<div class="bar-btn noprint">
+  <a href="/">Back to the site</a>
+  <a class="primary" href="/assets/AIAE-concept-brief.pdf" download>Download PDF</a>
+  <button type="button" onclick="window.print()">Print</button>
+</div>
+
+<!-- PAGE 1 -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="/assets/img/favicon.svg" alt="">Amhara Integrated Agriculture Ecosystem</span><span>Concept brief · 1 / 2</span></div>
+  <h1>From <span class="g">land intelligence</span><br>to market delivery</h1>
+  <p class="lead">An integrated agricultural system for the Amhara Region of Ethiopia that connects land, water, climate, crops, farmers, markets, storage, transport and customers into one coordinated value chain. <b>Plan backwards from the market to the land; execute forwards from land preparation to the final customer; learn from every season.</b></p>
+  <div class="hero"><img src="/assets/img/hero-landscape.svg" alt="Illustrated highland landscape showing the whole chain."></div>
+
+  <h2><span class="bar"></span>The problem and the approach</h2>
+  <div class="two">
+    <div class="box push"><h3>Today: push</h3><ol><li>Grow what was grown last year</li><li>Inputs arrive when they arrive</li><li>Everyone harvests and sells at once; prices drop</li><li>Transport is ad hoc; losses are not measured</li><li>Nobody learns what worked</li></ol></div>
+    <div class="box pull"><h3>With the ecosystem: pull</h3><ol><li>Start from what buyers will take</li><li>Match it to land, monthly water and climate risk</li><li>Order inputs backwards from planting day</li><li>Monitor, harvest, store and move on schedule</li><li>Settle fairly; feed the lessons back</li></ol></div>
+  </div>
+
+  <h2><span class="bar"></span>Twelve stages, one learning loop</h2>
+  <div class="stages" id="stages"></div>
+
+  <div class="foot"><span>land-suitability.github.io</span><span>Concept stage · all numbers from synthetic demos</span></div>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page">
+  <div class="top"><span class="brand"><img src="/assets/img/favicon.svg" alt="">Amhara Integrated Agriculture Ecosystem</span><span>Concept brief · 2 / 2</span></div>
+
+  <h2 style="margin-top:4mm"><span class="bar"></span>One platform behind the chain</h2>
+  <div class="arch"><img src="/assets/img/platform-architecture.svg" alt="Platform architecture diagram."></div>
+
+  <h2><span class="bar"></span>What the stage demos show</h2>
+  <table>
+    <thead><tr><th>Stage</th><th>Question</th><th>Demo result (synthetic data)</th></tr></thead>
+    <tbody>
+      <tr><td>02 Water</td><td>Is a seasonal water total enough to plan with?</td><td>No: a mix that fits the season total runs short in February; plans use 12 monthly limits.</td></tr>
+      <tr><td>03 Climate</td><td>Does a long-cycle variety fit the season?</td><td>A 150-day maize fits only 2 years in 3; early teff fits every year.</td></tr>
+      <tr><td>04 Planning</td><td>Which limits bind, and what is relaxing them worth?</td><td>One more m³ of March water: about 50 birr; impossible contracts flagged before planting.</td></tr>
+      <tr><td>05 Market</td><td>Which contract design will both sides honour?</td><td>Price band ±15%: honoured 98% of the time versus 77% for a fixed price.</td></tr>
+      <tr><td>06 Inputs</td><td>When must inputs be ordered?</td><td>53 days ahead from the union (90% on time); shortfalls flagged in March.</td></tr>
+      <tr><td>08 Monitoring</td><td>Can problems be seen early?</td><td>All 6 pest-hit plots warned by day 70; forecast within 1 t of the truth.</td></tr>
+      <tr><td>09 Harvest</td><td>Does harvest order matter?</td><td>Deadline-first: zero late plots versus 19; tarpaulins add about 6% value.</td></tr>
+      <tr><td>10 Storage</td><td>Store or sell at harvest?</td><td>Hermetic bags: +7% by May; traditional bags never beat selling at harvest.</td></tr>
+      <tr><td>11 Logistics</td><td>How much can routing save?</td><td>Shared routes 14% cheaper; rainy-season detours add up to 96%.</td></tr>
+      <tr><td>12 Distribution</td><td>Did incomes really rise?</td><td>+8,795 birr per household against comparison kebeles; a naive view would claim +14,722.</td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="bar"></span>Pilot roadmap (18 to 24 months)</h2>
+  <div class="timeline">
+    <div class="tl"><span class="w">Months 1 to 4</span><b>Establish the pilot</b><ul><li>Select one woreda</li><li>Register farmers, map plots</li><li>Assess land, soil, water</li></ul></div>
+    <div class="tl"><span class="w">Months 3 to 8</span><b>Production and market</b><ul><li>1 to 2 crops from demand</li><li>Secure inputs</li><li>Buyer agreements before planting</li></ul></div>
+    <div class="tl"><span class="w">Months 6 to 14</span><b>Deploy the platform</b><ul><li>Geospatial database</li><li>Suitability and water maps</li><li>Advisory and monitoring</li></ul></div>
+    <div class="tl"><span class="w">Months 12 to 24</span><b>Measure and expand</b><ul><li>Income, yield, losses</li><li>Compare with non-pilot kebeles</li><li>Expand on evidence</li></ul></div>
+  </div>
+
+  <h2><span class="bar"></span>Potential partners</h2>
+  <p>Regional and woreda agriculture offices and water authorities; regional universities and agricultural research institutes; national agricultural transformation and research institutes; multilateral food and agriculture organisations and rural development funds; seed and fertilizer suppliers, transporters, warehouses, processors and exporters; farmer cooperatives, unions and water-user associations. <span class="note">These are potential partners to approach; no partnership is implied.</span></p>
+
+  <div class="foot"><span>Methods, code and interactive demos for every stage: land-suitability.github.io</span><span>Concept stage · synthetic data · no personal data</span></div>
+</section>
+
+<script>
+fetch("/stages.json").then(function (r) { return r.json(); }).then(function (d) {
+  document.getElementById("stages").innerHTML = d.stages.map(function (s) {
+    var n = String(s.number).padStart(2, "0");
+    return '<div class="st d-' + s.domain + '"><b><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-' + n + '"/></svg>' + n + " " + s.title + "</b><span>" + s.summary + "</span></div>";
+  }).join("");
+  document.body.setAttribute("data-ready", "1");
+});
+</script>
+</body>
+</html>
