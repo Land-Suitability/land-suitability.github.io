@@ -157,6 +157,18 @@
     update();
   }
 
+  // ---------------- keyboard access to horizontally scrollable tables
+  function scrollableTables() {
+    document.querySelectorAll(".table-wrap, .spine-wrap").forEach(function (w) {
+      if (w.scrollWidth > w.clientWidth + 2 && !w.hasAttribute("tabindex")) {
+        w.setAttribute("tabindex", "0");
+        w.setAttribute("role", "region");
+        var cap = w.querySelector("caption, th");
+        w.setAttribute("aria-label", "Scrollable table" + (cap ? ": " + cap.textContent.trim().slice(0, 60) : ""));
+      }
+    });
+  }
+
   // ---------------- reveal on scroll
   function reveal() {
     var els = document.querySelectorAll(".reveal");
@@ -234,7 +246,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage];
+    var steps = [favicon, brandLogo, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();
