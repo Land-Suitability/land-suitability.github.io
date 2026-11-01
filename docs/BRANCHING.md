@@ -206,6 +206,7 @@ git push
 | Stage page still shows the placeholder | Branch name does not match the slug in `stages.json`, or the build has not run | Check `/build-info.json` on the site (`"source": "branch"`?); compare names; re-run the workflow from Actions |
 | Pushed to a stage branch, site did not change | `notify-hub.yml` missing on the branch, or Actions disabled | Restore it from `main/templates/stage-branch/.github/workflows/`; check the Actions tab |
 | Push to `main` builds but does not deploy | `main` is not the default branch (deploy only runs on the default branch) | Settings → General → Default branch = `main`; check with `git ls-remote --symref origin HEAD` (must say `refs/heads/main`) |
+| Deploy job fails in about 2 seconds with no log | The `github-pages` environment only allows deploys from listed branches, and `main` is not on the list | Settings → Environments → `github-pages` → Deployment branches and tags: add `main` (and remove old working branches) |
 | Page has no styling | Shared CSS linked with a relative path | Use `/assets/css/site.css` (leading slash) |
 | Workflow warns "branch is not listed in stages.json" | A `stage/*` branch without a registry entry | Register it (5.4) or delete the branch |
 | Chart shows old numbers | `assets/demo-*.json` not regenerated | Run `python3 src/demo.py` on the stage branch and commit |
@@ -254,6 +255,9 @@ These happened while the site was being built. Each one is now covered by a rule
 9. **The default branch did not change when expected.** Builds from `main` succeeded but every deploy job was
    skipped, because GitHub still reported the old working branch as default. → Verify settings changes with
    `git ls-remote --symref origin HEAD`, and check that the deploy job ran, not only the build.
+10. **Changing the default branch was not enough.** The `github-pages` environment kept an allow-list that named
+   only the old default branch, so the first deploy from `main` failed instantly with no log. → After changing
+   the default branch, also update Settings → Environments → `github-pages` → Deployment branches and tags.
 
 ---
 
