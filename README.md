@@ -7,6 +7,23 @@ This branch contains **only** the content for stage 09 of the
 Amhara Integrated Agriculture Ecosystem operating chain. Everything at the root of this branch is
 published under `/stages/09-harvest-postharvest/`.
 
+## What is here (v0.1)
+
+| Path | Content |
+|---|---|
+| `index.html` | Stage page: purpose, domain model, scheduling/loss/drying/grading methods, Amhara context, data, interactive loss and grade charts, lot table, outputs, validation, roadmap |
+| `src/harvest/` | Python package: domain model, EDF/FIFO harvest scheduling, field loss model, drying, grading, traceable lot formation with quality segregation |
+| `src/demo.py` | Cluster A teff harvest demo (writes assets/demo-harvest.json) |
+| `tests/test_harvest.py` | Unit tests |
+
+```bash
+pip install numpy
+python3 src/demo.py
+python3 tests/test_harvest.py
+```
+
+Loss rates and grade limits are indicative; use measured losses and the buyer's contract grades.
+
 ## Rules
 
 - `index.html` at the branch root is the stage's landing page. Keep it.

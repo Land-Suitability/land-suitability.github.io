@@ -1,0 +1,410 @@
+{
+ "steps": [
+  "Field (late harvest)",
+  "Threshing",
+  "Drying (water removed)",
+  "Handling"
+ ],
+ "fifo": [
+  7.89,
+  3.87,
+  5.65,
+  1.84
+ ],
+ "edf": [
+  6.05,
+  3.91,
+  5.62,
+  1.86
+ ],
+ "days": [
+  "20 Oct",
+  "21 Oct",
+  "22 Oct",
+  "23 Oct",
+  "24 Oct",
+  "26 Oct",
+  "27 Oct",
+  "28 Oct",
+  "29 Oct",
+  "30 Oct",
+  "31 Oct",
+  "02 Nov",
+  "03 Nov",
+  "04 Nov",
+  "05 Nov",
+  "06 Nov",
+  "07 Nov",
+  "09 Nov",
+  "10 Nov",
+  "11 Nov",
+  "12 Nov"
+ ],
+ "ha_done": [
+  4.3,
+  5.4,
+  5.1,
+  4.8,
+  5.1,
+  5.0,
+  4.6,
+  4.9,
+  5.6,
+  5.1,
+  4.6,
+  4.7,
+  5.2,
+  4.9,
+  5.5,
+  5.0,
+  4.9,
+  5.3,
+  4.5,
+  5.4,
+  4.8
+ ],
+ "capacity": 5.0,
+ "late": {
+  "fifo": 19,
+  "edf": 0
+ },
+ "delivered_t": {
+  "fifo": 182.3,
+  "edf": 184.1
+ },
+ "grades_mixed_t": {
+  "grade 1": 37.2,
+  "grade 2": 137.5,
+  "grade 3": 9.4
+ },
+ "grades_segregated_t": {
+  "grade 1": 84.5,
+  "grade 2": 45.9,
+  "grade 3": 53.7
+ },
+ "grades_all_tarp_t": {
+  "grade 1": 165.0,
+  "grade 2": 19.1
+ },
+ "value_index": {
+  "mixed": 186.3,
+  "segregated": 186.6,
+  "all_tarp": 197.3
+ },
+ "lots": [
+  {
+   "lot_id": "LOT-A-TEFF-2026-W43-001",
+   "weight_kg": 9468,
+   "plots": 8,
+   "plot_ids": [
+    "P-024",
+    "P-031",
+    "P-035",
+    "P-041"
+   ],
+   "moisture": 12.4,
+   "foreign": 1.86,
+   "grade": "grade 2",
+   "week": "2026-W43"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W43-002",
+   "weight_kg": 7923,
+   "plots": 9,
+   "plot_ids": [
+    "P-118",
+    "P-135",
+    "P-141",
+    "P-142"
+   ],
+   "moisture": 12.5,
+   "foreign": 1.85,
+   "grade": "grade 2",
+   "week": "2026-W43"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W43-003",
+   "weight_kg": 9436,
+   "plots": 9,
+   "plot_ids": [
+    "P-010",
+    "P-012",
+    "P-017",
+    "P-018"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.57,
+   "grade": "grade 1",
+   "week": "2026-W43"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W43-004",
+   "weight_kg": 9462,
+   "plots": 8,
+   "plot_ids": [
+    "P-061",
+    "P-063",
+    "P-072",
+    "P-076"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.64,
+   "grade": "grade 1",
+   "week": "2026-W43"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W43-005",
+   "weight_kg": 6980,
+   "plots": 8,
+   "plot_ids": [
+    "P-119",
+    "P-122",
+    "P-124",
+    "P-129"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.66,
+   "grade": "grade 1",
+   "week": "2026-W43"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-006",
+   "weight_kg": 9864,
+   "plots": 10,
+   "plot_ids": [
+    "P-009",
+    "P-037",
+    "P-051",
+    "P-052"
+   ],
+   "moisture": 12.5,
+   "foreign": 2.15,
+   "grade": "grade 3",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-007",
+   "weight_kg": 9023,
+   "plots": 10,
+   "plot_ids": [
+    "P-102",
+    "P-104",
+    "P-117",
+    "P-120"
+   ],
+   "moisture": 12.5,
+   "foreign": 1.75,
+   "grade": "grade 2",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-008",
+   "weight_kg": 9685,
+   "plots": 8,
+   "plot_ids": [
+    "P-003",
+    "P-013",
+    "P-014",
+    "P-016"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.57,
+   "grade": "grade 2",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-009",
+   "weight_kg": 9168,
+   "plots": 9,
+   "plot_ids": [
+    "P-046",
+    "P-049",
+    "P-057",
+    "P-058"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.68,
+   "grade": "grade 1",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-010",
+   "weight_kg": 9775,
+   "plots": 10,
+   "plot_ids": [
+    "P-109",
+    "P-110",
+    "P-115",
+    "P-121"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.65,
+   "grade": "grade 2",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W44-011",
+   "weight_kg": 4023,
+   "plots": 3,
+   "plot_ids": [
+    "P-160",
+    "P-161",
+    "P-170"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.6,
+   "grade": "grade 1",
+   "week": "2026-W44"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-012",
+   "weight_kg": 9728,
+   "plots": 11,
+   "plot_ids": [
+    "P-002",
+    "P-006",
+    "P-007",
+    "P-008"
+   ],
+   "moisture": 12.5,
+   "foreign": 2.05,
+   "grade": "grade 3",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-013",
+   "weight_kg": 9749,
+   "plots": 9,
+   "plot_ids": [
+    "P-055",
+    "P-073",
+    "P-075",
+    "P-085"
+   ],
+   "moisture": 12.5,
+   "foreign": 2.05,
+   "grade": "grade 3",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-014",
+   "weight_kg": 7893,
+   "plots": 8,
+   "plot_ids": [
+    "P-108",
+    "P-114",
+    "P-136",
+    "P-143"
+   ],
+   "moisture": 12.4,
+   "foreign": 2.12,
+   "grade": "grade 3",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-015",
+   "weight_kg": 9979,
+   "plots": 10,
+   "plot_ids": [
+    "P-033",
+    "P-038",
+    "P-039",
+    "P-040"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.64,
+   "grade": "grade 1",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-016",
+   "weight_kg": 9530,
+   "plots": 8,
+   "plot_ids": [
+    "P-080",
+    "P-084",
+    "P-100",
+    "P-106"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.61,
+   "grade": "grade 1",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W45-017",
+   "weight_kg": 6885,
+   "plots": 6,
+   "plot_ids": [
+    "P-153",
+    "P-157",
+    "P-158",
+    "P-165"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.59,
+   "grade": "grade 1",
+   "week": "2026-W45"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W46-018",
+   "weight_kg": 9856,
+   "plots": 7,
+   "plot_ids": [
+    "P-000",
+    "P-001",
+    "P-028",
+    "P-050"
+   ],
+   "moisture": 12.5,
+   "foreign": 2.12,
+   "grade": "grade 3",
+   "week": "2026-W46"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W46-019",
+   "weight_kg": 6597,
+   "plots": 7,
+   "plot_ids": [
+    "P-099",
+    "P-113",
+    "P-127",
+    "P-150"
+   ],
+   "moisture": 12.5,
+   "foreign": 2.12,
+   "grade": "grade 3",
+   "week": "2026-W46"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W46-020",
+   "weight_kg": 9429,
+   "plots": 10,
+   "plot_ids": [
+    "P-004",
+    "P-005",
+    "P-015",
+    "P-030"
+   ],
+   "moisture": 12.5,
+   "foreign": 0.45,
+   "grade": "grade 1",
+   "week": "2026-W46"
+  },
+  {
+   "lot_id": "LOT-A-TEFF-2026-W46-021",
+   "weight_kg": 9638,
+   "plots": 12,
+   "plot_ids": [
+    "P-064",
+    "P-083",
+    "P-086",
+    "P-112"
+   ],
+   "moisture": 12.4,
+   "foreign": 0.6,
+   "grade": "grade 1",
+   "week": "2026-W46"
+  }
+ ]
+}
