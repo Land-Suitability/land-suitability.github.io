@@ -127,6 +127,17 @@ fetch("/stages.json").then(function (r) { return r.json(); }).then(function (d) 
   }).join("");
   document.body.setAttribute("data-ready", "1");
 });
+// small screens: scale the A4 pages to fit (screen only; printing and the PDF are unaffected)
+(function () {
+  try {
+    var fit = function () {
+      var z = Math.min(1, (window.innerWidth - 16) / 794);
+      document.querySelectorAll(".page").forEach(function (p) { p.style.zoom = z < 1 ? z : ""; });
+    };
+    window.matchMedia("print").addEventListener("change", function (m) { if (m.matches) document.querySelectorAll(".page").forEach(function (p) { p.style.zoom = ""; }); else fit(); });
+    fit(); window.addEventListener("resize", fit);
+  } catch (e) { if (window.console) console.error("[brief] fit failed", e); }
+})();
 </script>
 </body>
 </html>

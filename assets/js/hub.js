@@ -25,7 +25,8 @@
       var n = String(s.number).padStart(2, "0"), pos = HOTSPOTS[n];
       if (!pos) return;
       var a = document.createElement("a");
-      a.className = "hotspot d-" + s.domain;
+      // labels near an edge open inwards so they are never clipped
+      a.className = "hotspot d-" + s.domain + (pos[0] > 68 ? " hs-r" : pos[0] < 32 ? " hs-l" : "");
       a.href = "/stages/" + s.slug + "/";
       a.style.left = pos[0] + "%";
       a.style.top = "calc(" + pos[1] + "% * var(--img-share, 1))";

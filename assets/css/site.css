@@ -564,3 +564,7 @@ td.ident { white-space: nowrap; }
   object-fit: cover; border-bottom: 1px solid var(--border); background: #eaf2ea; }
 :root[data-theme="dark"] .versus .vignette { filter: brightness(.88) saturate(.95); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .versus .vignette { filter: brightness(.88) saturate(.95); } }
+
+/* hub hotspots near the edges: label opens inwards */
+.hotspot.hs-r .hs-label { left: auto; right: -6px; transform: none; }
+.hotspot.hs-l .hs-label { left: -6px; transform: none; }
