@@ -205,13 +205,29 @@ git push
 |---|---|---|
 | Stage page still shows the placeholder | Branch name does not match the slug in `stages.json`, or the build has not run | Check `/build-info.json` on the site (`"source": "branch"`?); compare names; re-run the workflow from Actions |
 | Pushed to a stage branch, site did not change | `notify-hub.yml` missing on the branch, or Actions disabled | Restore it from `main/templates/stage-branch/.github/workflows/`; check the Actions tab |
-| Push to `main` builds but does not deploy | `main` is not the default branch (deploy only runs on the default branch) | Settings → Branches → default branch = `main` |
+| Push to `main` builds but does not deploy | `main` is not the default branch (deploy only runs on the default branch) | Settings → General → Default branch = `main`; check with `git ls-remote --symref origin HEAD` (must say `refs/heads/main`) |
 | Page has no styling | Shared CSS linked with a relative path | Use `/assets/css/site.css` (leading slash) |
 | Workflow warns "branch is not listed in stages.json" | A `stage/*` branch without a registry entry | Register it (5.4) or delete the branch |
 | Chart shows old numbers | `assets/demo-*.json` not regenerated | Run `python3 src/demo.py` on the stage branch and commit |
 | `check_branch.py` fails on author | Commit made before `git config` was set | If not yet pushed: `git commit --amend --reset-author --no-edit`; if pushed: leave it and fix the config for future commits |
 
 ---
+
+## 6a. Writing a stage page that uses the shared features
+
+Stage pages get extra features from `/assets/js/site.js` automatically if they keep the standard structure:
+
+| Keep this in the stage page | You get |
+|---|---|
+| `<script src="/assets/js/site.js">` and `<link href="/assets/css/site.css">` | Palette search, theme, progress bar, back-to-top, shared logo |
+| `<section class="stage-hero">` with a `.pill` | Stage illustration beside the hero, domain icon in the pill |
+| `<nav class="toc">` with `<a href="#id">` chips and `<section id="...">` | Scroll spy highlighting the current section; sections become searchable |
+| `<nav class="pager">` | Previous/next cards with illustrations |
+| `<figure class="diagram"><img ...></figure>` | Click-to-enlarge lightbox |
+| `<div class="table-wrap">` around wide tables | Keyboard-scrollable region |
+
+Illustrations and social cards live on `main` (`assets/img/stages/`, `assets/img/social/`); regenerate them with
+`python3 tools/make_stage_art.py` and `node tools/render_media.js`, never by hand.
 
 ## 7. Lessons from mistakes already made
 
@@ -235,6 +251,9 @@ These happened while the site was being built. Each one is now covered by a rule
    was rejected as non-fast-forward. → Always `git pull --ff-only` before starting work on a branch; if it
    happens to an unpushed commit, `git fetch && git rebase origin/main`, re-run the checker, then push.
    Never "fix" it with `--force`.
+9. **The default branch did not change when expected.** Builds from `main` succeeded but every deploy job was
+   skipped, because GitHub still reported the old working branch as default. → Verify settings changes with
+   `git ls-remote --symref origin HEAD`, and check that the deploy job ran, not only the build.
 
 ---
 

@@ -43,20 +43,43 @@ the rules, recipes and checklists) and run `python3 tools/check_branch.py` befor
 ## Layout of the hub branch
 
 ```
-index.html                     portal page (stage grid generated from stages.json)
+index.html                     portal: illustrated landscape with stage hotspots, questions, wheel, stage grid
+how-it-works.html              one season told in 13 steps with a scrolling season clock
+data-spine.html                interactive arc diagram of every hand-off between stages
+glossary.html                  plain-language glossary with search
+brief.html                     two-page concept brief (rendered to assets/AIAE-concept-brief.pdf)
+404.html, robots.txt, sitemap.xml
 stages.json                    single source of truth: project, domains, 12 stages
-assets/css/site.css            shared design system (light and dark theme)
-assets/js/site.js              theme toggle, mobile navigation
-assets/img/                    SVG diagrams
+assets/css/site.css            shared design system (light and dark theme, all components)
+assets/js/site.js              shared behaviour for every page, including stage branches (see below)
+assets/js/hub.js               hub only: landscape hotspots and the value-chain wheel
+assets/img/icons.svg           icon sprite: 12 stage icons (i-01..i-12), 4 domain icons, UI icons
+assets/img/stages/<slug>.svg   one illustration per stage (generated)
+assets/img/social/<slug>.jpg   one link-preview card per stage (generated)
+assets/img/                    hero landscape, diagrams, favicon, hub social card
 stages/<slug>/index.html       generated placeholder page for each stage
 templates/stage.html           template for stage pages
 templates/stage-branch/        files seeded into every new stage branch
 tools/build_site.py            validate stages.json, regenerate grid and placeholders
+tools/make_stage_art.py        regenerate the twelve stage illustrations
+tools/render_media.js          regenerate social cards and the brief PDF (Playwright)
 tools/create_stage_branches.py create the 12 orphan stage branches
 tools/check_branch.py          pre-push checker for the branch rules
 docs/BRANCHING.md              branch working rules, recipes and checklists
 .github/workflows/pages.yml    assemble all branches and deploy
 ```
+
+## What every page gets from the shared files
+
+Stage branches link `/assets/css/site.css` and `/assets/js/site.js`, so these features reach all
+twelve stage pages without editing the branches:
+
+- Quick-jump and search palette (Ctrl+K, "/" or the Jump button), searching inside every stage page
+- Theme toggle (light and dark), reading-progress bar, back-to-top button, reveal-on-scroll
+- On stage pages: the chain navigator strip, the stage illustration beside the hero, scroll spy on
+  the table of contents, and previous/next cards (stage 12 wraps to 01)
+- Click-to-enlarge lightbox for every `figure.diagram img`; keyboard-focusable scrollable tables
+- Shared logo and favicon
 
 ## Common tasks
 
@@ -70,13 +93,18 @@ python3 tools/build_site.py
 # Create the stage branches (skips any that already exist), then push them
 python3 tools/create_stage_branches.py --push
 
+# Regenerate stage illustrations, social cards and the brief PDF
+python3 tools/make_stage_art.py
+node tools/render_media.js
+
 # Preview locally (absolute /assets paths need a server at the repo root)
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
 ## One-time GitHub setup
 
-1. Make `main` the default branch.
+1. Make `main` the default branch: Settings → General → Default branch → switch to `main` → Update.
+   Check it with `git ls-remote --symref origin HEAD` (must print `ref: refs/heads/main`).
 2. Settings → Pages → Build and deployment → Source: **GitHub Actions**.
 3. Settings → Actions → General → Workflow permissions: allow workflows to run (default read is fine,
    the workflows request the permissions they need).
