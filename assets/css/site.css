@@ -557,3 +557,10 @@ td.ident { white-space: nowrap; }
 @media (max-width: 860px) { .map-teaser { grid-template-columns: 1fr; } }
 :root[data-theme="dark"] .map-teaser img { filter: brightness(.9) saturate(.95); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map-teaser img { filter: brightness(.9) saturate(.95); } }
+
+/* hub: illustrated push and pull cards */
+.versus .card { overflow: hidden; }
+.versus .vignette { display: block; width: calc(100% + 36px); max-width: none; margin: -18px -18px 12px; aspect-ratio: 600 / 240; height: auto;
+  object-fit: cover; border-bottom: 1px solid var(--border); background: #eaf2ea; }
+:root[data-theme="dark"] .versus .vignette { filter: brightness(.88) saturate(.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .versus .vignette { filter: brightness(.88) saturate(.95); } }

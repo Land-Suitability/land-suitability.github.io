@@ -276,19 +276,19 @@ def platform_architecture() -> str:
 CHECK_JS = """
 async (svgText) => {
   document.body.innerHTML = svgText;
-  const svg = document.querySelector('svg');
-  const rects = [...svg.querySelectorAll('rect')].filter(r => r.getAttribute('width') !== svg.viewBox.baseVal.width + '');
-  const bad = [];
-  const vb = svg.viewBox.baseVal;
+  const svg = document.querySelector('svg'), vb = svg.viewBox.baseVal, bad = [];
+  // boxes in viewBox coordinates, so labels inside translated groups are compared correctly
+  const box = (el) => { const bb = el.getBBox(), m = svg.getCTM().inverse().multiply(el.getCTM());
+    const a = new DOMPoint(bb.x, bb.y).matrixTransform(m), b = new DOMPoint(bb.x + bb.width, bb.y + bb.height).matrixTransform(m);
+    return { x: a.x, y: a.y, w: b.x - a.x, h: b.y - a.y }; };
+  const rects = [...svg.querySelectorAll('rect')].filter(r => !r.closest('defs')).map(r => box(r)).filter(b => !(b.w >= vb.width - 1 && b.h >= vb.height - 1));
   for (const t of svg.querySelectorAll('text')) {
-    if (!t.textContent.trim()) continue;
-    const b = t.getBBox();
-    if (b.x < 0 || b.y < 0 || b.x + b.width > vb.width || b.y + b.height > vb.height) bad.push('outside canvas: ' + t.textContent);
-    // the smallest rect that contains the text's anchor point must contain the whole text
-    const ax = +t.getAttribute('x'), ay = +t.getAttribute('y');
-    const owners = rects.map(r => r.getBBox()).filter(r => ax >= r.x && ax <= r.x + r.width && ay >= r.y && ay <= r.y + r.height)
-      .sort((p, q) => p.width * p.height - q.width * q.height);
-    if (owners.length) { const r = owners[0]; if (b.x < r.x - 1 || b.x + b.width > r.x + r.width + 1) bad.push('overflows its box: ' + t.textContent); }
+    if (!t.textContent.trim() || t.closest('defs')) continue;
+    const b = box(t);
+    if (b.x < -1 || b.y < -1 || b.x + b.w > vb.width + 1 || b.y + b.h > vb.height + 1) bad.push('outside canvas: ' + t.textContent);
+    const cx = b.x + b.w / 2, cy = b.y + b.h / 2;
+    const own = rects.filter(r => cx >= r.x && cx <= r.x + r.w && cy >= r.y && cy <= r.y + r.h).sort((p, q) => p.w * p.h - q.w * q.h)[0];
+    if (own && (b.x < own.x - 1 || b.x + b.w > own.x + own.w + 1)) bad.push('overflows its box: ' + t.textContent);
   }
   return bad;
 }
@@ -305,10 +305,101 @@ def check(files: dict[str, str]) -> int:
     return subprocess.run(["node", "-e", js]).returncode
 
 
+# ------------------------------------------------------------------ 4. push and pull vignettes (hub "From push to pull")
+def _scene(w: int, h: int, title: str, desc: str) -> list[str]:
+    return [f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" font-family='{FONT}' role="img" aria-labelledby="t d">
+  <title id="t">{E(title)}</title><desc id="d">{E(desc)}</desc>
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcebf1"/><stop offset="1" stop-color="#f4efe2"/></linearGradient></defs>
+  <rect width="{w}" height="{h}" fill="url(#sky)"/>
+  <path d="M0 150 C90 120 170 132 260 112 S430 100 520 126 S{w - 40} 110 {w} 118 V{h} H0Z" fill="#c4d6b0"/>
+  <path d="M0 176 C140 160 300 170 440 162 S{w - 60} 166 {w} 170 V{h} H0Z" fill="#a9c48f"/>
+  <rect y="196" width="{w}" height="{h - 196}" fill="#d9c79c"/>''']
+
+
+def _sack(x, y, c="#e9dcb8"):
+    return (f'<path d="M{x - 13} {y} q-3 -22 6 -30 h14 q9 8 6 30 z" fill="{c}" stroke="#9c8656" stroke-width="1.5"/>'
+            f'<path d="M{x - 6} {y - 30} l6 -6 l6 6" fill="none" stroke="#9c8656" stroke-width="1.5"/>')
+
+
+def _person(x, y, shirt):
+    return (f'<circle cx="{x}" cy="{y - 40}" r="7" fill="#6b4a32"/><path d="M{x - 7} {y - 31} h14 l3 22 h-20 z" fill="{shirt}"/>'
+            f'<path d="M{x - 5} {y - 9} v9 M{x + 5} {y - 9} v9" stroke="#3a2e22" stroke-width="3" stroke-linecap="round"/>')
+
+
+def vignette_push() -> str:
+    W, H = 600, 240
+    s = _scene(W, H, "Push: everyone sells at once", "A glut of sacks at the market at harvest, a price board with a falling red arrow, "
+               "a donkey still bringing more grain and a spoiled pile on the ground.")
+    # market stalls
+    for i, c in enumerate(["#e9b949", "#9a4a28"]):
+        x = 60 + i * 120
+        s.append(f'<rect x="{x}" y="128" width="96" height="62" fill="#fff6e3" stroke="#a88d55"/><path d="M{x - 6} 128 h108 l-10 -18 h-88 z" fill="{c}"/>')
+    # a glut of sacks
+    for row, n in enumerate([7, 6, 5, 3]):
+        for j in range(n):
+            s.append(_sack(300 + j * 26 + row * 13, 214 - row * 24))
+    # spoiled grain pile
+    s.append('<ellipse cx="250" cy="220" rx="26" ry="7" fill="#8f8a55"/><path d="M236 214 q14 -10 28 0" fill="#a39b5f"/>')
+    s.append('<g fill="#6f6a3e"><circle cx="242" cy="216" r="1.6"/><circle cx="252" cy="213" r="1.6"/><circle cx="259" cy="217" r="1.6"/></g>')
+    # donkey with more sacks
+    s.append('<g transform="translate(500 188)"><path d="M-30 0 h52 v-20 q0 -12 -12 -12 h-30 q-10 0 -10 12 z" fill="#8a7a6a"/>'
+             '<path d="M22 -26 l16 -16 l6 4 l-10 20" fill="#8a7a6a"/><path d="M-26 0 v20 M-12 0 v20 M8 0 v20 M18 0 v20" stroke="#5d5045" stroke-width="5" stroke-linecap="round"/>'
+             + _sack(-14, -30, "#e9dcb8") + _sack(10, -30, "#e9dcb8") + "</g>")
+    s.append(_person(570, 210, "#3f6b34"))
+    # price board falling
+    s.append('<g transform="translate(70 22)"><rect width="150" height="88" rx="10" fill="#fff" stroke="#b5651d" stroke-width="2"/>'
+             '<text x="14" y="24" font-size="14" font-weight="800" fill="#1f2a20">Price at harvest</text>'
+             '<path d="M18 40 L52 46 L80 60 L106 70 L132 78" fill="none" stroke="#b3161a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+             '<path d="M132 78 l-12 -1 l7 -9 z" fill="#b3161a"/></g>')
+    s.append('<text x="440" y="40" font-size="15" font-weight="800" fill="#7a3a12">too much, too soon</text>')
+    s.append("</svg>\n")
+    return "".join(s)
+
+
+def vignette_pull() -> str:
+    W, H = 600, 240
+    s = _scene(W, H, "Pull: deliver what was agreed", "A signed contract with a price band, a loaded truck on the road to the buyer's warehouse, "
+               "a calendar with the delivery date and a steady price line.")
+    # road
+    s.append(f'<path d="M0 222 C160 206 300 214 {W} 196" stroke="#8d8d8d" stroke-width="16" fill="none"/>'
+             f'<path d="M0 222 C160 206 300 214 {W} 196" stroke="#f2f2f2" stroke-width="2" stroke-dasharray="12 10" fill="none"/>')
+    # buyer's warehouse
+    s.append('<g transform="translate(470 104)"><rect x="0" y="30" width="110" height="64" fill="#efe3c8" stroke="#6b4f2a" stroke-width="1.5"/>'
+             '<path d="M-8 34 L55 4 L118 34" fill="none" stroke="#9a4a28" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>'
+             '<rect x="40" y="56" width="30" height="38" fill="#6b4f2a"/><text x="55" y="48" font-size="12" font-weight="800" fill="#6b4f2a" text-anchor="middle">BUYER</text></g>')
+    # truck with sacks
+    s.append('<g transform="translate(250 176)"><rect x="0" y="0" width="90" height="32" rx="3" fill="#2f5d8a"/>'
+             '<path d="M90 8 h24 l14 14 v10 h-38 z" fill="#3f78ad"/><rect x="98" y="11" width="13" height="9" fill="#cfe6f5"/>'
+             '<circle cx="22" cy="34" r="8" fill="#263238"/><circle cx="104" cy="34" r="8" fill="#263238"/>'
+             + "".join(_sack(14 + j * 20, 0) for j in range(4)) + "</g>")
+    s.append('<path d="M392 196 h44" stroke="#3f6b34" stroke-width="3" stroke-dasharray="3 7" stroke-linecap="round"/><path d="M436 196 l-10 -6 v12 z" fill="#3f6b34"/>')
+    # contract
+    s.append('<g transform="translate(40 24) rotate(-4)"><rect width="132" height="156" rx="8" fill="#fff" stroke="#3f6b34" stroke-width="2"/>'
+             '<text x="14" y="26" font-size="14" font-weight="800" fill="#1f2a20">Contract</text>'
+             '<path d="M14 42 h100 M14 58 h88 M14 74 h96" stroke="#c9c2b0" stroke-width="5" stroke-linecap="round"/>'
+             '<text x="14" y="102" font-size="12" font-weight="700" fill="#3f6b34">price band ±15%</text>'
+             '<path d="M16 132 q14 -18 26 -2 t28 -4" fill="none" stroke="#2f5d8a" stroke-width="2.5" stroke-linecap="round"/>'
+             '<circle cx="104" cy="128" r="16" fill="#3f6b34"/><path d="M96 128 l6 6 l11 -12" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></g>')
+    # calendar + steady price
+    s.append('<g transform="translate(212 30)"><rect width="104" height="80" rx="10" fill="#fff" stroke="#3f6b34" stroke-width="2"/>'
+             '<rect width="104" height="22" rx="10" fill="#3f6b34"/><rect y="12" width="104" height="10" fill="#3f6b34"/>'
+             '<text x="52" y="16" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">APRIL</text>'
+             + "".join(f'<rect x="{10 + (i % 6) * 15}" y="{32 + (i // 6) * 14}" width="11" height="9" rx="2" fill="{"#c43c2c" if i == 9 else "#dfe8d6"}"/>' for i in range(18))
+             + '</g>')
+    s.append('<g transform="translate(340 30)"><rect width="110" height="70" rx="10" fill="#fff" stroke="#3f6b34" stroke-width="2"/>'
+             '<text x="12" y="20" font-size="12" font-weight="800" fill="#1f2a20">Price agreed</text>'
+             '<path d="M14 50 L40 44 L64 46 L96 40" fill="none" stroke="#2f7d4a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>'
+             '<path d="M10 34 h90 M10 58 h90" stroke="#2f7d4a" stroke-width="1.2" stroke-dasharray="4 4"/></g>')
+    s.append("</svg>\n")
+    return "".join(s)
+
+
 def main() -> int:
     files = {"market-backward-pull.svg": market_backward_pull(),
              "value-chain-loop.svg": value_chain_loop(),
-             "platform-architecture.svg": platform_architecture()}
+             "platform-architecture.svg": platform_architecture(),
+             "vignette-push.svg": vignette_push(),
+             "vignette-pull.svg": vignette_pull()}
     for name, svg in files.items():
         (IMG / name).write_text(svg, encoding="utf-8")
         print(f"[OK] assets/img/{name}")
