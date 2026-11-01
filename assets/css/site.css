@@ -471,3 +471,9 @@ kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border
 @media (max-width: 700px) { .pano-btn { display: none; } .pano-inner, .pano-inner img { width: 1600px; } .pano-inner img { height: 240px; } }
 :root[data-theme="dark"] .pano-inner img { filter: brightness(.88) saturate(.95); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pano-inner img { filter: brightness(.88) saturate(.95); } }
+
+/* slim illustrated banner cut from the chain panorama */
+.page-banner { height: 130px; border-radius: 16px; border: 1px solid var(--border); background: #eaf2ea url(/assets/img/chain-panorama.svg) no-repeat;
+  background-size: 2400px auto; margin: 4px 0 8px; box-shadow: 0 6px 22px rgba(31,42,32,.08); }
+:root[data-theme="dark"] .page-banner { filter: brightness(.88) saturate(.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .page-banner { filter: brightness(.88) saturate(.95); } }
