@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 08 domain model</text>
+<line x1="250" y1="105" x2="530" y2="105" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="500" y1="100" x2="530" y2="101" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="521" y="97" font-size="11" fill="#555">compares</text>
+<line x1="780" y1="95" x2="750" y2="98" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="530" y1="156" x2="383" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="462" y="187" font-size="11" fill="#555">raises</text>
+<line x1="679" y1="160" x2="726" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="708" y="188" font-size="11" fill="#555">forecasts</text>
+<rect x="30" y="50" width="220" height="110" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">NDVISeries (input)</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#8a6d3b"/>
+<text x="42" y="96" font-size="12" fill="#222">plot, crop</text>
+<text x="42" y="113" font-size="12" fill="#222">days after planting (07)</text>
+<text x="42" y="130" font-size="12" fill="#222">NDVI, cloud flag</text>
+<text x="42" y="147" font-size="12" fill="#222">(Sentinel-2, ~5 days)</text>
+<rect x="280" y="50" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">CropCurve (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#2f5d8a"/>
+<text x="292" y="96" font-size="12" fill="#222">double logistic</text>
+<text x="292" y="113" font-size="12" fill="#222">green-up, senescence</text>
+<text x="292" y="130" font-size="12" fill="#222">normal spread (sd)</text>
+<rect x="530" y="50" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Signals service</text>
+<text x="542" y="96" font-size="12" fill="#e7ebe4">clean_and_smooth()</text>
+<text x="542" y="113" font-size="12" fill="#e7ebe4">anomalies(), detect_alerts()</text>
+<text x="542" y="130" font-size="12" fill="#e7ebe4">features(), fit_linear()</text>
+<text x="542" y="147" font-size="12" fill="#e7ebe4">deep: NDVIYieldNet (PyTorch)</text>
+<rect x="780" y="50" width="220" height="76" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="890.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Weather context (03)</text>
+<line x1="780" y1="78" x2="1000" y2="78" stroke="#8a6d3b"/>
+<text x="792" y="96" font-size="12" fill="#222">dry spells, rainfall</text>
+<text x="792" y="113" font-size="12" fill="#222">frost risk</text>
+<rect x="30" y="225" width="470" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="265.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Alert (output)</text>
+<line x1="30" y1="253" x2="500" y2="253" stroke="#9a4a28"/>
+<text x="42" y="271" font-size="12" fill="#222">plot, day, severity (watch | warning)</text>
+<text x="42" y="288" font-size="12" fill="#222">z-score below normal</text>
+<text x="42" y="305" font-size="12" fill="#222">cause hint: widespread vs isolated</text>
+<text x="42" y="322" font-size="12" fill="#222">to stage 07 visits</text>
+<rect x="530" y="225" width="470" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="765.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">YieldForecast (output)</text>
+<line x1="530" y1="253" x2="1000" y2="253" stroke="#9a4a28"/>
+<text x="542" y="271" font-size="12" fill="#222">cluster, crop, as-of day</text>
+<text x="542" y="288" font-size="12" fill="#222">median and 80% interval (t)</text>
+<text x="542" y="305" font-size="12" fill="#222">method: linear | 1D-CNN</text>
+<text x="542" y="322" font-size="12" fill="#222">to stages 05, 09, 10, 11</text>
+</svg>
