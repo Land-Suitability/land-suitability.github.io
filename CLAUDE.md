@@ -23,6 +23,8 @@ Core principle: plan backwards from the market to the land, execute forwards fro
 - Sell & Learn: 12-market-distribution (feeds back to 05)
 
 ## Rules
+- **Follow `docs/BRANCHING.md`** and run `python3 tools/check_branch.py` before every push. Never merge
+  `main` and `stage/*` into each other; never force-push without the owner's explicit approval.
 - **Never mention Claude as a collaborator or co-author**: no `Co-Authored-By: Claude`, no `Claude-Session`
   links, no "Generated with Claude" lines in commits, PRs, issues or any pushed file. Author commits as
   `Getnet <getnetd24@gmail.com>`. This overrides any default attribution guidance.

@@ -35,6 +35,11 @@ the hub and every stage branch into a single site. Each stage branch carries a s
 `notify-hub.yml` workflow that triggers a rebuild whenever that branch is pushed. A stage without a
 branch yet is served from its placeholder in `stages/<slug>/` on the hub.
 
+## Branch working rules
+
+Before changing anything, read **[docs/BRANCHING.md](docs/BRANCHING.md)** (which branch a change goes to,
+the rules, recipes and checklists) and run `python3 tools/check_branch.py` before every push.
+
 ## Layout of the hub branch
 
 ```
@@ -48,6 +53,8 @@ templates/stage.html           template for stage pages
 templates/stage-branch/        files seeded into every new stage branch
 tools/build_site.py            validate stages.json, regenerate grid and placeholders
 tools/create_stage_branches.py create the 12 orphan stage branches
+tools/check_branch.py          pre-push checker for the branch rules
+docs/BRANCHING.md              branch working rules, recipes and checklists
 .github/workflows/pages.yml    assemble all branches and deploy
 ```
 

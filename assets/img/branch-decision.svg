@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="Helvetica, Arial, sans-serif">
+  <rect width="960" height="520" fill="#fbfaf6"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <text x="480" y="30" text-anchor="middle" font-size="19" font-weight="bold" fill="#1f2a20">Which branch does my change go to?</text>
+
+  <rect x="355" y="50" width="250" height="44" rx="22" fill="#1f2a20"/>
+  <text x="480" y="78" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">I want to change something</text>
+
+  <!-- question 1 -->
+  <rect x="300" y="125" width="360" height="62" rx="10" fill="#fff" stroke="#555"/>
+  <text x="480" y="150" text-anchor="middle" font-size="13" font-weight="bold">Is it about ONE stage only?</text>
+  <text x="480" y="170" text-anchor="middle" font-size="12" fill="#5d665e">its page, its code, its data, its figures</text>
+  <line x1="480" y1="94" x2="480" y2="123" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- yes branch -->
+  <line x1="300" y1="156" x2="200" y2="156" stroke="#555" stroke-width="2"/>
+  <line x1="200" y1="156" x2="200" y2="228" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+  <text x="250" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="#3f6b34">YES</text>
+  <rect x="40" y="230" width="320" height="150" rx="12" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="2"/>
+  <text x="200" y="256" text-anchor="middle" font-size="14" font-weight="bold">stage/&lt;NN-slug&gt; branch</text>
+  <g font-size="12" fill="#222">
+    <text x="56" y="282">index.html, docs/, assets/ of the stage</text>
+    <text x="56" y="302">src/ package, tests/, demo data</text>
+    <text x="56" y="322">README.md of the stage</text>
+    <text x="56" y="346" fill="#6b5428">push -> notify-hub.yml -> site rebuilds</text>
+    <text x="56" y="366" fill="#6b5428">published at /stages/&lt;NN-slug&gt;/</text>
+  </g>
+
+  <!-- no branch -->
+  <line x1="660" y1="156" x2="760" y2="156" stroke="#555" stroke-width="2"/>
+  <line x1="760" y1="156" x2="760" y2="228" stroke="#555" stroke-width="2" marker-end="url(#a)"/>
+  <text x="710" y="148" text-anchor="middle" font-size="12" font-weight="bold" fill="#9a4a28">NO</text>
+  <rect x="600" y="230" width="320" height="150" rx="12" fill="#e3efdd" stroke="#3f6b34" stroke-width="2"/>
+  <text x="760" y="256" text-anchor="middle" font-size="14" font-weight="bold">main (the hub)</text>
+  <g font-size="12" fill="#222">
+    <text x="616" y="282">portal page, shared CSS / JS / images</text>
+    <text x="616" y="302">stages.json (add, rename, retitle a stage)</text>
+    <text x="616" y="322">tools/, templates/, workflows, docs/</text>
+    <text x="616" y="346" fill="#2f5022">push -> pages.yml -> site rebuilds</text>
+    <text x="616" y="366" fill="#2f5022">published at /</text>
+  </g>
+
+  <!-- both -->
+  <rect x="200" y="410" width="560" height="90" rx="12" fill="#f5e1d7" stroke="#9a4a28"/>
+  <text x="480" y="434" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d3218">Touches BOTH (e.g. a new stage, a renamed slug, a new shared component)?</text>
+  <text x="480" y="456" text-anchor="middle" font-size="12" fill="#6d3218">1. main first: stages.json + build_site.py (+ create_stage_branches.py for a new stage)</text>
+  <text x="480" y="476" text-anchor="middle" font-size="12" fill="#6d3218">2. then the stage branch. Two separate commits, two separate pushes. Never merge one into the other.</text>
+  <line x1="480" y1="187" x2="480" y2="408" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
+</svg>
