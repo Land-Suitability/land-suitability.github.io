@@ -71,7 +71,7 @@
       <span>Branch <code>stage/07-farm-production</code></span>
     </div>
     <div class="stats"><div class="stat"><b>519</b><span>plots assigned in the demo</span></div><div class="stat"><b>260</b><span>households involved</span></div><div class="stat"><b>5</b><span>operation types tracked</span></div><div class="stat"><b>12</b><span>priority visits per week</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -160,6 +160,52 @@
     <details class="table-view" style="margin-top:12px"><summary>This week's visit list (top 8)</summary>
       <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Plot</th><th>Kebele</th><th class="num">Priority</th><th>Reasons</th></tr></thead><tbody><tr><td>P-0202-0</td><td>Kebele 3</td><td class='num'>105.8</td><td>land_prep missing, planting, basal_fert, top_dress</td></tr><tr><td>P-0230-0</td><td>Kebele 3</td><td class='num'>100.0</td><td>planting, basal_fert, weeding missing, top_dress missing</td></tr><tr><td>P-0178-0</td><td>Kebele 3</td><td class='num'>94.8</td><td>planting, basal_fert, weeding, top_dress</td></tr><tr><td>P-0114-0</td><td>Kebele 3</td><td class='num'>91.0</td><td>basal_fert, weeding missing, top_dress missing</td></tr><tr><td>P-0174-2</td><td>Kebele 3</td><td class='num'>84.2</td><td>planting, basal_fert missing, weeding, top_dress</td></tr><tr><td>P-0086-1</td><td>Kebele 3</td><td class='num'>80.2</td><td>planting, basal_fert missing, top_dress missing</td></tr><tr><td>P-0022-0</td><td>Kebele 3</td><td class='num'>79.2</td><td>planting, basal_fert, weeding, top_dress</td></tr><tr><td>P-0098-1</td><td>Kebele 3</td><td class='num'>78.9</td><td>basal_fert missing, weeding missing, top_dress missing</td></tr></tbody></table></div>
     </details>
+  </section>
+
+  <section id="try">
+    <h2>Try it: my field calendar</h2>
+    <p class="section-intro">Pick a crop and a planting date to get the operations calendar with its on-time windows, from the same operation templates as <code>build_calendar()</code> in <code>src/farm_ops/operations.py</code>.</p>
+    <div class="calc" id="calc-s07">
+      <div>
+      <div class="field"><label for="crop">Crop</label><output id="crop-o"></output><select id="crop"><option value="teff" selected>Teff (Meher)</option><option value="maize">Maize (Meher)</option></select></div>
+      <div class="field"><label for="pd">Planting date</label><output id="pd-o"></output><input type="date" id="pd" value="2026-07-10"></div>
+      <p class="note">Windows are the tolerance used for adherence scoring: done inside the window counts as on time.</p>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s07-big"></div>
+        <div class="table-wrap"><table id="s07-t" style="width:100%;border-collapse:collapse;font-size:14px"></table></div>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s07");
+    if (!root) return;
+    try {
+      bindOut(root);
+      var T = { teff: [["Land preparation", -25, 10], ["Planting", 0, 7], ["Basal fertilizer", 0, 5], ["Weeding", 25, 7], ["Top dressing (urea)", 30, 7]],
+                 maize: [["Land preparation", -20, 10], ["Planting", 0, 7], ["Basal fertilizer", 0, 5], ["Weeding", 25, 7], ["Top dressing (urea)", 35, 7], ["Second weeding", 50, 10]] };
+      function d(base, off) { var x = new Date(base); x.setDate(x.getDate() + off); return x.toLocaleDateString("en-GB", { day: "numeric", month: "short" }); }
+      function update() {
+        var base = new Date($("pd").value + "T00:00:00"); if (isNaN(base)) return;
+        var rows = T[$("crop").value];
+        $("s07-big").innerHTML = rows.length + " operations<small>from " + d(base, rows[0][1]) + " to " + d(base, rows[rows.length - 1][1]) + "</small>";
+        $("s07-t").innerHTML = '<tr><th style="text-align:left;padding:6px">Operation</th><th style="text-align:left;padding:6px">Target</th><th style="text-align:left;padding:6px">On time if done</th></tr>' +
+          rows.map(function (r) { return '<tr><td style="padding:6px;border-top:1px solid var(--border)">' + r[0] + '</td><td style="padding:6px;border-top:1px solid var(--border)"><b>' + d(base, r[1]) +
+            '</b></td><td style="padding:6px;border-top:1px solid var(--border)">' + d(base, r[1] - r[2]) + " to " + d(base, r[1] + r[2]) + "</td></tr>"; }).join("");
+        $("crop-o").textContent = ""; $("pd-o").textContent = "";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s07]", e); }
+    })();
+    </script>
+    </div>
   </section>
 
   <section id="outputs">
