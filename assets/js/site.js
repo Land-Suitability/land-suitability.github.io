@@ -103,7 +103,7 @@
     back.className = "palette-backdrop";
     back.innerHTML = '<div class="palette" role="dialog" aria-modal="true" aria-label="Jump to a stage">' +
       '<input type="search" placeholder="Search stages and their content… (e.g. hermetic, shadow price, 08)" aria-label="Search the site">' +
-      '<ul role="listbox"></ul><div class="foot">↑ ↓ to move · Enter to open · Esc to close</div></div>';
+      '<ul role="listbox"></ul><div class="foot">↑ ↓ to move · Enter to open · Esc to close · ? for all shortcuts</div></div>';
     document.body.appendChild(back);
     var input = back.querySelector("input"), list = back.querySelector("ul"), items = [], sel = 0;
 
@@ -256,6 +256,31 @@
     els.forEach(function (e) { io.observe(e); });
   }
 
+  // ---------------- keyboard shortcuts and the "?" help overlay
+  function shortcuts() {
+    var help = document.createElement("div");
+    help.className = "palette-backdrop"; help.id = "kbd-help";
+    var rows = [["/ or Ctrl K", "Search stages and their content"], ["t", "Toggle light or dark theme"],
+      ["[ and ]", "Previous or next stage (on stage pages)"], ["Esc", "Close dialogs"], ["?", "Show this help"]];
+    help.innerHTML = '<div class="palette" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" style="padding:18px 20px">' +
+      '<h3 style="margin:0 0 10px">Keyboard shortcuts</h3><table style="width:100%;border-collapse:collapse">' +
+      rows.map(function (r) { return '<tr><td style="padding:7px 0;width:40%"><kbd class="k">' + r[0] + '</kbd></td><td style="padding:7px 0;color:var(--muted)">' + r[1] + "</td></tr>"; }).join("") +
+      '</table><p style="margin:12px 0 0;font-size:13px;color:var(--muted)">Shortcuts are ignored while you type in a field.</p></div>';
+    document.body.appendChild(help);
+    help.addEventListener("click", function (e) { if (e.target === help) help.classList.remove("open"); });
+    document.addEventListener("keydown", function (e) {
+      var t = e.target && e.target.tagName, typing = /input|textarea|select/i.test(t || "") || (e.target && e.target.isContentEditable);
+      if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "?") { e.preventDefault(); help.classList.toggle("open"); }
+      else if (e.key === "Escape") { help.classList.remove("open"); }
+      else if (e.key === "t") { var tb = document.querySelector("[data-theme-toggle]"); if (tb) tb.click(); }
+      else if (e.key === "[" || e.key === "]") {
+        var card = document.querySelector(".pager-card." + (e.key === "[" ? "prev" : "next"));
+        if (card) location.href = card.getAttribute("href");
+      }
+    });
+  }
+
   // ---------------- keyboard access to horizontally scrollable tables
   function scrollableTables() {
     document.querySelectorAll(".table-wrap, .spine-wrap").forEach(function (w) {
@@ -345,7 +370,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp];
+    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();

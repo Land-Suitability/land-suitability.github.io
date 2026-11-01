@@ -450,3 +450,6 @@ figure.diagram img, .zoomable { cursor: zoom-in; }
 @media (pointer: coarse) { .wheel-hint .kbd-tip, .tool-btn kbd { display: none; } }
 
 .nav a { white-space: nowrap; }
+
+kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border: 1px solid var(--border); border-bottom-width: 2px;
+  border-radius: 5px; padding: 3px 6px; background: var(--surface-2); color: var(--text); }
