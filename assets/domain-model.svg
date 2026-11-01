@@ -4,12 +4,12 @@
 <text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 08 domain model</text>
 <line x1="250" y1="105" x2="530" y2="105" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
 <line x1="500" y1="100" x2="530" y2="101" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
-<text x="521" y="97" font-size="11" fill="#555">compares</text>
+<text x="515" y="94" font-size="11" fill="#555" text-anchor="middle" stroke="#fbfaf6" stroke-width="4" paint-order="stroke" stroke-linejoin="round">compares</text>
 <line x1="780" y1="95" x2="750" y2="98" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
 <line x1="530" y1="156" x2="383" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
-<text x="462" y="187" font-size="11" fill="#555">raises</text>
+<text x="456" y="184" font-size="11" fill="#555" text-anchor="middle" stroke="#fbfaf6" stroke-width="4" paint-order="stroke" stroke-linejoin="round">raises</text>
 <line x1="679" y1="160" x2="726" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
-<text x="708" y="188" font-size="11" fill="#555">forecasts</text>
+<text x="710" y="196" font-size="11" fill="#555" text-anchor="start" stroke="#fbfaf6" stroke-width="4" paint-order="stroke" stroke-linejoin="round">forecasts</text>
 <rect x="30" y="50" width="220" height="110" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
 <text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">NDVISeries (input)</text>
 <line x1="30" y1="78" x2="250" y2="78" stroke="#8a6d3b"/>
