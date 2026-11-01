@@ -71,7 +71,7 @@
       <span>Branch <code>stage/08-monitoring-risk</code></span>
     </div>
     <div class="stats"><div class="stat"><b>5 d</b><span>Sentinel-2 revisit</span></div><div class="stat"><b>6/6</b><span>pest plots warned in the demo</span></div><div class="stat"><b>2</b><span>forecast models: linear and PyTorch</span></div><div class="stat"><b>±8%</b><span>forecast interval by day 85</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -158,6 +158,54 @@
           <tbody><tr><td>Day 40</td><td class="num">50.3</td><td class="num">43.4 to 57.2</td><td class="num">49.3</td></tr><tr><td>Day 55</td><td class="num">48.9</td><td class="num">43.9 to 53.9</td><td class="num">49.3</td></tr><tr><td>Day 70</td><td class="num">49.0</td><td class="num">44.6 to 53.5</td><td class="num">49.3</td></tr><tr><td>Day 85</td><td class="num">49.5</td><td class="num">45.5 to 53.4</td><td class="num">49.3</td></tr><tr><td>Day 100</td><td class="num">49.5</td><td class="num">45.7 to 53.4</td><td class="num">49.3</td></tr></tbody></table></div>
         <p class="viz-sub" style="margin-top:6px">Values (t).</p>
       </details>
+    </div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: is my plot behind?</h2>
+    <p class="section-intro">Compare one NDVI reading with the expected growth curve of a healthy teff crop (a double logistic) and its normal spread, as in <code>anomalies()</code> and <code>detect_alerts()</code> in <code>src/monitoring/signals.py</code>. One reading is only a hint; the stage raises alerts after 10 days below normal.</p>
+    <div class="calc" id="calc-s08">
+      <div>
+      <div class="field"><label for="dap">Days after planting</label><output id="dap-o"></output><input type="range" id="dap" min="0" max="140" step="1" value="70" data-unit="days"></div>
+      <div class="field"><label for="nd">Measured NDVI (cloud-free)</label><output id="nd-o"></output><input type="range" id="nd" min="0.05" max="0.95" step="0.01" value="0.48" data-unit=""><small>Healthy teff peaks at about 0.7 to 0.8 mid-season.</small></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s08-big"></div>
+        <div id="s08-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s08-v"></div>
+        <svg id="s08-svg" viewBox="0 0 300 120" style="width:100%;height:auto" aria-hidden="true"></svg>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s08");
+    if (!root) return;
+    try {
+      bindOut(root);
+      var B = 0.18, A = 0.55, U = 35, UR = 0.12, D = 105, DR = 0.10, SD = 0.05;
+      function exp(t) { return B + A * (1 / (1 + Math.exp(-UR * (t - U))) - 1 / (1 + Math.exp(-DR * (t - D)))); }
+      function update() {
+        var t = num("dap"), e = exp(t), z = (num("nd") - e) / SD;
+        $("s08-big").innerHTML = "z = " + (z >= 0 ? "+" : "") + fmt(z, 1) + "<small>expected NDVI " + fmt(e, 2) + " ± " + fmt(1.5 * SD, 2) + " at day " + t + "</small>";
+        $("s08-detail").textContent = z < -1.5 ? "Below the normal range for this growth stage." : z > 1.5 ? "Above the normal range: a vigorous plot." : "Inside the normal range.";
+        var v = $("s08-v"); v.className = "verdict " + (z <= -2.75 ? "bad" : z <= -1.5 ? "warn" : "good");
+        v.textContent = z <= -2.75 ? "Warning level: check for pests, disease or missed operations, and compare with nearby plots." : z <= -1.5 ? "Watch level: look again at the next satellite pass." : "No action needed.";
+        var path = "", band1 = "", band2 = "";
+        for (var d = 0; d <= 140; d += 4) { var x = 10 + d * 2, y = 110 - exp(d) * 120; path += (d ? "L" : "M") + x + "," + y; band1 += (d ? "L" : "M") + x + "," + (110 - (exp(d) + 1.5 * SD) * 120); band2 = "L" + x + "," + (110 - (exp(d) - 1.5 * SD) * 120) + band2; }
+        $("s08-svg").innerHTML = '<path d="' + band1 + band2.replace(/^L/, "L") + 'Z" fill="currentColor" opacity=".12"/><path d="' + path + '" fill="none" stroke="currentColor" stroke-width="2"/>' +
+          '<circle cx="' + (10 + t * 2) + '" cy="' + (110 - num("nd") * 120) + '" r="5" fill="' + (z <= -1.5 ? "#b3161a" : "#3f6b34") + '"/>';
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s08]", e); }
+    })();
+    </script>
     </div>
   </section>
 
