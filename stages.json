@@ -17,6 +17,7 @@
   "stages": [
     {
       "number": 1,
+      "status": "v0.1",
       "slug": "01-land-intelligence",
       "title": "Land Intelligence & Suitability",
       "domain": "plan",
@@ -41,6 +42,7 @@
     },
     {
       "number": 2,
+      "status": "v0.1",
       "slug": "02-water-resources",
       "title": "Water Resource Assessment",
       "domain": "plan",
@@ -65,6 +67,7 @@
     },
     {
       "number": 3,
+      "status": "v0.1",
       "slug": "03-climate-intelligence",
       "title": "Climate & Seasonal Intelligence",
       "domain": "plan",
@@ -89,6 +92,7 @@
     },
     {
       "number": 4,
+      "status": "v0.1",
       "slug": "04-crop-planning",
       "title": "Crop Selection & Production Planning",
       "domain": "plan",
@@ -113,6 +117,7 @@
     },
     {
       "number": 5,
+      "status": "v0.1",
       "slug": "05-market-intelligence",
       "title": "Market Intelligence & Demand Forecasting",
       "domain": "plan",
@@ -137,6 +142,7 @@
     },
     {
       "number": 6,
+      "status": "v0.1",
       "slug": "06-input-coordination",
       "title": "Input & Resource Coordination",
       "domain": "produce",
@@ -161,6 +167,7 @@
     },
     {
       "number": 7,
+      "status": "v0.1",
       "slug": "07-farm-production",
       "title": "Farm Implementation & Production",
       "domain": "produce",
@@ -185,6 +192,7 @@
     },
     {
       "number": 8,
+      "status": "v0.1",
       "slug": "08-monitoring-risk",
       "title": "Monitoring, Forecasting & Risk",
       "domain": "produce",
@@ -209,6 +217,7 @@
     },
     {
       "number": 9,
+      "status": "v0.1",
       "slug": "09-harvest-postharvest",
       "title": "Harvest & Post-harvest Management",
       "domain": "move",
@@ -233,6 +242,7 @@
     },
     {
       "number": 10,
+      "status": "v0.1",
       "slug": "10-storage-aggregation",
       "title": "Storage, Processing & Aggregation",
       "domain": "move",
@@ -257,6 +267,7 @@
     },
     {
       "number": 11,
+      "status": "v0.1",
       "slug": "11-logistics-transport",
       "title": "Logistics & Transportation",
       "domain": "move",
@@ -281,6 +292,7 @@
     },
     {
       "number": 12,
+      "status": "v0.1",
       "slug": "12-market-distribution",
       "title": "Market Distribution & Customer Network",
       "domain": "sell",

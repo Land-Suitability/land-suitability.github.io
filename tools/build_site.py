@@ -55,6 +55,7 @@ class Stage:
     kpis: list[str] = field(default_factory=list)
     upstream: list[str] = field(default_factory=list)
     downstream: list[str] = field(default_factory=list)
+    status: str = "skeleton"         # e.g. "skeleton", "v0.1" (methodology, demo and tests on the stage branch)
 
     @property
     def padded(self) -> str:
@@ -140,7 +141,7 @@ def render_grid(domains: list[Domain], stages: list[Stage], prefix: str) -> str:
         for s in (x for x in stages if x.domain == d.id):
             cards.append(
                 f'        <a class="card stage-card" href="{s.url}">\n'
-                f'          <span class="stage-num">Stage {s.padded}</span>\n'
+                f'          <span class="stage-num">Stage {s.padded} <span class="status">{esc(s.status)}</span></span>\n'
                 f'          <h3>{esc(s.title)}</h3>\n'
                 f'          <p>{esc(s.summary)}</p>\n'
                 f'          <span class="branch">{esc(s.branch(prefix))}</span>\n'
