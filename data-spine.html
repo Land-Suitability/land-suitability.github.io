@@ -20,6 +20,8 @@
     #spine.dim .arc { opacity: .08; }
     #spine.dim .arc.hl { opacity: 1; stroke-width: 3.6; }
     #spine.dim .node:not(.hl) { opacity: .35; }
+    #spine .baton { stroke: var(--surface); stroke-width: 1.5; transition: opacity .2s ease; }
+    #spine.dim .baton { opacity: .06; } #spine.dim .baton.hl { opacity: 1; }
     #spine text.lab { paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
     #spine .node { cursor: pointer; transition: opacity .15s ease; }
     #spine .node:focus { outline: none; }
@@ -117,7 +119,9 @@
     var W = 1100, H = 520, base = 270, x0 = 60, step = (W - 2 * x0) / 11;
     function X(n) { return x0 + (parseInt(n, 10) - 1) * step; }
     var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H });
-    var gArcs = svgEl("g", {}), gNodes = svgEl("g", {});
+    var gArcs = svgEl("g", {}), gDots = svgEl("g", { "aria-hidden": "true" }), gNodes = svgEl("g", {});
+    // records travelling along the hand-offs (decorative; off when the reader prefers reduced motion)
+    var moving = !(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     svg.appendChild(svgEl("line", { x1: x0 - 30, x2: W - x0 + 30, y1: base, y2: base, stroke: "var(--border)", "stroke-width": 2 }));
     var arcs = [];
     FLOWS.forEach(function (f) {
@@ -128,7 +132,13 @@
       var p = svgEl("path", { d: path, class: "arc" + (fwd ? "" : " fb"), stroke: col });
       var t = svgEl("title", {}); t.textContent = f[0] + " → " + f[1] + ": " + f[2]; p.appendChild(t);
       gArcs.appendChild(p);
-      arcs.push({ el: p, f: f });
+      var dot = null;
+      if (moving) {
+        dot = svgEl("circle", { r: fwd ? 4.5 : 3.5, class: "baton", fill: col });
+        dot.appendChild(svgEl("animateMotion", { path: path, dur: (2.6 + r / 160).toFixed(2) + "s", begin: (-Math.random() * 4).toFixed(2) + "s", repeatCount: "indefinite" }));
+        gDots.appendChild(dot);
+      }
+      arcs.push({ el: p, f: f, dot: dot });
       var tr = document.createElement("tr");
       tr.innerHTML = '<td style="padding:8px 12px;border-top:1px solid var(--border)"><a href="/stages/' + S[f[0]].slug + '/">' + f[0] + " " + S[f[0]].title + "</a></td>" +
         '<td style="padding:8px 12px;border-top:1px solid var(--border)"><code class="rec">' + f[2] + "</code></td>" +
@@ -139,11 +149,11 @@
     var lbl = svgEl("text", { x: x0 - 30, y: 40, "font-size": 13, "font-weight": 700, fill: "var(--muted)" }); lbl.textContent = "THIS SEASON ↑";
     var lbl2 = svgEl("text", { x: x0 - 30, y: H - 20, "font-size": 13, "font-weight": 700, fill: "var(--muted)" }); lbl2.textContent = "LEARNING LOOP ↓";
     svg.appendChild(lbl); svg.appendChild(lbl2);
-    svg.appendChild(gArcs); svg.appendChild(gNodes);
+    svg.appendChild(gArcs); svg.appendChild(gDots); svg.appendChild(gNodes);
 
     function select(n) {
       host.classList.add("dim");
-      arcs.forEach(function (a) { a.el.classList.toggle("hl", a.f[0] === n || a.f[1] === n); });
+      arcs.forEach(function (a) { var on = a.f[0] === n || a.f[1] === n; a.el.classList.toggle("hl", on); if (a.dot) a.dot.classList.toggle("hl", on); });
       gNodes.querySelectorAll(".node").forEach(function (g) {
         var k = g.getAttribute("data-n");
         g.classList.toggle("hl", k === n || arcs.some(function (a) { return (a.f[0] === n && a.f[1] === k) || (a.f[1] === n && a.f[0] === k); }));

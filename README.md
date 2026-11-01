@@ -69,6 +69,7 @@ tools/make_hub_diagrams.py     redraw the three hub diagrams (--check measures e
 tools/make_tools_page.py       rebuild tools.html (calculators index)
 tools/make_findings_page.py    rebuild findings.html (one chart per stage demo)
 tools/make_pilot_map.py        rebuild pilot-map.html and assets/img/pilot-map.svg
+tools/sweep_pages.js           check every page for JS errors, failed requests, overflow and broken images
 tools/render_media.js          regenerate social cards and the brief PDF (Playwright)
 tools/create_stage_branches.py create the 12 orphan stage branches
 tools/check_branch.py          pre-push checker for the branch rules
