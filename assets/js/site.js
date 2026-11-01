@@ -364,6 +364,14 @@
       var pill = hero && hero.querySelector(".pill");
       if (pill && !pill.querySelector("svg")) pill.insertAdjacentHTML("afterbegin", icon("d-" + me.domain));
 
+      // illustrated strip in the Amhara context section: this stage's part of the chain panorama
+      var am = document.getElementById("amhara"), amH = am && am.querySelector("h2");
+      if (amH && !am.querySelector(".stage-strip")) {
+        var centre = (me.number - 0.5) * 200;                // panorama: 2400 px wide, 200 px per stage
+        amH.insertAdjacentHTML("afterend", '<div class="page-banner stage-strip" role="img" aria-label="Illustration: stage ' + me.number +
+          ' on the chain, in a highland setting" style="background-position: calc(50% + ' + (1200 - centre) + 'px) 66%"></div>');
+      }
+
       // cross-links from this stage's calculator and demo to the hub's collections
       [["try", "/tools.html", "All 12 calculators"], ["demo", "/findings.html", "All 12 findings at a glance"]].forEach(function (x) {
         var sec = document.getElementById(x[0]);

@@ -522,3 +522,12 @@ kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border
   #chain .domain.d-sell .domain-head p { font-size: 14px; }
   #chain .domain.d-move .domain-head, #chain .domain.d-sell .domain-head { min-height: 84px; align-content: flex-start; }
 }
+
+/* stage pages: numbered methods, four methods as 2 x 2, illustrated strip in the Amhara section */
+#methods .grid { counter-reset: method; }
+#methods .grid > .card h3 { display: flex; align-items: center; gap: 10px; }
+#methods .grid > .card h3::before { counter-increment: method; content: counter(method); flex: 0 0 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 14px; font-weight: 800; color: var(--d, var(--accent)); background: var(--d-bg, var(--surface-2));
+  border: 1.5px solid var(--d, var(--accent)); }
+@media (min-width: 761px) { #methods .grid:has(> .card:nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); } }
+.stage-strip { height: 110px; margin: 0 0 18px; }
