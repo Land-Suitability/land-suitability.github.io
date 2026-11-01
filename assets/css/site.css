@@ -506,3 +506,19 @@ kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border
 /* cross-links from stage sections to the hub's calculators and findings pages */
 .xlink { margin: 14px 0 0; }
 .xlink .chip { font-weight: 600; }
+
+/* stage grid on the hub: every card the same size, whatever the number of stages in the domain
+   (auto-fit stretched a lone stage 12 card across the whole row) */
+#chain .domain .grid.cols-3 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+@media (min-width: 981px) {
+  /* balanced rows: Plan 5 across, Produce 3 across, then Move (3) and Sell & Learn (1) share a row of 4 */
+  #chain > .container { display: grid; grid-template-columns: 3fr 1fr; column-gap: 16px; }
+  #chain > .container > * { grid-column: 1 / -1; min-width: 0; }
+  #chain > .container > .domain.d-move { grid-column: 1; }
+  #chain > .container > .domain.d-sell { grid-column: 2; }
+  #chain .domain.d-plan .grid.cols-3 { grid-template-columns: repeat(5, 1fr); }
+  #chain .domain.d-produce .grid.cols-3, #chain .domain.d-move .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  #chain .domain.d-sell .grid.cols-3 { grid-template-columns: 1fr; }
+  #chain .domain.d-sell .domain-head p { font-size: 14px; }
+  #chain .domain.d-move .domain-head, #chain .domain.d-sell .domain-head { min-height: 84px; align-content: flex-start; }
+}
