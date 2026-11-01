@@ -71,7 +71,7 @@
       <span>Branch <code>stage/10-storage-aggregation</code></span>
     </div>
     <div class="stats"><div class="stat"><b>19 → 12 km</b><span>average haul, 1 vs 2 centres</span></div><div class="stat"><b>+7%</b><span>hermetic storage until May</span></div><div class="stat"><b>0%</b><span>traditional storage never beats harvest sale</span></div><div class="stat"><b>6 wk</b><span>over capacity at the main centre</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -154,6 +154,61 @@
           <tbody><tr><td>W1</td><td class="num">0</td><td class="num">1,200</td></tr><tr><td>W2</td><td class="num">0</td><td class="num">1,200</td></tr><tr><td>W3</td><td class="num">260</td><td class="num">1,200</td></tr><tr><td>W4</td><td class="num">520</td><td class="num">1,200</td></tr><tr><td>W5</td><td class="num">720</td><td class="num">1,200</td></tr><tr><td>W6</td><td class="num">920</td><td class="num">1,200</td></tr><tr><td>W7</td><td class="num">1,120</td><td class="num">1,200</td></tr><tr><td>W8</td><td class="num">1,320</td><td class="num">1,200</td></tr><tr><td>W9</td><td class="num">1,520</td><td class="num">1,200</td></tr><tr><td>W10</td><td class="num">1,460</td><td class="num">1,200</td></tr><tr><td>W11</td><td class="num">1,400</td><td class="num">1,200</td></tr><tr><td>W12</td><td class="num">1,340</td><td class="num">1,200</td></tr><tr><td>W13</td><td class="num">1,250</td><td class="num">1,200</td></tr><tr><td>W14</td><td class="num">1,160</td><td class="num">1,200</td></tr><tr><td>W15</td><td class="num">1,070</td><td class="num">1,200</td></tr><tr><td>W16</td><td class="num">980</td><td class="num">1,200</td></tr><tr><td>W17</td><td class="num">890</td><td class="num">1,200</td></tr><tr><td>W18</td><td class="num">800</td><td class="num">1,200</td></tr><tr><td>W19</td><td class="num">710</td><td class="num">1,200</td></tr><tr><td>W20</td><td class="num">620</td><td class="num">1,200</td></tr><tr><td>W21</td><td class="num">530</td><td class="num">1,200</td></tr><tr><td>W22</td><td class="num">440</td><td class="num">1,200</td></tr><tr><td>W23</td><td class="num">350</td><td class="num">1,200</td></tr><tr><td>W24</td><td class="num">260</td><td class="num">1,200</td></tr><tr><td>W25</td><td class="num">170</td><td class="num">1,200</td></tr><tr><td>W26</td><td class="num">80</td><td class="num">1,200</td></tr><tr><td>W27</td><td class="num">0</td><td class="num">1,200</td></tr><tr><td>W28</td><td class="num">0</td><td class="num">1,200</td></tr><tr><td>W29</td><td class="num">0</td><td class="num">1,200</td></tr><tr><td>W30</td><td class="num">0</td><td class="num">1,200</td></tr></tbody></table></div>
         <p class="viz-sub" style="margin-top:6px">Values (t).</p>
       </details>
+    </div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: store or sell?</h2>
+    <p class="section-intro">Enter your own numbers. Value per tonne if sold after each month = price &times; (1 &minus; monthly loss)<sup>months</sup> &minus; storage cost &times; months, discounted at your cost of waiting. Same formula as <code>store_or_sell()</code> in <code>src/storage/planning.py</code>.</p>
+    <div class="calc" id="calc-s10">
+      <div>
+      <div class="field"><label for="p0">Price at harvest (birr per tonne)</label><output id="p0-o"></output><input type="range" id="p0" min="20000" max="200000" step="1000" value="95000" data-unit="birr"></div>
+      <div class="field"><label for="rise">Expected price rise by the sale month (season + inflation)</label><output id="rise-o"></output><input type="range" id="rise" min="0" max="50" step="1" value="21" data-unit="%"><small>Stage 05 shows grain prices usually rise into the lean season.</small></div>
+      <div class="field"><label for="mon">Months stored</label><output id="mon-o"></output><input type="range" id="mon" min="1" max="9" step="1" value="6" data-unit="months"></div>
+      <div class="field"><label for="tech">Storage technology</label><output id="tech-o"></output><select id="tech"><option value="2.5">Traditional bags (about 2.5% lost per month)</option><option value="0.4" selected>Hermetic bags (about 0.4% per month)</option><option value="1.0">Fumigated warehouse (about 1% per month)</option></select></div>
+      <div class="field"><label for="cost">Storage cost (birr per tonne per month)</label><output id="cost-o"></output><input type="range" id="cost" min="0" max="1000" step="10" value="250" data-unit="birr"></div>
+      <div class="field"><label for="rate">Cost of waiting (interest per month)</label><output id="rate-o"></output><input type="range" id="rate" min="0" max="5" step="0.1" value="1.5" data-unit="%"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s10-big"></div>
+        <div class="verdict" id="s10-v"></div>
+        <div class="minibars" id="s10-bars" aria-hidden="true"></div>
+        <div class="minilabels" id="s10-lab" aria-hidden="true"></div>
+        <p class="note">Bars: gain or loss per tonne against selling at harvest, month by month (red = worse than selling now). Illustrative; real prices vary.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s10");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function value(m, M) {
+        var p = num("p0") * (1 + num("rise") / 100 * Math.min(m, M) / M), loss = parseFloat($("tech").value) / 100;
+        return (p * Math.pow(1 - loss, m) - num("cost") * m) / Math.pow(1 + num("rate") / 100, m);
+      }
+      function update() {
+        var M = num("mon"), v0 = num("p0"), vm = value(M, M), gain = vm - v0;
+        $("s10-big").innerHTML = (gain >= 0 ? "+" : "") + fmt(gain) + " birr/t<small>value if sold after " + M + " months: " + fmt(vm) + " birr/t (" + (gain >= 0 ? "+" : "") + fmt(gain / v0 * 100, 1) + "%)</small>";
+        var v = $("s10-v"); v.className = "verdict " + (gain > v0 * 0.02 ? "good" : gain > 0 ? "warn" : "bad");
+        v.textContent = gain > v0 * 0.02 ? "Storing pays with these numbers." : gain > 0 ? "Storing barely pays: small changes could flip it." : "Selling at harvest is better with these numbers.";
+        var bars = "", labs = "", vals = [], mx = 1;
+        for (var m = 1; m <= M; m++) { var g = value(m, M) - v0; vals.push(g); mx = Math.max(mx, Math.abs(g)); }
+        vals.forEach(function (g, i) { bars += '<div class="' + (g < 0 ? "neg" : "") + '" style="height:' + Math.max(2, Math.abs(g) / mx * 88) + 'px" title="month ' + (i + 1) + ": " + fmt(g) + ' birr/t"></div>'; labs += "<span>" + (i + 1) + "</span>"; });
+        $("s10-bars").innerHTML = bars; $("s10-lab").innerHTML = labs;
+        $("tech-o").textContent = $("tech").value + "%/month";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s10]", e); }
+    })();
+    </script>
     </div>
   </section>
 
