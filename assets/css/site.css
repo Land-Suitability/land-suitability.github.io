@@ -586,3 +586,9 @@ td.ident { white-space: nowrap; }
 .g-note { margin: 8px 0 0; font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
 .g-key { width: 22px; height: 12px; border-radius: 3px; background: repeating-linear-gradient(135deg, rgba(42,120,214,.3) 0 6px, rgba(42,120,214,.1) 6px 12px); }
 @media (max-width: 700px) { .g-row { grid-template-columns: 1fr; gap: 4px; margin-bottom: 6px; } .g-axis .g-lab { display: none; } .g-track i span { font-size: 11px; } }
+
+/* copy buttons on code blocks */
+pre.has-copy { position: relative; }
+.copy-btn { position: absolute; top: 8px; right: 8px; font: 600 12px system-ui, sans-serif; padding: 4px 10px; border-radius: 7px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; opacity: .75; transition: opacity .15s ease; }
+pre.has-copy:hover .copy-btn, .copy-btn:focus-visible { opacity: 1; }

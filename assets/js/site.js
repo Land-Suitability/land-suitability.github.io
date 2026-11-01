@@ -402,8 +402,26 @@
     Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
   }
 
+  // ---------------- copy buttons on code blocks
+  function copyCode() {
+    if (!navigator.clipboard) return;
+    document.querySelectorAll("main pre").forEach(function (pre) {
+      if (pre.querySelector(".copy-btn")) return;
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "copy-btn"; b.textContent = "Copy"; b.setAttribute("aria-label", "Copy this code");
+      b.addEventListener("click", function () {
+        var code = pre.querySelector("code") || pre;
+        navigator.clipboard.writeText(code.innerText.replace(/\n?Copy(ied)?$/, "")).then(function () {
+          b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1600);
+        }).catch(function (e) { b.textContent = "Press Ctrl+C"; log("copy failed", e); });
+      });
+      pre.classList.add("has-copy");
+      pre.appendChild(b);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama];
+    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();
