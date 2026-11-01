@@ -7,6 +7,7 @@ so colours and line weights match the hub landscape. Re-run after editing a scen
 
     python3 tools/make_stage_art.py            # writes all 12
     python3 tools/make_stage_art.py 04 08      # only these stages
+    python3 tools/make_stage_art.py panorama   # only the 12-stage panorama strip
 """
 from __future__ import annotations
 
@@ -335,6 +336,83 @@ def s12():
     return frame(b, "Market distribution and customer network", "Grain flowing from homesteads to a buyer, payments flowing back to households, and a learning-loop symbol feeding lessons into the next season.")
 
 
+PANO_LABELS = {1: "Land", 2: "Water", 3: "Climate", 4: "Planning", 5: "Market", 6: "Inputs", 7: "Field work", 8: "Monitoring",
+               9: "Harvest", 10: "Storage", 11: "Logistics", 12: "Distribution"}
+
+
+def panorama(stages) -> str:
+    """One continuous 2400 x 360 strip walking through all twelve stages along a single road."""
+    PW, PH, seg = 2400, 360, 200
+    b = (f'<defs><linearGradient id="psky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{C["sky1"]}"/><stop offset="1" stop-color="{C["sky2"]}"/></linearGradient>'
+         f'<marker id="pa" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="{C["produce"]}"/></marker></defs>'
+         f'<rect width="{PW}" height="{PH}" fill="url(#psky)"/>')
+    # far ambas across the whole strip
+    pts = "M0 170"
+    for i in range(0, PW + 200, 200):
+        pts += f" L{i + 30} 150 L{i + 90} 150 L{i + 120} 128 L{i + 170} 128 L{i + 200} 160"
+    b += f'<path d="{pts} L{PW} {PH} L0 {PH} Z" fill="{C["hill_far"]}"/>'
+    b += f'<path d="M0 214 C300 180 600 196 900 206 C1200 216 1500 182 1800 196 C2100 210 2250 190 2400 200 L2400 {PH} L0 {PH} Z" fill="{C["hill_mid"]}"/>'
+    b += f'<path d="M0 252 C400 240 800 246 1200 250 C1600 254 2000 244 2400 250 L2400 {PH} L0 {PH} Z" fill="{C["ground"]}"/>'
+    # the road that ties the chain together
+    road = "M0 330 C300 318 600 330 900 322 C1200 314 1500 330 1800 322 C2100 314 2250 326 2400 320"
+    b += f'<path d="{road}" fill="none" stroke="#a89a85" stroke-width="22"/><path d="{road}" fill="none" stroke="#f3ead8" stroke-width="2.5" stroke-dasharray="14 12"/>'
+    x = lambda i: i * seg  # noqa: E731
+    # 01 terraces + pin
+    b += "".join(f'<path d="M{x(0) + 10} {220 + k * 9} C{x(0) + 70} {206 + k * 9} {x(0) + 130} {208 + k * 9} {x(0) + 190} {220 + k * 9}" fill="none" stroke="#b7cf9f" stroke-width="3"/>' for k in range(4))
+    b += f'<g transform="translate({x(0) + 100} 196)"><path d="M0 -30 a13 13 0 0 1 13 13 c0 12 -13 25 -13 25 s-13 -13 -13 -25 a13 13 0 0 1 13 -13z" fill="{C["plan"]}"/><circle cx="0" cy="-17" r="5" fill="#fff"/></g>'
+    # 02 river and canal
+    b += f'<path d="M{x(1) + 150} 160 C{x(1) + 120} 210 {x(1) + 60} 230 {x(1) + 20} 268" fill="none" stroke="{C["water"]}" stroke-width="12" stroke-linecap="round"/>'
+    b += f'<path d="M{x(1) + 90} 228 C{x(1) + 130} 246 {x(1) + 170} 254 {x(1) + 200} 258" fill="none" stroke="{C["water"]}" stroke-width="4" stroke-dasharray="8 5"/>'
+    # 03 rain cloud and gauge
+    b += cloud(x(2) + 100, 70, 1.0, "#b9c7d3", 1) + '<g stroke="#7fa7c4" stroke-width="2.5" stroke-linecap="round">' + "".join(f'<line x1="{x(2) + 76 + k * 14}" y1="94" x2="{x(2) + 70 + k * 14}" y2="112"/>' for k in range(5)) + "</g>"
+    b += f'<rect x="{x(2) + 140}" y="210" width="16" height="40" rx="3" fill="#fff" stroke="{C["move"]}" stroke-width="2"/><rect x="{x(2) + 142}" y="232" width="12" height="16" fill="{C["water"]}"/>'
+    # 04 patchwork fields
+    for k, col in enumerate([C["teff"], C["wheat"], C["maize"], C["teff"]]):
+        fx, fy = x(3) + 30 + (k % 2) * 70, 232 + (k // 2) * 26
+        b += f'<path d="M{fx} {fy} h66 l6 24 h-66 z" fill="{col}" stroke="#f7f0dc" stroke-width="2"/>'
+    # 05 market stall
+    b += f'<g transform="translate({x(4) + 40} 222)"><rect x="0" y="0" width="120" height="44" fill="#f5e1d7"/><path d="M-6 0 h132 l-10 -20 h-112 z" fill="{C["sell"]}"/>'
+    b += f'<g fill="{C["teff"]}"><circle cx="26" cy="28" r="9"/><circle cx="44" cy="30" r="8"/></g><g fill="{C["wheat"]}"><circle cx="78" cy="28" r="9"/><circle cx="96" cy="30" r="8"/></g></g>'
+    # 06 cooperative store and sacks
+    b += f'<g transform="translate({x(5) + 40} 200)"><path d="M0 64 V22 L60 -4 L120 22 V64 Z" fill="#e9dcc2" stroke="{C["plan"]}" stroke-width="2"/><rect x="46" y="30" width="28" height="34" fill="{C["plan"]}"/></g>'
+    b += sack(x(5) + 30, 268, .8, "#e9dcc2") + sack(x(5) + 175, 268, .8, "#f1f1f1", "", "#8a8173")
+    # 07 rows and ox plough
+    b += "".join(f'<path d="M{x(6) + 10} {244 + k * 8} L{x(6) + 190} {240 + k * 8}" stroke="#a88b5e" stroke-width="2"/>' for k in range(4))
+    b += f'<g transform="translate({x(6) + 110} 226)"><ellipse cx="0" cy="0" rx="24" ry="10" fill="#6b5428"/><circle cx="24" cy="-6" r="7" fill="#6b5428"/><path d="M-14 8 v10 M14 8 v10" stroke="#4a3a1e" stroke-width="4"/></g>'
+    b += f'<path d="M{x(6) + 86} 222 L{x(6) + 50} 234" stroke="{C["wood"]}" stroke-width="3"/>' + person(x(6) + 44, 252, .8, C["produce"])
+    # 08 satellite over an NDVI grid
+    for k, col in enumerate(["#1a9641", "#a6d96a", "#1a9641", "#d7191c", "#1a9641", "#fdae61"]):
+        b += f'<rect x="{x(7) + 30 + (k % 3) * 46}" y="{232 + (k // 3) * 22}" width="42" height="18" rx="2" fill="{col}" opacity=".85"/>'
+    b += f'<path d="M{x(7) + 70} 70 L{x(7) + 30} 230 L{x(7) + 168} 230 Z" fill="#8ab8e6" opacity=".25"/>'
+    b += (f'<g transform="translate({x(7) + 70} 64) rotate(-15)"><rect x="-8" y="-8" width="16" height="16" rx="3" fill="#5d6d7e"/>'
+          f'<rect x="-40" y="-6" width="26" height="12" rx="2" fill="{C["move"]}"/><rect x="14" y="-6" width="26" height="12" rx="2" fill="{C["move"]}"/></g>')
+    # 09 stacks and thresher
+    b += "".join(f'<path d="M{x(8) + 20 + k * 34} 262 q15 -38 30 0 z" fill="{C["teff"]}" stroke="#a9843a" stroke-width="1.5"/>' for k in range(3))
+    b += f'<g transform="translate({x(8) + 128} 230)"><rect x="0" y="0" width="56" height="30" rx="4" fill="{C["sell"]}"/><rect x="8" y="-14" width="24" height="16" fill="{C["sell"]}"/><circle cx="12" cy="34" r="7" fill="#263238"/><circle cx="46" cy="34" r="7" fill="#263238"/></g>'
+    # 10 warehouse and silos
+    b += f'<g transform="translate({x(9) + 20} 196)"><path d="M0 70 V24 L60 -2 L120 24 V70 Z" fill="#e9dcc2" stroke="{C["plan"]}" stroke-width="2"/><rect x="44" y="34" width="32" height="36" fill="{C["plan"]}"/></g>'
+    b += "".join(f'<rect x="{x(9) + 148 + k * 22}" y="{186 - k * 6}" width="18" height="{80 + k * 6}" rx="9" fill="{C["stone"]}" stroke="#8a8173" stroke-width="2"/>' for k in range(2))
+    # 11 truck on the road
+    b += truck(x(10) + 50, 284, .9, load="#e9dcc2")
+    # 12 buyer building, payments back, loop
+    b += (f'<g transform="translate({x(11) + 80} 196)"><rect x="0" y="22" width="100" height="62" fill="#f5e1d7" stroke="{C["sell"]}" stroke-width="2"/>'
+          f'<path d="M-6 24 L50 -6 L106 24" fill="none" stroke="{C["sell"]}" stroke-width="7" stroke-linecap="round"/><rect x="38" y="48" width="24" height="36" fill="{C["sell"]}"/></g>')
+    b += tukul(x(11) + 34, 262, .8)
+    b += f'<path d="M{x(11) + 78} 284 C{x(11) + 60} 296 {x(11) + 50} 294 {x(11) + 44} 286" fill="none" stroke="{C["produce"]}" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#pa)"/>'
+    # numbered markers and labels
+    col = {"plan": C["plan"], "produce": C["produce"], "move": C["move"], "sell": C["sell"]}
+    for i, s in enumerate(stages):
+        cx = x(i) + seg / 2
+        short = PANO_LABELS.get(s["number"], s["title"].split(" &")[0])
+        b += (f'<g><circle cx="{cx}" cy="34" r="17" fill="{col[s["domain"]]}" stroke="#fff" stroke-width="3"/>'
+              f'<text x="{cx}" y="39" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">{s["number"]:02d}</text>'
+              f'<text x="{cx}" y="354" text-anchor="middle" font-size="13" font-weight="700" fill="{C["ink"]}">{short}</text></g>')
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {PW} {PH}" role="img" aria-labelledby="pt pd" font-family="Helvetica, Arial, sans-serif">'
+            f'<title id="pt">The twelve stages as one journey</title><desc id="pd">A continuous highland panorama along one road: terraced land, a river and canal, '
+            f'rain clouds, planned fields, a market, a cooperative store, ploughing, a satellite over fields, harvest, a warehouse with silos, a truck, '
+            f'and a buyer paying households.</desc>{b}</svg>\n')
+
+
 SCENES = {"01": s01, "02": s02, "03": s03, "04": s04, "05": s05, "06": s06, "07": s07, "08": s08, "09": s09, "10": s10, "11": s11, "12": s12}
 
 
@@ -343,10 +421,15 @@ def main(argv: list[str]) -> int:
         stages = json.loads((ROOT / "stages.json").read_text(encoding="utf-8"))["stages"]
         slug = {f"{s['number']:02d}": s["slug"] for s in stages}
         want = argv or list(SCENES)
-        unknown = [w for w in want if w not in SCENES]
+        unknown = [w for w in want if w not in SCENES and w != "panorama"]
         if unknown:
             raise ValueError(f"Unknown stage numbers: {unknown}")
         OUT.mkdir(parents=True, exist_ok=True)
+        if not argv or "panorama" in argv:
+            pano = ROOT / "assets" / "img" / "chain-panorama.svg"
+            pano.write_text(panorama(stages), encoding="utf-8")
+            print(f"[OK] {pano.relative_to(ROOT)}")
+            want = [w for w in want if w != "panorama"]
         for n in want:
             svg = SCENES[n]()
             path = OUT / f"{slug[n]}.svg"

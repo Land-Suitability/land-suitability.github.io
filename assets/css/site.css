@@ -453,3 +453,21 @@ figure.diagram img, .zoomable { cursor: zoom-in; }
 
 kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border: 1px solid var(--border); border-bottom-width: 2px;
   border-radius: 5px; padding: 3px 6px; background: var(--surface-2); color: var(--text); }
+
+/* chain panorama strip */
+.pano { position: relative; margin: 6px 0 26px; }
+.pano-scroll { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 8px 28px rgba(31,42,32,.10);
+  scrollbar-width: thin; background: #eaf2ea; }
+.pano-inner { position: relative; width: 2000px; }
+.pano-inner img { display: block; width: 2000px; height: 300px; }
+.pano-inner a { position: absolute; top: 0; bottom: 0; width: 8.3333%; text-decoration: none; }
+.pano-inner a span { position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%); white-space: nowrap; background: #1f2a20; color: #fff;
+  font-size: 12.5px; font-weight: 700; padding: 5px 9px; border-radius: 8px; opacity: 0; transition: opacity .15s ease; pointer-events: none; }
+.pano-inner a:hover, .pano-inner a:focus-visible { background: rgba(255,255,255,.14); }
+.pano-inner a:hover span, .pano-inner a:focus-visible span { opacity: 1; }
+.pano-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font-size: 18px; cursor: pointer; box-shadow: var(--shadow); z-index: 2; }
+.pano-btn.prev { left: -14px; } .pano-btn.next { right: -14px; }
+@media (max-width: 700px) { .pano-btn { display: none; } .pano-inner, .pano-inner img { width: 1600px; } .pano-inner img { height: 240px; } }
+:root[data-theme="dark"] .pano-inner img { filter: brightness(.88) saturate(.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pano-inner img { filter: brightness(.88) saturate(.95); } }

@@ -256,6 +256,16 @@
     els.forEach(function (e) { io.observe(e); });
   }
 
+  // ---------------- panorama strip scroll buttons
+  function panorama() {
+    document.querySelectorAll(".pano").forEach(function (p) {
+      var sc = p.querySelector(".pano-scroll");
+      p.querySelectorAll(".pano-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () { sc.scrollBy({ left: (btn.classList.contains("next") ? 1 : -1) * sc.clientWidth * 0.8, behavior: "smooth" }); });
+      });
+    });
+  }
+
   // ---------------- keyboard shortcuts and the "?" help overlay
   function shortcuts() {
     var help = document.createElement("div");
@@ -370,7 +380,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts];
+    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();
