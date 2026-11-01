@@ -89,6 +89,11 @@ twelve stage pages without editing the branches:
   the table of contents, and previous/next cards (stage 12 wraps to 01)
 - Click-to-enlarge lightbox for every `figure.diagram img`; keyboard-focusable scrollable tables
 - Shared logo and favicon
+- On stage pages: glossary terms explained in context (first mention, from `assets/data/glossary.json`),
+  numbered methods, an illustrated strip in the Amhara section, and links from the "Try it" and demo
+  sections to the calculators and findings pages
+- Copy buttons on code blocks; identifiers and short values in tables never break mid-word
+- Keyboard shortcuts: `?` for help, `t` for theme, `[` and `]` for previous and next stage
 
 ## Common tasks
 
