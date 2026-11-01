@@ -545,3 +545,15 @@ td.ident { white-space: nowrap; }
 .callout { border-left: 4px solid var(--d, var(--accent)); background: var(--surface); padding: 14px 18px;
   border-radius: 0 var(--radius) var(--radius) 0; margin: 16px 0; }
 .callout.warn { border-left-color: #c58a1b; }
+
+/* hub: pilot map teaser */
+.map-teaser { display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; align-items: center; margin: 34px 0 8px; padding: 20px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px; }
+.map-teaser .mt-img img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--border); background: #eef1e6;
+  transition: transform .3s ease; }
+.map-teaser .mt-img:hover img { transform: scale(1.015); }
+.map-teaser h2 { margin: 6px 0 8px; }
+.map-teaser p { color: var(--muted); margin: 0 0 14px; }
+@media (max-width: 860px) { .map-teaser { grid-template-columns: 1fr; } }
+:root[data-theme="dark"] .map-teaser img { filter: brightness(.9) saturate(.95); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .map-teaser img { filter: brightness(.9) saturate(.95); } }
