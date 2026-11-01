@@ -1,0 +1,27 @@
+# Lives on every stage/<slug> branch.
+# A push here asks the hub (default branch) to rebuild the whole Pages site,
+# so this stage's page goes live at /stages/<slug>/.
+name: Notify hub to rebuild Pages
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch hub Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          HUB: ${{ github.event.repository.default_branch }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          echo "Requesting rebuild of ${REPO}@${HUB} after push to ${BRANCH}"
+          gh workflow run pages.yml --repo "$REPO" --ref "$HUB" -f reason="${BRANCH} updated" \
+            || { echo "::error::Dispatch failed. Check that pages.yml exists on ${HUB} and Actions has write permission."; exit 1; }
