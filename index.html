@@ -71,7 +71,7 @@
       <span>Branch <code>stage/03-climate-intelligence</code></span>
     </div>
     <div class="stats"><div class="stat"><b>p80</b><span>planting dates set for 8 years in 10</span></div><div class="stat"><b>3</b><span>risks: dry spell, frost, drought</span></div><div class="stat"><b>30</b><span>years of daily data per location</span></div><div class="stat"><b>2</b><span>seasons: Meher and Belg</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -165,6 +165,54 @@
         </tbody></table></div>
         <p style="margin-top:12px">Reading it: a 150-day maize fits only two years in three here, while early and late teff and bread wheat fit in 9 or more years out of 10. Stage 04 should prefer shorter-cycle varieties unless the plan accepts that risk.</p>
       </div>
+    </div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: does my variety fit the season?</h2>
+    <p class="section-intro">A quick normal approximation of what <code>build_outlook()</code> computes from 30 years of records: the chance that the season, after any planting delay, is at least as long as the crop cycle, and the planting window from the onset spread.</p>
+    <div class="calc" id="calc-s03">
+      <div>
+      <div class="field"><label for="on">Typical onset of the rains (day of year)</label><output id="on-o"></output><input type="range" id="on" min="120" max="200" step="1" value="158" data-unit=""><small>158 is 7 June, the median onset in the stage 03 demo.</small></div>
+      <div class="field"><label for="onsd">Year-to-year spread of onset (days)</label><output id="onsd-o"></output><input type="range" id="onsd" min="2" max="30" step="1" value="9" data-unit="days"></div>
+      <div class="field"><label for="len">Typical season length (days)</label><output id="len-o"></output><input type="range" id="len" min="80" max="220" step="1" value="158" data-unit="days"></div>
+      <div class="field"><label for="lensd">Year-to-year spread of season length (days)</label><output id="lensd-o"></output><input type="range" id="lensd" min="3" max="40" step="1" value="13" data-unit="days"></div>
+      <div class="field"><label for="cyc">Crop cycle of the variety (days)</label><output id="cyc-o"></output><input type="range" id="cyc" min="60" max="200" step="5" value="150" data-unit="days"><small>Early teff about 90, bread wheat about 130, mid-altitude maize about 150.</small></div>
+      <div class="field"><label for="delay">Planting delay after onset (days)</label><output id="delay-o"></output><input type="range" id="delay" min="0" max="30" step="1" value="0" data-unit="days"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s03-big"></div>
+        <div id="s03-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s03-v"></div>
+        <p class="note">Normal approximation for a quick check; the stage method uses the actual yearly records.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s03");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function cdf(x) { var t = 1 / (1 + 0.3275911 * Math.abs(x) / Math.SQRT2), y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x / 2); return 0.5 * (1 + (x >= 0 ? y : -y)); }
+      function day(d) { var t = new Date(2026, 0, 1); t.setDate(t.getDate() + Math.round(d) - 1); return t.toLocaleDateString("en-GB", { day: "numeric", month: "short" }); }
+      function update() {
+        var p = cdf((num("len") - num("delay") - num("cyc")) / num("lensd")), on = num("on"), sd = num("onsd");
+        $("s03-big").innerHTML = fmt(p * 100) + "% of years<small>the season is long enough for a " + num("cyc") + "-day variety planted " + (num("delay") ? num("delay") + " days after onset" : "at onset") + "</small>";
+        $("s03-detail").innerHTML = "Planting window: rains have started by <b>" + day(on - 0.84 * sd) + "</b> in 20% of years, <b>" + day(on) + "</b> in half, and <b>" + day(on + 0.84 * sd) + "</b> in 80%.";
+        var v = $("s03-v"); v.className = "verdict " + (p >= 0.9 ? "good" : p >= 0.7 ? "warn" : "bad");
+        v.textContent = p >= 0.9 ? "Safe choice: the cycle fits in at least 9 years out of 10." : p >= 0.7 ? "Some risk: consider a shorter variety or earlier planting." : "High risk: a shorter-cycle variety is the better plan.";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s03]", e); }
+    })();
+    </script>
     </div>
   </section>
 
