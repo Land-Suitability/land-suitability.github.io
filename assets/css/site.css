@@ -540,3 +540,8 @@ td.ident { white-space: nowrap; }
   /* a text card beside a table card: give the table the wider share */
   #demo .grid.cols-2:has(> .card:first-child > ul):has(> .card:last-child > .table-wrap) { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
 }
+
+/* callouts on hub pages (stage pages define the same rule in their own stage.css) */
+.callout { border-left: 4px solid var(--d, var(--accent)); background: var(--surface); padding: 14px 18px;
+  border-radius: 0 var(--radius) var(--radius) 0; margin: 16px 0; }
+.callout.warn { border-left-color: #c58a1b; }
