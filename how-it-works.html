@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How It Works | AIAE</title>
+  <meta name="description" content="One season, step by step: how a cooperative moves through the twelve stages, from buyer demand in January to fair payment and lessons learned at the end of the year.">
+  <meta property="og:title" content="How it works: one season, step by step">
+  <meta property="og:description" content="Follow a cooperative through twelve connected stages, from the market back to the land and forward to the customer.">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .story { display: grid; grid-template-columns: minmax(260px, 340px) 1fr; gap: 40px; align-items: start; }
+    .clock-wrap { position: sticky; top: 84px; }
+    .clock { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 18px; text-align: center; }
+    .clock svg { width: 100%; height: auto; display: block; }
+    .clock .now { margin-top: 8px; font-weight: 700; font-size: 18px; }
+    .clock .now small { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+    #hand { transition: transform .6s cubic-bezier(.3,1.4,.5,1); transform-origin: 150px 150px; }
+    .legend-s { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+    .legend-s i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+    .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+    .step { position: relative; padding: 4px 0 34px 64px; }
+    .step::before { content: ""; position: absolute; left: 22px; top: 48px; bottom: 0; width: 2px; background: var(--border); }
+    .step:last-child::before { display: none; }
+    .step .badge { position: absolute; left: 0; top: 0; width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center;
+      background: var(--d-bg); color: var(--d); border: 2px solid var(--d); transition: transform .3s ease; }
+    .step .badge .icon { width: 24px; height: 24px; }
+    .step.on .badge { transform: scale(1.12); box-shadow: 0 6px 18px rgba(0,0,0,.12); }
+    .step .when { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--d); }
+    .step h3 { margin: 2px 0 6px; font-size: 21px; }
+    .step p { margin: 0 0 8px; color: var(--muted); }
+    .step .out { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--d); border-radius: 0 10px 10px 0;
+      padding: 10px 14px; font-size: 14.5px; margin: 10px 0; }
+    .step .out b { color: var(--text); }
+    @media (max-width: 860px) {
+      .story { grid-template-columns: 1fr; }
+      .clock-wrap { position: static; max-width: 360px; margin: 0 auto; }
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#landscape">Landscape</a>
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html" aria-current="page">How it works</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:20px">
+    <span class="eyebrow">The story of one season</span>
+    <h1>How it works, step by step</h1>
+    <p class="lead">Follow a farmers' cooperative through one year. The plan starts at the market in January, travels back to the land and the water, then runs forward through planting, harvest, storage, transport and fair payment, and ends with lessons that shape next year's plan.</p>
+    <p class="section-intro" style="margin-top:12px">The cooperative, its numbers and its buyer are illustrative. Each step links to the stage page with the method and an interactive demo.</p>
+  </section>
+
+  <section class="story">
+    <div class="clock-wrap" aria-hidden="true">
+      <div class="clock">
+        <svg viewBox="0 0 300 300" id="clock">
+          <g id="months"></g>
+          <circle cx="150" cy="150" r="70" fill="var(--surface)" stroke="var(--border)"/>
+          <g id="hand"><path d="M150 18 L160 34 L140 34 Z" fill="var(--text)"/><path d="M150 34 L150 80" stroke="var(--text)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 5"/></g>
+          <use id="clock-icon" href="/assets/img/icons.svg#i-05" x="126" y="104" width="48" height="48" style="color:var(--accent)"/>
+          <text x="150" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)" id="clock-stage">Stage 05</text>
+        </svg>
+        <div class="now" id="clock-now">January<small>Bega · dry season</small></div>
+        <div class="legend-s"><span><i style="background:#e6c27a"></i>Bega (dry)</span><span><i style="background:#9bc7a0"></i>Belg (short rains)</span><span><i style="background:#7fb5d1"></i>Kiremt (main rains)</span></div>
+      </div>
+    </div>
+
+    <ol class="steps">
+      <li class="step d-plan" data-month="0" data-icon="i-05" data-stage="05">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-05"/></svg></span>
+        <span class="when">January · Stage 05</span>
+        <h3>Start with the buyer</h3>
+        <p>The cooperative and a flour mill agree what the mill needs after the next harvest: 900 tonnes of grade 2 wheat, delivered in April. Prices are forecast seven months ahead, with honest uncertainty.</p>
+        <div class="out"><b>Output:</b> a demand signal (minimum 900 t, maximum 1,400 t, planning price) and a price-band contract both sides will still want to honour at harvest.</div>
+        <a class="chip" href="/stages/05-market-intelligence/">Open stage 05: Market intelligence &rarr;</a>
+      </li>
+      <li class="step d-plan" data-month="0" data-icon="i-01" data-stage="01">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-01"/></svg></span>
+        <span class="when">January · Stage 01</span>
+        <h3>Which land suits which crop?</h3>
+        <p>Soil, slope, altitude, rainfall and temperature are scored for every plot. Acidic plots are flagged as fixable with lime; steep plots stay out of the cereal plan.</p>
+        <div class="out"><b>Output:</b> suitability class (S1 to N), score, limiting factors and uncertainty for every plot, crop and season.</div>
+        <a class="chip" href="/stages/01-land-intelligence/">Open stage 01: Land &rarr;</a>
+      </li>
+      <li class="step d-plan" data-month="1" data-icon="i-02" data-stage="02">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-02"/></svg></span>
+        <span class="when">February · Stage 02</span>
+        <h3>How much water, month by month?</h3>
+        <p>River flow (keeping water for the environment) and a share of groundwater recharge are compared with each crop's water need, month by month, because the lean month decides the irrigable area.</p>
+        <div class="out"><b>Output:</b> twelve monthly water limits per cluster and the maximum irrigable hectares per crop.</div>
+        <a class="chip" href="/stages/02-water-resources/">Open stage 02: Water &rarr;</a>
+      </li>
+      <li class="step d-plan" data-month="2" data-icon="i-03" data-stage="03">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-03"/></svg></span>
+        <span class="when">March · Stage 03</span>
+        <h3>When will the rains come?</h3>
+        <p>Thirty years of daily weather become odds: the Kiremt rains have started by mid June in 8 years out of 10, and a 150-day maize fits the season only 2 years in 3.</p>
+        <div class="out"><b>Output:</b> a planting window, the chance each variety's cycle fits, and dry-spell, frost and drought risks.</div>
+        <a class="chip" href="/stages/03-climate-intelligence/">Open stage 03: Climate &rarr;</a>
+      </li>
+      <li class="step d-plan" data-month="2" data-icon="i-04" data-stage="04">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-04"/></svg></span>
+        <span class="when">March · Stage 04</span>
+        <h3>Make the plan</h3>
+        <p>The planner combines demand, suitability, monthly water and climate risk into one plan per cluster, and shows which limits bind: here, one more cubic metre of March water would be worth about 50 birr.</p>
+        <div class="out"><b>Output:</b> the seasonal production plan (cluster, crop, hectares, expected tonnes) and shadow prices that point to good investments.</div>
+        <a class="chip" href="/stages/04-crop-planning/">Open stage 04: Planning &rarr;</a>
+      </li>
+      <li class="step d-produce" data-month="3" data-icon="i-06" data-stage="06">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-06"/></svg></span>
+        <span class="when">March to May · Stage 06</span>
+        <h3>Order inputs backwards from planting day</h3>
+        <p>Seed, fertilizer and lime are ordered early enough to arrive on time in 9 cases out of 10: about 53 days ahead from the union, 17 from a local dealer. Shortfalls are flagged in March, not in June.</p>
+        <div class="out"><b>Output:</b> dated purchase orders with on-time probabilities, and early warnings.</div>
+        <a class="chip" href="/stages/06-input-coordination/">Open stage 06: Inputs &rarr;</a>
+      </li>
+      <li class="step d-produce" data-month="5" data-icon="i-07" data-stage="07">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-07"/></svg></span>
+        <span class="when">June to August · Stage 07</span>
+        <h3>Plant, tend and keep the timetable</h3>
+        <p>Willing households receive the crop each plot suits best. Every plot has an operations calendar; development agents record what was done, and visit first where most is at stake.</p>
+        <div class="out"><b>Output:</b> plot assignments, on-time rates by kebele and a weekly, ranked visit list.</div>
+        <a class="chip" href="/stages/07-farm-production/">Open stage 07: Field &rarr;</a>
+      </li>
+      <li class="step d-produce" data-month="7" data-icon="i-08" data-stage="08">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-08"/></svg></span>
+        <span class="when">July to October · Stage 08</span>
+        <h3>Watch from space</h3>
+        <p>Every five days, each plot's greenness is compared with a healthy crop's growth curve. A pest outbreak on six plots triggers warnings by day 70, and the cluster production forecast tightens week by week.</p>
+        <div class="out"><b>Output:</b> alerts with likely causes, and yield forecasts with intervals for buyers, stores and trucks.</div>
+        <a class="chip" href="/stages/08-monitoring-risk/">Open stage 08: Monitoring &rarr;</a>
+      </li>
+      <li class="step d-move" data-month="9" data-icon="i-09" data-stage="09">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-09"/></svg></span>
+        <span class="when">October to November · Stage 09</span>
+        <h3>Harvest in the right order</h3>
+        <p>Threshers go first to the plots whose window closes soonest. Grain is dried, graded and packed into lots, each one listing the plots it came from.</p>
+        <div class="out"><b>Output:</b> traceable lots (weight, moisture, grade, plots) and an account of every kilogram lost.</div>
+        <a class="chip" href="/stages/09-harvest-postharvest/">Open stage 09: Harvest &rarr;</a>
+      </li>
+      <li class="step d-move" data-month="10" data-icon="i-10" data-stage="10">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-10"/></svg></span>
+        <span class="when">November onwards · Stage 10</span>
+        <h3>Aggregate, store, decide when to sell</h3>
+        <p>Lots go to the nearest cooperative store. With hermetic bags, holding grain until May earns about 7% more than selling at the harvest low; with traditional bags it never pays.</p>
+        <div class="out"><b>Output:</b> collection centres, warehouse receipts for each farmer group, and store-or-sell advice.</div>
+        <a class="chip" href="/stages/10-storage-aggregation/">Open stage 10: Storage &rarr;</a>
+      </li>
+      <li class="step d-move" data-month="10" data-icon="i-11" data-stage="11">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-11"/></svg></span>
+        <span class="when">November to December · Stage 11</span>
+        <h3>Move it with full trucks</h3>
+        <p>Pickups from twelve kebeles are combined into fewer, fuller trips, about 14% cheaper. Kebeles cut off by rainy-season road closures are cleared before the rains.</p>
+        <div class="out"><b>Output:</b> routes, shipments carrying traceable lots, and cost per tonne by kebele and season.</div>
+        <a class="chip" href="/stages/11-logistics-transport/">Open stage 11: Logistics &rarr;</a>
+      </li>
+      <li class="step d-sell" data-month="11" data-icon="i-12" data-stage="12">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#i-12"/></svg></span>
+        <span class="when">December · Stage 12</span>
+        <h3>Pay fairly, measure honestly</h3>
+        <p>Each delivery is settled with transparent premiums and deductions, and every household receives its share through lot traceability. Incomes are compared with similar kebeles outside the pilot, so inflation is not mistaken for impact.</p>
+        <div class="out"><b>Output:</b> household payments, payment timeliness and the measured income effect.</div>
+        <a class="chip" href="/stages/12-market-distribution/">Open stage 12: Distribution &rarr;</a>
+      </li>
+      <li class="step d-sell" data-month="0" data-icon="u-loop" data-stage="loop">
+        <span class="badge"><svg class="icon"><use href="/assets/img/icons.svg#u-loop"/></svg></span>
+        <span class="when">January again · The loop</span>
+        <h3>Learn, then start again</h3>
+        <p>Realised prices update the market model, realised yields per suitability class recalibrate the land model, and realised margins refine the planner. Next January starts from what really happened.</p>
+        <div class="out"><b>Output:</b> learning signals to stages 01, 04 and 05: the chain becomes a loop that improves every season.</div>
+        <a class="chip" href="/#loop">Back to the loop &rarr;</a>
+      </li>
+    </ol>
+  </section>
+</main>
+
+<footer class="footer-v2">
+  <div class="container">
+    <div class="fine"><span>Illustrative story. All numbers come from the synthetic demos on the stage pages.</span><span><a href="/">Back to the hub</a></span></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var SHORT = ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
+  // Ethiopian seasons (approximate): Bega Oct to Jan, Belg Feb to May, Kiremt Jun to Sep
+  function season(m) { return m >= 5 && m <= 8 ? ["Kiremt", "main rains", "#7fb5d1"] : (m >= 1 && m <= 4 ? ["Belg", "short rains", "#9bc7a0"] : ["Bega", "dry season", "#e6c27a"]); }
+  var g = document.getElementById("months");
+  if (!g) return;
+  var C = 150, R1 = 128, R0 = 82;
+  for (var m = 0; m < 12; m++) {
+    var a0 = (m / 12) * 2 * Math.PI - Math.PI / 2 + 0.02, a1 = ((m + 1) / 12) * 2 * Math.PI - Math.PI / 2 - 0.02;
+    var p = function (a, r) { return (C + r * Math.cos(a)).toFixed(1) + "," + (C + r * Math.sin(a)).toFixed(1); };
+    var d = "M" + p(a0, R1) + " A" + R1 + "," + R1 + " 0 0 1 " + p(a1, R1) + " L" + p(a1, R0) + " A" + R0 + "," + R0 + " 0 0 0 " + p(a0, R0) + " Z";
+    var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d); path.setAttribute("fill", season(m)[2]); path.setAttribute("id", "m" + m); path.setAttribute("opacity", ".55");
+    g.appendChild(path);
+    var am = (m + 0.5) / 12 * 2 * Math.PI - Math.PI / 2, t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", (C + 105 * Math.cos(am)).toFixed(1)); t.setAttribute("y", (C + 105 * Math.sin(am) + 4).toFixed(1));
+    t.setAttribute("text-anchor", "middle"); t.setAttribute("font-size", "12"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#1f2a20");
+    t.textContent = SHORT[m];
+    g.appendChild(t);
+  }
+  var hand = document.getElementById("hand"), now = document.getElementById("clock-now"),
+      cicon = document.getElementById("clock-icon"), cstage = document.getElementById("clock-stage"), current = -1;
+  var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+  function activate(step) {
+    var m = +step.dataset.month, s = season(m);
+    steps.forEach(function (x) { x.classList.toggle("on", x === step); });
+    for (var i = 0; i < 12; i++) document.getElementById("m" + i).setAttribute("opacity", i === m ? "1" : ".45");
+    var turn = (m + 0.5) / 12 * 360;
+    if (current > turn + 180) turn += 360;           // keep turning clockwise into the new year
+    hand.style.transform = "rotate(" + turn + "deg)";
+    current = turn;
+    now.innerHTML = MONTHS[m] + "<small>" + s[0] + " · " + s[1] + "</small>";
+    cicon.setAttribute("href", "/assets/img/icons.svg#" + step.dataset.icon);
+    cstage.textContent = step.dataset.stage === "loop" ? "Learning loop" : "Stage " + step.dataset.stage;
+  }
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) activate(e.target); }); },
+      { rootMargin: "-40% 0px -55% 0px" });
+    steps.forEach(function (s) { io.observe(s); });
+  }
+  activate(steps[0]);
+})();
+</script>
+</body>
+</html>

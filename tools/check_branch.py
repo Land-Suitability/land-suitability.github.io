@@ -105,12 +105,15 @@ def check_hub(r: Report) -> None:
     res = subprocess.run([sys.executable, "tools/build_site.py", "--check"], capture_output=True, text=True)
     (r.ok if res.returncode == 0 else r.fail)(f"stages.json validation: {(res.stdout or res.stderr).strip().splitlines()[-1]}")
 
-    # the generated grid and placeholders must match stages.json
+    # the generated grid and placeholders must match stages.json: compare the files before and after a rebuild
+    def snapshot() -> str:
+        return git("diff", "HEAD", "--", "index.html", "stages/") + git("status", "--porcelain", "index.html", "stages/")
+    before = snapshot()
     res = subprocess.run([sys.executable, "tools/build_site.py"], capture_output=True, text=True)
     if res.returncode != 0:
         r.fail(f"build_site.py failed: {res.stderr.strip()}")
         return
-    drift = git("status", "--porcelain", "index.html", "stages/")
+    drift = git("status", "--porcelain", "index.html", "stages/") if snapshot() != before else ""
     if drift:
         r.fail("index.html or stages/ placeholders were out of date with stages.json; build_site.py has now "
                "regenerated them, review and commit:\n      " + drift.replace("\n", "\n      "))

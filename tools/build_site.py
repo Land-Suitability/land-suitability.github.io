@@ -141,7 +141,8 @@ def render_grid(domains: list[Domain], stages: list[Stage], prefix: str) -> str:
         for s in (x for x in stages if x.domain == d.id):
             cards.append(
                 f'        <a class="card stage-card" href="{s.url}">\n'
-                f'          <span class="stage-num">Stage {s.padded} <span class="status">{esc(s.status)}</span></span>\n'
+                f'          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-{s.padded}"/></svg>'
+                f'<span class="stage-num">Stage {s.padded} <span class="status">{esc(s.status)}</span></span></span>\n'
                 f'          <h3>{esc(s.title)}</h3>\n'
                 f'          <p>{esc(s.summary)}</p>\n'
                 f'          <span class="branch">{esc(s.branch(prefix))}</span>\n'
@@ -149,7 +150,7 @@ def render_grid(domains: list[Domain], stages: list[Stage], prefix: str) -> str:
             )
         parts.append(
             f'      <div class="domain d-{d.id}">\n'
-            f'        <div class="domain-head"><span class="pill">{esc(d.title)}</span>'
+            f'        <div class="domain-head"><span class="pill"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-{d.id}"/></svg>{esc(d.title)}</span>'
             f'<p>{esc(d.question)}</p></div>\n'
             f'        <div class="grid cols-3">\n' + "\n".join(cards) + "\n        </div>\n"
             f'      </div>'

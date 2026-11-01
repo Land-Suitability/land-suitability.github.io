@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 470" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1100" height="470" fill="#fbfaf6"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7a857b"/></marker></defs>
+  <text x="550" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Integrated agricultural intelligence platform</text>
+
+  <!-- column 1: sources -->
+  <text x="110" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#5d665e" letter-spacing="1">DATA SOURCES</text>
+  <g font-size="12" fill="#1f2a20">
+    <rect x="20" y="76" width="180" height="40" rx="8" fill="#dde8f3" stroke="#2f5d8a"/><text x="110" y="101" text-anchor="middle">Satellites: Sentinel-1/2, Landsat</text>
+    <rect x="20" y="124" width="180" height="40" rx="8" fill="#dde8f3" stroke="#2f5d8a"/><text x="110" y="149" text-anchor="middle">Weather: stations, CHIRPS, ERA5</text>
+    <rect x="20" y="172" width="180" height="40" rx="8" fill="#f1e8d6" stroke="#8a6d3b"/><text x="110" y="197" text-anchor="middle">Soil: samples, iSDAsoil, SoilGrids</text>
+    <rect x="20" y="220" width="180" height="40" rx="8" fill="#e3efdd" stroke="#3f6b34"/><text x="110" y="245" text-anchor="middle">Field reports (agents, mobile)</text>
+    <rect x="20" y="268" width="180" height="40" rx="8" fill="#f5e1d7" stroke="#9a4a28"/><text x="110" y="293" text-anchor="middle">Markets, buyers, prices</text>
+    <rect x="20" y="316" width="180" height="40" rx="8" fill="#eceae4" stroke="#7a857b"/><text x="110" y="341" text-anchor="middle">Roads, stores, suppliers</text>
+  </g>
+
+  <!-- column 2: database -->
+  <g transform="translate(250 120)">
+    <ellipse cx="90" cy="0" rx="90" ry="20" fill="#3f6b34"/>
+    <path d="M0 0 v190 a90 20 0 0 0 180 0 v-190" fill="#4f7f42"/>
+    <ellipse cx="90" cy="0" rx="90" ry="20" fill="#6f9b5e"/>
+    <path d="M0 64 a90 20 0 0 0 180 0 M0 128 a90 20 0 0 0 180 0" fill="none" stroke="#6f9b5e" stroke-width="2"/>
+    <text x="90" y="40" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Regional</text>
+    <text x="90" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">geospatial DB</text>
+    <text x="90" y="100" text-anchor="middle" font-size="11.5" fill="#e3efdd">PostgreSQL + PostGIS</text>
+    <text x="90" y="150" text-anchor="middle" font-size="11.5" fill="#e3efdd">plots · clusters · lots</text>
+    <text x="90" y="168" text-anchor="middle" font-size="11.5" fill="#e3efdd">pseudonymous IDs</text>
+  </g>
+  <g stroke="#7a857b" stroke-width="1.6" fill="none" marker-end="url(#a)">
+    <path d="M200 96 C225 96 230 170 248 180"/><path d="M200 144 C225 144 230 190 248 196"/><path d="M200 192 L248 210"/>
+    <path d="M200 240 L248 226"/><path d="M200 288 C225 288 230 250 248 244"/><path d="M200 336 C225 336 230 270 248 262"/>
+  </g>
+
+  <!-- column 3: modules -->
+  <text x="595" y="64" text-anchor="middle" font-size="12" font-weight="bold" fill="#5d665e" letter-spacing="1">ANALYTICAL MODULES (STAGES)</text>
+  <g font-size="12" fill="#1f2a20">
+    <rect x="480" y="76" width="230" height="44" rx="8" fill="#f1e8d6" stroke="#8a6d3b"/><text x="595" y="96" text-anchor="middle" font-weight="bold">Suitability · water · climate</text><text x="595" y="112" text-anchor="middle" fill="#5d665e">stages 01, 02, 03</text>
+    <rect x="480" y="128" width="230" height="44" rx="8" fill="#f1e8d6" stroke="#8a6d3b"/><text x="595" y="148" text-anchor="middle" font-weight="bold">Planner + market model</text><text x="595" y="164" text-anchor="middle" fill="#5d665e">stages 04, 05</text>
+    <rect x="480" y="180" width="230" height="44" rx="8" fill="#e3efdd" stroke="#3f6b34"/><text x="595" y="200" text-anchor="middle" font-weight="bold">Inputs · field ops · monitoring</text><text x="595" y="216" text-anchor="middle" fill="#5d665e">stages 06, 07, 08 (PyTorch)</text>
+    <rect x="480" y="232" width="230" height="44" rx="8" fill="#dde8f3" stroke="#2f5d8a"/><text x="595" y="252" text-anchor="middle" font-weight="bold">Harvest · storage · routing</text><text x="595" y="268" text-anchor="middle" fill="#5d665e">stages 09, 10, 11</text>
+    <rect x="480" y="284" width="230" height="44" rx="8" fill="#f5e1d7" stroke="#9a4a28"/><text x="595" y="304" text-anchor="middle" font-weight="bold">Settlement · impact · learning</text><text x="595" y="320" text-anchor="middle" fill="#5d665e">stage 12</text>
+  </g>
+  <g stroke="#7a857b" stroke-width="1.6" fill="none" marker-end="url(#a)">
+    <path d="M430 170 C455 160 458 100 478 98"/><path d="M430 190 L478 150"/><path d="M430 210 L478 202"/>
+    <path d="M430 230 L478 254"/><path d="M430 250 C455 260 458 300 478 306"/>
+  </g>
+  <path d="M710 306 C760 380 300 420 300 336" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#a)"/>
+  <text x="520" y="398" text-anchor="middle" font-size="11.5" fill="#9a4a28">learning loop: realised yields, prices, payments update the data</text>
+
+  <!-- column 4: decision support -->
+  <rect x="760" y="110" width="150" height="200" rx="12" fill="#1f2a20"/>
+  <text x="835" y="140" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">Decision support</text>
+  <g font-size="11.5" fill="#e7ebe4">
+    <text x="776" y="170">web maps</text><text x="776" y="192">dashboards</text><text x="776" y="214">recommendations</text>
+    <text x="776" y="236">alerts (SMS)</text><text x="776" y="258">buyer network</text><text x="776" y="280">API for partners</text>
+  </g>
+  <g stroke="#7a857b" stroke-width="1.6" fill="none" marker-end="url(#a)"><path d="M710 150 L758 170"/><path d="M710 202 L758 210"/><path d="M710 254 L758 250"/></g>
+
+  <!-- column 5: users -->
+  <g font-size="12" fill="#1f2a20">
+    <rect x="950" y="96" width="130" height="38" rx="19" fill="#e3efdd" stroke="#3f6b34"/><text x="1015" y="120" text-anchor="middle">Farmers</text>
+    <rect x="950" y="144" width="130" height="38" rx="19" fill="#e3efdd" stroke="#3f6b34"/><text x="1015" y="168" text-anchor="middle">Cooperatives</text>
+    <rect x="950" y="192" width="130" height="38" rx="19" fill="#f5e1d7" stroke="#9a4a28"/><text x="1015" y="216" text-anchor="middle">Buyers</text>
+    <rect x="950" y="240" width="130" height="38" rx="19" fill="#f1e8d6" stroke="#8a6d3b"/><text x="1015" y="264" text-anchor="middle">Planners, offices</text>
+    <rect x="950" y="288" width="130" height="38" rx="19" fill="#dde8f3" stroke="#2f5d8a"/><text x="1015" y="312" text-anchor="middle">Transporters</text>
+  </g>
+  <g stroke="#7a857b" stroke-width="1.6" fill="none" marker-end="url(#a)">
+    <path d="M910 160 L948 116"/><path d="M910 180 L948 162"/><path d="M910 210 L948 210"/><path d="M910 240 L948 258"/><path d="M910 260 L948 306"/>
+  </g>
+  <text x="550" y="450" text-anchor="middle" font-size="11.5" fill="#5d665e">Personal data stays in the restricted database; the public site shows only synthetic or aggregated data.</text>
+</svg>

@@ -4,54 +4,111 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Amhara Integrated Agriculture Ecosystem</title>
-  <meta name="description" content="An end-to-end agricultural ecosystem for the Amhara Region of Ethiopia, from land intelligence to market delivery.">
+  <meta name="description" content="An end-to-end agricultural ecosystem for the Amhara Region of Ethiopia, from land intelligence to market delivery: twelve connected stages planned backwards from the market and executed forwards from the land.">
+  <meta property="og:title" content="Amhara Integrated Agriculture Ecosystem">
+  <meta property="og:description" content="From land intelligence to market delivery: twelve connected stages, one learning loop.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://land-suitability.github.io/">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/assets/css/site.css">
   <script src="/assets/js/site.js"></script>
 </head>
 <body>
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
     <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
     <nav class="nav" aria-label="Main">
-      <a href="#vision">Vision</a>
-      <a href="#chain">Value chain</a>
+      <a href="#landscape">Landscape</a>
+      <a href="#loop">The loop</a>
+      <a href="#chain">Stages</a>
       <a href="#platform">Platform</a>
       <a href="#pilot">Pilot</a>
-      <a href="#partners">Partners</a>
+      <a href="/how-it-works.html">How it works</a>
       <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
     </nav>
   </div>
 </header>
 
 <main>
-  <section class="hero">
+  <section class="hero-v2" id="landscape">
     <div class="container">
-      <span class="eyebrow">Concept · Pilot in planning · All 12 stages at methodology v0.1</span>
-      <h1>From Land Intelligence to Market Delivery</h1>
-      <p class="lead">An integrated agricultural system that connects land, water, climate, crops, farmers, markets, infrastructure, transport and customers into one coordinated value chain, starting with a pilot in the Amhara Region of Ethiopia.</p>
-      <div class="principle">
-        <strong>Core principle:</strong> start with the market and work backwards to the land, then coordinate everything from land preparation to the final customer.
+      <div class="hero-text">
+        <span class="eyebrow">Concept · Pilot in planning · All 12 stages at methodology v0.1</span>
+        <h1>From <span class="grad">land intelligence</span> to market delivery</h1>
+        <p class="lead">An integrated agricultural system for the Amhara Region of Ethiopia that connects land, water, climate, crops, farmers, markets, storage, transport and customers into one coordinated value chain.</p>
+        <div class="principle">
+          <strong>Core principle:</strong> plan backwards from the market to the land, then execute forwards from land preparation to the final customer, and learn from every season.
+        </div>
+        <div class="btn-row">
+          <a class="btn primary" href="#loop">See the twelve-stage loop</a>
+          <a class="btn" href="/how-it-works.html">How it works, step by step</a>
+          <a class="btn" href="/stages/01-land-intelligence/">Start at stage 01</a>
+        </div>
       </div>
-      <div class="btn-row">
-        <a class="btn primary" href="#chain">Explore the 12 stages</a>
-        <a class="btn" href="#pilot">See the pilot plan</a>
+
+      <figure class="scene" id="scene">
+        <img src="/assets/img/hero-landscape.svg" alt="Illustrated Amhara highland landscape showing the whole chain: satellite, rain clouds, terraced hills, a lake and river, irrigated fields, homesteads, a cooperative store with silos, a truck on the road and a market." width="1200" height="600">
+        <!-- numbered hotspots are added by /assets/js/hub.js from stages.json -->
+        <figcaption class="scene-caption"><span>Every number in the landscape is one stage of the chain. Hover or tap to explore.</span><span>Illustration: a typical highland setting, not a real map.</span></figcaption>
+      </figure>
+
+      <div class="statstrip">
+        <div class="s"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#u-loop"/></svg><div><b>12</b><span>connected stages, one loop</span></div></div>
+        <div class="s"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-plan"/></svg><div><b>4</b><span>domains: plan, produce, move, sell</span></div></div>
+        <div class="s"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg><div><b>1</b><span>pilot woreda to start</span></div></div>
+        <div class="s"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-05"/></svg><div><b>18 to 24</b><span>months to first evidence</span></div></div>
       </div>
     </div>
   </section>
 
-  <section id="vision">
+  <section id="why">
     <div class="container">
-      <h2>Vision and objectives</h2>
-      <p class="section-intro">Farmers often produce without knowing whether there will be a profitable market, enough water, suitable growing conditions or affordable transport. This initiative plans, coordinates and monitors the whole journey, so that each of those questions is answered before planting.</p>
-      <div class="grid cols-3">
-        <div class="card"><h3>Right crop, right place</h3><p>Evidence-based crop and variety recommendations from land suitability analysis.</p></div>
-        <div class="card"><h3>Water-informed production</h3><p>Production plans that respect real, sustainable water availability.</p></div>
-        <div class="card"><h3>Market-oriented farming</h3><p>Production driven by buyer requirements and agreements signed before planting.</p></div>
-        <div class="card"><h3>Coordinated supply chains</h3><p>Harvest, storage, transport and delivery planned together.</p></div>
-        <div class="card"><h3>Better farmer economics</h3><p>Higher net income, fewer losses, better market access and on-time payment.</p></div>
-        <div class="card"><h3>A learning system</h3><p>Every season's results recalibrate the next season's plan.</p></div>
+      <h2>From push to pull</h2>
+      <p class="section-intro">Farmers often produce without knowing whether there will be a profitable market, enough water, suitable growing conditions or affordable transport. The ecosystem answers those questions before planting.</p>
+      <div class="versus reveal">
+        <div class="card bad">
+          <h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg>Today: push</h3>
+          <ol>
+            <li>Grow what was grown last year</li>
+            <li>Inputs arrive when they arrive</li>
+            <li>Everyone harvests and sells at once</li>
+            <li>Prices drop; transport is ad hoc</li>
+            <li>Nobody learns what worked</li>
+          </ol>
+        </div>
+        <div class="vs">vs</div>
+        <div class="card good">
+          <h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-05"/></svg>With the ecosystem: pull</h3>
+          <ol>
+            <li>Start from what buyers will take (05)</li>
+            <li>Match it to land, water and climate (01 to 04)</li>
+            <li>Order inputs backwards from planting day (06)</li>
+            <li>Monitor, harvest, store and move on schedule (07 to 11)</li>
+            <li>Settle fairly and feed the lessons back (12)</li>
+          </ol>
+        </div>
       </div>
+    </div>
+  </section>
+
+  <section id="loop">
+    <div class="container">
+      <h2>One loop, twelve stages</h2>
+      <p class="section-intro">The chain is a circle, not a line: what stage 12 learns at the market recalibrates stage 01 and stage 05 for the next season. Select a stage on the wheel to see what it does and what it exchanges with its neighbours.</p>
+      <div class="wheel-wrap reveal">
+        <div id="wheel" aria-label="Interactive wheel of the twelve stages"></div>
+        <div class="wheel-panel" id="wheel-panel" aria-live="polite">
+          <span class="pill" style="--d:var(--accent);--d-bg:var(--surface-2)">The learning loop</span>
+          <h3>Plan · Produce · Move · Sell &amp; Learn</h3>
+          <p>Four domains, twelve stages, one shared data spine. Hover, tab or tap a stage on the wheel.</p>
+          <p class="wheel-hint">Tip: press <kbd>Ctrl</kbd> + <kbd>K</kbd> anywhere on the site to jump to any stage.</p>
+        </div>
+      </div>
+      <noscript><p>The interactive wheel needs JavaScript; the full list of stages is below.</p></noscript>
     </div>
   </section>
 
@@ -61,34 +118,34 @@
       <p class="section-intro">Twelve interconnected stages, grouped into four domains. Each stage is developed on its own branch and has its own page with its domain model, methods, a synthetic demo and code.</p>
 <!-- STAGE_GRID:START (generated by tools/build_site.py from stages.json, do not edit by hand) -->
       <div class="domain d-plan">
-        <div class="domain-head"><span class="pill">Plan</span><p>What should be grown where, and for whom?</p></div>
+        <div class="domain-head"><span class="pill"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-plan"/></svg>Plan</span><p>What should be grown where, and for whom?</p></div>
         <div class="grid cols-3">
         <a class="card stage-card" href="/stages/01-land-intelligence/">
-          <span class="stage-num">Stage 01 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg><span class="stage-num">Stage 01 <span class="status">v0.1</span></span></span>
           <h3>Land Intelligence &amp; Suitability</h3>
           <p>Where can each crop grow, and how well? The root layer that every later stage builds on.</p>
           <span class="branch">stage/01-land-intelligence</span>
         </a>
         <a class="card stage-card" href="/stages/02-water-resources/">
-          <span class="stage-num">Stage 02 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg><span class="stage-num">Stage 02 <span class="status">v0.1</span></span></span>
           <h3>Water Resource Assessment</h3>
           <p>How much water is actually available for each cluster, in each season, and at what sustainable rate?</p>
           <span class="branch">stage/02-water-resources</span>
         </a>
         <a class="card stage-card" href="/stages/03-climate-intelligence/">
-          <span class="stage-num">Stage 03 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-03"/></svg><span class="stage-num">Stage 03 <span class="status">v0.1</span></span></span>
           <h3>Climate &amp; Seasonal Intelligence</h3>
           <p>When does the season start and end, and what weather risks does it carry?</p>
           <span class="branch">stage/03-climate-intelligence</span>
         </a>
         <a class="card stage-card" href="/stages/04-crop-planning/">
-          <span class="stage-num">Stage 04 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg><span class="stage-num">Stage 04 <span class="status">v0.1</span></span></span>
           <h3>Crop Selection &amp; Production Planning</h3>
           <p>The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.</p>
           <span class="branch">stage/04-crop-planning</span>
         </a>
         <a class="card stage-card" href="/stages/05-market-intelligence/">
-          <span class="stage-num">Stage 05 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-05"/></svg><span class="stage-num">Stage 05 <span class="status">v0.1</span></span></span>
           <h3>Market Intelligence &amp; Demand Forecasting</h3>
           <p>Start with the market: who buys what, how much, at what quality, when and at what price.</p>
           <span class="branch">stage/05-market-intelligence</span>
@@ -96,22 +153,22 @@
         </div>
       </div>
       <div class="domain d-produce">
-        <div class="domain-head"><span class="pill">Produce</span><p>Is the plan being carried out, and is it on track?</p></div>
+        <div class="domain-head"><span class="pill"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-produce"/></svg>Produce</span><p>Is the plan being carried out, and is it on track?</p></div>
         <div class="grid cols-3">
         <a class="card stage-card" href="/stages/06-input-coordination/">
-          <span class="stage-num">Stage 06 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-06"/></svg><span class="stage-num">Stage 06 <span class="status">v0.1</span></span></span>
           <h3>Input &amp; Resource Coordination</h3>
           <p>Make sure seed, fertilizer, equipment and finance arrive before they are needed.</p>
           <span class="branch">stage/06-input-coordination</span>
         </a>
         <a class="card stage-card" href="/stages/07-farm-production/">
-          <span class="stage-num">Stage 07 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg><span class="stage-num">Stage 07 <span class="status">v0.1</span></span></span>
           <h3>Farm Implementation &amp; Production</h3>
           <p>Carry out the plan in the field with registered farmers, mapped plots and extension support.</p>
           <span class="branch">stage/07-farm-production</span>
         </a>
         <a class="card stage-card" href="/stages/08-monitoring-risk/">
-          <span class="stage-num">Stage 08 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-08"/></svg><span class="stage-num">Stage 08 <span class="status">v0.1</span></span></span>
           <h3>Monitoring, Forecasting &amp; Risk</h3>
           <p>Watch crops from space and from the field, forecast yields and raise early warnings.</p>
           <span class="branch">stage/08-monitoring-risk</span>
@@ -119,22 +176,22 @@
         </div>
       </div>
       <div class="domain d-move">
-        <div class="domain-head"><span class="pill">Move</span><p>Does produce reach the buyer with minimal loss?</p></div>
+        <div class="domain-head"><span class="pill"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-move"/></svg>Move</span><p>Does produce reach the buyer with minimal loss?</p></div>
         <div class="grid cols-3">
         <a class="card stage-card" href="/stages/09-harvest-postharvest/">
-          <span class="stage-num">Stage 09 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-09"/></svg><span class="stage-num">Stage 09 <span class="status">v0.1</span></span></span>
           <h3>Harvest &amp; Post-harvest Management</h3>
           <p>Harvest at the right time, keep quality high and make every lot traceable.</p>
           <span class="branch">stage/09-harvest-postharvest</span>
         </a>
         <a class="card stage-card" href="/stages/10-storage-aggregation/">
-          <span class="stage-num">Stage 10 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-10"/></svg><span class="stage-num">Stage 10 <span class="status">v0.1</span></span></span>
           <h3>Storage, Processing &amp; Aggregation</h3>
           <p>Aggregate smallholder lots into buyer-sized volumes, store safely and add value.</p>
           <span class="branch">stage/10-storage-aggregation</span>
         </a>
         <a class="card stage-card" href="/stages/11-logistics-transport/">
-          <span class="stage-num">Stage 11 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-11"/></svg><span class="stage-num">Stage 11 <span class="status">v0.1</span></span></span>
           <h3>Logistics &amp; Transportation</h3>
           <p>Move produce from farm to collection centre to buyer, on time and at the lowest cost.</p>
           <span class="branch">stage/11-logistics-transport</span>
@@ -142,10 +199,10 @@
         </div>
       </div>
       <div class="domain d-sell">
-        <div class="domain-head"><span class="pill">Sell &amp; Learn</span><p>Did farmers earn more, and what changes next season?</p></div>
+        <div class="domain-head"><span class="pill"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-sell"/></svg>Sell &amp; Learn</span><p>Did farmers earn more, and what changes next season?</p></div>
         <div class="grid cols-3">
         <a class="card stage-card" href="/stages/12-market-distribution/">
-          <span class="stage-num">Stage 12 <span class="status">v0.1</span></span>
+          <span class="stage-top"><svg class="icon stage-icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-12"/></svg><span class="stage-num">Stage 12 <span class="status">v0.1</span></span></span>
           <h3>Market Distribution &amp; Customer Network</h3>
           <p>Deliver to buyers, settle payments fairly and on time, and feed results back into the next season.</p>
           <span class="branch">stage/12-market-distribution</span>
@@ -160,13 +217,13 @@
     <div class="container">
       <h2>Plan backwards, execute forwards</h2>
       <p class="section-intro">Planning is a pull system: the buyer's order travels backwards through logistics, crop choice, water and land suitability. The season then runs forwards, and actual results feed the next plan.</p>
-      <div class="grid cols-2">
+      <div class="grid cols-2 reveal">
         <figure class="diagram">
-          <img src="/assets/img/market-backward-pull.svg" alt="Planning flows from buyer demand back to land suitability; execution flows from inputs to delivery and payment, with a feedback loop.">
+          <img src="/assets/img/market-backward-pull.svg" alt="Planning flows from buyer demand back to land suitability; execution flows from inputs to delivery and payment, with a feedback loop." loading="lazy">
           <figcaption>Market-backwards planning and forward execution.</figcaption>
         </figure>
         <figure class="diagram">
-          <img src="/assets/img/value-chain-loop.svg" alt="Five-layer chain from land to outcomes with cross-cutting enablers and a learning loop.">
+          <img src="/assets/img/value-chain-loop.svg" alt="Five-layer chain from land to outcomes with cross-cutting enablers and a learning loop." loading="lazy">
           <figcaption>The chain as a self-improving network.</figcaption>
         </figure>
       </div>
@@ -176,14 +233,17 @@
   <section id="platform">
     <div class="container">
       <h2>Integrated agricultural intelligence platform</h2>
-      <p class="section-intro">One regional geospatial database (plots, soil, water, weather, crops, farmers, markets, roads) feeds five analytical modules and one decision-support system for farmers, cooperatives and buyers.</p>
+      <p class="section-intro">One regional geospatial database (plots, soil, water, weather, crops, farmers, markets, roads) feeds the analytical modules and one decision-support system for farmers, cooperatives and buyers.</p>
+      <figure class="diagram reveal" style="margin-bottom:16px">
+        <img src="/assets/img/platform-architecture.svg" alt="Platform architecture: data sources feed a regional geospatial database, analytical modules and a decision-support layer used by farmers, cooperatives, buyers and planners." loading="lazy">
+      </figure>
       <div class="grid cols-3">
-        <div class="card"><h3>GIS and remote sensing</h3><p>Land suitability, crop mapping, water resources. Sentinel-1/2, Landsat, Google Earth Engine, QGIS.</p></div>
-        <div class="card"><h3>Climate intelligence</h3><p>Seasonal forecasts, rainfall onset, drought risk. CHIRPS, ERA5, local stations.</p></div>
-        <div class="card"><h3>AI and predictive models</h3><p>Suitability, yield and demand forecasts. Python and PyTorch.</p></div>
-        <div class="card"><h3>Production planning</h3><p>Constrained optimisation that turns demand into a seasonal plan.</p></div>
-        <div class="card"><h3>Supply-chain intelligence</h3><p>Market matching, routing and inventory.</p></div>
-        <div class="card"><h3>Decision support</h3><p>Interactive maps, dashboards, recommendations, buyer network and alerts. PostgreSQL + PostGIS, FastAPI, web GIS.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-08"/></svg>GIS and remote sensing</h3><p>Land suitability, crop mapping, water resources. Sentinel-1/2, Landsat, Google Earth Engine, QGIS.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-03"/></svg>Climate intelligence</h3><p>Seasonal forecasts, rainfall onset, drought risk. CHIRPS, ERA5, local stations.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg>AI and predictive models</h3><p>Suitability, yield and demand forecasts. Python and PyTorch.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg>Production planning</h3><p>Constrained optimisation that turns demand into a seasonal plan, with shadow prices.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-11"/></svg>Supply-chain intelligence</h3><p>Collection centres, routing, inventory and traceable lots.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-12"/></svg>Decision support</h3><p>Interactive maps, dashboards, recommendations, buyer network and alerts. PostgreSQL + PostGIS, FastAPI, web GIS.</p></div>
       </div>
     </div>
   </section>
@@ -192,11 +252,11 @@
     <div class="container">
       <h2>Pilot roadmap</h2>
       <p class="section-intro">Start with one woreda, one or two value chains and a manageable group of farmers. Initial planning horizon of 18 to 24 months, set by the agricultural calendar and local conditions.</p>
-      <div class="roadmap">
-        <div class="card phase"><h3>Establish the pilot</h3><ul><li>Screen candidate zones and select one woreda</li><li>Map 2 to 3 communities</li><li>Register farmers and map plots</li><li>Assess land, soil, water and climate</li></ul></div>
-        <div class="card phase"><h3>Coordinate production and market</h3><ul><li>Select 1 to 2 crops from feasibility and demand</li><li>Secure input suppliers</li><li>Sign buyer agreements before planting</li><li>Plan harvest, storage and transport</li></ul></div>
-        <div class="card phase"><h3>Deploy the platform</h3><ul><li>Build the geospatial database</li><li>Publish suitability and water maps</li><li>Crop and weather advisory</li><li>Satellite and field monitoring</li></ul></div>
-        <div class="card phase"><h3>Measure and expand</h3><ul><li>Income, yield, water productivity</li><li>Post-harvest loss and transport cost</li><li>Compare with non-pilot kebeles</li><li>Expand based on evidence</li></ul></div>
+      <div class="timeline reveal">
+        <div class="tl" data-step="1"><span class="when">Months 1 to 4</span><h3>Establish the pilot</h3><ul><li>Screen zones, select one woreda</li><li>Map 2 to 3 communities</li><li>Register farmers, map plots</li><li>Assess land, soil, water, climate</li></ul></div>
+        <div class="tl" data-step="2"><span class="when">Months 3 to 8</span><h3>Coordinate production and market</h3><ul><li>Pick 1 to 2 crops from feasibility and demand</li><li>Secure input suppliers</li><li>Sign buyer agreements before planting</li><li>Plan harvest, storage, transport</li></ul></div>
+        <div class="tl" data-step="3"><span class="when">Months 6 to 14</span><h3>Deploy the platform</h3><ul><li>Geospatial database</li><li>Suitability and water maps</li><li>Crop and weather advisory</li><li>Satellite and field monitoring</li></ul></div>
+        <div class="tl" data-step="4"><span class="when">Months 12 to 24</span><h3>Measure and expand</h3><ul><li>Income, yield, water productivity</li><li>Losses and transport cost</li><li>Compare with non-pilot kebeles</li><li>Expand based on evidence</li></ul></div>
       </div>
     </div>
   </section>
@@ -206,22 +266,43 @@
       <h2>Potential partners</h2>
       <p class="section-intro">The initiative coordinates the ecosystem and complements existing programmes rather than duplicating them. The groups below are potential partners to approach; no partnership is implied.</p>
       <div class="grid cols-3">
-        <div class="card"><h3>Government</h3><p>Regional agriculture bureau, woreda agriculture offices, water-resource authorities.</p></div>
-        <div class="card"><h3>Research</h3><p>Regional universities and agricultural research institutes.</p></div>
-        <div class="card"><h3>National institutions</h3><p>National agricultural transformation and research institutes.</p></div>
-        <div class="card"><h3>International development</h3><p>Multilateral food and agriculture organisations and rural development funds.</p></div>
-        <div class="card"><h3>Private sector</h3><p>Seed and fertilizer suppliers, transporters, warehouses, processors, retailers, exporters.</p></div>
-        <div class="card"><h3>Community</h3><p>Farmer cooperatives, water-user associations, local entrepreneurs, youth groups.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#d-plan"/></svg>Government</h3><p>Regional agriculture bureau, woreda agriculture offices, water-resource authorities.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg>Research</h3><p>Regional universities and agricultural research institutes.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg>National institutions</h3><p>National agricultural transformation and research institutes.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg>International development</h3><p>Multilateral food and agriculture organisations and rural development funds.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-11"/></svg>Private sector</h3><p>Seed and fertilizer suppliers, transporters, warehouses, processors, retailers, exporters.</p></div>
+        <div class="card icard"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg>Community</h3><p>Farmer cooperatives, water-user associations, local entrepreneurs, youth groups.</p></div>
+      </div>
+
+      <div class="cta-band reveal">
+        <svg class="deco" aria-hidden="true"><use href="/assets/img/icons.svg#u-loop"/></svg>
+        <h2>Walk the chain, stage by stage</h2>
+        <p>Every stage page has its domain model, methods, Amhara context, an interactive demo on synthetic data and the code behind it.</p>
+        <div class="btn-row">
+          <a class="btn primary" href="/stages/01-land-intelligence/">Start at stage 01: Land</a>
+          <a class="btn" href="/how-it-works.html">Read the story</a>
+          <a class="btn" href="https://github.com/Land-Suitability/land-suitability.github.io">Code on GitHub</a>
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<footer class="site-footer">
+<footer class="footer-v2">
   <div class="container">
-    <span>Amhara Integrated Agriculture Ecosystem. From Land Intelligence to Market Delivery.</span>
-    <span>Concept stage. Content is a working draft.</span>
+    <div class="cols">
+      <div>
+        <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>AIAE</span></a>
+        <p style="color:var(--muted);font-size:14px;margin-top:10px">From Land Intelligence to Market Delivery. A concept for an integrated agriculture ecosystem, piloted in the Amhara Region of Ethiopia.</p>
+      </div>
+      <div><h4>Plan</h4><ul><li><a href="/stages/01-land-intelligence/">01 Land</a></li><li><a href="/stages/02-water-resources/">02 Water</a></li><li><a href="/stages/03-climate-intelligence/">03 Climate</a></li><li><a href="/stages/04-crop-planning/">04 Planning</a></li><li><a href="/stages/05-market-intelligence/">05 Market</a></li></ul></div>
+      <div><h4>Produce</h4><ul><li><a href="/stages/06-input-coordination/">06 Inputs</a></li><li><a href="/stages/07-farm-production/">07 Field</a></li><li><a href="/stages/08-monitoring-risk/">08 Monitoring</a></li></ul></div>
+      <div><h4>Move</h4><ul><li><a href="/stages/09-harvest-postharvest/">09 Harvest</a></li><li><a href="/stages/10-storage-aggregation/">10 Storage</a></li><li><a href="/stages/11-logistics-transport/">11 Logistics</a></li></ul></div>
+      <div><h4>Sell &amp; Learn</h4><ul><li><a href="/stages/12-market-distribution/">12 Distribution</a></li><li><a href="/how-it-works.html">How it works</a></li><li><a href="https://github.com/Land-Suitability/land-suitability.github.io/blob/main/docs/BRANCHING.md">Contributing rules</a></li></ul></div>
+    </div>
+    <div class="fine"><span>Concept stage. All demos use synthetic data. Partners are potential partners; no agreement is implied.</span><span>© AIAE</span></div>
   </div>
 </footer>
+<script src="/assets/js/hub.js" defer></script>
 </body>
 </html>

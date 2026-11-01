@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" role="img" aria-labelledby="t d">
+  <title id="t">The agricultural chain in one highland landscape</title>
+  <desc id="d">Illustration of an Amhara highland landscape: flat-topped mountains, terraced slopes, a patchwork of teff, wheat and maize fields, a river feeding a lake, an irrigation canal, round tukul homesteads, a cooperative store with silos, a road with a truck, a market, a satellite and rain clouds.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bfe0ef"/><stop offset=".62" stop-color="#eaf2ea"/><stop offset="1" stop-color="#f7f0dc"/>
+    </linearGradient>
+    <radialGradient id="sunglow" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#ffe7a3" stop-opacity=".9"/><stop offset="1" stop-color="#ffe7a3" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9fd0e4"/><stop offset="1" stop-color="#5f9fc0"/>
+    </linearGradient>
+    <linearGradient id="hillfar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a9bfa4"/><stop offset="1" stop-color="#c7d4bd"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8c48e"/><stop offset="1" stop-color="#c9d9a8"/>
+    </linearGradient>
+    <linearGradient id="hillmid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fa36b"/><stop offset="1" stop-color="#9ab986"/>
+    </linearGradient>
+    <pattern id="teff" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
+      <rect width="10" height="10" fill="#dcb85e"/><path d="M0 5h10" stroke="#c9a14a" stroke-width="2"/>
+    </pattern>
+    <pattern id="wheat" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(6)">
+      <rect width="12" height="12" fill="#a9c766"/><path d="M0 6h12" stroke="#93b354" stroke-width="2.4"/>
+    </pattern>
+    <pattern id="maize" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-14)">
+      <rect width="14" height="14" fill="#6f9b48"/><path d="M0 7h14" stroke="#5d863c" stroke-width="3"/>
+    </pattern>
+    <pattern id="fallow" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(10)">
+      <rect width="12" height="12" fill="#c49a68"/><path d="M0 6h12" stroke="#b2885a" stroke-width="2"/>
+    </pattern>
+    <pattern id="onion" width="9" height="9" patternUnits="userSpaceOnUse">
+      <rect width="9" height="9" fill="#7fb36a"/><circle cx="4.5" cy="4.5" r="1.6" fill="#a7cf8c"/>
+    </pattern>
+    <style>
+      .cloud { animation: drift 46s ease-in-out infinite alternate; }
+      .cloud.c2 { animation-duration: 62s; animation-delay: -20s; }
+      .cloud.c3 { animation-duration: 54s; animation-delay: -8s; }
+      .rain line { animation: rain 1.4s linear infinite; }
+      .rain line:nth-child(2n) { animation-delay: -.7s; }
+      .shimmer { animation: shimmer 5s ease-in-out infinite; }
+      .beam { animation: beam 3.2s ease-in-out infinite; }
+      .truck { animation: truck 18s ease-in-out infinite alternate; }
+      .sun { animation: pulse 7s ease-in-out infinite; transform-origin: 1010px 110px; }
+      @keyframes drift { from { transform: translateX(-30px); } to { transform: translateX(40px); } }
+      @keyframes rain { from { transform: translateY(-6px); opacity: 0; } 30% { opacity: .9; } to { transform: translateY(26px); opacity: 0; } }
+      @keyframes shimmer { 0%, 100% { opacity: .25; } 50% { opacity: .6; } }
+      @keyframes beam { 0%, 100% { opacity: .15; } 50% { opacity: .55; } }
+      @keyframes truck { from { transform: translate(0, 0); } to { transform: translate(-150px, 24px); } }
+      @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+      @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+    </style>
+  </defs>
+
+  <!-- sky -->
+  <rect width="1200" height="600" fill="url(#sky)"/>
+  <circle cx="1010" cy="110" r="120" fill="url(#sunglow)"/>
+  <circle class="sun" cx="1010" cy="110" r="44" fill="#f2c14e"/>
+
+  <!-- satellite and scan beam (stage 08) -->
+  <g transform="translate(150 70) rotate(-20)">
+    <rect x="-9" y="-9" width="18" height="18" rx="3" fill="#5d6d7e"/>
+    <rect x="-46" y="-7" width="30" height="14" rx="2" fill="#2f5d8a"/><rect x="16" y="-7" width="30" height="14" rx="2" fill="#2f5d8a"/>
+    <path d="M-46 0h30M16 0h30M-31-7v14M31-7v14" stroke="#8ab8e6" stroke-width="1"/>
+    <path d="M-16 0h7M9 0h7" stroke="#5d6d7e" stroke-width="3"/>
+  </g>
+
+  <!-- clouds (stage 03) -->
+  <g class="cloud" fill="#ffffff" opacity=".95">
+    <ellipse cx="520" cy="96" rx="64" ry="24"/><ellipse cx="560" cy="80" rx="44" ry="28"/><ellipse cx="482" cy="86" rx="34" ry="20"/>
+  </g>
+  <g class="cloud c2" fill="#ffffff" opacity=".8">
+    <ellipse cx="820" cy="60" rx="52" ry="18"/><ellipse cx="850" cy="48" rx="34" ry="20"/>
+  </g>
+  <g class="cloud c3">
+    <g fill="#b9c7d3"><ellipse cx="710" cy="150" rx="70" ry="24"/><ellipse cx="748" cy="132" rx="46" ry="30"/><ellipse cx="672" cy="140" rx="36" ry="22"/></g>
+    <g class="rain" stroke="#7fa7c4" stroke-width="2.4" stroke-linecap="round">
+      <line x1="660" y1="178" x2="654" y2="194"/><line x1="684" y1="180" x2="678" y2="196"/><line x1="708" y1="178" x2="702" y2="194"/>
+      <line x1="732" y1="180" x2="726" y2="196"/><line x1="756" y1="178" x2="750" y2="194"/><line x1="780" y1="176" x2="774" y2="192"/>
+    </g>
+  </g>
+
+  <!-- far ambas: flat-topped highland mountains -->
+  <path d="M0 300 L60 262 L140 262 L190 230 L320 230 L360 262 L470 270 L540 214 L700 214 L760 252 L860 258 L930 222 L1080 222 L1130 256 L1200 250 L1200 360 L0 360 Z" fill="url(#hillfar)"/>
+  <path d="M190 230 L320 230 M540 214 L700 214 M930 222 L1080 222" stroke="#d6e0cf" stroke-width="3"/>
+
+  <!-- mid hills with terraces (stage 01) -->
+  <path d="M0 360 C120 300 240 290 360 318 C470 344 540 300 660 296 C800 292 900 330 1000 318 C1090 308 1150 300 1200 306 L1200 430 L0 430 Z" fill="url(#hillmid)"/>
+  <g fill="none" stroke="#b7cf9f" stroke-width="2.4" opacity=".8">
+    <path d="M60 352 C150 318 240 312 330 330"/><path d="M40 368 C140 334 240 328 340 346"/><path d="M30 384 C130 352 240 346 350 362"/>
+    <path d="M24 400 C130 370 240 364 356 380"/><path d="M880 330 C960 318 1060 312 1170 318"/><path d="M870 348 C960 336 1060 330 1180 336"/>
+    <path d="M860 366 C960 354 1060 350 1190 354"/>
+  </g>
+
+  <!-- foreground ground -->
+  <path d="M0 418 C200 404 400 400 600 404 C800 408 1000 402 1200 410 L1200 600 L0 600 Z" fill="url(#ground)"/>
+  <g stroke="#b9cf9a" stroke-width="2" fill="none" opacity=".7">
+    <path d="M20 530 C80 520 160 522 230 530"/><path d="M930 560 C980 552 1020 552 1060 556"/><path d="M880 430 C940 424 1010 426 1060 430"/>
+  </g>
+
+  <!-- lake and river (stage 02) -->
+  <path d="M60 470 C90 430 200 418 300 430 C380 440 400 470 340 488 C260 512 120 508 70 494 Z" fill="url(#lake)"/>
+  <path class="shimmer" d="M110 462 h60 M210 452 h50 M150 482 h70 M260 472 h40" stroke="#e6f4fa" stroke-width="3" stroke-linecap="round"/>
+  <path d="M640 300 C620 340 560 352 520 380 C480 410 420 420 340 440" fill="none" stroke="#7fb5d1" stroke-width="10" stroke-linecap="round"/>
+  <path d="M640 300 C620 340 560 352 520 380 C480 410 420 420 340 440" fill="none" stroke="#bfe0ef" stroke-width="3" stroke-dasharray="14 18" class="shimmer"/>
+
+  <!-- fields patchwork (stages 04, 07, 09) -->
+  <g stroke="#f7f0dc" stroke-width="3">
+    <path d="M360 430 L520 404 L560 470 L380 500 Z" fill="url(#teff)"/>
+    <path d="M520 404 L700 392 L730 452 L560 470 Z" fill="url(#wheat)"/>
+    <path d="M700 392 L860 398 L880 456 L730 452 Z" fill="url(#maize)"/>
+    <path d="M380 500 L560 470 L590 540 L390 572 Z" fill="url(#wheat)"/>
+    <path d="M560 470 L730 452 L760 520 L590 540 Z" fill="url(#teff)"/>
+    <path d="M730 452 L880 456 L910 512 L760 520 Z" fill="url(#fallow)"/>
+    <path d="M590 540 L760 520 L780 600 L600 600 Z" fill="url(#maize)"/>
+    <path d="M390 572 L590 540 L600 600 L380 600 Z" fill="url(#onion)"/>
+  </g>
+  <!-- satellite scan footprint on the fields (stage 08) -->
+  <path class="beam" d="M150 90 L520 404 L700 392 Z" fill="#8ab8e6"/>
+  <path d="M520 404 L700 392 L730 452 L560 470 Z" fill="none" stroke="#2f5d8a" stroke-width="2.5" stroke-dasharray="6 5"/>
+
+  <!-- irrigation canal from river to the onion field -->
+  <path d="M470 414 C455 470 430 520 440 586" fill="none" stroke="#7fb5d1" stroke-width="4" stroke-dasharray="8 6"/>
+
+  <!-- teff stacks after harvest (stage 09) -->
+  <g fill="#c9a14a" stroke="#a9843a" stroke-width="1.5">
+    <path d="M620 510 q14 -30 28 0 z"/><path d="M652 506 q12 -26 24 0 z"/><path d="M682 512 q13 -28 26 0 z"/>
+  </g>
+
+  <!-- tukul homesteads -->
+  <g>
+    <g transform="translate(250 380)"><rect x="-14" y="-6" width="28" height="20" rx="3" fill="#d8c2a0"/><path d="M-22 -4 L0 -28 L22 -4 Z" fill="#8a6d3b"/><rect x="-4" y="4" width="8" height="10" fill="#6b5428"/></g>
+    <g transform="translate(296 392) scale(.8)"><rect x="-14" y="-6" width="28" height="20" rx="3" fill="#d8c2a0"/><path d="M-22 -4 L0 -28 L22 -4 Z" fill="#8a6d3b"/><rect x="-4" y="4" width="8" height="10" fill="#6b5428"/></g>
+    <g transform="translate(940 420)"><rect x="-14" y="-6" width="28" height="20" rx="3" fill="#d8c2a0"/><path d="M-22 -4 L0 -28 L22 -4 Z" fill="#8a6d3b"/><rect x="-4" y="4" width="8" height="10" fill="#6b5428"/></g>
+  </g>
+
+  <!-- acacia trees -->
+  <g fill="#557f43">
+    <g transform="translate(330 404)"><path d="M0 0 v-22" stroke="#6b5428" stroke-width="4"/><ellipse cx="0" cy="-26" rx="30" ry="9"/></g>
+    <g transform="translate(905 470)"><path d="M0 0 v-26" stroke="#6b5428" stroke-width="4"/><ellipse cx="0" cy="-30" rx="34" ry="10"/></g>
+    <g transform="translate(1150 420)"><path d="M0 0 v-20" stroke="#6b5428" stroke-width="4"/><ellipse cx="0" cy="-24" rx="26" ry="8"/></g>
+  </g>
+
+  <!-- road -->
+  <path d="M1200 470 C1080 470 1010 500 960 540 C920 572 880 600 860 600 L930 600 C960 590 1000 560 1030 540 C1070 515 1120 505 1200 505 Z" fill="#a89a85"/>
+  <path d="M1200 488 C1090 488 1030 512 990 546 C960 572 930 596 900 600" fill="none" stroke="#f3ead8" stroke-width="3" stroke-dasharray="16 14"/>
+
+  <!-- cooperative store with silos (stages 06, 10) -->
+  <g transform="translate(980 410)">
+    <path d="M0 50 V12 L50 -10 L100 12 V50 Z" fill="#e9dcc2" stroke="#8a6d3b" stroke-width="2"/>
+    <path d="M-6 14 L50 -14 L106 14" fill="none" stroke="#9a4a28" stroke-width="6" stroke-linecap="round"/>
+    <rect x="36" y="22" width="28" height="28" fill="#8a6d3b"/>
+    <g fill="#cfc6b6" stroke="#8a8173" stroke-width="2"><rect x="112" y="-6" width="22" height="56" rx="11"/><rect x="138" y="2" width="20" height="48" rx="10"/></g>
+    <g fill="#dcc79a" stroke="#a9843a" stroke-width="1.5"><rect x="4" y="34" width="16" height="16" rx="3"/><rect x="14" y="40" width="16" height="12" rx="3"/></g>
+  </g>
+
+  <!-- truck on the road (stage 11) -->
+  <g class="truck">
+    <g transform="translate(1090 466)">
+      <rect x="0" y="0" width="58" height="30" rx="3" fill="#2f5d8a"/>
+      <path d="M58 8 h18 l12 12 v10 h-30 z" fill="#3f78ad"/><rect x="64" y="11" width="10" height="8" fill="#cfe6f5"/>
+      <circle cx="16" cy="32" r="7" fill="#263238"/><circle cx="72" cy="32" r="7" fill="#263238"/>
+      <circle cx="16" cy="32" r="2.5" fill="#cfd8dc"/><circle cx="72" cy="32" r="2.5" fill="#cfd8dc"/>
+    </g>
+  </g>
+
+  <!-- market stalls (stages 05, 12) -->
+  <g transform="translate(1060 545)">
+    <rect x="0" y="0" width="120" height="48" fill="#f5e1d7"/>
+    <path d="M-8 0 h136 l-10 -22 h-116 z" fill="#9a4a28"/>
+    <path d="M6 -22 v22 M30 -22 v22 M54 -22 v22 M78 -22 v22 M102 -22 v22" stroke="#e59a78" stroke-width="10" opacity=".6"/>
+    <g fill="#dcb85e"><circle cx="20" cy="30" r="9"/><circle cx="36" cy="32" r="8"/></g>
+    <g fill="#a9c766"><circle cx="70" cy="30" r="9"/><circle cx="86" cy="32" r="8"/></g>
+    <circle cx="106" cy="31" r="7" fill="#c0392b" opacity=".8"/>
+  </g>
+
+</svg>
