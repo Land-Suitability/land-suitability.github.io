@@ -31,14 +31,14 @@ def sky(top=C["sky1"], bottom=C["sky2"], sun=(560, 70), clouds=((140, 70), (330,
     s = (f'<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{top}"/>'
          f'<stop offset="1" stop-color="{bottom}"/></linearGradient></defs><rect width="{W}" height="{H}" fill="url(#sky)"/>')
     if sun:
-        s += f'<circle cx="{sun[0]}" cy="{sun[1]}" r="58" fill="#ffe7a3" opacity=".5"/><circle cx="{sun[0]}" cy="{sun[1]}" r="30" fill="{C["gold"]}"/>'
+        s += f'<circle class="glow" cx="{sun[0]}" cy="{sun[1]}" r="58" fill="#ffe7a3" opacity=".5"/><circle cx="{sun[0]}" cy="{sun[1]}" r="30" fill="{C["gold"]}"/>'
     for x, y in clouds:
         s += cloud(x, y)
     return s
 
 
 def cloud(x, y, k=1.0, fill="#ffffff", op=.95) -> str:
-    return (f'<g fill="{fill}" opacity="{op}"><ellipse cx="{x}" cy="{y}" rx="{46 * k}" ry="{16 * k}"/>'
+    return (f'<g class="cloud" fill="{fill}" opacity="{op}"><ellipse cx="{x}" cy="{y}" rx="{46 * k}" ry="{16 * k}"/>'
             f'<ellipse cx="{x + 26 * k}" cy="{y - 10 * k}" rx="{30 * k}" ry="{20 * k}"/><ellipse cx="{x - 24 * k}" cy="{y - 4 * k}" rx="{22 * k}" ry="{14 * k}"/></g>')
 
 
@@ -105,9 +105,16 @@ def badge(x, y, text, color) -> str:
             f'<text x="{w / 2}" y="2" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff">{text}</text></g>')
 
 
+# gentle motion: drifting clouds and a breathing sun glow; none for readers who prefer reduced motion
+MOTION = ('<style>.cloud{animation:drift 11s ease-in-out infinite alternate}.glow{animation:breathe 5s ease-in-out infinite}'
+          '@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(14px)}}'
+          '@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.65}}'
+          '@media (prefers-reduced-motion:reduce){.cloud,.glow{animation:none}}</style>')
+
+
 def frame(body: str, title: str, desc: str) -> str:
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d" '
-            f'font-family="Helvetica, Arial, sans-serif"><title id="t">{title}</title><desc id="d">{desc}</desc>{body}</svg>\n')
+            f'font-family="Helvetica, Arial, sans-serif"><title id="t">{title}</title><desc id="d">{desc}</desc>{MOTION}{body}</svg>\n')
 
 
 # ------------------------------------------------------------------ scenes
