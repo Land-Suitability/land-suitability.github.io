@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossary | AIAE</title>
+  <meta name="description" content="Plain-language glossary of the terms used across the twelve stages: places and institutions, seasons and climate, land and crops, planning and markets, operations and evaluation.">
+  <meta property="og:title" content="Glossary: from kebele to shadow price">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .gl-tools { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; position: sticky; top: 61px; z-index: 5; padding: 12px 0;
+      background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(6px); }
+    .gl-tools input { flex: 1 1 260px; font: inherit; font-size: 16px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); }
+    .gl-tools button { font: inherit; font-size: 14px; padding: 8px 12px; border-radius: 999px; border: 1px solid var(--border);
+      background: var(--surface); color: var(--text); cursor: pointer; }
+    .gl-tools button[aria-pressed="true"] { background: var(--accent); color: var(--accent-contrast); border-color: var(--accent); }
+    .gl-group h2 { display: flex; align-items: center; gap: 10px; margin-top: 30px; }
+    .gl-group h2 .icon { width: 30px; height: 30px; padding: 5px; border-radius: 9px; background: var(--surface-2); color: var(--accent); }
+    dl.gl { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; margin: 0; }
+    dl.gl > div { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+    dl.gl dt { font-weight: 800; font-size: 16.5px; }
+    dl.gl dt small { font-weight: 600; color: var(--muted); font-size: 12.5px; margin-left: 6px; }
+    dl.gl dd { margin: 6px 0 0; color: var(--muted); font-size: 14.5px; }
+    dl.gl dd a.chip { margin-top: 8px; display: inline-block; font-size: 12px; }
+    .gl-count { color: var(--muted); font-size: 14px; }
+    mark { background: color-mix(in srgb, var(--gold) 40%, transparent); color: inherit; border-radius: 3px; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#landscape">Landscape</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html" aria-current="page">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:6px">
+    <span class="eyebrow">Plain language</span>
+    <h1>Glossary</h1>
+    <p class="lead">The words used across the twelve stages, from <em>kebele</em> to <em>shadow price</em>, explained briefly with a link to where each one matters.</p>
+  </section>
+
+  <div class="gl-tools" role="search">
+    <input id="gl-q" type="search" placeholder="Filter terms… (e.g. rain, contract, S1)" aria-label="Filter glossary terms">
+    <button type="button" data-cat="all" aria-pressed="true">All</button>
+    <span id="gl-cats"></span>
+    <span class="gl-count" id="gl-count"></span>
+  </div>
+  <div id="gl"></div>
+  <noscript><p>The glossary needs JavaScript to display.</p></noscript>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>Definitions are simplified for a general audience; seasons and institutions vary by area.</span><span><a href="/">Back to the hub</a></span></div></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  // [term, extra (optional), definition, stage slug (optional)]
+  var G = {
+    "Places and institutions|d-plan": [
+      ["Amhara Region", "", "A regional state in north-western and central Ethiopia, largely highland, and the setting of the pilot.", ""],
+      ["Zone", "", "An administrative level below the region, for example a zone in Gojjam, Gondar, Wollo or Shewa.", ""],
+      ["Woreda", "district", "An administrative district. The pilot starts in one woreda.", ""],
+      ["Kebele", "", "The smallest administrative unit, a rural community. Pilot data are reported by kebele.", "07-farm-production"],
+      ["Development agent", "DA", "A kebele-level extension worker who advises farmers and, in this system, records field operations.", "07-farm-production"],
+      ["Farmer training centre", "FTC", "A kebele facility for demonstrations and training.", "07-farm-production"],
+      ["Primary cooperative", "", "A farmers' cooperative at kebele level that buys inputs and sells produce for its members.", "10-storage-aggregation"],
+      ["Cooperative union", "", "A federation of primary cooperatives that supplies inputs at scale and sells to large buyers.", "06-input-coordination"],
+      ["Water-user association", "", "A group of irrigators that shares and manages water from a scheme or river.", "02-water-resources"],
+      ["Land-use certificate", "", "A document recording a household's right to use a plot. Land is not bought or sold; plans work with these rights.", "01-land-intelligence"]
+    ],
+    "Seasons and climate|i-03": [
+      ["Kiremt", "", "The main rainy season, roughly June to September, that feeds the Meher crop.", "03-climate-intelligence"],
+      ["Belg", "", "The short rainy season, roughly February to May, and the crops grown in it in Belg areas.", "03-climate-intelligence"],
+      ["Bega", "", "The dry season, roughly October to January, when irrigation matters most.", "02-water-resources"],
+      ["Meher", "", "The main cropping season, rain-fed by Kiremt, planted around mid-year and harvested from about October.", "03-climate-intelligence"],
+      ["Onset of the rains", "", "The first planting rain that is not followed by a long dry spell: here, 20 mm in 3 days with no 7-day dry spell in the next 30 days.", "03-climate-intelligence"],
+      ["False start", "", "Rain that looks like the season starting but is followed by a long dry spell, which can kill seedlings.", "03-climate-intelligence"],
+      ["Dry spell", "", "A run of days with almost no rain; most harmful in the weeks after planting.", "03-climate-intelligence"],
+      ["SPI", "Standardised Precipitation Index", "How unusual a season's rainfall is compared with the long-term record; -1 or below marks a drought year.", "03-climate-intelligence"],
+      ["Lapse rate", "", "How temperature falls with altitude, about 6.5 °C per kilometre; used to estimate frost risk higher up.", "03-climate-intelligence"],
+      ["ET0", "reference evapotranspiration", "The water a reference grass would use in a day, driven by heat and sunshine.", "02-water-resources"],
+      ["Kc", "crop coefficient", "How much more or less water a crop uses than the reference grass at each growth stage.", "02-water-resources"],
+      ["Effective rainfall", "", "The part of the rain a crop can actually use; the rest runs off or drains away.", "02-water-resources"],
+      ["Environmental flow", "", "Water deliberately left in a river so that it stays healthy for people and nature downstream.", "02-water-resources"],
+      ["Recharge", "", "Water that refills an aquifer each year; only a share of it should be pumped.", "02-water-resources"]
+    ],
+    "Land and crops|i-01": [
+      ["Teff", "", "A tiny-grained cereal native to Ethiopia, the staple for injera; tolerant of waterlogged soils but shatters easily when over-ripe.", "09-harvest-postharvest"],
+      ["Amba", "", "A flat-topped highland mountain, typical of the northern Ethiopian landscape.", ""],
+      ["Tukul", "", "A traditional round house with a conical roof.", ""],
+      ["Vertisol", "", "A heavy black clay soil that swells when wet and can waterlog in the main rains.", "01-land-intelligence"],
+      ["Terrace", "", "A levelled step on a slope that slows erosion and keeps soil and water in place.", "01-land-intelligence"],
+      ["S1, S2, S3, N", "FAO suitability classes", "Highly, moderately and marginally suitable, and not suitable, for a crop on a piece of land.", "01-land-intelligence"],
+      ["Limiting factor", "", "The land quality that holds suitability down, for example acidic soil or steep slope.", "01-land-intelligence"],
+      ["AHP", "Analytic Hierarchy Process", "A way to turn expert pairwise judgements into weights, with a check that they are consistent.", "01-land-intelligence"],
+      ["NDVI", "", "A satellite measure of how green and dense vegetation is; it rises as a crop grows and falls as it matures.", "08-monitoring-risk"],
+      ["Sentinel-2", "", "A pair of European satellites that image the land about every five days at 10 to 20 m detail.", "08-monitoring-risk"],
+      ["Crop cut", "", "Harvesting and weighing a small marked area of a field to measure yield.", "08-monitoring-risk"]
+    ],
+    "Planning and markets|i-05": [
+      ["Planning cluster", "", "A group of neighbouring plots planned together so that volumes are large enough for buyers.", "04-crop-planning"],
+      ["Linear programme", "", "A mathematical method that finds the best plan within limits such as land, water and demand.", "04-crop-planning"],
+      ["Shadow price", "", "How much extra income one more unit of a limited resource would bring, for example one more cubic metre of water in March.", "04-crop-planning"],
+      ["Demand signal", "", "What buyers will take: a contracted minimum, an absorbable maximum and a planning price.", "05-market-intelligence"],
+      ["Offtake contract", "", "A pre-season agreement with a buyer on volume, grade, delivery month and how the price is set.", "05-market-intelligence"],
+      ["Price band", "floor and ceiling", "A contract price that follows the market but never goes below a floor or above a ceiling.", "05-market-intelligence"],
+      ["Side-selling", "", "Selling contracted produce to someone else because they pay more at harvest.", "05-market-intelligence"],
+      ["Seasonal index", "", "How prices in each month usually compare with the yearly average, after removing inflation.", "05-market-intelligence"]
+    ],
+    "Operations|i-11": [
+      ["Lead time", "", "The time between placing an order and receiving it; it varies, so plans use its 90th percentile.", "06-input-coordination"],
+      ["Order-by date", "", "The latest date to order an input so it arrives before it is needed in 9 cases out of 10.", "06-input-coordination"],
+      ["Adherence", "", "The share of planned field operations done within their time window.", "07-farm-production"],
+      ["Earliest deadline first", "", "Harvesting first the plots whose ripeness window closes soonest, to cut field losses.", "09-harvest-postharvest"],
+      ["Traceable lot", "", "A batch of grain with an ID that lists the plots it came from, so quality and payment can be traced.", "09-harvest-postharvest"],
+      ["Hermetic bag", "", "An airtight storage bag that starves insects of oxygen, keeping storage losses very low.", "10-storage-aggregation"],
+      ["Warehouse receipt", "", "A record that a farmer group owns a graded lot in store; it can back a loan or a later sale.", "10-storage-aggregation"],
+      ["Collection centre", "", "A store where small lots from many plots are combined into buyer-sized volumes.", "10-storage-aggregation"],
+      ["p-median", "", "A method to choose where to put a number of centres so that total haul distance is as short as possible.", "10-storage-aggregation"],
+      ["Clarke-Wright savings", "", "A route-planning method that merges trips whose combination saves the most distance, filling trucks.", "11-logistics-transport"]
+    ],
+    "Evaluation and learning|u-loop": [
+      ["Baseline and endline", "", "Surveys before and after the pilot that measure the same things in the same households.", "12-market-distribution"],
+      ["Comparison kebele", "", "A similar kebele outside the pilot, used to see what would have happened anyway.", "12-market-distribution"],
+      ["Difference-in-differences", "DiD", "Impact = change in pilot households minus change in comparison households; removes inflation and weather.", "12-market-distribution"],
+      ["Learning signal", "", "A lesson sent back up the chain after each season, such as realised yields per suitability class.", "12-market-distribution"],
+      ["Synthetic data", "", "Generated, made-up data used in demos to show how methods behave; never real farmers or places.", ""],
+      ["Pseudonymous ID", "", "A code such as HH-0001 used instead of a person's name, so records can be linked without identifying anyone.", "07-farm-production"]
+    ]
+  };
+  var host = document.getElementById("gl"), q = document.getElementById("gl-q"), cats = document.getElementById("gl-cats"), count = document.getElementById("gl-count");
+  if (!host) return;
+  var active = "all";
+  Object.keys(G).forEach(function (k) {
+    var b = document.createElement("button"); b.type = "button"; b.dataset.cat = k; b.textContent = k.split("|")[0]; b.setAttribute("aria-pressed", "false");
+    cats.appendChild(b);
+  });
+  document.querySelectorAll(".gl-tools button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      active = b.dataset.cat;
+      document.querySelectorAll(".gl-tools button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      render();
+    });
+  });
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function hl(text, words) {
+    var out = esc(text);
+    words.forEach(function (w) { if (w.length > 1) out = out.replace(new RegExp("(^|[^a-z0-9])(" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig"), "$1<mark>$2</mark>"); });
+    return out;
+  }
+  function render() {
+    var words = q.value.toLowerCase().split(/\s+/).filter(Boolean), n = 0, html = "";
+    Object.keys(G).forEach(function (k) {
+      if (active !== "all" && active !== k) return;
+      var parts = k.split("|"), items = G[k].filter(function (t) {
+        var hay = (t[0] + " " + t[1] + " " + t[2]).toLowerCase();
+        return words.every(function (w) { return new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(hay); });
+      });
+      if (!items.length) return;
+      n += items.length;
+      html += '<section class="gl-group"><h2><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#' + parts[1] + '"/></svg>' + parts[0] + '</h2><dl class="gl">' +
+        items.map(function (t) {
+          return '<div id="' + t[0].toLowerCase().replace(/[^a-z0-9]+/g, "-") + '"><dt>' + hl(t[0], words) + (t[1] ? "<small>" + hl(t[1], words) + "</small>" : "") + "</dt><dd>" + hl(t[2], words) +
+            (t[3] ? '<br><a class="chip" href="/stages/' + t[3] + '/">Stage ' + t[3].slice(0, 2) + " &rarr;</a>" : "") + "</dd></div>";
+        }).join("") + "</dl></section>";
+    });
+    host.innerHTML = html || '<p style="color:var(--muted);padding:20px 0">No term matches. Try a shorter word.</p>';
+    count.textContent = n + " term" + (n === 1 ? "" : "s");
+  }
+  q.addEventListener("input", render);
+  render();
+  if (location.hash) { var t = document.querySelector(location.hash); if (t) t.scrollIntoView(); }
+})();
+</script>
+</body>
+</html>

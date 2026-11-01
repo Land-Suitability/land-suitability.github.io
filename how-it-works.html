@@ -36,6 +36,10 @@
     .step .out { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--d); border-radius: 0 10px 10px 0;
       padding: 10px 14px; font-size: 14.5px; margin: 10px 0; }
     .step .out b { color: var(--text); }
+    .step-thumb { float: right; width: 210px; margin: 2px 0 10px 18px; border-radius: 12px; border: 1px solid var(--border);
+      box-shadow: 0 6px 18px rgba(31,42,32,.10); background: #eaf2ea; }
+    .step::after { content: ""; display: block; clear: both; }
+    @media (max-width: 1000px) { .step-thumb { float: none; display: block; width: 100%; max-width: 420px; margin: 8px 0 12px; } }
     @media (max-width: 860px) {
       .story { grid-template-columns: 1fr; }
       .clock-wrap { position: static; max-width: 360px; margin: 0 auto; }
@@ -52,6 +56,8 @@
       <a href="/#loop">The loop</a>
       <a href="/#chain">Stages</a>
       <a href="/how-it-works.html" aria-current="page">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
       <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
     </nav>
   </div>
@@ -71,7 +77,7 @@
         <svg viewBox="0 0 300 300" id="clock">
           <g id="months"></g>
           <circle cx="150" cy="150" r="70" fill="var(--surface)" stroke="var(--border)"/>
-          <g id="hand"><path d="M150 18 L160 34 L140 34 Z" fill="var(--text)"/><path d="M150 34 L150 80" stroke="var(--text)" stroke-width="3" stroke-linecap="round" stroke-dasharray="2 5"/></g>
+          <g id="hand"><path d="M150 18 L160 3 L140 3 Z" fill="var(--text)"/></g>
           <use id="clock-icon" href="/assets/img/icons.svg#i-05" x="126" y="104" width="48" height="48" style="color:var(--accent)"/>
           <text x="150" y="182" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)" id="clock-stage">Stage 05</text>
         </svg>
@@ -239,6 +245,20 @@
     steps.forEach(function (s) { io.observe(s); });
   }
   activate(steps[0]);
+
+  // add each stage's illustration to its step (slugs come from stages.json)
+  fetch("/stages.json").then(function (r) { return r.json(); }).then(function (d) {
+    var bySlug = {};
+    d.stages.forEach(function (st) { bySlug[String(st.number).padStart(2, "0")] = st.slug; });
+    steps.forEach(function (st) {
+      var slug = bySlug[st.dataset.stage];
+      if (!slug) return;
+      var img = document.createElement("img");
+      img.className = "step-thumb"; img.alt = ""; img.loading = "lazy"; img.src = "/assets/img/stages/" + slug + ".svg";
+      var h = st.querySelector("h3");
+      st.insertBefore(img, h.nextSibling);
+    });
+  }).catch(function (e) { if (window.console) console.warn("[story] thumbnails", e); });
 })();
 </script>
 </body>

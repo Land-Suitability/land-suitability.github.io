@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Spine | AIAE</title>
+  <meta name="description" content="Every hand-off between the twelve stages: which stage sends which record to which, forward through the season and back through the learning loop.">
+  <meta property="og:title" content="The data spine: every hand-off between the twelve stages">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .spine-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px; overflow-x: auto; }
+    #spine { min-width: 860px; }
+    #spine svg { width: 100%; height: auto; display: block; }
+    #spine .arc { fill: none; stroke-width: 2.4; opacity: .55; transition: opacity .15s ease, stroke-width .15s ease; }
+    #spine .arc.fb { stroke-dasharray: 6 5; }
+    #spine.dim .arc { opacity: .08; }
+    #spine.dim .arc.hl { opacity: 1; stroke-width: 3.6; }
+    #spine.dim .node:not(.hl) { opacity: .35; }
+    #spine text.lab { paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+    #spine .node { cursor: pointer; transition: opacity .15s ease; }
+    #spine .node:focus { outline: none; }
+    #spine .node:focus circle, #spine .node:hover circle { stroke-width: 4; }
+    .spine-info { margin-top: 14px; min-height: 120px; }
+    .spine-info h3 { margin: 0 0 6px; }
+    .flowlist { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .flowlist ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+    .flowlist li b { color: var(--text); font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
+    @media (max-width: 700px) { .flowlist { grid-template-columns: 1fr; } }
+    .key { display: flex; gap: 18px; flex-wrap: wrap; font-size: 13.5px; color: var(--muted); margin: 8px 0 12px; }
+    .key i { display: inline-block; width: 26px; height: 0; border-top: 3px solid var(--muted); margin-right: 6px; vertical-align: 4px; }
+    .key i.fb { border-top-style: dashed; }
+    code.rec { font-size: 13px; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#landscape">Landscape</a>
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html" aria-current="page">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:16px">
+    <span class="eyebrow">How the stages talk to each other</span>
+    <h1>The data spine</h1>
+    <p class="lead">Twelve stages only work as one system if each passes a clear, agreed record to the next. This page shows every hand-off: forward through the season above the line, and back through the learning loop below it.</p>
+    <p class="section-intro" style="margin-top:12px">Analogy: a relay race where the baton is a record with a fixed shape. If one runner changes the baton, the next cannot take it. Each record below is defined in the stage's domain model and code.</p>
+  </section>
+
+  <section style="padding-top:8px">
+    <div class="key"><span><i></i>forward hand-off (this season)</span><span><i class="fb"></i>feedback (learning loop, next season)</span><span>Hover, tab to or tap a stage to highlight its hand-offs.</span></div>
+    <div class="spine-wrap"><div id="spine" role="img" aria-label="Arc diagram of hand-offs between the twelve stages"></div></div>
+    <div class="card spine-info" id="spine-info" aria-live="polite">
+      <h3>Select a stage</h3>
+      <p style="color:var(--muted)">Its incoming and outgoing records will be listed here, with links to the stage pages.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>All hand-offs</h2>
+    <div class="table-wrap" style="border:1px solid var(--border);border-radius:12px;overflow:auto;background:var(--surface)">
+      <table style="width:100%;border-collapse:collapse;font-size:14px" id="spine-table">
+        <thead><tr><th style="text-align:left;padding:10px 12px">From</th><th style="text-align:left;padding:10px 12px">Record</th><th style="text-align:left;padding:10px 12px">To</th><th style="text-align:left;padding:10px 12px">Kind</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>Records are defined in each stage's domain model (src/&lt;package&gt;/domain.py on its branch).</span><span><a href="/">Back to the hub</a></span></div></div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  // from, to, record, kind ("f" forward this season, "b" feedback to the next season)
+  var FLOWS = [
+    ["01", "02", "Irrigable suitable land", "f"], ["01", "04", "SuitabilityAssessment", "f"], ["01", "06", "Acid-soil share (lime)", "f"],
+    ["03", "02", "Rain and temperature (ET0)", "f"], ["03", "04", "ClimateOutlook: crop-cycle fit", "f"], ["03", "07", "Planting window", "f"],
+    ["03", "08", "Weather context for alerts", "f"], ["02", "04", "WaterBudget: 12 monthly limits", "f"], ["05", "04", "DemandSignal", "f"],
+    ["04", "05", "Contractable volumes", "f"], ["04", "06", "SeasonalProductionPlan", "f"], ["04", "07", "Cluster targets", "f"],
+    ["06", "07", "PurchaseOrders: inputs at the store", "f"], ["07", "08", "Plot assignments and planting dates", "f"],
+    ["07", "09", "Expected maturity", "f"], ["08", "09", "YieldForecast and maturity windows", "f"], ["08", "11", "Volume forecast", "f"],
+    ["05", "09", "Grade specifications", "f"], ["09", "10", "HarvestLot (traceable)", "f"], ["09", "11", "Pickup volumes", "f"],
+    ["10", "11", "CollectionCentres and stock", "f"], ["11", "12", "Shipments", "f"], ["05", "12", "OfftakeContract and price rule", "f"],
+    ["09", "12", "Lot to plot to household links", "f"],
+    ["08", "07", "Alerts for extension visits", "b"], ["07", "04", "Area gaps", "b"], ["11", "04", "Transport cost per tonne", "b"],
+    ["12", "05", "Realised prices, buyer feedback", "b"], ["12", "01", "Yields by suitability class", "b"], ["12", "04", "Realised margins", "b"],
+    ["10", "05", "Timing of sales", "b"]
+  ];
+  var DV = { plan: "--plan", produce: "--produce", move: "--move", sell: "--sell" };
+  var host = document.getElementById("spine"), info = document.getElementById("spine-info"), tbody = document.querySelector("#spine-table tbody");
+  if (!host) return;
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function svgEl(t, a) { var e = document.createElementNS("http://www.w3.org/2000/svg", t); for (var k in a) e.setAttribute(k, a[k]); return e; }
+
+  fetch("/stages.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+    var S = {}; d.stages.forEach(function (s) { S[pad(s.number)] = s; });
+    var W = 1100, H = 520, base = 270, x0 = 60, step = (W - 2 * x0) / 11;
+    function X(n) { return x0 + (parseInt(n, 10) - 1) * step; }
+    var svg = svgEl("svg", { viewBox: "0 0 " + W + " " + H });
+    var gArcs = svgEl("g", {}), gNodes = svgEl("g", {});
+    svg.appendChild(svgEl("line", { x1: x0 - 30, x2: W - x0 + 30, y1: base, y2: base, stroke: "var(--border)", "stroke-width": 2 }));
+    var arcs = [];
+    FLOWS.forEach(function (f) {
+      var a = X(f[0]), b = X(f[1]), fwd = f[3] === "f", r = Math.abs(b - a) / 2, mid = (a + b) / 2;
+      var up = fwd ? -1 : 1, h = Math.min(220, 26 + r * 0.9);
+      var path = "M" + a + "," + base + " C" + a + "," + (base + up * h) + " " + b + "," + (base + up * h) + " " + b + "," + base;
+      var col = "var(" + DV[S[f[0]].domain] + ")";
+      var p = svgEl("path", { d: path, class: "arc" + (fwd ? "" : " fb"), stroke: col });
+      var t = svgEl("title", {}); t.textContent = f[0] + " → " + f[1] + ": " + f[2]; p.appendChild(t);
+      gArcs.appendChild(p);
+      arcs.push({ el: p, f: f });
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td style="padding:8px 12px;border-top:1px solid var(--border)"><a href="/stages/' + S[f[0]].slug + '/">' + f[0] + " " + S[f[0]].title + "</a></td>" +
+        '<td style="padding:8px 12px;border-top:1px solid var(--border)"><code class="rec">' + f[2] + "</code></td>" +
+        '<td style="padding:8px 12px;border-top:1px solid var(--border)"><a href="/stages/' + S[f[1]].slug + '/">' + f[1] + " " + S[f[1]].title + "</a></td>" +
+        '<td style="padding:8px 12px;border-top:1px solid var(--border)">' + (fwd ? "forward" : "feedback") + "</td>";
+      tbody.appendChild(tr);
+    });
+    var lbl = svgEl("text", { x: x0 - 30, y: 40, "font-size": 13, "font-weight": 700, fill: "var(--muted)" }); lbl.textContent = "THIS SEASON ↑";
+    var lbl2 = svgEl("text", { x: x0 - 30, y: H - 20, "font-size": 13, "font-weight": 700, fill: "var(--muted)" }); lbl2.textContent = "LEARNING LOOP ↓";
+    svg.appendChild(lbl); svg.appendChild(lbl2);
+    svg.appendChild(gArcs); svg.appendChild(gNodes);
+
+    function select(n) {
+      host.classList.add("dim");
+      arcs.forEach(function (a) { a.el.classList.toggle("hl", a.f[0] === n || a.f[1] === n); });
+      gNodes.querySelectorAll(".node").forEach(function (g) {
+        var k = g.getAttribute("data-n");
+        g.classList.toggle("hl", k === n || arcs.some(function (a) { return (a.f[0] === n && a.f[1] === k) || (a.f[1] === n && a.f[0] === k); }));
+      });
+      var s = S[n], ins = FLOWS.filter(function (f) { return f[1] === n; }), outs = FLOWS.filter(function (f) { return f[0] === n; });
+      var li = function (f, other) { var o = S[f[other]]; return '<li><b>' + f[2] + '</b> ' + (other === 0 ? "from" : "to") + ' <a href="/stages/' + o.slug + '/">' + f[other] + " " + o.title + "</a>" + (f[3] === "b" ? " (feedback)" : "") + "</li>"; };
+      info.style.borderTop = "4px solid var(" + DV[s.domain] + ")";
+      info.innerHTML = "<h3>" + n + ". " + s.title + '</h3><p style="color:var(--muted);margin:0">' + s.summary + '</p><div class="flowlist">' +
+        "<div><strong>Receives</strong><ul>" + (ins.map(function (f) { return li(f, 0); }).join("") || "<li>Entry point: raw data</li>") + "</ul></div>" +
+        "<div><strong>Sends</strong><ul>" + outs.map(function (f) { return li(f, 1); }).join("") + "</ul></div></div>" +
+        '<p style="margin:12px 0 0"><a class="btn" href="/stages/' + s.slug + '/">Open stage ' + n + " &rarr;</a></p>";
+    }
+    d.stages.forEach(function (s) {
+      var n = pad(s.number), cx = X(n), col = "var(" + DV[s.domain] + ")";
+      var g = svgEl("g", { class: "node", tabindex: 0, "data-n": n, role: "button", "aria-label": "Stage " + n + ": " + s.title });
+      g.appendChild(svgEl("circle", { cx: cx, cy: base, r: 26, fill: "var(--surface)", stroke: col, "stroke-width": 3 }));
+      g.appendChild(svgEl("use", { href: "/assets/img/icons.svg#i-" + n, x: cx - 12, y: base - 14, width: 24, height: 24, style: "color:" + col }));
+      var t = svgEl("text", { class: "lab", x: cx, y: base + 46, "text-anchor": "middle", "font-size": 12, "font-weight": 700, fill: "var(--text)" });
+      t.textContent = n;
+      var t2 = svgEl("text", { class: "lab", x: cx, y: base + 62, "text-anchor": "middle", "font-size": 11, fill: "var(--muted)" });
+      t2.textContent = s.title.split(/[ &,]/)[0];
+      g.appendChild(t); g.appendChild(t2);
+      g.addEventListener("mouseenter", function () { select(n); });
+      g.addEventListener("focus", function () { select(n); });
+      g.addEventListener("click", function () { select(n); });
+      g.addEventListener("keydown", function (e) { if (e.key === "Enter") location.href = "/stages/" + s.slug + "/"; });
+      gNodes.appendChild(g);
+    });
+    host.appendChild(svg);
+    host.addEventListener("mouseleave", function () { host.classList.remove("dim"); });
+  }).catch(function (e) {
+    host.innerHTML = "<p>Could not load the stage list.</p>";
+    if (window.console) console.error("[spine]", e);
+  });
+})();
+</script>
+</body>
+</html>

@@ -93,7 +93,9 @@
 
     var extra = [
       { title: "Home: the landscape and the loop", href: "/", sub: "Hub portal", icon: "u-loop", domain: "" },
-      { title: "How it works, step by step", href: "/how-it-works.html", sub: "The story of one season", icon: "d-plan", domain: "" }
+      { title: "How it works, step by step", href: "/how-it-works.html", sub: "The story of one season", icon: "d-plan", domain: "" },
+      { title: "Data spine: every hand-off", href: "/data-spine.html", sub: "Which stage sends which record to which", icon: "d-move", domain: "" },
+      { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" }
     ];
     function render(q) {
       q = (q || "").toLowerCase().trim();
@@ -194,6 +196,22 @@
         art.onerror = function () { /* no illustration yet for this stage */ };
         art.src = "/assets/img/stages/" + slug + ".svg";
       }
+      // rich previous / next cards with illustrations (the loop wraps from 12 back to 01)
+      var pager = document.querySelector(".pager");
+      if (pager) {
+        var i = d.stages.indexOf(me), n = d.stages.length;
+        var prev = d.stages[(i - 1 + n) % n], next = d.stages[(i + 1) % n];
+        var card = function (s, dir) {
+          var dv = DOMAIN_VAR[s.domain];
+          return '<a class="pager-card ' + dir + '" href="/stages/' + s.slug + '/" style="--d:var(' + dv + ');--d-bg:var(' + dv + '-bg)">' +
+            '<img src="/assets/img/stages/' + s.slug + '.svg" alt="" loading="lazy">' +
+            '<span class="pc-text"><small>' + (dir === "prev" ? "&larr; Previous stage" : (i === n - 1 ? "Next season starts again &rarr;" : "Next stage &rarr;")) +
+            "</small><b>" + pad(s.number) + ". " + s.title + "</b><span>" + s.summary + "</span></span></a>";
+        };
+        pager.classList.add("pager-rich");
+        pager.innerHTML = card(prev, "prev") + card(next, "next");
+      }
+
       // stage icon in the hero pill
       var pill = hero && hero.querySelector(".pill");
       if (pill && !pill.querySelector("svg")) pill.insertAdjacentHTML("afterbegin", icon("d-" + me.domain));
