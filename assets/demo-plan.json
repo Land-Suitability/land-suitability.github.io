@@ -1,0 +1,167 @@
+{
+ "categories": [
+  "A meher",
+  "A dry",
+  "B meher",
+  "B dry",
+  "C meher"
+ ],
+ "series": {
+  "teff": [
+   180.0,
+   0,
+   78.8,
+   0,
+   240.0
+  ],
+  "maize": [
+   120.0,
+   0,
+   0,
+   0,
+   160.0
+  ],
+  "wheat": [
+   0,
+   43.9,
+   171.2,
+   120.0,
+   0
+  ],
+  "onion": [
+   0,
+   58.4,
+   0,
+   0,
+   0
+  ]
+ },
+ "total_net_birr": 133706620,
+ "tonnes": {
+  "teff": 900,
+  "maize": 1104,
+  "wheat": 1246,
+  "onion": 1110
+ },
+ "binding": [
+  {
+   "constraint": "land B dry",
+   "value": 126650.0
+  },
+  {
+   "constraint": "land C meher",
+   "value": 101260.22
+  },
+  {
+   "constraint": "land B meher",
+   "value": 94126.25
+  },
+  {
+   "constraint": "land A meher",
+   "value": 93644.95
+  },
+  {
+   "constraint": "rotation A meher teff",
+   "value": 64074.92
+  },
+  {
+   "constraint": "rotation C meher teff",
+   "value": 24079.53
+  },
+  {
+   "constraint": "demand max teff",
+   "value": 11171.09
+  },
+  {
+   "constraint": "water A Mar",
+   "value": 49.68
+  },
+  {
+   "constraint": "water A Feb",
+   "value": 20.06
+  }
+ ],
+ "allocations": [
+  {
+   "cluster_id": "A",
+   "option_id": "teff_meher",
+   "product": "teff",
+   "season": "meher",
+   "hectares": 180.0,
+   "expected_t": 342.0,
+   "expected_net_birr": 25290000.0
+  },
+  {
+   "cluster_id": "A",
+   "option_id": "maize_meher",
+   "product": "maize",
+   "season": "meher",
+   "hectares": 120.0,
+   "expected_t": 400.79999999999995,
+   "expected_net_birr": 6624000.0
+  },
+  {
+   "cluster_id": "A",
+   "option_id": "wheat_dry",
+   "product": "wheat",
+   "season": "dry",
+   "hectares": 43.93971909127251,
+   "expected_t": 177.95586231965365,
+   "expected_net_birr": 5110189.330314993
+  },
+  {
+   "cluster_id": "A",
+   "option_id": "onion_dry",
+   "product": "onion",
+   "season": "dry",
+   "hectares": 58.41307602352156,
+   "expected_t": 1109.8484444469098,
+   "expected_net_birr": 11215310.59651614
+  },
+  {
+   "cluster_id": "B",
+   "option_id": "teff_meher",
+   "product": "teff",
+   "season": "meher",
+   "hectares": 78.75,
+   "expected_t": 126.0,
+   "expected_net_birr": 8820000.0
+  },
+  {
+   "cluster_id": "B",
+   "option_id": "wheat_meher",
+   "product": "wheat",
+   "season": "meher",
+   "hectares": 171.25,
+   "expected_t": 555.17109375,
+   "expected_net_birr": 16119120.3125
+  },
+  {
+   "cluster_id": "B",
+   "option_id": "wheat_dry",
+   "product": "wheat",
+   "season": "dry",
+   "hectares": 120.0,
+   "expected_t": 512.9999999999999,
+   "expected_net_birr": 15197999.999999996
+  },
+  {
+   "cluster_id": "C",
+   "option_id": "teff_meher",
+   "product": "teff",
+   "season": "meher",
+   "hectares": 240.0,
+   "expected_t": 432.0,
+   "expected_net_birr": 31440000.0
+  },
+  {
+   "cluster_id": "C",
+   "option_id": "maize_meher",
+   "product": "maize",
+   "season": "meher",
+   "hectares": 160.0,
+   "expected_t": 703.0,
+   "expected_net_birr": 13890000.0
+  }
+ ]
+}

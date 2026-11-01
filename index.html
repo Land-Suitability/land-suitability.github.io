@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Crop Selection &amp; Production Planning | AIAE</title>
-  <meta name="description" content="The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.">
+  <meta name="description" content="Stage 04: the market-backwards planner that turns buyer demand, land suitability, monthly water and climate risk into a seasonal production plan.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-plan">
 <!--
-  Stage 04 page. This file lives on branch `stage/04-crop-planning` and is published at /stages/04-crop-planning/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 04 page. Lives on branch `stage/04-crop-planning`, published at /stages/04-crop-planning/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +56,179 @@
   <section class="stage-hero">
     <span class="pill">Plan</span>
     <h1>04. Crop Selection &amp; Production Planning</h1>
-    <p class="lead">The core of the system: turn buyer demand, suitability, water and climate into a seasonal production plan.</p>
+    <p class="lead">The core of the ecosystem. Stage 04 takes what buyers want (05), where crops grow well (01), how much water each month allows (02) and how risky the season is (03), and turns them into one plan: which crop, on how many hectares, in which cluster and season.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/04-crop-planning</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>1</b><span>plan per season, cluster x crop x hectares</span></div><div class="stat"><b>12</b><span>monthly water limits per cluster</span></div><div class="stat"><b>5</b><span>constraint families</span></div><div class="stat"><b>birr</b><span>shadow price for every binding limit</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Land Intelligence &amp; Suitability</a><a class="chip" href="/stages/02-water-resources/">02. Water Resource Assessment</a><a class="chip" href="/stages/03-climate-intelligence/">03. Climate &amp; Seasonal Intelligence</a><a class="chip" href="/stages/05-market-intelligence/">05. Market Intelligence &amp; Demand Forecasting</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/01-land-intelligence/">01. Suitability</a><a class="chip" href="/stages/02-water-resources/">02. Monthly water</a><a class="chip" href="/stages/03-climate-intelligence/">03. Crop-cycle fit</a><a class="chip" href="/stages/05-market-intelligence/">05. Demand signals</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Crop Selection &amp; Production Planning</p></div>
+      <div class="card"><h3>This stage</h3><p>A linear programme that maximises expected farmer net income within land, water, demand and policy limits.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/06-input-coordination/">06. Input &amp; Resource Coordination</a><a class="chip" href="/stages/07-farm-production/">07. Farm Implementation &amp; Production</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/06-input-coordination/">06. Inputs</a><a class="chip" href="/stages/07-farm-production/">07. Field implementation</a><a class="chip" href="/stages/05-market-intelligence/">05. Volumes to contract</a><a class="chip" href="/stages/09-harvest-postharvest/">09. Harvest planning</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>Which crop and variety should each cluster plant, on how many hectares, and when?</li><li>Which plan maximises farmer net income within land, water and demand limits?</li><li>What rotation and intercropping keep soils healthy?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Matching crops to soil, water and agroecology</li><li>Variety and maturity-period evaluation</li><li>Expected yield and profitability comparison</li><li>Seasonal production plan optimisation (market-backwards)</li><li>Rotation and intercropping strategy</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Stage 1 to 3 outputs</li><li>Stage 5 demand signals</li><li>Variety trial data</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Seasonal Production Plan (cluster x crop x variety x hectares x planting date)</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Planned versus realised net income</li><li>Share of contracted demand covered by the plan</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a restaurant kitchen planning next week's menu from its reservation book (buyer demand), its pantry (land and water) and its cooks' skills (suitability). The plan is the menu. Better still, the planner leaves a manager's note: "one more litre of milk on Tuesday would have earned us 40 birr". Those notes, the shadow prices, show exactly which limit to relax first.</p>
+    <div class="grid cols-3"><div class="card"><h3>Pull, not push</h3><p>Production follows signed or forecast demand, so farmers do not flood one market while another buyer goes short.</p></div><div class="card"><h3>All limits at once</h3><p>Land, twelve months of water, buyer minimums and maximums, food security and rotation are respected together, not one at a time.</p></div><div class="card"><h3>Reasons, not just numbers</h3><p>Shadow prices turn the plan into investment and negotiation signals: where water storage pays, which contract to expand.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>Which crops and varieties should each cluster plant, on how many hectares, in which season?</li><li>Can the contracted minimums be met, and if not, which limit stops them?</li><li>How much is one more cubic metre of water, one more hectare or one more tonne of demand worth?</li><li>How much food-crop area must be protected for household food security?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">The <strong>SeasonalProductionPlan</strong> is the aggregate root: every downstream stage (inputs, field work, harvest, contracts) works from its allocations. <strong>ShadowPrices</strong> travel with it to explain the plan.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: ClusterProfiles, CropOptions, DemandSignals and a PlanningPolicy feed the LP planner, which produces a SeasonalProductionPlan and ShadowPrices."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>CropOption</td><td>Value object</td><td>Crop, variety and season with potential yield, price, cost and monthly water curve.</td></tr><tr><td>ClusterProfile</td><td>Input</td><td>Area per season, suitability per option (01), monthly water (02), crop-cycle fit (03).</td></tr><tr><td>DemandSignal</td><td>Input</td><td>Product, contracted minimum, buyers' maximum and contract price (05).</td></tr><tr><td>PlanningPolicy</td><td>Value object</td><td>Food-security share and rotation caps agreed with farmers.</td></tr><tr><td>SeasonalProductionPlan</td><td>Aggregate root (output)</td><td>Allocations (cluster, option, hectares, tonnes, income) for one season.</td></tr><tr><td>ShadowPrice</td><td>Value object (output)</td><td>Extra income from relaxing one binding constraint by one unit.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Expected yield with climate risk</h3><p>Expected yield = potential yield &times; suitability score (01) &times; [fit + (1 &minus; fit) &times; failure share], where <em>fit</em> is the probability that the season is long enough for the crop cycle (03). A 150-day maize where the season is long enough only 2 years in 3 is valued accordingly.</p></div>
+      <div class="card"><h3>The linear programme</h3><p>Maximise &Sigma; hectares &times; (expected yield &times; price &minus; cost) subject to: land per cluster and season; <strong>water per cluster and month</strong> (the stage 02 lesson); demand minimum and maximum per product; minimum food-crop share; rotation caps. Solved with the open-source HiGHS solver.</p></div>
+      <div class="card"><h3>Shadow prices</h3><p>The dual value of each binding constraint: the birr gained from one more m&sup3; of water in that month, one more hectare, or one more tonne of buyer demand. High water values justify storage or drip irrigation; a high demand value says "negotiate a bigger contract".</p></div>
+      <div class="card"><h3>Infeasibility as information</h3><p>If buyers' minimums cannot be met, the planner says so before planting rather than after harvest. Stage 05 then renegotiates volumes or adds clusters, instead of the network failing a contract.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Food security first</h3><p>Teff and other staples are both food and cash crops. A minimum food-crop share protects household consumption even when another crop pays more.</p></div><div class="card"><h3>Dry-season irrigated wheat</h3><p>National programmes promote irrigated wheat; the planner checks where it fits the water budget and where onion or other high-value crops use the same water better.</p></div><div class="card"><h3>Small, fragmented plots</h3><p>Plans are made per planning cluster, then translated to plots in stage 07, so each household keeps its own land and decisions.</p></div><div class="card"><h3>Farmer choice</h3><p>The plan is a recommendation negotiated with cooperatives and households, not an order. Their preferences become policy constraints.</p></div><div class="card"><h3>Contract realism</h3><p>Cooperative unions, processors and flour mills contract in tonnes; the planner works in tonnes, not hectares, so promises match capacity.</p></div><div class="card"><h3>Crop rotation</h3><p>Rotation caps (for example, cereal after pulse) protect soil health and break pest cycles; pulses can be added as options with their nitrogen benefit.</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Suitability scores</td><td>Stage 01 SuitabilityAssessment</td><td>plot, cluster</td><td>Yield factor per option</td><td>Project</td></tr><tr><td>Monthly water</td><td>Stage 02 WaterBudget</td><td>cluster x month</td><td>Water constraints and crop curves</td><td>Project</td></tr><tr><td>Crop-cycle fit</td><td>Stage 03 ClimateOutlook</td><td>cluster</td><td>Risk-adjusted yield</td><td>Project</td></tr><tr><td>Demand and prices</td><td>Stage 05 demand signals, contracts</td><td>product</td><td>Demand constraints, prices</td><td>Project</td></tr><tr><td>Costs and yields</td><td>Agricultural research trials, extension cost surveys</td><td>crop, zone</td><td>Margins</td><td>By agreement</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: three clusters, two seasons</h2>
+    <p class="section-intro">Three synthetic clusters. A is the lake-shore cluster from stage 02 (land and limited water), B is wetter with more water, C has no irrigation. Meher options: teff, maize, wheat. Dry-season options: irrigated wheat and onion. A flour mill contracts at least 900 t of wheat. Prices, costs and yields are <strong>illustrative</strong>.</p>
+    <div class="viz-root" data-chart id="plan-chart">
+      <h3 class="viz-title">Planned hectares by cluster and season</h3>
+      <p class="viz-sub">Expected net farmer income 133,706,620 birr (illustrative prices). Dry-season area in A is limited by water, not land.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Teff</span><span><i class="sw" style="background:var(--series-2)"></i>Maize</span><span><i class="sw" style="background:var(--series-3)"></i>Wheat</span><span><i class="sw" style="background:var(--series-4)"></i>Onion</span></div>
+      <div class="chart-host" role="img" aria-label="Stacked bars: cluster A Meher teff 180 and maize 120 ha; A dry wheat 44 and onion 58 ha; B Meher teff 79 and wheat 171 ha; B dry wheat 120 ha; C Meher teff 240 and maize 160 ha."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "stacked", "categories": ["A meher", "A dry", "B meher", "B dry", "C meher"], "xlabel": "Cluster and season", "series": [{"name": "Teff", "values": [180.0, 0, 78.8, 0, 240.0]}, {"name": "Maize", "values": [120.0, 0, 0, 0, 160.0]}, {"name": "Wheat", "values": [0, 43.9, 171.2, 120.0, 0]}, {"name": "Onion", "values": [0, 58.4, 0, 0, 0]}], "unit": "ha", "dp": 1}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Cluster and season</th><th class="num">Teff</th><th class="num">Maize</th><th class="num">Wheat</th><th class="num">Onion</th></tr></thead>
+          <tbody><tr><td>A meher</td><td class="num">180.0</td><td class="num">120.0</td><td class="num">0.0</td><td class="num">0.0</td></tr><tr><td>A dry</td><td class="num">0.0</td><td class="num">0.0</td><td class="num">43.9</td><td class="num">58.4</td></tr><tr><td>B meher</td><td class="num">78.8</td><td class="num">0.0</td><td class="num">171.2</td><td class="num">0.0</td></tr><tr><td>B dry</td><td class="num">0.0</td><td class="num">0.0</td><td class="num">120.0</td><td class="num">0.0</td></tr><tr><td>C meher</td><td class="num">240.0</td><td class="num">160.0</td><td class="num">0.0</td><td class="num">0.0</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (ha).</p>
+      </details>
+    </div>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="card"><h3>What binds (shadow prices)</h3><div class="table-wrap"><table><thead><tr><th>Constraint</th><th class="num">Value</th></tr></thead><tbody><tr><td>land B dry</td><td class='num'>126,650.0 birr per extra ha</td></tr><tr><td>land C meher</td><td class='num'>101,260.2 birr per extra ha</td></tr><tr><td>land B meher</td><td class='num'>94,126.2 birr per extra ha</td></tr><tr><td>land A meher</td><td class='num'>93,644.9 birr per extra ha</td></tr><tr><td>rotation A meher teff</td><td class='num'>64,074.9 birr per extra ha of share</td></tr><tr><td>rotation C meher teff</td><td class='num'>24,079.5 birr per extra ha of share</td></tr><tr><td>demand max teff</td><td class='num'>11,171.1 birr per extra t</td></tr><tr><td>water A Mar</td><td class='num'>49.7 birr per extra m³</td></tr><tr><td>water A Feb</td><td class='num'>20.1 birr per extra m³</td></tr></tbody></table></div></div>
+      <div class="card"><h3>Reading the signals</h3>
+        <ul class="list-clean">
+          <li><strong>Extra land is worth 90,000 to 130,000 birr per hectare</strong>: every cluster uses all its land, so area is the main limit overall.</li>
+          <li><strong>Water in cluster A in March is worth about 50 birr per m&sup3;</strong>, and in February about 20. A small storage pond or drip kits for onion in A would pay back quickly.</li>
+          <li><strong>Teff demand is fully used</strong> (900 t), so a larger teff contract would raise incomes by about 11,000 birr per extra tonne.</li>
+          <li><strong>Stress test</strong>: a buyer asking for 3,500 t of wheat makes the plan infeasible, which is flagged before planting.</li>
+        </ul></div>
+    </div>
+    <details class="table-view" style="margin-top:12px"><summary>All allocations</summary>
+      <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Cluster</th><th>Option</th><th class="num">Hectares</th><th class="num">Expected t</th><th class="num">Net birr</th></tr></thead><tbody><tr><td>A</td><td>teff_meher</td><td class='num'>180.0</td><td class='num'>342</td><td class='num'>25,290,000</td></tr><tr><td>A</td><td>maize_meher</td><td class='num'>120.0</td><td class='num'>401</td><td class='num'>6,624,000</td></tr><tr><td>A</td><td>wheat_dry</td><td class='num'>43.9</td><td class='num'>178</td><td class='num'>5,110,189</td></tr><tr><td>A</td><td>onion_dry</td><td class='num'>58.4</td><td class='num'>1,110</td><td class='num'>11,215,311</td></tr><tr><td>B</td><td>teff_meher</td><td class='num'>78.8</td><td class='num'>126</td><td class='num'>8,820,000</td></tr><tr><td>B</td><td>wheat_meher</td><td class='num'>171.2</td><td class='num'>555</td><td class='num'>16,119,120</td></tr><tr><td>B</td><td>wheat_dry</td><td class='num'>120.0</td><td class='num'>513</td><td class='num'>15,198,000</td></tr><tr><td>C</td><td>teff_meher</td><td class='num'>240.0</td><td class='num'>432</td><td class='num'>31,440,000</td></tr><tr><td>C</td><td>maize_meher</td><td class='num'>160.0</td><td class='num'>703</td><td class='num'>13,890,000</td></tr></tbody></table></div>
+    </details>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Seasonal production plan</h3><p>Allocations per cluster, option and hectare, with expected tonnes and income, for stages 06, 07 and 09.</p></div><div class="card"><h3>Contractable volumes</h3><p>Expected tonnes per product, so stage 05 commits buyers only to what can be delivered.</p></div><div class="card"><h3>Investment and negotiation signals</h3><p>Shadow prices for water, land and demand, ranked by value.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;plan_id&quot;: &quot;PLAN-DEMO&quot;,
+  &quot;season&quot;: &quot;meher+dry&quot;,
+  &quot;allocations&quot;: [
+    {
+      &quot;cluster_id&quot;: &quot;A&quot;,
+      &quot;option_id&quot;: &quot;teff_meher&quot;,
+      &quot;product&quot;: &quot;teff&quot;,
+      &quot;season&quot;: &quot;meher&quot;,
+      &quot;hectares&quot;: 180.0,
+      &quot;expected_t&quot;: 342.0,
+      &quot;expected_net_birr&quot;: 25290000.0
+    },
+    {
+      &quot;cluster_id&quot;: &quot;A&quot;,
+      &quot;option_id&quot;: &quot;maize_meher&quot;,
+      &quot;product&quot;: &quot;maize&quot;,
+      &quot;season&quot;: &quot;meher&quot;,
+      &quot;hectares&quot;: 120.0,
+      &quot;expected_t&quot;: 400.8,
+      &quot;expected_net_birr&quot;: 6624000.0
+    },
+    {
+      &quot;cluster_id&quot;: &quot;A&quot;,
+      &quot;option_id&quot;: &quot;wheat_dry&quot;,
+      &quot;product&quot;: &quot;wheat&quot;,
+      &quot;season&quot;: &quot;dry&quot;,
+      &quot;hectares&quot;: 43.9,
+      &quot;expected_t&quot;: 178.0,
+      &quot;expected_net_birr&quot;: 5110189.3
+    },
+    &quot;...&quot;
+  ],
+  &quot;tonnes_by_product&quot;: {
+    &quot;teff&quot;: 900,
+    &quot;maize&quot;: 1104,
+    &quot;wheat&quot;: 1246,
+    &quot;onion&quot;: 1110
+  },
+  &quot;total_net_birr&quot;: 133706620,
+  &quot;binding&quot;: [
+    {
+      &quot;constraint&quot;: &quot;land B dry&quot;,
+      &quot;value&quot;: 126650.0
+    },
+    {
+      &quot;constraint&quot;: &quot;land C meher&quot;,
+      &quot;value&quot;: 101260.22
+    },
+    {
+      &quot;constraint&quot;: &quot;land B meher&quot;,
+      &quot;value&quot;: 94126.25
+    },
+    &quot;...&quot;
+  ]
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Realised hectares and yields (stages 07, 08) compared with the plan each season</li><li>Expected margins checked against farm-gate prices and cost surveys</li><li>Back-testing: would last season's plan have been feasible with actual rainfall?</li><li>Sensitivity runs on prices and yields before plans are shared with cooperatives</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Share of contracted volumes delivered</li><li>Planned versus realised net farmer income</li><li>Share of plan adopted by participating households</li><li>Number of contract shortfalls flagged before planting</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>LP planner with monthly water</li><li>Shadow prices and infeasibility check</li><li>Demo and tests</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Pilot calibration</h3><ul><li>Local cost and yield data</li><li>Agree food-security and rotation policy with cooperatives</li></ul></div><div class="card phase"><h3>Risk-aware planning</h3><ul><li>Scenario planning (dry, normal, wet years)</li><li>Price-risk constraints from stage 05</li></ul></div><div class="card phase"><h3>Plot-level translation</h3><ul><li>Disaggregate cluster plans to households in stage 07</li><li>Feedback loop with realised outcomes</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/crop_plan/domain.py    domain model (options, clusters, demand, policy, plan, shadow prices)
+src/crop_plan/planner.py   linear programme (HiGHS via scipy), expected yield, infeasibility
+src/demo.py                three-cluster demo (writes assets/demo-plan.json)
+tests/test_planner.py      unit tests</code></pre>
+<pre><code>git switch stage/04-crop-planning
+python3 src/demo.py
+python3 tests/test_planner.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +243,104 @@
     <span>Stage 04 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>

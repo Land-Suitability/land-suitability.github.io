@@ -7,6 +7,23 @@ This branch contains **only** the content for stage 04 of the
 Amhara Integrated Agriculture Ecosystem operating chain. Everything at the root of this branch is
 published under `/stages/04-crop-planning/`.
 
+## What is here (v0.1)
+
+| Path | Content |
+|---|---|
+| `index.html` | Stage page: purpose, domain model, planner method, Amhara context, data, interactive plan chart, shadow prices, outputs, validation, roadmap |
+| `src/crop_plan/` | Python package: domain model and the market-backwards linear programme (HiGHS via scipy) |
+| `src/demo.py` | Three-cluster, two-season demo (writes assets/demo-plan.json) |
+| `tests/test_planner.py` | Unit tests |
+
+```bash
+pip install numpy scipy
+python3 src/demo.py
+python3 tests/test_planner.py
+```
+
+Prices, costs and yields in the demo are illustrative. Water enters as twelve monthly constraints per cluster (see stage 02).
+
 ## Rules
 
 - `index.html` at the branch root is the stage's landing page. Keep it.
