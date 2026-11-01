@@ -152,7 +152,7 @@ header = page.split("<main", 1)[0]
 header = header.replace("<title>Calculators | AIAE</title>", "<title>Findings | AIAE</title>")
 header = header.replace('content="Twelve small calculators, one per stage of the Amhara Integrated Agriculture Ecosystem: suitability, water need, season fit, crop mix, contracts, ordering, field calendar, NDVI, harvest loss, storage, transport and settlement."',
                         'content="Twelve findings from the stage demos of the Amhara Integrated Agriculture Ecosystem, each as a small chart: what the methods show on synthetic data."')
-header = header.replace("tools.html\">", "findings.html\">").replace("Twelve calculators, one per stage", "Twelve findings, one per stage")
+header = header.replace("tools.html\">", "findings.html\">").replace("social/page-tools.jpg", "social/page-findings.jpg").replace("Twelve calculators, one per stage", "Twelve findings, one per stage")
 header = header.replace("Move a slider, see the answer: the same formulas as each stage's Python code, on your own numbers.", "What each stage's demo shows, in one chart each. Synthetic data, real methods.")
 css_start = header.index("<style>"); css_end = header.index("</style>") + len("</style>")
 header = header[:css_start] + '''<style>

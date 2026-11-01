@@ -331,6 +331,7 @@ def build_page(svg: str, keb: list[dict]) -> str:
     rep = {
         "<title>Calculators | AIAE</title>": "<title>Pilot Map | AIAE</title>",
         "tools.html\">": "pilot-map.html\">",
+        "social/page-tools.jpg": "social/page-pilot-map.jpg",
         "Twelve calculators, one per stage": "The chain on one illustrated map",
         "Move a slider, see the answer: the same formulas as each stage's Python code, on your own numbers.":
             "A fictional pilot woreda with a layer for each stage: suitability, water, clusters, stores, alerts, roads and the market.",

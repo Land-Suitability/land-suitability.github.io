@@ -3,6 +3,7 @@
  * Re-render generated media from the hub's sources:
  *   assets/img/social/<slug>.jpg   one 1200 x 630 link-preview card per stage (from stages.json + stage art)
  *   assets/img/social-card.png     the hub's link-preview card
+ *   assets/img/social/page-*.jpg   cards for the calculators, findings and pilot-map pages
  *   assets/AIAE-concept-brief.pdf  the two-page brief (from brief.html)
  *
  * Usage (from the repository root, on main):
@@ -74,6 +75,27 @@ body{margin:0;width:1200px;height:630px;font-family:system-ui,-apple-system,"Seg
 <div class="chips"><span style="background:#74582a">Plan</span><span style="background:#3f6b34">Produce</span><span style="background:#2f5d8a">Move</span><span style="background:#9a4a28">Sell &amp; Learn</span></div>
 </body></html>`;
 
+// link-preview cards for the hub's collection pages: [file, eyebrow, title, line, image, image position]
+const PAGE_CARDS = [
+  ["page-tools", "Hands on", "Twelve calculators, one per stage", "Move a slider, see the answer: the same formulas as each stage's Python code.", "/assets/img/calculators.svg", "center/contain"],
+  ["page-findings", "What the demos show", "Twelve findings, one per stage", "One chart from each stage demo. Synthetic data, real methods.", "/assets/img/chain-panorama.svg", "62% 70%"],
+  ["page-pilot-map", "Illustrated map", "The chain on one map", "A fictional pilot woreda with a layer for each stage.", "/assets/img/pilot-map.svg", "center"],
+];
+function pageCard(c) {
+  const [, eyebrow, title, line, img, pos] = c;
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+body{margin:0;width:1200px;height:630px;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;overflow:hidden;background:#fbfaf6;display:grid;grid-template-columns:520px 680px}
+.l{padding:60px 40px 44px 60px;display:flex;flex-direction:column;border-top:14px solid #3f6b34}
+.e{font-size:19px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#3f6b34}
+h1{font-size:54px;line-height:1.06;margin:20px 0 18px;color:#1f2a20}
+p{font-size:24px;line-height:1.4;color:#4d564e;margin:0}
+.f{margin-top:auto;display:flex;align-items:center;gap:12px;font-size:17px;font-weight:700;color:#1f2a20}
+.f img{width:40px;height:40px;border-radius:9px}
+.r{background:#e8eedf url(${img}) ${pos.includes("/") ? pos : pos + "/cover"} no-repeat;border-top:14px solid #3f6b34}
+</style></head><body><div class="l"><div class="e">${esc(eyebrow)}</div><h1>${esc(title)}</h1><p>${esc(line)}</p>
+<div class="f"><img src="/assets/img/favicon.svg" alt="">Amhara Integrated Agriculture Ecosystem</div></div><div class="r"></div></body></html>`;
+}
+
 async function main() {
   let chromium;
   try { ({ chromium } = require("playwright")); }
@@ -82,6 +104,7 @@ async function main() {
   const stages = JSON.parse(fs.readFileSync(path.join(ROOT, "stages.json"), "utf8")).stages;
   const pages = { "/_hub-card.html": HUB_CARD };
   stages.forEach((s) => { pages[`/_card-${s.slug}.html`] = stageCard(s); });
+  PAGE_CARDS.forEach((c) => { pages[`/_${c[0]}.html`] = pageCard(c); });
   const srv = await serve(pages);
   const base = `http://127.0.0.1:${srv.address().port}`;
   const browser = await chromium.launch();
@@ -99,6 +122,12 @@ async function main() {
       await p.goto(`${base}/_hub-card.html`); await p.waitForLoadState("networkidle");
       await p.screenshot({ path: path.join(ROOT, "assets/img/social-card.png") }); await p.close();
       console.log("[OK] assets/img/social-card.png");
+      for (const c of PAGE_CARDS) {
+        const q = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+        await q.goto(`${base}/_${c[0]}.html`); await q.waitForLoadState("networkidle");
+        await q.screenshot({ path: path.join(ROOT, `assets/img/social/${c[0]}.jpg`), type: "jpeg", quality: 84 }); await q.close();
+        console.log(`[OK] assets/img/social/${c[0]}.jpg`);
+      }
     }
     if (what === "all" || what === "brief") {
       const p = await browser.newPage();
