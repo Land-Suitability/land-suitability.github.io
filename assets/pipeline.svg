@@ -79,10 +79,10 @@
   </g>
 
   <!-- validation loop -->
-  <rect x="300" y="335" width="400" height="70" rx="10" fill="#f5e1d7" stroke="#9a4a28"/>
+  <rect x="250" y="335" width="500" height="70" rx="10" fill="#f5e1d7" stroke="#9a4a28"/>
   <text x="500" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d3218">6. Validate and recalibrate every season</text>
   <text x="500" y="382" text-anchor="middle" font-size="12" fill="#6d3218">Field trials, yields (stage 08, 12) vs predicted class: confusion matrix, kappa,</text>
   <text x="500" y="398" text-anchor="middle" font-size="12" fill="#6d3218">yield-by-class; then adjust thresholds, weights and model</text>
-  <path d="M890,300 C890,370 760,370 702,370" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
-  <path d="M300,370 C200,370 495,330 495,302" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
+  <path d="M890,300 C890,370 810,370 752,370" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
+  <path d="M250,370 C190,370 495,340 495,302" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
 </svg>
