@@ -23,7 +23,8 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 
 .cls { display: inline-block; min-width: 28px; text-align: center; font-weight: 700; font-size: 12px;
        border-radius: 6px; padding: 1px 6px; color: #fff; }
-.cls.s1 { background: #1a9641; } .cls.s2 { background: #7fbf4d; } .cls.s3 { background: #e08a2c; } .cls.n { background: #d7191c; }
+/* class badges: text colour chosen for >= 4.5:1 contrast */
+.cls.s1 { background: #137a35; } .cls.s2 { background: #a6d96a; color: #1f2a20; } .cls.s3 { background: #fdae61; color: #1f2a20; } .cls.n { background: #b3161a; }
 
 .compare { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .toc { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
