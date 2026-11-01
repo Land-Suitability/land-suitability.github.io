@@ -64,6 +64,9 @@ templates/stage.html           template for stage pages
 templates/stage-branch/        files seeded into every new stage branch
 tools/build_site.py            validate stages.json, regenerate grid and placeholders
 tools/make_stage_art.py        regenerate the twelve stage illustrations
+tools/make_hub_diagrams.py     redraw the three hub diagrams (--check measures every label)
+tools/make_tools_page.py       rebuild tools.html (calculators index)
+tools/make_findings_page.py    rebuild findings.html (one chart per stage demo)
 tools/render_media.js          regenerate social cards and the brief PDF (Playwright)
 tools/create_stage_branches.py create the 12 orphan stage branches
 tools/check_branch.py          pre-push checker for the branch rules
