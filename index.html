@@ -71,7 +71,7 @@
       <span>Branch <code>stage/06-input-coordination</code></span>
     </div>
     <div class="stats"><div class="stat"><b>90%</b><span>on-time target per order</span></div><div class="stat"><b>3</b><span>supplier types: union, seed enterprise, dealer</span></div><div class="stat"><b>7</b><span>input items in the demo</span></div><div class="stat"><b>days</b><span>order-by date for every purchase</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -160,6 +160,63 @@
     <details class="table-view" style="margin-top:12px"><summary>First purchase orders</summary>
       <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Order by</th><th>Supplier</th><th>Item</th><th>Cluster</th><th class="num">kg</th><th>Need by</th><th class="num">P(on time)</th></tr></thead><tbody><tr><td>2026-02-22</td><td>UNION-1</td><td>lime</td><td>A</td><td class='num'>108,000</td><td>2026-04-17</td><td class='num'>90%</td></tr><tr><td>2026-03-20</td><td>SEED-ENT</td><td>seed_maize</td><td>A</td><td class='num'>3,000</td><td>2026-05-22</td><td class='num'>90%</td></tr><tr><td>2026-03-20</td><td>SEED-ENT</td><td>seed_maize</td><td>C</td><td class='num'>3,000</td><td>2026-05-22</td><td class='num'>90%</td></tr><tr><td>2026-04-01</td><td>UNION-1</td><td>nps</td><td>C</td><td class='num'>12,000</td><td>2026-05-25</td><td class='num'>90%</td></tr><tr><td>2026-04-02</td><td>UNION-1</td><td>lime</td><td>A</td><td class='num'>92,000</td><td>2026-05-26</td><td class='num'>90%</td></tr><tr><td>2026-04-08</td><td>SEED-ENT</td><td>seed_wheat</td><td>B</td><td class='num'>5,680</td><td>2026-06-10</td><td class='num'>90%</td></tr><tr><td>2026-04-20</td><td>UNION-1</td><td>nps</td><td>B</td><td class='num'>25,680</td><td>2026-06-13</td><td class='num'>90%</td></tr><tr><td>2026-04-27</td><td>UNION-1</td><td>urea</td><td>B</td><td class='num'>10,840</td><td>2026-06-20</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>A</td><td class='num'>2,700</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>B</td><td class='num'>1,182</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>C</td><td class='num'>3,600</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-05-08</td><td>DEALER-7</td><td>nps</td><td>A</td><td class='num'>18,000</td><td>2026-05-25</td><td class='num'>92%</td></tr><tr><td>2026-05-08</td><td>DEALER-7</td><td>nps</td><td>C</td><td class='num'>12,000</td><td>2026-05-25</td><td class='num'>92%</td></tr><tr><td>2026-05-10</td><td>UNION-1</td><td>nps</td><td>A</td><td class='num'>18,000</td><td>2026-07-03</td><td class='num'>90%</td></tr></tbody></table></div>
     </details>
+  </section>
+
+  <section id="try">
+    <h2>Try it: when must I order?</h2>
+    <p class="section-intro">Order-by date = need-by date &minus; the supplier's lead time that is beaten in your target share of orders (a lognormal lead time, as in <code>order_by_date()</code> in <code>src/inputs/scheduling.py</code>).</p>
+    <div class="calc" id="calc-s06">
+      <div>
+      <div class="field"><label for="plant">Planting date</label><output id="plant-o"></output><input type="date" id="plant" value="2026-06-20"></div>
+      <div class="field"><label for="before">Inputs needed this many days before planting</label><output id="before-o"></output><input type="range" id="before" min="0" max="60" step="1" value="7" data-unit="days"><small>Basal fertilizer and seed about a week before; lime 45 days before.</small></div>
+      <div class="field"><label for="lead">Supplier's typical (median) lead time</label><output id="lead-o"></output><input type="range" id="lead" min="3" max="90" step="1" value="30" data-unit="days"></div>
+      <div class="field"><label for="spread">How predictable is the supplier?</label><output id="spread-o"></output><select id="spread"><option value="0.25">Very reliable</option><option value="0.45" selected>Typical</option><option value="0.7">Often late</option></select></div>
+      <div class="field"><label for="target">Target chance of arriving on time</label><output id="target-o"></output><input type="range" id="target" min="50" max="99" step="1" value="90" data-unit="%"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s06-big"></div>
+        <div id="s06-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s06-v"></div>
+        <p class="note">Lead time is modelled as lognormal; "today" is your device's date.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s06");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function cdf(x) { var t = 1 / (1 + 0.3275911 * Math.abs(x) / Math.SQRT2), y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x / 2); return 0.5 * (1 + (x >= 0 ? y : -y)); }
+      function inv(p) { var lo = -8, hi = 8; for (var k = 0; k < 80; k++) { var m = (lo + hi) / 2; if (cdf(m) < p) lo = m; else hi = m; } return (lo + hi) / 2; }
+      function update() {
+        var plant = new Date($("plant").value + "T00:00:00");
+        if (isNaN(plant)) { $("s06-big").textContent = "Enter a planting date"; return; }
+        var need = new Date(plant); need.setDate(need.getDate() - num("before"));
+        var sp = parseFloat($("spread").value), q = num("lead") * Math.exp(sp * inv(num("target") / 100)), days = Math.ceil(q);
+        var order = new Date(need); order.setDate(order.getDate() - days);
+        var today = new Date(); today.setHours(0, 0, 0, 0);
+        var left = Math.round((need - today) / 86400000), pNow = left <= 0 ? 0 : cdf((Math.log(left) - Math.log(num("lead"))) / sp);
+        var opts = { day: "numeric", month: "long", year: "numeric" };
+        $("s06-big").innerHTML = order.toLocaleDateString("en-GB", opts) + "<small>order by this date: " + days + " days before the need-by date (" + need.toLocaleDateString("en-GB", opts) + ")</small>";
+        $("s06-detail").innerHTML = "If you order <b>today</b>, the chance of arriving on time is about <b>" + fmt(pNow * 100) + "%</b>.";
+        var v = $("s06-v"), passed = order < today;
+        v.className = "verdict " + (passed ? (pNow > 0.5 ? "warn" : "bad") : "good");
+        v.textContent = passed ? "The order-by date has passed: order now, expedite, or use a faster supplier." : "On schedule: " + Math.round((order - today) / 86400000) + " days left before the order-by date.";
+        $("spread-o").textContent = $("spread").selectedOptions[0].textContent.toLowerCase();
+        $("plant-o").textContent = "";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s06]", e); }
+    })();
+    </script>
+    </div>
   </section>
 
   <section id="outputs">
