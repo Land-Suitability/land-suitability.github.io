@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>People in the Chain | AIAE</title>
+  <meta name="description" content="Who does what in the Amhara Integrated Agriculture Ecosystem: ten roles from farmer households and development agents to cooperatives, buyers and transporters, and which of the twelve stages each one leads or supports.">
+  <link rel="canonical" href="https://land-suitability.github.io/people.html">
+  <meta property="og:title" content="People in the chain">
+  <meta property="og:description" content="Ten roles, twelve stages: who leads and who supports each step, from the farmer to the buyer.">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .people { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; }
+    @media (max-width: 1000px) { .people { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .people { grid-template-columns: repeat(2, 1fr); } }
+    .person { font: inherit; text-align: left; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-top: 4px solid var(--rc);
+      border-radius: 14px; padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 3px; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
+    .person:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0,0,0,.08); }
+    .person[aria-pressed="true"] { outline: 3px solid var(--rc); outline-offset: 2px; }
+    .person .fig { width: 100%; height: 104px; background: linear-gradient(#e7f0e2, #f4efe2); border-radius: 10px; margin-bottom: 6px; }
+    .person b { font-size: 15px; } .person small { color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+    .person .leads { margin-top: auto; padding-top: 6px; font-size: 12px; font-weight: 700; color: var(--muted); }
+    .matrix-wrap { margin-top: 26px; }
+    table.matrix { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+    .matrix th, .matrix td { padding: 7px 6px; text-align: center; border-bottom: 1px solid var(--border); }
+    .matrix tbody tr:last-child > * { border-bottom: none; }
+    .matrix th[scope=row] { text-align: left; white-space: nowrap; font-weight: 600; padding-left: 12px; }
+    .matrix thead th a { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; color: var(--d); text-decoration: none; font-weight: 800; font-size: 12px; }
+    .matrix thead th .icon { width: 20px; height: 20px; }
+    .matrix .sw { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+    .matrix .dot { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
+    .matrix .dot.l { background: var(--accent); } .matrix .dot.s { border: 2.5px solid var(--accent); box-sizing: border-box; }
+    .matrix .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .matrix td { position: relative; }
+    .matrix.focus tbody tr:not(.on) { opacity: .3; }
+    .matrix.focus tbody tr.on { background: color-mix(in srgb, var(--accent) 8%, transparent); }
+    .matrix tbody tr { transition: opacity .2s ease; }
+    .mkey { display: flex; gap: 16px; color: var(--muted); font-size: 13px; margin: 8px 2px 0; align-items: center; flex-wrap: wrap; }
+    .mkey .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 6px; }
+    :root[data-theme="dark"] .person .fig { filter: brightness(.9); }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .person .fig { filter: brightness(.9); } }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:4px">
+    <span class="eyebrow">Who does what</span>
+    <h1>People in the chain</h1>
+    <p class="lead">Twelve stages only work if the right people own each step. Ten roles carry the season, from farmer households and development agents to cooperatives, buyers and transporters. Select a role to see the stages it leads and supports.</p>
+    <p class="note">Roles in the proposed pilot design, drawn as generic figures. Organisations that may fill them are potential partners; no agreement is implied.</p>
+  </section>
+
+  <section aria-label="Roles" style="padding-top:6px">
+    <div class="people">
+      <button type="button" class="person" data-role="farmer" aria-pressed="false" style="--rc:#3f6b34">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#3f6b34"/><circle cx="0" cy="-70" r="15" fill="#6b4a32"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M-20 -78 h40 l-6 -10 h-28 z" fill="#e9b949"/><rect x="-11" y="-96" width="22" height="9" rx="3" fill="#e9b949"/></svg>
+        <b>Farmer household</b><small>Farms the plots, follows the field calendar, harvests, and is paid by grade.</small>
+        <span class="leads">Leads 3 · supports 4</span>
+      </button>
+      <button type="button" class="person" data-role="da" aria-pressed="false" style="--rc:#5b8c3a">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#5b8c3a"/><circle cx="0" cy="-70" r="15" fill="#7a5236"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><rect x="16" y="-46" width="18" height="24" rx="2" fill="#fff" stroke="#5d665e" stroke-width="1.5"/><path d="M20 -38 h10 M20 -32 h10 M20 -26 h7" stroke="#5d665e" stroke-width="1.5"/></svg>
+        <b>Development agent</b><small>Kebele extension worker: advice, field visits, records operations and soil samples.</small>
+        <span class="leads">Leads 2 · supports 3</span>
+      </button>
+      <button type="button" class="person" data-role="coop" aria-pressed="false" style="--rc:#74582a">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#74582a"/><circle cx="0" cy="-70" r="15" fill="#5e3e2a"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M14 -18 q-3 -22 6 -28 h12 q9 6 6 28 z" fill="#e9dcb8" stroke="#9c8656" stroke-width="1.5"/></svg>
+        <b>Primary cooperative</b><small>Groups members, signs contracts, orders inputs, runs collection and storage.</small>
+        <span class="leads">Leads 7 · supports 1</span>
+      </button>
+      <button type="button" class="person" data-role="union" aria-pressed="false" style="--rc:#8a6d3b">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#8a6d3b"/><circle cx="0" cy="-70" r="15" fill="#8a5c3c"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><rect x="14" y="-40" width="24" height="20" fill="#d9b77a" stroke="#8a6d3b" stroke-width="1.5"/><path d="M14 -34 h24" stroke="#8a6d3b" stroke-width="1.5"/></svg>
+        <b>Cooperative union</b><small>Supplies inputs at scale and sells larger lots for many cooperatives.</small>
+        <span class="leads">Leads 1 · supports 2</span>
+      </button>
+      <button type="button" class="person" data-role="woreda" aria-pressed="false" style="--rc:#2f5d8a">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#2f5d8a"/><circle cx="0" cy="-70" r="15" fill="#6b4a32"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M14 -44 l8 3 l8 -3 l8 3 v22 l-8 -3 l-8 3 l-8 -3 z" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1.5"/><circle cx="26" cy="-34" r="2.5" fill="#c43c2c"/></svg>
+        <b>Woreda agriculture office</b><small>Plans with the clusters, sets priorities and follows the pilot.</small>
+        <span class="leads">Leads 3 · supports 2</span>
+      </button>
+      <button type="button" class="person" data-role="wua" aria-pressed="false" style="--rc:#2a78d6">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#2a78d6"/><circle cx="0" cy="-70" r="15" fill="#7a5236"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M26 -48 c-8 10 -10 15 -10 19 a10 10 0 0 0 20 0 c0 -4 -2 -9 -10 -19 z" fill="#5aa0c8"/></svg>
+        <b>Water-user association</b><small>Shares and manages irrigation water month by month.</small>
+        <span class="leads">Leads 1 · supports 0</span>
+      </button>
+      <button type="button" class="person" data-role="buyer" aria-pressed="false" style="--rc:#9a4a28">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#9a4a28"/><circle cx="0" cy="-70" r="15" fill="#5e3e2a"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M26 -50 v26 M14 -44 h24" stroke="#5d4a2a" stroke-width="2"/><path d="M10 -44 l-4 9 h12 z M42 -44 l-4 9 h12 z" fill="#e9b949" stroke="#8a6d3b"/></svg>
+        <b>Buyer</b><small>Processor, flour mill or exporter: states demand, signs the contract, grades and pays.</small>
+        <span class="leads">Leads 2 · supports 2</span>
+      </button>
+      <button type="button" class="person" data-role="transport" aria-pressed="false" style="--rc:#4a5d6e">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#4a5d6e"/><circle cx="0" cy="-70" r="15" fill="#8a5c3c"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><rect x="10" y="-34" width="22" height="13" rx="2" fill="#2f5d8a"/><path d="M32 -31 h7 l5 5 v5 h-12 z" fill="#3f78ad"/><circle cx="16" cy="-19" r="3" fill="#263238"/><circle cx="37" cy="-19" r="3" fill="#263238"/></svg>
+        <b>Transporter</b><small>Moves inputs and grain on shared routes, before earth roads close.</small>
+        <span class="leads">Leads 1 · supports 1</span>
+      </button>
+      <button type="button" class="person" data-role="research" aria-pressed="false" style="--rc:#6b4f8a">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#6b4f8a"/><circle cx="0" cy="-70" r="15" fill="#6b4a32"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><path d="M22 -50 h8 v10 l9 18 h-26 l9 -18 z" fill="#e8e0f5" stroke="#6b4f8a" stroke-width="1.5"/><path d="M15 -26 h22 l2 4 h-26 z" fill="#9b7fc2"/></svg>
+        <b>Research partner</b><small>University or institute: calibrates models, runs trials, evaluates impact.</small>
+        <span class="leads">Leads 2 · supports 2</span>
+      </button>
+      <button type="button" class="person" data-role="platform" aria-pressed="false" style="--rc:#1f2a20">
+        <svg viewBox="-50 -110 100 120" class="fig" aria-hidden="true"><ellipse cx="0" cy="6" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-22 4 v-40 q0 -18 22 -18 q22 0 22 18 v40 z" fill="#1f2a20"/><circle cx="0" cy="-70" r="15" fill="#7a5236"/><path d="M-15 -74 q15 -16 30 0" fill="#2b211a"/><rect x="10" y="-42" width="28" height="18" rx="2" fill="#33433a"/><rect x="13" y="-39" width="22" height="12" fill="#8cc37a"/><path d="M6 -22 h36 l-3 4 h-30 z" fill="#5d665e"/></svg>
+        <b>Platform team</b><small>Runs the database, the models, the maps and the alerts behind every stage.</small>
+        <span class="leads">Leads 5 · supports 2</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="matrix-wrap" style="padding-top:10px">
+    <h2>Who leads and who supports each stage</h2>
+    <div class="table-wrap"><table class="matrix" id="matrix"><thead><tr><th scope="col">Role</th><th scope="col" class="d-plan"><a href="/stages/01-land-intelligence/" title="Land Intelligence &amp; Suitability"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg>01</a></th><th scope="col" class="d-plan"><a href="/stages/02-water-resources/" title="Water Resource Assessment"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg>02</a></th><th scope="col" class="d-plan"><a href="/stages/03-climate-intelligence/" title="Climate &amp; Seasonal Intelligence"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-03"/></svg>03</a></th><th scope="col" class="d-plan"><a href="/stages/04-crop-planning/" title="Crop Selection &amp; Production Planning"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg>04</a></th><th scope="col" class="d-plan"><a href="/stages/05-market-intelligence/" title="Market Intelligence &amp; Demand Forecasting"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-05"/></svg>05</a></th><th scope="col" class="d-produce"><a href="/stages/06-input-coordination/" title="Input &amp; Resource Coordination"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-06"/></svg>06</a></th><th scope="col" class="d-produce"><a href="/stages/07-farm-production/" title="Farm Implementation &amp; Production"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg>07</a></th><th scope="col" class="d-produce"><a href="/stages/08-monitoring-risk/" title="Monitoring, Forecasting &amp; Risk"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-08"/></svg>08</a></th><th scope="col" class="d-move"><a href="/stages/09-harvest-postharvest/" title="Harvest &amp; Post-harvest Management"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-09"/></svg>09</a></th><th scope="col" class="d-move"><a href="/stages/10-storage-aggregation/" title="Storage, Processing &amp; Aggregation"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-10"/></svg>10</a></th><th scope="col" class="d-move"><a href="/stages/11-logistics-transport/" title="Logistics &amp; Transportation"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-11"/></svg>11</a></th><th scope="col" class="d-sell"><a href="/stages/12-market-distribution/" title="Market Distribution &amp; Customer Network"><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-12"/></svg>12</a></th></tr></thead><tbody><tr data-role="farmer"><th scope="row"><span class="sw" style="background:#3f6b34"></span>Farmer household</th><td class="m-s" data-stage="1"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="2"></td><td class="m-s" data-stage="3"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-s" data-stage="4"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="5"></td><td class="m-n" data-stage="6"></td><td class="m-l" data-stage="7"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-s" data-stage="8"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-l" data-stage="9"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="10"></td><td class="m-n" data-stage="11"></td><td class="m-l" data-stage="12"><span class="dot l" title="leads"></span><span class="sr">leads</span></td></tr><tr data-role="da"><th scope="row"><span class="sw" style="background:#5b8c3a"></span>Development agent</th><td class="m-s" data-stage="1"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="2"></td><td class="m-s" data-stage="3"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="4"></td><td class="m-n" data-stage="5"></td><td class="m-n" data-stage="6"></td><td class="m-l" data-stage="7"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="8"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-s" data-stage="9"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="10"></td><td class="m-n" data-stage="11"></td><td class="m-n" data-stage="12"></td></tr><tr data-role="coop"><th scope="row"><span class="sw" style="background:#74582a"></span>Primary cooperative</th><td class="m-n" data-stage="1"></td><td class="m-n" data-stage="2"></td><td class="m-n" data-stage="3"></td><td class="m-l" data-stage="4"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="5"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="6"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-s" data-stage="7"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="8"></td><td class="m-l" data-stage="9"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="10"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="11"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="12"><span class="dot l" title="leads"></span><span class="sr">leads</span></td></tr><tr data-role="union"><th scope="row"><span class="sw" style="background:#8a6d3b"></span>Cooperative union</th><td class="m-n" data-stage="1"></td><td class="m-n" data-stage="2"></td><td class="m-n" data-stage="3"></td><td class="m-n" data-stage="4"></td><td class="m-s" data-stage="5"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-l" data-stage="6"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-s" data-stage="10"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="11"></td><td class="m-n" data-stage="12"></td></tr><tr data-role="woreda"><th scope="row"><span class="sw" style="background:#2f5d8a"></span>Woreda agriculture office</th><td class="m-l" data-stage="1"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="2"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="3"></td><td class="m-l" data-stage="4"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="5"></td><td class="m-s" data-stage="6"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-n" data-stage="10"></td><td class="m-n" data-stage="11"></td><td class="m-s" data-stage="12"><span class="dot s" title="supports"></span><span class="sr">supports</span></td></tr><tr data-role="wua"><th scope="row"><span class="sw" style="background:#2a78d6"></span>Water-user association</th><td class="m-n" data-stage="1"></td><td class="m-l" data-stage="2"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="3"></td><td class="m-n" data-stage="4"></td><td class="m-n" data-stage="5"></td><td class="m-n" data-stage="6"></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-n" data-stage="10"></td><td class="m-n" data-stage="11"></td><td class="m-n" data-stage="12"></td></tr><tr data-role="buyer"><th scope="row"><span class="sw" style="background:#9a4a28"></span>Buyer</th><td class="m-n" data-stage="1"></td><td class="m-n" data-stage="2"></td><td class="m-n" data-stage="3"></td><td class="m-s" data-stage="4"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-l" data-stage="5"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="6"></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-s" data-stage="10"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="11"></td><td class="m-l" data-stage="12"><span class="dot l" title="leads"></span><span class="sr">leads</span></td></tr><tr data-role="transport"><th scope="row"><span class="sw" style="background:#4a5d6e"></span>Transporter</th><td class="m-n" data-stage="1"></td><td class="m-n" data-stage="2"></td><td class="m-n" data-stage="3"></td><td class="m-n" data-stage="4"></td><td class="m-n" data-stage="5"></td><td class="m-s" data-stage="6"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-n" data-stage="10"></td><td class="m-l" data-stage="11"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="12"></td></tr><tr data-role="research"><th scope="row"><span class="sw" style="background:#6b4f8a"></span>Research partner</th><td class="m-l" data-stage="1"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-s" data-stage="2"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-l" data-stage="3"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="4"></td><td class="m-n" data-stage="5"></td><td class="m-n" data-stage="6"></td><td class="m-n" data-stage="7"></td><td class="m-n" data-stage="8"></td><td class="m-n" data-stage="9"></td><td class="m-n" data-stage="10"></td><td class="m-n" data-stage="11"></td><td class="m-s" data-stage="12"><span class="dot s" title="supports"></span><span class="sr">supports</span></td></tr><tr data-role="platform"><th scope="row"><span class="sw" style="background:#1f2a20"></span>Platform team</th><td class="m-l" data-stage="1"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="2"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="3"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-l" data-stage="4"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-s" data-stage="5"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="6"></td><td class="m-n" data-stage="7"></td><td class="m-l" data-stage="8"><span class="dot l" title="leads"></span><span class="sr">leads</span></td><td class="m-n" data-stage="9"></td><td class="m-n" data-stage="10"></td><td class="m-s" data-stage="11"><span class="dot s" title="supports"></span><span class="sr">supports</span></td><td class="m-n" data-stage="12"></td></tr></tbody></table></div>
+    <p class="mkey"><span><span class="dot" style="background:var(--accent)"></span>leads the stage</span><span><span class="dot" style="border:2.5px solid var(--accent)"></span>supports it</span><span>Select a role above, or a role name in the table, to focus it.</span></p>
+  </section>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>Roles are part of the proposed design. Potential partners only; no agreement is implied. No personal data.</span><span><a href="/pilot-map.html">Pilot map</a> · <a href="/">Back to the hub</a></span></div></div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  try {
+    var table = document.getElementById("matrix"), buttons = document.querySelectorAll(".person"), current = null;
+    function focus(role) {
+      current = current === role ? null : role;
+      table.classList.toggle("focus", !!current);
+      table.querySelectorAll("tbody tr").forEach(function (tr) { tr.classList.toggle("on", tr.dataset.role === current); });
+      buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.role === current)); });
+    }
+    buttons.forEach(function (b) { b.addEventListener("click", function () { focus(b.dataset.role); if (current) table.scrollIntoView({ behavior: "smooth", block: "nearest" }); }); });
+    table.querySelectorAll("tbody th").forEach(function (th) {
+      th.tabIndex = 0; th.style.cursor = "pointer";
+      var go = function () { focus(th.parentElement.dataset.role); };
+      th.addEventListener("click", go); th.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+    });
+  } catch (e) { if (window.console) console.error("[people] interaction failed", e); }
+})();
+</script>
+</body>
+</html>

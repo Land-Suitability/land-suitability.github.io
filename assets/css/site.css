@@ -594,7 +594,7 @@ pre.has-copy { position: relative; }
 pre.has-copy:hover .copy-btn, .copy-btn:focus-visible { opacity: 1; }
 
 /* hub: more ways in */
-.ways { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0 8px; }
+.ways { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 18px 0 8px; }
 .way { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: var(--text); background: var(--surface); border: 1px solid var(--border);
   border-radius: 14px; overflow: hidden; padding: 0 14px 14px; transition: transform .2s ease, box-shadow .2s ease; }
 .way:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,.09); }
@@ -631,3 +631,6 @@ a.gl-term:hover::after, a.gl-term:focus-visible::after { opacity: 1; transform: 
   .reveal { opacity: 1 !important; transform: none !important; }
   img { filter: none !important; }
 }
+
+/* wide tables scroll inside their wrapper on every page (stage pages also style it in stage.css) */
+.table-wrap { overflow-x: auto; }
