@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suitability Methodology | AIAE</title>
+  <meta name="description" content="Stage 01 methodology: factor scoring, AHP weighting with consistency check, FAO and weighted aggregation, uncertainty, and an interactive AHP calculator.">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="../assets/stage.css">
+  <script src="/assets/js/site.js"></script>
+</head>
+<body class="d-plan">
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#vision">Vision</a>
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/#platform">Platform</a>
+      <a href="/#pilot">Pilot</a>
+      <a href="/#partners">Partners</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / <a href="../">Stage 01</a> / Methodology</p>
+
+  <section class="stage-hero">
+    <span class="pill">Plan · Stage 01</span>
+    <h1>Suitability methodology</h1>
+    <p class="lead">How a pile of maps becomes a class, a score and a reason for every plot. Version 0.1, matching <code>src/land_intel/scoring.py</code>.</p>
+  </section>
+
+  <section id="step1">
+    <h2>1. Score each factor (fuzzy membership)</h2>
+    <p>Each crop requirement defines nested bands: the S1 optimum inside the S2 band, inside the S3 band. Outside S3 the land is N. A factor value becomes a score between 0 and 1 that falls linearly as the value moves out of the optimum:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Where the value falls</th><th>Factor class</th><th>Score</th></tr></thead>
+        <tbody>
+          <tr><td>Inside the S1 band</td><td><span class="cls s1">S1</span></td><td>1.00</td></tr>
+          <tr><td>Between the S1 and S2 edges</td><td><span class="cls s2">S2</span></td><td>1.00 falling to 0.66</td></tr>
+          <tr><td>Between the S2 and S3 edges</td><td><span class="cls s3">S3</span></td><td>0.66 falling to 0.33</td></tr>
+          <tr><td>Beyond the S3 edge</td><td><span class="cls n">N</span></td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Range factors (altitude, temperature, rainfall, pH) can fail on both sides; the score is the worse of the two sides. Missing data never counts as suitable: it is reported as missing.</p>
+    <div class="callout"><strong>Worked example.</strong> Bread wheat, soil pH 5.3. The S2 band starts at 5.5 and the S3 band at 5.0, so pH 5.3 is in S3, 40% of the way from the S2 edge to the S3 edge: score = 0.66 &minus; 0.33 &times; 0.4 = <strong>0.53</strong>.</div>
+  </section>
+
+  <section id="step2">
+    <h2>2. Weight the factors (AHP)</h2>
+    <p>The Analytic Hierarchy Process turns expert judgement into weights. Instead of asking "what weight is rainfall?", which people answer inconsistently, it asks simple pairwise questions: "for teff, how much more important is rainfall than slope?" on Saaty's 1 to 9 scale. The weights are the principal eigenvector of the comparison matrix.</p>
+    <p>The <strong>consistency ratio (CR)</strong> checks the judgements against each other. Analogy: if rainfall beats slope 3 to 1 and slope beats pH 2 to 1, then rainfall should beat pH about 6 to 1. CR below 0.10 is accepted; above that, the panel revisits its judgements.</p>
+  </section>
+
+  <section id="ahp-calculator">
+    <h2>Interactive AHP calculator</h2>
+    <p class="section-intro">Try it as a workshop panel would. Move each slider towards the factor you consider more important for the crop. Weights and consistency update instantly. Nothing is stored or sent.</p>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Pairwise judgements</h3>
+        <div class="ahp-grid" id="ahp-pairs"></div>
+        <p style="margin-top:12px"><button class="btn" id="ahp-reset" type="button">Reset to example</button></p>
+      </div>
+      <div class="card">
+        <h3>Resulting weights</h3>
+        <div id="ahp-weights"></div>
+        <p id="ahp-cr" style="margin-top:12px"></p>
+      </div>
+    </div>
+    <noscript><p>The calculator needs JavaScript. The same computation is in <code>ahp_weights()</code> in <code>src/land_intel/scoring.py</code>.</p></noscript>
+  </section>
+
+  <section id="step3">
+    <h2>3. Combine the factors</h2>
+    <div class="compare">
+      <div class="card">
+        <h3>A. FAO limiting factor</h3>
+        <p>Class = the worst factor class. Score = the lowest factor score. Weakest-link logic, strict and transparent.</p>
+      </div>
+      <div class="card">
+        <h3>B. AHP weighted overlay with cap</h3>
+        <p>Score = &Sigma; weight &times; factor score. Class from the score: &ge; 0.80 S1, &ge; 0.60 S2, &ge; 0.40 S3, otherwise N. Then two safeguards: a weak factor caps the class one step above it, and any N factor makes the land N.</p>
+      </div>
+    </div>
+    <div class="callout warn"><strong>Why the cap?</strong> Without it, eight factors averaged together hide a single serious problem: in testing, plain averaging rated almost all non-N land as S1. The cap keeps the benefit of weighting while respecting the agronomic reality that one severe limitation cannot be fully offset.</div>
+  </section>
+
+  <section id="step4">
+    <h2>4. Uncertainty</h2>
+    <p>Each observation carries a standard deviation (for example, SoilGrids prediction intervals or the spread of field samples). The engine draws hundreds of plausible input sets (Monte Carlo), reruns the assessment and reports the spread of the score. A plot scored 0.82 &plusmn; 0.03 is a confident S1; 0.82 &plusmn; 0.15 is a candidate for a field visit.</p>
+    <p>The deep-learning model reports confidence through Monte Carlo dropout: it runs the network many times with random neurons switched off and measures how much the answers agree.</p>
+  </section>
+
+  <section id="step5">
+    <h2>5. From cells to plots and clusters</h2>
+    <p>Scores are computed on a 30 m grid, then summarised per plot polygon (area-weighted mean score, majority class, share of area in each class) and per planning cluster. Constraint masks (forest, water bodies, built-up land, protected areas) are applied before aggregation.</p>
+  </section>
+
+  <section id="limits">
+    <h2>Known limitations of v0.1</h2>
+    <ul class="list-clean">
+      <li>Crop requirement thresholds are indicative and not yet calibrated with local trials.</li>
+      <li>Only Meher profiles for teff, bread wheat and maize exist so far.</li>
+      <li>Socio-economic suitability (market access, input access) is handled downstream in stages 04 and 11, not here.</li>
+      <li>The deep model has only been tested on synthetic data.</li>
+    </ul>
+    <p style="margin-top:20px"><a class="btn" href="../">&larr; Back to Stage 01</a></p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. From Land Intelligence to Market Delivery.</span>
+    <span>Stage 01 methodology v0.1</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var FACTORS = ["Rainfall", "Slope", "Temperature", "Soil pH", "Drainage"];
+  // slider value v in [-8, 8]: v > 0 means LEFT factor is (v+1) times more important
+  var EXAMPLE = { "0-1": 1, "0-2": 1, "0-3": 2, "0-4": 2, "1-2": 0, "1-3": 1, "1-4": 1, "2-3": 1, "2-4": 1, "3-4": 0 };
+  var RI = [0, 0, 0, 0.58, 0.90, 1.12, 1.24, 1.32, 1.41, 1.45, 1.49];
+  var pairsEl = document.getElementById("ahp-pairs");
+  var weightsEl = document.getElementById("ahp-weights");
+  var crEl = document.getElementById("ahp-cr");
+  if (!pairsEl || !weightsEl || !crEl) return;
+
+  function ratio(v) { return v >= 0 ? v + 1 : 1 / (1 - v); }
+  function label(v, a, b) {
+    if (v === 0) return "equally important";
+    return (v > 0 ? a : b) + " " + (Math.abs(v) + 1) + "× more important";
+  }
+
+  var inputs = [];
+  for (var i = 0; i < FACTORS.length; i++) {
+    for (var j = i + 1; j < FACTORS.length; j++) {
+      var key = i + "-" + j;
+      var row = document.createElement("div");
+      row.className = "ahp-row";
+      row.innerHTML =
+        '<span class="left">' + FACTORS[i] + '</span>' +
+        '<span><input type="range" min="-8" max="8" step="1" aria-label="' + FACTORS[i] + ' versus ' + FACTORS[j] + '">' +
+        '<output></output></span>' +
+        '<span>' + FACTORS[j] + '</span>';
+      var input = row.querySelector("input");
+      input.dataset.i = i; input.dataset.j = j; input.dataset.key = key;
+      // slider to the LEFT means the left factor wins, so invert the visual direction
+      input.value = -EXAMPLE[key];
+      input.addEventListener("input", compute);
+      inputs.push(input);
+      pairsEl.appendChild(row);
+    }
+  }
+
+  function compute() {
+    try {
+      var n = FACTORS.length, A = [], k, r, c;
+      for (r = 0; r < n; r++) { A.push([]); for (c = 0; c < n; c++) A[r].push(1); }
+      inputs.forEach(function (inp) {
+        var v = -parseInt(inp.value, 10), a = +inp.dataset.i, b = +inp.dataset.j;
+        A[a][b] = ratio(v); A[b][a] = 1 / ratio(v);
+        inp.nextElementSibling.textContent = label(v, FACTORS[a], FACTORS[b]);
+      });
+      // principal eigenvector by power iteration
+      var w = new Array(n).fill(1 / n);
+      for (k = 0; k < 200; k++) {
+        var nw = new Array(n).fill(0), s = 0;
+        for (r = 0; r < n; r++) { for (c = 0; c < n; c++) nw[r] += A[r][c] * w[c]; s += nw[r]; }
+        for (r = 0; r < n; r++) nw[r] /= s;
+        w = nw;
+      }
+      var lam = 0;
+      for (r = 0; r < n; r++) { var aw = 0; for (c = 0; c < n; c++) aw += A[r][c] * w[c]; lam += aw / w[r]; }
+      lam /= n;
+      var ci = (lam - n) / (n - 1), cr = ci / RI[n];
+      var order = w.map(function (x, idx) { return [x, idx]; }).sort(function (p, q) { return q[0] - p[0]; });
+      weightsEl.innerHTML = order.map(function (p) {
+        return '<div style="margin:8px 0"><div style="display:flex;justify-content:space-between;font-size:14px">' +
+          '<span>' + FACTORS[p[1]] + '</span><b>' + (p[0] * 100).toFixed(1) + '%</b></div>' +
+          '<div class="bar" style="width:' + Math.max(2, p[0] * 100 / order[0][0]) + '%"></div></div>';
+      }).join("");
+      var ok = cr < 0.10;
+      crEl.innerHTML = "Consistency ratio: <b>" + cr.toFixed(3) + "</b> " +
+        (ok ? "(acceptable, below 0.10)" : "<span style=\"color:#c0392b\">(too inconsistent: revisit judgements)</span>");
+    } catch (e) {
+      crEl.textContent = "Calculation error: " + e.message;
+      if (window.console) console.error("[AHP] ", e);
+    }
+  }
+
+  document.getElementById("ahp-reset").addEventListener("click", function () {
+    inputs.forEach(function (inp) { inp.value = -EXAMPLE[inp.dataset.key]; });
+    compute();
+  });
+  compute();
+})();
+</script>
+</body>
+</html>

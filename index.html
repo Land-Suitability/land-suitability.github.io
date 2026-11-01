@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Land Intelligence &amp; Suitability | AIAE</title>
-  <meta name="description" content="Where can each crop grow, and how well? The root layer that every later stage builds on.">
+  <meta name="description" content="Stage 01: where can each crop grow in the Amhara pilot, how well, and why. Methods, data, domain model, outputs and roadmap.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
 </head>
 <body class="d-plan">
 <!--
-  Stage 01 page. This file lives on branch `stage/01-land-intelligence` and is published at /stages/01-land-intelligence/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 01 page. Lives on branch `stage/01-land-intelligence`, published at /stages/01-land-intelligence/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +35,261 @@
   <section class="stage-hero">
     <span class="pill">Plan</span>
     <h1>01. Land Intelligence &amp; Suitability</h1>
-    <p class="lead">Where can each crop grow, and how well? The root layer that every later stage builds on.</p>
+    <p class="lead">Where can each crop grow, how well, and why not elsewhere? This is the root layer of the ecosystem: every production plan, water budget and buyer agreement downstream rests on it.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/01-land-intelligence</code></span>
     </div>
+    <div class="stats">
+      <div class="stat"><b>8</b><span>land factors scored</span></div>
+      <div class="stat"><b>3</b><span>crop profiles (teff, wheat, maize)</span></div>
+      <div class="stat"><b>3</b><span>methods: FAO, AHP, deep learning</span></div>
+      <div class="stat"><b>4</b><span>FAO classes: S1, S2, S3, N</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#methods">Methods</a>
+      <a class="chip" href="#criteria">Crop requirements</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#data">Data</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#outputs">Outputs</a>
+      <a class="chip" href="#validation">Validation</a>
+      <a class="chip" href="#roadmap">Roadmap</a>
+      <a class="chip" href="#code">Code</a>
+    </nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><span class="chip">Entry point</span></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><span class="chip">Entry point (raw land data)</span><a class="chip" href="/stages/12-market-distribution/">12. Outcomes, via the learning loop</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Land Intelligence &amp; Suitability</p></div>
+      <div class="card"><h3>This stage</h3><p>Turns soil, terrain, climate and land-cover data into plot-level suitability for each crop and season.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
       <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a><a class="chip" href="/stages/02-water-resources/">02. Water Resource Assessment</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>Which plots are S1, S2, S3 or N for each candidate crop and season?</li><li>What are the soil, slope and erosion constraints on each plot?</li><li>How are smallholder plots grouped into planning clusters, given land-use certificates?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Land availability and land-use certificate (tenure) records</li><li>Soil properties: fertility, pH, texture, drainage, depth</li><li>Topography: elevation, slope, aspect, erosion risk</li><li>Satellite land-cover and land-use analysis</li><li>Land suitability classification (FAO framework, MCDA/AHP, ML/DL)</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Sentinel-2</li><li>Landsat</li><li>SRTM / Copernicus DEM</li><li>SoilGrids / EthioSIS</li><li>Field soil samples</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Plot x crop suitability scores with uncertainty</li><li>Constraint maps</li><li>Planning clusters</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Suitability model accuracy against field trials</li><li>Share of pilot plots mapped and classified</li></ul></div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a building survey before construction. An architect can design any house, but the ground decides where it can stand. Market demand (stage 05) says what to build; land suitability says where it can stand, and what reinforcement (lime, drainage, terraces) it needs first.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Right crop, right place</h3><p>Avoid planting wheat on waterlogged Vertisols or maize above its altitude range, where yields are low whatever the effort.</p></div>
+      <div class="card"><h3>Explain, not just classify</h3><p>Every result names its limiting factors, so extension staff can say <em>why</em> and what would fix it (for example, liming acidic soils).</p></div>
+      <div class="card"><h3>Honest uncertainty</h3><p>Each assessment carries an uncertainty, so planners can tell a confident S1 from a borderline one that needs a field check.</p></div>
     </div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean">
+      <li>Which plots are S1, S2, S3 or N for each candidate crop and season?</li>
+      <li>Which factor limits each plot, and is the limitation fixable (pH, drainage) or permanent (slope, altitude)?</li>
+      <li>How do smallholder plots group into planning clusters large enough for buyers?</li>
+      <li>How confident is each result, and where is field sampling most valuable?</li>
+    </ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">The ubiquitous language of this stage. The <strong>SuitabilityAssessment</strong> is the contract other stages consume, so it always records the result, the reasons and the method version.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: PlanningCluster contains Plots; Plots have FactorObservations of LandFactors; CropProfiles hold CropRequirements; the scoring service produces SuitabilityAssessments."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>Plot</td><td>Entity</td><td>A parcel a household holds use rights to. Identified by a pseudonymous holder ID; no personal data on this site.</td></tr>
+          <tr><td>PlanningCluster</td><td>Entity</td><td>Neighbouring plots planned together; the unit that production plans and buyers work with.</td></tr>
+          <tr><td>LandFactor</td><td>Value object</td><td>A measurable land quality, with unit and direction (optimum range, lower is better, higher is better).</td></tr>
+          <tr><td>FactorObservation</td><td>Value object</td><td>One factor value at one place, with source and uncertainty (std).</td></tr>
+          <tr><td>CropRequirement</td><td>Value object</td><td>For one crop and factor: S1, S2 and S3 bands, AHP weight and provenance note.</td></tr>
+          <tr><td>CropProfile</td><td>Aggregate</td><td>All requirements of one crop for one season (Meher, Belg or irrigated dry season).</td></tr>
+          <tr><td>SuitabilityAssessment</td><td>Value object (output)</td><td>Class, score, uncertainty, limiting factors, per-factor results, method and version.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <p class="section-intro">Based on the FAO land evaluation framework, combining expert rules with machine learning. Rules give transparency from day one; learning improves accuracy as field data accumulate.</p>
+    <figure class="diagram"><img src="assets/pipeline.svg" alt="Pipeline: acquire, harmonise, score factors, aggregate with three methods, deliver per plot, then validate every season."></figure>
+
+    <h3 style="margin-top:28px">FAO suitability classes</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Class</th><th>Meaning</th><th>Typical consequence</th></tr></thead>
+        <tbody>
+          <tr><td><span class="cls s1">S1</span></td><td>Highly suitable: no significant limitations</td><td>Priority land for the crop</td></tr>
+          <tr><td><span class="cls s2">S2</span></td><td>Moderately suitable: limitations reduce yield or raise inputs</td><td>Suitable with management (e.g. fertilizer, timing)</td></tr>
+          <tr><td><span class="cls s3">S3</span></td><td>Marginally suitable: severe limitations</td><td>Only with investment (lime, drainage) or if margins justify it</td></tr>
+          <tr><td><span class="cls n">N</span></td><td>Not suitable</td><td>Excluded from the plan for this crop</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:28px">Three ways to combine factors</h3>
+    <div class="compare">
+      <div class="card">
+        <h3>A. FAO limiting factor</h3>
+        <p><strong>Analogy: a chain is as strong as its weakest link.</strong> The land takes the class of its worst factor. Strict, simple and easy to explain to farmers, but one marginal factor drags everything down.</p>
+      </div>
+      <div class="card">
+        <h3>B. AHP weighted overlay</h3>
+        <p><strong>Analogy: a report card where some subjects count more.</strong> Factor scores (0 to 1) are averaged with weights set by experts through pairwise comparison (AHP). To stop averaging from hiding a serious problem, a weak factor <em>caps</em> the result one class above it, and any N factor makes the land N.</p>
+      </div>
+      <div class="card">
+        <h3>C. Deep learning (PyTorch)</h3>
+        <p><strong>Analogy: an apprentice who first learns from the textbook, then from the master farmer.</strong> A U-Net style model is pre-trained on rule-based labels, then fine-tuned on field trial yields. Monte Carlo dropout gives a confidence for every cell.</p>
+      </div>
+    </div>
+    <p style="margin-top:16px"><a class="btn" href="docs/methodology.html">Methodology details and AHP calculator &rarr;</a></p>
+  </section>
+
+  <section id="criteria">
+    <h2>Indicative crop requirements (Meher season)</h2>
+    <div class="callout warn"><strong>Indicative values.</strong> These S1 (optimum) ranges are starting points compiled from general crop-ecology guidance. They must be calibrated with regional research institutes and local variety trials before any recommendation reaches a farmer.</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Factor</th><th>Teff (S1)</th><th>Bread wheat (S1)</th><th>Maize (S1)</th><th>N beyond</th></tr></thead>
+        <tbody>
+          <tr><td>Altitude (m)</td><td>1700 to 2400</td><td>1900 to 2800</td><td>1500 to 2200</td><td>crop specific</td></tr>
+          <tr><td>Growing-season rainfall (mm)</td><td>450 to 1000</td><td>500 to 900</td><td>700 to 1200</td><td>crop specific</td></tr>
+          <tr><td>Mean temperature (°C)</td><td>16 to 24</td><td>12 to 22</td><td>18 to 28</td><td>crop specific</td></tr>
+          <tr><td>Slope (%)</td><td>0 to 8</td><td>0 to 8</td><td>0 to 8</td><td>&gt; 30</td></tr>
+          <tr><td>Soil pH</td><td>5.5 to 7.5</td><td>6.0 to 7.5</td><td>5.5 to 7.5</td><td>&lt; 4.5 to 5.0</td></tr>
+          <tr><td>Drainage (1 very poor to 5 good)</td><td>2 to 5 (tolerant)</td><td>4 to 5</td><td>4 to 5</td><td>&lt; 1 to 2</td></tr>
+          <tr><td>Soil depth (cm)</td><td>&ge; 50</td><td>&ge; 75</td><td>&ge; 75</td><td>&lt; 20 to 30</td></tr>
+          <tr><td>Soil organic carbon (%)</td><td>&ge; 1.5</td><td>&ge; 1.5</td><td>&ge; 1.5</td><td>&lt; 0.4</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="section-intro" style="margin-top:12px">Full S1, S2 and S3 bands and weights are in <code>src/land_intel/factors.py</code>. Belg-season and irrigated dry-season profiles, and further crops (malt barley, faba bean, chickpea, onion), are planned.</p>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Waterlogged Vertisols</h3><p>Heavy black clay soils on flat land (common in parts of Gojjam and Gondar) waterlog in the main rains. Teff tolerates this better than wheat or maize; broad-bed and furrow drainage can upgrade the class.</p></div>
+      <div class="card"><h3>Soil acidity in high-rainfall areas</h3><p>Wetter western highlands (for example, parts of Awi and West Gojjam) often have acidic soils (pH below 5.5). This is a <em>fixable</em> limitation: liming can move land from S3 to S2 or S1, so the output flags it separately.</p></div>
+      <div class="card"><h3>Steep slopes and erosion</h3><p>Escarpments and hillsides limit cropping. Slope is a permanent limitation; terraces and soil bunds reduce erosion but rarely make steep land S1 for cereals.</p></div>
+      <div class="card"><h3>Altitude and frost</h3><p>Above about 2800 to 3000 m, frost risk and short seasons restrict crops to barley and some wheat varieties. Climate inputs come from stage 03.</p></div>
+      <div class="card"><h3>Small, fragmented holdings</h3><p>Households often farm several small plots. Results are computed on a 30 m grid, then aggregated per plot and per planning cluster, which is the level buyers and planners need.</p></div>
+      <div class="card"><h3>Land-use rights, not land purchase</h3><p>Rural land is held under use-right certificates. "Land availability" here means organising willing households into clusters, not acquiring land.</p></div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead>
+        <tbody>
+          <tr><td>Multispectral imagery</td><td>Sentinel-2 L2A (Copernicus)</td><td>10 to 20 m</td><td>Land cover, cropland mask, vegetation indices</td><td>Open</td></tr>
+          <tr><td>Elevation</td><td>Copernicus DEM GLO-30</td><td>30 m</td><td>Altitude, slope, aspect, wetness index</td><td>Open</td></tr>
+          <tr><td>Soil properties</td><td>iSDAsoil (Africa), SoilGrids (ISRIC)</td><td>30 m, 250 m</td><td>pH, organic carbon, texture, depth</td><td>Open</td></tr>
+          <tr><td>National soil fertility</td><td>Ethiopian Soil Information System (EthioSIS)</td><td>varies</td><td>Calibration of soil layers</td><td>By agreement</td></tr>
+          <tr><td>Rainfall</td><td>CHIRPS v2</td><td>~5 km</td><td>Season rainfall totals and variability</td><td>Open</td></tr>
+          <tr><td>Temperature</td><td>TerraClimate, ERA5-Land</td><td>~4 to 9 km</td><td>Growing-season temperature (downscaled with DEM)</td><td>Open</td></tr>
+          <tr><td>Land cover</td><td>ESA WorldCover</td><td>10 m</td><td>Constraint masks: forest, water, built-up</td><td>Open</td></tr>
+          <tr><td>Field soil samples</td><td>Pilot sampling campaign</td><td>points</td><td>Bias correction and validation</td><td>Project</td></tr>
+          <tr><td>Plot boundaries</td><td>Woreda land administration, GPS mapping (stage 07)</td><td>polygons</td><td>Per-plot aggregation</td><td>Restricted, pseudonymised</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo on a synthetic landscape</h2>
+    <p class="section-intro">The scoring engine run on a made-up 16 km highland landscape (plateau and escarpment in the east, a poorly drained Vertisol valley in the south-west). <strong>No real field data.</strong> It shows how the methods behave, not where to plant.</p>
+    <figure class="diagram"><img src="assets/demo-class-map.svg" alt="Synthetic class maps for teff, bread wheat and maize, coloured S1 to N."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Crop</th><th>Method</th><th class="num">S1</th><th class="num">S2</th><th class="num">S3</th><th class="num">N</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">Teff</td><td>FAO limiting</td><td class="num">7.0%</td><td class="num">47.8%</td><td class="num">35.3%</td><td class="num">9.9%</td></tr>
+          <tr><td>AHP weighted</td><td class="num">54.8%</td><td class="num">35.3%</td><td class="num">0.0%</td><td class="num">9.9%</td></tr>
+          <tr><td rowspan="2">Bread wheat</td><td>FAO limiting</td><td class="num">5.4%</td><td class="num">39.6%</td><td class="num">32.8%</td><td class="num">22.2%</td></tr>
+          <tr><td>AHP weighted</td><td class="num">45.0%</td><td class="num">32.8%</td><td class="num">0.0%</td><td class="num">22.2%</td></tr>
+          <tr><td rowspan="2">Maize</td><td>FAO limiting</td><td class="num">1.8%</td><td class="num">38.2%</td><td class="num">36.1%</td><td class="num">24.0%</td></tr>
+          <tr><td>AHP weighted</td><td class="num">40.0%</td><td class="num">36.1%</td><td class="num">0.0%</td><td class="num">24.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><strong>What this shows.</strong> The two rule-based methods agree on what is <em>not</em> suitable (N), but disagree strongly on S1. The FAO method is strict because one moderate factor is enough to downgrade land; the weighted method lets strong factors partly offset a weaker one. Deciding which behaviour matches reality is exactly what field validation must settle, and it is why both are kept side by side.</div>
+    <div class="callout"><strong>Deep model check.</strong> Pre-trained for 150 steps on the weighted-overlay labels, the PyTorch model reproduces them at 97 to 98% agreement with a mean confidence of about 0.9. This was measured on the same synthetic landscape, so it only shows that the pipeline works end to end. Its real test comes from held-out field data.</div>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Suitability maps</h3><p>Class and score rasters per crop and season, with limiting-factor and uncertainty layers, for the web atlas.</p></div>
+      <div class="card"><h3>Plot and cluster records</h3><p>One SuitabilityAssessment per plot, crop and season, aggregated to planning clusters for stage 04.</p></div>
+      <div class="card"><h3>Investment signals</h3><p>Areas where a fixable limitation (acidity, drainage, water) blocks otherwise good land, for stages 02 and 06.</p></div>
+    </div>
+    <p style="margin-top:20px">Example record sent to stage 04 (synthetic):</p>
+<pre><code>{
+  "target_id": "PLOT-DEMO-001",
+  "crop": "bread_wheat",
+  "season": "meher",
+  "class": "S2",
+  "score": 0.88,
+  "uncertainty": 0.12,
+  "limiting_factors": ["soil_ph"],
+  "factor_results": [
+    {"factor": "soil_ph", "value": 5.3, "class": "S3", "score": 0.53},
+    {"factor": "slope_pct", "value": 11, "class": "S2", "score": 0.85}
+  ],
+  "method": "ahp_weighted_linear",
+  "method_version": "0.1.0"
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation, uncertainty and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>How results are checked</h3>
+        <ul class="list-clean">
+          <li>Field soil samples on a stratified random design, held out from calibration</li>
+          <li>Confusion matrix and Cohen's kappa against field-verified classes</li>
+          <li>Yield by predicted class from trials and stage 08 forecasts: S1 should out-yield S2, S2 should out-yield S3</li>
+          <li>Monte Carlo propagation of input uncertainty to every plot score</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Indicators (KPIs)</h3>
+        <ul class="list-clean">
+          <li>Share of pilot plots mapped and assessed (target 100%)</li>
+          <li>Agreement with field-verified classes (kappa, target &ge; 0.6)</li>
+          <li>Yield gap between S1 and S3 plots (should be clear and consistent)</li>
+          <li>Share of plots with high uncertainty that received a field check</li>
+        </ul>
+      </div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap">
+      <div class="card phase"><h3>Methodology v0.1</h3><ul><li>Domain model and scoring engine</li><li>Indicative profiles: teff, wheat, maize</li><li>Synthetic demo and tests</li><li><strong>Status: done</strong></li></ul></div>
+      <div class="card phase"><h3>Pilot data</h3><ul><li>Select pilot woreda (zone screening)</li><li>Build the open-data stack in Google Earth Engine / Python</li><li>Soil sampling campaign</li><li>Map pilot plots and clusters</li></ul></div>
+      <div class="card phase"><h3>Calibrate</h3><ul><li>Expert AHP workshop with regional researchers and extension staff</li><li>Calibrate thresholds with local trials</li><li>Add Belg and irrigated dry-season profiles</li></ul></div>
+      <div class="card phase"><h3>Learn and publish</h3><ul><li>Train and fine-tune the deep model</li><li>Validate against the first season's yields</li><li>Publish the suitability atlas and API for stage 04</li></ul></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/land_intel/domain.py    domain model (entities, value objects, enums)
+src/land_intel/factors.py   factor catalogue and indicative crop profiles
+src/land_intel/scoring.py   factor scoring, AHP weights, FAO and weighted aggregation, uncertainty
+src/land_intel/model.py     PyTorch multi-crop suitability network, loss, MC-dropout inference
+src/demo.py                 end-to-end demo on synthetic data (writes assets/demo-class-map.svg)
+tests/test_scoring.py       unit tests for the scoring engine
+docs/methodology.html       method details and interactive AHP calculator</code></pre>
+<pre><code>git switch stage/01-land-intelligence
+python3 src/demo.py
+python3 tests/test_scoring.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">

@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 430" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1000" height="430" fill="#fbfaf6"/>
+  <defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+  <text x="500" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 01 processing pipeline</text>
+
+  <!-- inputs -->
+  <g font-size="12" fill="#222">
+    <rect x="20" y="50" width="170" height="250" rx="10" fill="#f1e8d6" stroke="#8a6d3b"/>
+    <text x="105" y="72" text-anchor="middle" font-weight="bold" font-size="13">1. Acquire</text>
+    <text x="32" y="98">Sentinel-2 (10 m)</text>
+    <text x="32" y="118">Copernicus DEM (30 m)</text>
+    <text x="32" y="138">iSDAsoil / SoilGrids</text>
+    <text x="32" y="158">CHIRPS, TerraClimate</text>
+    <text x="32" y="178">ESA WorldCover</text>
+    <text x="32" y="198">Field soil samples</text>
+    <text x="32" y="218">Plot boundaries</text>
+    <text x="32" y="238">(land-use certificates)</text>
+    <text x="32" y="280" fill="#6b5428" font-style="italic">raw layers</text>
+  </g>
+
+  <g font-size="12" fill="#222">
+    <rect x="215" y="50" width="170" height="250" rx="10" fill="#f1e8d6" stroke="#8a6d3b"/>
+    <text x="300" y="72" text-anchor="middle" font-weight="bold" font-size="13">2. Harmonise</text>
+    <text x="227" y="98">Reproject (UTM 37N)</text>
+    <text x="227" y="118">Resample to 30 m grid</text>
+    <text x="227" y="138">Clip to pilot woreda</text>
+    <text x="227" y="158">Derive slope, TWI</text>
+    <text x="227" y="178">Season rainfall totals</text>
+    <text x="227" y="198">Mask nodata, clouds</text>
+    <text x="227" y="218">Calibrate with field</text>
+    <text x="227" y="238">samples (bias check)</text>
+    <text x="227" y="280" fill="#6b5428" font-style="italic">co-registered stack</text>
+  </g>
+
+  <g font-size="12" fill="#222">
+    <rect x="410" y="50" width="170" height="250" rx="10" fill="#e3efdd" stroke="#3f6b34"/>
+    <text x="495" y="72" text-anchor="middle" font-weight="bold" font-size="13">3. Score factors</text>
+    <text x="422" y="98">Crop requirement</text>
+    <text x="422" y="116">tables (S1/S2/S3/N)</text>
+    <text x="422" y="140">Fuzzy membership</text>
+    <text x="422" y="158">score 0..1 per factor</text>
+    <text x="422" y="182">AHP pairwise weights</text>
+    <text x="422" y="200">(expert workshop,</text>
+    <text x="422" y="218">CR &lt; 0.10)</text>
+    <text x="422" y="280" fill="#2f5022" font-style="italic">factor scores</text>
+  </g>
+
+  <g font-size="12" fill="#222">
+    <rect x="605" y="50" width="170" height="250" rx="10" fill="#e3efdd" stroke="#3f6b34"/>
+    <text x="690" y="72" text-anchor="middle" font-weight="bold" font-size="13">4. Aggregate</text>
+    <text x="617" y="98">A. FAO limiting factor</text>
+    <text x="629" y="116">(worst factor wins)</text>
+    <text x="617" y="140">B. AHP weighted overlay</text>
+    <text x="629" y="158">+ compensation cap</text>
+    <text x="617" y="182">C. Deep model (PyTorch)</text>
+    <text x="629" y="200">pre-train on A/B,</text>
+    <text x="629" y="218">fine-tune on trials</text>
+    <text x="617" y="242">Constraint masks:</text>
+    <text x="629" y="260">forest, water, towns</text>
+    <text x="617" y="280" fill="#2f5022" font-style="italic">class + score maps</text>
+  </g>
+
+  <g font-size="12" fill="#222">
+    <rect x="800" y="50" width="180" height="250" rx="10" fill="#dde8f3" stroke="#2f5d8a"/>
+    <text x="890" y="72" text-anchor="middle" font-weight="bold" font-size="13">5. Deliver</text>
+    <text x="812" y="98">Zonal stats per plot</text>
+    <text x="812" y="116">and planning cluster</text>
+    <text x="812" y="140">Limiting factors and</text>
+    <text x="812" y="158">uncertainty per plot</text>
+    <text x="812" y="182">Web maps (atlas)</text>
+    <text x="812" y="206">SuitabilityAssessment</text>
+    <text x="812" y="224">records to stage 02, 04</text>
+    <text x="812" y="280" fill="#24476a" font-style="italic">decision-ready outputs</text>
+  </g>
+
+  <g stroke="#555" stroke-width="2.5" marker-end="url(#a)">
+    <line x1="190" y1="175" x2="213" y2="175"/><line x1="385" y1="175" x2="408" y2="175"/>
+    <line x1="580" y1="175" x2="603" y2="175"/><line x1="775" y1="175" x2="798" y2="175"/>
+  </g>
+
+  <!-- validation loop -->
+  <rect x="300" y="335" width="400" height="70" rx="10" fill="#f5e1d7" stroke="#9a4a28"/>
+  <text x="500" y="360" text-anchor="middle" font-size="13" font-weight="bold" fill="#6d3218">6. Validate and recalibrate every season</text>
+  <text x="500" y="382" text-anchor="middle" font-size="12" fill="#6d3218">Field trials, yields (stage 08, 12) vs predicted class: confusion matrix, kappa,</text>
+  <text x="500" y="398" text-anchor="middle" font-size="12" fill="#6d3218">yield-by-class; then adjust thresholds, weights and model</text>
+  <path d="M890,300 C890,370 760,370 702,370" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
+  <path d="M300,370 C200,370 495,330 495,302" fill="none" stroke="#9a4a28" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#a)"/>
+</svg>
