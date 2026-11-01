@@ -477,3 +477,28 @@ kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border
   background-size: 2400px auto; margin: 4px 0 8px; box-shadow: 0 6px 22px rgba(31,42,32,.08); }
 :root[data-theme="dark"] .page-banner { filter: brightness(.88) saturate(.95); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .page-banner { filter: brightness(.88) saturate(.95); } }
+
+/* "Try it" calculators on stage pages */
+.calc { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr); gap: 20px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 16px; padding: 20px; border-top: 4px solid var(--d, var(--accent)); }
+@media (max-width: 760px) { .calc { grid-template-columns: 1fr; } }
+.calc .field { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; margin-bottom: 12px; }
+.calc .field label { font-size: 14px; font-weight: 600; }
+.calc .field output { font: 700 14px ui-monospace, Menlo, monospace; color: var(--d, var(--accent)); }
+.calc .field input[type=range] { grid-column: 1 / -1; width: 100%; accent-color: var(--d, var(--accent)); }
+.calc .field input[type=number], .calc .field input[type=date], .calc .field select { grid-column: 1 / -1; font: inherit; padding: 8px 10px;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+.calc .field small { grid-column: 1 / -1; color: var(--muted); font-size: 12.5px; }
+.calc .result { background: var(--surface-2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.calc .big { font-size: 32px; font-weight: 800; line-height: 1.1; color: var(--d, var(--accent)); }
+.calc .big small { display: block; font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 4px; }
+.calc .verdict { padding: 10px 12px; border-radius: 10px; font-weight: 600; font-size: 14.5px; }
+.calc .verdict.good { background: color-mix(in srgb, #3f6b34 16%, transparent); }
+.calc .verdict.warn { background: color-mix(in srgb, #c58a1b 20%, transparent); }
+.calc .verdict.bad { background: color-mix(in srgb, #b3161a 16%, transparent); }
+.calc .minibars { display: flex; align-items: flex-end; gap: 4px; height: 90px; }
+.calc .minibars div { flex: 1; background: var(--d, var(--accent)); border-radius: 4px 4px 0 0; min-height: 2px; position: relative; opacity: .85; }
+.calc .minibars div.neg { background: #b3161a; }
+.calc .minilabels { display: flex; gap: 4px; font-size: 11px; color: var(--muted); }
+.calc .minilabels span { flex: 1; text-align: center; }
+.calc .note { font-size: 12.5px; color: var(--muted); }
