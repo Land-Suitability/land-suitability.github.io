@@ -71,7 +71,7 @@
       <span>Branch <code>stage/04-crop-planning</code></span>
     </div>
     <div class="stats"><div class="stat"><b>1</b><span>plan per season, cluster x crop x hectares</span></div><div class="stat"><b>12</b><span>monthly water limits per cluster</span></div><div class="stat"><b>5</b><span>constraint families</span></div><div class="stat"><b>birr</b><span>shadow price for every binding limit</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -152,6 +152,70 @@
     <details class="table-view" style="margin-top:12px"><summary>All allocations</summary>
       <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Cluster</th><th>Option</th><th class="num">Hectares</th><th class="num">Expected t</th><th class="num">Net birr</th></tr></thead><tbody><tr><td>A</td><td>teff_meher</td><td class='num'>180.0</td><td class='num'>342</td><td class='num'>25,290,000</td></tr><tr><td>A</td><td>maize_meher</td><td class='num'>120.0</td><td class='num'>401</td><td class='num'>6,624,000</td></tr><tr><td>A</td><td>wheat_dry</td><td class='num'>43.9</td><td class='num'>178</td><td class='num'>5,110,189</td></tr><tr><td>A</td><td>onion_dry</td><td class='num'>58.4</td><td class='num'>1,110</td><td class='num'>11,215,311</td></tr><tr><td>B</td><td>teff_meher</td><td class='num'>78.8</td><td class='num'>126</td><td class='num'>8,820,000</td></tr><tr><td>B</td><td>wheat_meher</td><td class='num'>171.2</td><td class='num'>555</td><td class='num'>16,119,120</td></tr><tr><td>B</td><td>wheat_dry</td><td class='num'>120.0</td><td class='num'>513</td><td class='num'>15,198,000</td></tr><tr><td>C</td><td>teff_meher</td><td class='num'>240.0</td><td class='num'>432</td><td class='num'>31,440,000</td></tr><tr><td>C</td><td>maize_meher</td><td class='num'>160.0</td><td class='num'>703</td><td class='num'>13,890,000</td></tr></tbody></table></div>
     </details>
+  </section>
+
+  <section id="try">
+    <h2>Try it: a two-crop planner</h2>
+    <p class="section-intro">The stage planner in miniature: choose hectares of two crops to maximise net income within land, the water of the leanest month and a buyer's limit on crop A. Solved exactly by checking the corners of the feasible area, like the linear programme in <code>src/crop_plan/planner.py</code>.</p>
+    <div class="calc" id="calc-s04">
+      <div>
+      <div class="field"><label for="land">Land available (ha)</label><output id="land-o"></output><input type="range" id="land" min="10" max="300" step="5" value="100" data-unit="ha"></div>
+      <div class="field"><label for="water">Water in the leanest month (thousand m&sup3;)</label><output id="water-o"></output><input type="range" id="water" min="0" max="500" step="5" value="220" data-unit="k m³"></div>
+      <div class="field"><label for="ma">Crop A net margin (thousand birr per ha)</label><output id="ma-o"></output><input type="range" id="ma" min="0" max="300" step="5" value="210" data-unit="k birr"><small>Onion in the demo: about 210,000 birr per ha.</small></div>
+      <div class="field"><label for="wa">Crop A water in the leanest month (m&sup3; per ha)</label><output id="wa-o"></output><input type="range" id="wa" min="0" max="4000" step="50" value="2850" data-unit="m³"></div>
+      <div class="field"><label for="capa">Buyers take at most this much crop A (ha)</label><output id="capa-o"></output><input type="range" id="capa" min="0" max="300" step="5" value="60" data-unit="ha"></div>
+      <div class="field"><label for="mb">Crop B net margin (thousand birr per ha)</label><output id="mb-o"></output><input type="range" id="mb" min="0" max="300" step="5" value="130" data-unit="k birr"><small>Irrigated wheat in the demo: about 130,000 birr per ha.</small></div>
+      <div class="field"><label for="wb">Crop B water in the leanest month (m&sup3; per ha)</label><output id="wb-o"></output><input type="range" id="wb" min="0" max="4000" step="50" value="2700" data-unit="m³"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s04-big"></div>
+        <div id="s04-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s04-v"></div>
+        <div class="minibars" id="s04-bars" aria-hidden="true" style="height:60px"></div>
+        <div class="minilabels" aria-hidden="true"><span>crop A</span><span>crop B</span><span>unused land</span></div>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s04");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function solve(L, W, ma, wa, cap, mb, wb) {
+        // corners of {a,b >= 0, a+b <= L, wa a + wb b <= W, a <= cap}
+        var c = [[0, 0], [Math.min(L, cap, wa > 0 ? W / wa : Infinity), 0], [0, Math.min(L, wb > 0 ? W / wb : Infinity)]];
+        function add(a, b) { if (a >= -1e-9 && b >= -1e-9 && a + b <= L + 1e-6 && wa * a + wb * b <= W + 1e-3 && a <= cap + 1e-9) c.push([Math.max(0, a), Math.max(0, b)]); }
+        if (Math.abs(wa - wb) > 1e-9) { var a = (W - wb * L) / (wa - wb); add(a, L - a); }
+        add(cap, L - cap); if (wb > 0) add(cap, (W - wa * cap) / wb);
+        var best = c[0], bv = -1;
+        c.forEach(function (p) { if (p[0] + p[1] <= L + 1e-6 && wa * p[0] + wb * p[1] <= W + 1e-3 && p[0] <= cap + 1e-9) { var v = ma * p[0] + mb * p[1]; if (v > bv) { bv = v; best = p; } } });
+        return { a: best[0], b: best[1], v: bv };
+      }
+      function update() {
+        var L = num("land"), W = num("water") * 1000, ma = num("ma") * 1000, wa = num("wa"), cap = num("capa"), mb = num("mb") * 1000, wb = num("wb");
+        var s = solve(L, W, ma, wa, cap, mb, wb);
+        var dW = solve(L, W + 1000, ma, wa, cap, mb, wb).v - s.v, dL = solve(L + 1, W, ma, wa, cap, mb, wb).v - s.v, dC = solve(L, W, ma, wa, cap + 1, mb, wb).v - s.v;
+        $("s04-big").innerHTML = fmt(s.v / 1e6, 2) + " million birr<small>" + fmt(s.a, 1) + " ha of crop A and " + fmt(s.b, 1) + " ha of crop B</small>";
+        var sig = [["water", dW / 1000, "per extra m³"], ["land", dL, "per extra ha"], ["the crop A limit", dC, "per extra ha of demand"]].filter(function (x) { return x[1] > 0.5; })
+          .map(function (x) { return "<b>" + x[0] + "</b>: about " + fmt(x[1], x[1] < 100 ? 1 : 0) + " birr " + x[2]; });
+        $("s04-detail").innerHTML = sig.length ? "What binds (shadow prices): " + sig.join("; ") + "." : "Nothing binds: every limit has slack.";
+        var v = $("s04-v"), unused = L - s.a - s.b; v.className = "verdict " + (unused > 1 ? "warn" : "good");
+        v.textContent = unused > 1 ? fmt(unused, 1) + " ha stay unused: water or demand, not land, is the limit." : "All land is used.";
+        var mx = Math.max(L, 1);
+        $("s04-bars").innerHTML = [s.a, s.b, unused].map(function (h, i) { return '<div class="' + (i === 2 ? "neg" : "") + '" style="height:' + Math.max(2, h / mx * 58) + 'px"></div>'; }).join("");
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s04]", e); }
+    })();
+    </script>
+    </div>
   </section>
 
   <section id="outputs">
