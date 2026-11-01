@@ -1,0 +1,83 @@
+{
+ "settlements": [
+  {
+   "delivery_id": "DLV-001",
+   "lot_id": "LOT-A-TEFF-2026-W43-001",
+   "payable_kg": 9468.0,
+   "price_birr_t": 106575.0,
+   "gross_birr": 1009052.1,
+   "deductions_birr": 0.0,
+   "fee_birr": 30271.563,
+   "net_birr": 978780.537
+  },
+  {
+   "delivery_id": "DLV-002",
+   "lot_id": "LOT-A-TEFF-2026-W43-002",
+   "payable_kg": 7923.0,
+   "price_birr_t": 101500.0,
+   "gross_birr": 804184.5,
+   "deductions_birr": 0.0,
+   "fee_birr": 24125.535,
+   "net_birr": 780058.965
+  },
+  {
+   "delivery_id": "DLV-003",
+   "lot_id": "LOT-A-TEFF-2026-W44-005",
+   "payable_kg": 8964.96,
+   "price_birr_t": 94395.0,
+   "gross_birr": 860882.3999999999,
+   "deductions_birr": 14635.000799999922,
+   "fee_birr": 25387.421975999998,
+   "net_birr": 820859.977224
+  }
+ ],
+ "price": 101500,
+ "market": 101500,
+ "ontime": 0.926,
+ "n_payments": 27,
+ "did": {
+  "pilot": [
+   40874,
+   55595
+  ],
+  "comparison": [
+   40732,
+   46659
+  ],
+  "counterfactual": [
+   40874,
+   46801
+  ],
+  "effect": 8795,
+  "low": 7758,
+  "high": 9819,
+  "naive": 14722
+ },
+ "yields": {
+  "classes": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "realised": [
+   1.97,
+   1.59,
+   0.83
+  ],
+  "predicted": [
+   1.9,
+   1.6,
+   1.1
+  ]
+ },
+ "signal": {
+  "realised_price_birr_t": 101500,
+  "on_time_payment_share": 0.93,
+  "buyer_rating": 4.2,
+  "yields_by_class": {
+   "S1": 1.97,
+   "S2": 1.59,
+   "S3": 0.83
+  }
+ }
+}

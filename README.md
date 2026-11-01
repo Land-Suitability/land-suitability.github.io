@@ -7,6 +7,23 @@ This branch contains **only** the content for stage 12 of the
 Amhara Integrated Agriculture Ecosystem operating chain. Everything at the root of this branch is
 published under `/stages/12-market-distribution/`.
 
+## What is here (v0.1)
+
+| Path | Content |
+|---|---|
+| `index.html` | Stage page: purpose, domain model, settlement/payment/impact/learning methods, Amhara context, data, settlement table, interactive impact and yield-check charts, outputs, validation, roadmap |
+| `src/distribution/` | Python package: domain model, settlement with premiums and deductions, household payments via lot traceability, payment timeliness, difference-in-differences, yields by class |
+| `src/demo.py` | Deliveries, payments, impact and learning demo (writes assets/demo-distribution.json) |
+| `tests/test_distribution.py` | Unit tests |
+
+```bash
+pip install numpy
+python3 src/demo.py
+python3 tests/test_distribution.py
+```
+
+Household data are pseudonymous and never published. Comparison kebeles must be chosen at baseline, before the pilot starts.
+
 ## Rules
 
 - `index.html` at the branch root is the stage's landing page. Keep it.

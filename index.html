@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Market Distribution &amp; Customer Network | AIAE</title>
-  <meta name="description" content="Deliver to buyers, settle payments fairly and on time, and feed results back into the next season.">
+  <meta name="description" content="Stage 12: deliveries and fair settlement, payments back to households through traceability, impact measurement and the learning loop.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-sell">
 <!--
-  Stage 12 page. This file lives on branch `stage/12-market-distribution` and is published at /stages/12-market-distribution/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 12 page. Lives on branch `stage/12-market-distribution`, published at /stages/12-market-distribution/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -32,58 +54,143 @@
   <p class="breadcrumb"><a href="/">Home</a> / <a href="/#chain">Value chain</a> / Stage 12</p>
 
   <section class="stage-hero">
-    <span class="pill">Sell &amp; Learn</span>
+    <span class="pill">Sell & Learn</span>
     <h1>12. Market Distribution &amp; Customer Network</h1>
-    <p class="lead">Deliver to buyers, settle payments fairly and on time, and feed results back into the next season.</p>
+    <p class="lead">Where the chain closes into a loop. Stage 12 settles each delivery fairly, pays every household its share through lot traceability, measures whether incomes really rose, and sends what was learned back to the start of the chain.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/12-market-distribution</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>93%</b><span>households paid within 14 days</span></div><div class="stat"><b>+8,795</b><span>birr/household income effect (DiD)</span></div><div class="stat"><b>27</b><span>household payments from 3 lots</span></div><div class="stat"><b>3</b><span>learning signals sent back</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/11-logistics-transport/">11. Logistics &amp; Transportation</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/11-logistics-transport/">11. Shipments delivered</a><a class="chip" href="/stages/05-market-intelligence/">05. Contracts and price rules</a><a class="chip" href="/stages/09-harvest-postharvest/">09. Lots and their plots</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Market Distribution &amp; Customer Network</p></div>
+      <div class="card"><h3>This stage</h3><p>Delivery settlement, household payments, payment timeliness, impact evaluation and learning signals.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/05-market-intelligence/">05. Market Intelligence &amp; Demand Forecasting</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/05-market-intelligence/">05. Realised prices, buyer feedback</a><a class="chip" href="/stages/01-land-intelligence/">01. Yields by suitability class</a><a class="chip" href="/stages/04-crop-planning/">04. Realised margins</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>Were orders delivered in full, on time and at grade?</li><li>Were farmers paid on time?</li><li>What do buyers want differently next season?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Farmer, cooperative and buyer matching</li><li>Contracts with processors, supermarkets, institutions and exporters</li><li>Order, payment and delivery management</li><li>Customer feedback</li><li>Outcome measurement (income, losses, market access)</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Deliveries and payments</li><li>Buyer feedback</li><li>Household surveys (baseline and follow-up)</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Settled deliveries</li><li>Farmer payments</li><li>Outcome indicators for the learning loop</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Farmer net income change</li><li>Share of farmers paid on time</li><li>Repeat buyer rate</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a relay race where the baton is information. Grain runs forward from field to buyer; money runs back from buyer to household; and the lessons (prices, yields, quality, timeliness) run all the way back to the start line, so next season's plan starts from what really happened, not from what was assumed.</p>
+    <div class="grid cols-3"><div class="card"><h3>Fair and fast payment</h3><p>Transparent deductions and quick payment are what keep farmers in contracts and away from side-selling.</p></div><div class="card"><h3>Proof, not anecdotes</h3><p>Comparing pilot and comparison kebeles separates the programme's effect from inflation and good rains.</p></div><div class="card"><h3>A chain that learns</h3><p>Realised yields and prices recalibrate stages 01, 04 and 05 every season.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>What is each delivery worth after grade premiums, deductions and fees?</li><li>How much does each household receive, and how quickly?</li><li>Did household incomes rise because of the programme, and by how much?</li><li>What should stages 01, 04 and 05 change next season?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro"><strong>Settlements</strong> turn deliveries into money; <strong>HouseholdPayments</strong> carry it back through lot traceability; <strong>ImpactEstimates</strong> and <strong>LearningSignals</strong> carry the lessons back up the chain.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: deliveries, grade terms and household outcomes feed the settlement service, which produces settlements, household payments, impact estimates and learning signals."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>Delivery</td><td>Entity</td><td>A lot delivered under a contract, with weight and quality measured at the buyer's gate.</td></tr><tr><td>GradeTerms</td><td>Value object</td><td>Grade premiums, quality limits and the cooperative service fee.</td></tr><tr><td>Settlement</td><td>Value object</td><td>Payable weight, price, gross value, deductions, fee and net value.</td></tr><tr><td>HouseholdPayment</td><td>Entity</td><td>A household's share of a lot by kilograms contributed, and when it was paid.</td></tr><tr><td>ImpactEstimate</td><td>Value object (output)</td><td>Difference-in-differences income effect with a 95% interval.</td></tr><tr><td>LearningSignal</td><td>Value object (output)</td><td>Realised price, yields by suitability class, payment timeliness, buyer rating.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Settlement</h3><p>Price = contract rule (for example the stage 05 band: market price clipped between floor and ceiling) &times; grade premium. Excess moisture and foreign matter above the limits are removed from the payable weight. A cooperative service fee is deducted from the net value. Every number is shown to the farmer group.</p></div>
+      <div class="card"><h3>Paying households</h3><p>Each lot lists its plots (stage 09), and each plot its household (stage 07). A lot's net value is split in proportion to the kilograms each household contributed. Payment dates are recorded, and the share paid within 14 days is tracked.</p></div>
+      <div class="card"><h3>Impact: difference-in-differences</h3><p>Effect = (pilot endline &minus; baseline) &minus; (comparison endline &minus; baseline). The comparison kebeles absorb inflation, weather and other common changes. A bootstrap over households gives the 95% interval.</p></div>
+      <div class="card"><h3>Learning signals</h3><p>Realised prices update stage 05 forecasts and contract bands; realised yields by suitability class check stage 01 (S1 should out-yield S2, S2 should out-yield S3, each close to prediction); realised margins update stage 04.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Cooperative unions</h3><p>Unions often sell on behalf of primary cooperatives; settlement statements must flow down to each member transparently.</p></div><div class="card"><h3>Mobile money</h3><p>Mobile money and bank accounts make fast, traceable payments to households possible, including in remote kebeles.</p></div><div class="card"><h3>Trust after delays</h3><p>Late payments in past schemes undermine trust; payment timeliness is reported as a headline indicator.</p></div><div class="card"><h3>Institutional buyers</h3><p>Flour mills, processors, schools and hospitals can provide stable demand; their feedback shapes next season's grades and volumes.</p></div><div class="card"><h3>Comparison kebeles</h3><p>Choosing similar non-pilot kebeles at baseline, before the pilot starts, is what makes the impact estimate credible.</p></div><div class="card"><h3>Women and youth</h3><p>Payments and outcomes are reported by household type so that benefits reaching women and young farmers stay visible.</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Deliveries</td><td>Buyer weighbridge and quality tickets</td><td>lot</td><td>Settlement</td><td>Project / contract</td></tr><tr><td>Lot composition</td><td>Stage 09 lots, stage 07 plot-household links</td><td>lot, household</td><td>Payments</td><td>Restricted, pseudonymised</td></tr><tr><td>Payments</td><td>Cooperative and mobile money records</td><td>household</td><td>Timeliness</td><td>Restricted</td></tr><tr><td>Household surveys</td><td>Baseline and endline, pilot and comparison kebeles</td><td>household</td><td>Impact</td><td>Restricted, pseudonymised</td></tr><tr><td>Buyer feedback</td><td>Structured buyer reviews</td><td>buyer</td><td>Learning signals</td><td>Confidential</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: three teff deliveries, payments and impact</h2>
+    <p class="section-intro">Three lots delivered under a band contract (floor 81,000, ceiling 109,000 birr/t) when the market is at 101,500 birr/t; 300 pilot and 300 comparison households with a built-in true effect of 9,000 birr. <strong>Synthetic data, pseudonymous IDs.</strong></p>
+    <div class="card"><h3>Settlements</h3><div class="table-wrap"><table><thead><tr><th>Lot</th><th class="num">Payable kg</th><th class="num">Price birr/t</th><th class="num">Deductions</th><th class="num">Fee</th><th class="num">Net birr</th></tr></thead><tbody><tr><td>LOT-A-TEFF-2026-W43-001</td><td class='num'>9,468</td><td class='num'>106,575</td><td class='num'>0</td><td class='num'>30,272</td><td class='num'>978,781</td></tr><tr><td>LOT-A-TEFF-2026-W43-002</td><td class='num'>7,923</td><td class='num'>101,500</td><td class='num'>0</td><td class='num'>24,126</td><td class='num'>780,059</td></tr><tr><td>LOT-A-TEFF-2026-W44-005</td><td class='num'>8,965</td><td class='num'>94,395</td><td class='num'>14,635</td><td class='num'>25,387</td><td class='num'>820,860</td></tr></tbody></table></div>
+      <p style="margin-top:10px">The grade 1 lot earns a 5% premium; the grade 3 lot is discounted and loses weight for excess moisture and foreign matter. 27 household payments add up exactly to the net settlements, and 93% were paid within 14 days (the third lot was slower).</p></div>
+    <div class="viz-root" data-chart id="did-chart">
+      <h3 class="viz-title">Household net income: pilot versus comparison kebeles</h3>
+      <p class="viz-sub">Difference-in-differences effect +8,795 birr per household (95% CI 7,758 to 9,819). A before/after view of the pilot alone would claim +14,722.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw line" style="background:var(--series-1)"></i>Pilot households</span><span><i class="sw line" style="background:var(--series-2)"></i>Comparison households</span><span><i class="sw line" style="background:var(--series-3)"></i>Pilot without the programme (counterfactual)</span></div>
+      <div class="chart-host" role="img" aria-label="Pilot income rises more steeply than comparison income; the dashed counterfactual follows the comparison trend."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "line", "categories": ["Baseline", "Endline"], "xlabel": "Survey round", "series": [{"name": "Pilot households", "values": [40874, 55595]}, {"name": "Comparison households", "values": [40732, 46659]}, {"name": "Pilot without the programme (counterfactual)", "values": [40874, 46801], "dash": true}], "unit": "birr", "yMin": 35000, "yMax": 60000, "marks": [{"i": 1, "v": 51198.0, "text": "effect +8,795"}]}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Survey round</th><th class="num">Pilot households</th><th class="num">Comparison households</th><th class="num">Pilot without the programme (counterfactual)</th></tr></thead>
+          <tbody><tr><td>Baseline</td><td class="num">40,874</td><td class="num">40,732</td><td class="num">40,874</td></tr><tr><td>Endline</td><td class="num">55,595</td><td class="num">46,659</td><td class="num">46,801</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (birr).</p>
+      </details>
+    </div>
+    <div class="viz-root" data-chart id="yield-chart">
+      <h3 class="viz-title">Learning loop: did the suitability classes predict yields?</h3>
+      <p class="viz-sub">S1 and S2 match within 10%; S3 plots yielded about a quarter less than assumed, so stage 01 recalibrates the S3 bands.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Predicted (stage 01)</span><span><i class="sw" style="background:var(--series-2)"></i>Realised (delivered weights)</span></div>
+      <div class="chart-host" role="img" aria-label="Grouped bars: S1 predicted 1.90 realised 1.97; S2 1.60 and 1.59; S3 1.10 and 0.83."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["S1", "S2", "S3"], "xlabel": "Stage 01 suitability class", "series": [{"name": "Predicted (stage 01)", "values": [1.9, 1.6, 1.1]}, {"name": "Realised (delivered weights)", "values": [1.97, 1.59, 0.83]}], "unit": "t/ha", "dp": 2, "yMin": 0}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Stage 01 suitability class</th><th class="num">Predicted (stage 01)</th><th class="num">Realised (delivered weights)</th></tr></thead>
+          <tbody><tr><td>S1</td><td class="num">1.90</td><td class="num">1.97</td></tr><tr><td>S2</td><td class="num">1.60</td><td class="num">1.59</td></tr><tr><td>S3</td><td class="num">1.10</td><td class="num">0.83</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (t/ha).</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Settlement statements</h3><p>Per delivery and per household, with every premium, deduction and fee shown.</p></div><div class="card"><h3>Impact report</h3><p>Income effect with confidence interval, plus losses, yields and payment timeliness, for partners and funders.</p></div><div class="card"><h3>Learning signals</h3><p>Realised prices to 05, yields by class to 01, margins to 04, buyer feedback to 05 and 09.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;realised_price_birr_t&quot;: 101500,
+  &quot;on_time_payment_share&quot;: 0.93,
+  &quot;buyer_rating&quot;: 4.2,
+  &quot;yields_by_class&quot;: {
+    &quot;S1&quot;: 1.97,
+    &quot;S2&quot;: 1.59,
+    &quot;S3&quot;: 0.83
+  }
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Settlement statements reconciled with buyer payments and cooperative accounts</li><li>Household payment samples confirmed with households</li><li>Baseline balance check between pilot and comparison kebeles</li><li>Impact estimates repeated with alternative comparison groups</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Farmer net income change (difference-in-differences)</li><li>Share of households paid within 14 days</li><li>Repeat buyer rate and buyer rating</li><li>Share of produce sold through planned agreements</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>Settlement and household payments</li><li>Difference-in-differences</li><li>Learning signals</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Baseline</h3><ul><li>Select comparison kebeles</li><li>Baseline household survey before the first season</li></ul></div><div class="card phase"><h3>Payments</h3><ul><li>Mobile money integration with cooperatives</li><li>Settlement statements by SMS</li></ul></div><div class="card phase"><h3>Learning loop</h3><ul><li>Automated signals to stages 01, 04, 05 after each season</li><li>Annual impact report</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/distribution/domain.py      domain model (deliveries, terms, settlements, payments, outcomes, signals)
+src/distribution/settlement.py  settlement, household payments, timeliness, difference-in-differences, yields by class
+src/demo.py                     deliveries, payments, impact and learning demo (writes assets/demo-distribution.json)
+tests/test_distribution.py      unit tests</code></pre>
+<pre><code>git switch stage/12-market-distribution
+python3 src/demo.py
+python3 tests/test_distribution.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
     <a class="btn" href="/stages/11-logistics-transport/">&larr; 11. Logistics &amp; Transportation</a>
-    <span></span>
+    <a class="btn" href="/stages/01-land-intelligence/">Back to 01: the loop starts again &rarr;</a>
   </nav>
 </main>
 
@@ -93,5 +200,104 @@
     <span>Stage 12 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>

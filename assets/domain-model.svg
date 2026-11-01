@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 12 domain model</text>
+<line x1="250" y1="98" x2="530" y2="103" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="500" y1="100" x2="530" y2="101" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="780" y1="95" x2="750" y2="98" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="530" y1="142" x2="250" y2="235" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="250" y1="268" x2="280" y2="267" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="271" y="263" font-size="11" fill="#555">splits</text>
+<line x1="640" y1="160" x2="640" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="723" y1="160" x2="820" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<rect x="30" y="50" width="220" height="93" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Delivery (entity)</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#3f6b34"/>
+<text x="42" y="96" font-size="12" fill="#222">contract (05), lot (09)</text>
+<text x="42" y="113" font-size="12" fill="#222">weight, moisture, foreign</text>
+<text x="42" y="130" font-size="12" fill="#222">grade at buyer&#x27;s gate</text>
+<rect x="280" y="50" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">GradeTerms (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#2f5d8a"/>
+<text x="292" y="96" font-size="12" fill="#222">premium per grade</text>
+<text x="292" y="113" font-size="12" fill="#222">moisture, foreign limits</text>
+<text x="292" y="130" font-size="12" fill="#222">cooperative service fee</text>
+<rect x="530" y="50" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Settlement service</text>
+<text x="542" y="96" font-size="12" fill="#e7ebe4">settle()</text>
+<text x="542" y="113" font-size="12" fill="#e7ebe4">pay_households()</text>
+<text x="542" y="130" font-size="12" fill="#e7ebe4">payment_timeliness()</text>
+<text x="542" y="147" font-size="12" fill="#e7ebe4">diff_in_diff(), yields_by_class()</text>
+<rect x="780" y="50" width="220" height="76" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="890.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">HouseholdOutcome (input)</text>
+<line x1="780" y1="78" x2="1000" y2="78" stroke="#8a6d3b"/>
+<text x="792" y="96" font-size="12" fill="#222">pilot | comparison</text>
+<text x="792" y="113" font-size="12" fill="#222">baseline, endline income</text>
+<rect x="30" y="225" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="140.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Settlement (value)</text>
+<line x1="30" y1="253" x2="250" y2="253" stroke="#2f5d8a"/>
+<text x="42" y="271" font-size="12" fill="#222">payable kg, price</text>
+<text x="42" y="288" font-size="12" fill="#222">gross, deductions, fee</text>
+<text x="42" y="305" font-size="12" fill="#222">net</text>
+<rect x="280" y="225" width="220" height="76" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="390.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">HouseholdPayment (entity)</text>
+<line x1="280" y1="253" x2="500" y2="253" stroke="#3f6b34"/>
+<text x="292" y="271" font-size="12" fill="#222">household, lot, kg</text>
+<text x="292" y="288" font-size="12" fill="#222">amount, date paid</text>
+<rect x="530" y="225" width="220" height="93" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="640.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">ImpactEstimate (output)</text>
+<line x1="530" y1="253" x2="750" y2="253" stroke="#9a4a28"/>
+<text x="542" y="271" font-size="12" fill="#222">effect on income</text>
+<text x="542" y="288" font-size="12" fill="#222">95% interval</text>
+<text x="542" y="305" font-size="12" fill="#222">to funders, partners</text>
+<rect x="780" y="225" width="220" height="93" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="890.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">LearningSignal (output)</text>
+<line x1="780" y1="253" x2="1000" y2="253" stroke="#9a4a28"/>
+<text x="792" y="271" font-size="12" fill="#222">realised price -&gt; 05</text>
+<text x="792" y="288" font-size="12" fill="#222">yield by class -&gt; 01</text>
+<text x="792" y="305" font-size="12" fill="#222">payment, buyer rating</text>
+</svg>
