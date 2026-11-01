@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 05 domain model</text>
+<line x1="500" y1="100" x2="530" y2="101" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="521" y="97" font-size="11" fill="#555">fits</text>
+<line x1="750" y1="101" x2="780" y2="100" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="219" y1="160" x2="311" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="271" y="188" font-size="11" fill="#555">signs</text>
+<line x1="250" y1="270" x2="280" y2="273" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="500" y1="280" x2="530" y2="280" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="858" y1="143" x2="802" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="836" y="180" font-size="11" fill="#555">price</text>
+<rect x="30" y="50" width="220" height="110" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Buyer (entity)</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#3f6b34"/>
+<text x="42" y="96" font-size="12" fill="#222">buyer_id, type</text>
+<text x="42" y="113" font-size="12" fill="#222">flour mill | processor |</text>
+<text x="42" y="130" font-size="12" fill="#222">wholesaler | exporter |</text>
+<text x="42" y="147" font-size="12" fill="#222">institution | union</text>
+<rect x="280" y="50" width="220" height="93" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">PriceObservation (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#8a6d3b"/>
+<text x="292" y="96" font-size="12" fill="#222">market, product</text>
+<text x="292" y="113" font-size="12" fill="#222">year, month</text>
+<text x="292" y="130" font-size="12" fill="#222">birr per tonne</text>
+<rect x="530" y="50" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Price analytics</text>
+<text x="542" y="96" font-size="12" fill="#e7ebe4">fit_price_model()</text>
+<text x="542" y="113" font-size="12" fill="#e7ebe4">forecast() with horizon</text>
+<text x="542" y="130" font-size="12" fill="#e7ebe4">contract_outcomes()</text>
+<text x="542" y="147" font-size="12" fill="#e7ebe4">demand_signal()</text>
+<rect x="780" y="50" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="890.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">PriceForecast (value)</text>
+<line x1="780" y1="78" x2="1000" y2="78" stroke="#2f5d8a"/>
+<text x="792" y="96" font-size="12" fill="#222">median</text>
+<text x="792" y="113" font-size="12" fill="#222">80% interval</text>
+<text x="792" y="130" font-size="12" fill="#222">(widens with horizon)</text>
+<rect x="30" y="225" width="220" height="76" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="140.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">PriceRule (value)</text>
+<line x1="30" y1="253" x2="250" y2="253" stroke="#2f5d8a"/>
+<text x="42" y="271" font-size="12" fill="#222">fixed | band | spot</text>
+<text x="42" y="288" font-size="12" fill="#222">floor, ceiling</text>
+<rect x="280" y="225" width="220" height="110" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="390.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">OfftakeContract (entity)</text>
+<line x1="280" y1="253" x2="500" y2="253" stroke="#3f6b34"/>
+<text x="292" y="271" font-size="12" fill="#222">buyer, product, volume_t</text>
+<text x="292" y="288" font-size="12" fill="#222">grade, delivery month</text>
+<text x="292" y="305" font-size="12" fill="#222">price rule</text>
+<text x="292" y="322" font-size="12" fill="#222">advance share</text>
+<rect x="530" y="225" width="470" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="765.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">DemandSignal (output to stage 04)</text>
+<line x1="530" y1="253" x2="1000" y2="253" stroke="#9a4a28"/>
+<text x="542" y="271" font-size="12" fill="#222">product</text>
+<text x="542" y="288" font-size="12" fill="#222">min_t = contracted volume</text>
+<text x="542" y="305" font-size="12" fill="#222">max_t = contracted + absorbable spot</text>
+<text x="542" y="322" font-size="12" fill="#222">planning price</text>
+</svg>
