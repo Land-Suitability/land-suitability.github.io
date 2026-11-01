@@ -295,6 +295,11 @@
 
   // ---------------- keyboard access to horizontally scrollable tables
   function scrollableTables() {
+    // identifiers (one long token such as LOT-A-TEFF-2026-W43-001) and short values ("grade 2") never break
+    document.querySelectorAll(".table-wrap td").forEach(function (td) {
+      var t = td.textContent.trim();
+      if ((t.length >= 12 && !/\s/.test(t) && /[-_]/.test(t)) || (t.length > 0 && t.length <= 9)) td.classList.add("ident");
+    });
     document.querySelectorAll(".table-wrap, .spine-wrap").forEach(function (w) {
       if (w.scrollWidth > w.clientWidth + 2 && !w.hasAttribute("tabindex")) {
         w.setAttribute("tabindex", "0");

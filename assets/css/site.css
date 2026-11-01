@@ -531,3 +531,12 @@ kbd.k, kbd { font: 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; border
   border: 1.5px solid var(--d, var(--accent)); }
 @media (min-width: 761px) { #methods .grid:has(> .card:nth-child(4):last-child) { grid-template-columns: repeat(2, 1fr); } }
 .stage-strip { height: 110px; margin: 0 0 18px; }
+
+/* demo sections: identifiers never break mid-ID, side-by-side cards keep their own height */
+#demo .grid { align-items: start; }
+#demo .grid .card th, #demo .grid .card td { padding: 7px 8px; font-size: 13px; }
+td.ident { white-space: nowrap; }
+@media (min-width: 981px) {
+  /* a text card beside a table card: give the table the wider share */
+  #demo .grid.cols-2:has(> .card:first-child > ul):has(> .card:last-child > .table-wrap) { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+}
