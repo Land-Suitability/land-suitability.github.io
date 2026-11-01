@@ -71,7 +71,7 @@
       <span>Branch <code>stage/09-harvest-postharvest</code></span>
     </div>
     <div class="stats"><div class="stat"><b>19 → 0</b><span>late plots: first-come vs deadline-first</span></div><div class="stat"><b>4</b><span>loss steps tracked</span></div><div class="stat"><b>21</b><span>traceable lots in the demo</span></div><div class="stat"><b>+6%</b><span>value from tarpaulin threshing</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -159,6 +159,52 @@
         <li><strong>Segregating lots</strong> by threshing floor more than doubles grade 1 tonnes, but also exposes the rest as grade 3. With &plusmn;8% premiums it is roughly value-neutral.</li>
         <li><strong>Tarpaulins for everyone</strong> lift almost all grain to grade 1, worth about 6% more: the investment worth making.</li></ul></div>
       <div class="card"><h3>Traceable lots (first 8)</h3><div class="table-wrap"><table><thead><tr><th>Lot</th><th class="num">kg</th><th class="num">Plots</th><th class="num">Moist. %</th><th class="num">Foreign %</th><th>Grade</th></tr></thead><tbody><tr><td>LOT-A-TEFF-2026-W43-001</td><td class='num'>9,468</td><td class='num'>8</td><td class='num'>12.4</td><td class='num'>1.86</td><td>grade 2</td></tr><tr><td>LOT-A-TEFF-2026-W43-002</td><td class='num'>7,923</td><td class='num'>9</td><td class='num'>12.5</td><td class='num'>1.85</td><td>grade 2</td></tr><tr><td>LOT-A-TEFF-2026-W43-003</td><td class='num'>9,436</td><td class='num'>9</td><td class='num'>12.5</td><td class='num'>0.57</td><td>grade 1</td></tr><tr><td>LOT-A-TEFF-2026-W43-004</td><td class='num'>9,462</td><td class='num'>8</td><td class='num'>12.5</td><td class='num'>0.64</td><td>grade 1</td></tr><tr><td>LOT-A-TEFF-2026-W43-005</td><td class='num'>6,980</td><td class='num'>8</td><td class='num'>12.5</td><td class='num'>0.66</td><td>grade 1</td></tr><tr><td>LOT-A-TEFF-2026-W44-006</td><td class='num'>9,864</td><td class='num'>10</td><td class='num'>12.5</td><td class='num'>2.15</td><td>grade 3</td></tr><tr><td>LOT-A-TEFF-2026-W44-007</td><td class='num'>9,023</td><td class='num'>10</td><td class='num'>12.5</td><td class='num'>1.75</td><td>grade 2</td></tr><tr><td>LOT-A-TEFF-2026-W44-008</td><td class='num'>9,685</td><td class='num'>8</td><td class='num'>12.5</td><td class='num'>0.57</td><td>grade 2</td></tr></tbody></table></div></div>
+    </div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: drying and late harvest</h2>
+    <p class="section-intro">Drying keeps the dry matter and removes water: weight after = weight &times; (100 &minus; moisture before) &divide; (100 &minus; moisture after). Field loss grows by about 1.2% for every day past the ripeness window. Same formulas as <code>dry_weight()</code> and <code>field_loss_share()</code> in <code>src/harvest/operations.py</code>.</p>
+    <div class="calc" id="calc-s09">
+      <div>
+      <div class="field"><label for="kg">Grain weight at threshing (kg)</label><output id="kg-o"></output><input type="range" id="kg" min="100" max="20000" step="100" value="5000" data-unit="kg"></div>
+      <div class="field"><label for="m0">Moisture at threshing</label><output id="m0-o"></output><input type="range" id="m0" min="10" max="30" step="0.5" value="18" data-unit="%"></div>
+      <div class="field"><label for="m1">Target moisture (grade limit)</label><output id="m1-o"></output><input type="range" id="m1" min="9" max="15" step="0.5" value="12.5" data-unit="%"><small>Grade 1 in the demo: 12.5% or less.</small></div>
+      <div class="field"><label for="late">Days harvested after the ripeness window</label><output id="late-o"></output><input type="range" id="late" min="0" max="20" step="1" value="0" data-unit="days"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s09-big"></div>
+        <div id="s09-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s09-v"></div>
+        <p class="note">Loss rates are indicative (teff shatters easily); measure them in the pilot.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s09");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function update() {
+        var w = num("kg"), m0 = num("m0"), m1 = Math.min(num("m1"), m0), late = num("late");
+        var dried = w * (100 - m0) / (100 - m1), water = w - dried;
+        var loss = Math.min(0.35, 0.03 + 0.012 * late), lostKg = w / (1 - loss) * loss;
+        $("s09-big").innerHTML = fmt(dried) + " kg after drying<small>" + fmt(water) + " kg of water removed (" + fmt(water / w * 100, 1) + "% of the weight)</small>";
+        $("s09-detail").innerHTML = "Harvesting " + late + " day" + (late === 1 ? "" : "s") + " late: about <b>" + fmt(loss * 100, 1) + "%</b> field loss, roughly <b>" + fmt(lostKg) + " kg</b> left in the field for this lot.";
+        var v = $("s09-v"); v.className = "verdict " + (late === 0 ? "good" : late <= 5 ? "warn" : "bad");
+        v.textContent = late === 0 ? "Harvested in the window: only the base 3% handling loss." : late <= 5 ? "Some avoidable loss: schedule this plot earlier (deadline-first)." : "Large avoidable loss: book threshing before the window closes.";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s09]", e); }
+    })();
+    </script>
     </div>
   </section>
 
