@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" role="img" aria-labelledby="t d">
+  <title id="t">Twelve calculators</title>
+  <desc id="d">A tablet with sliders for land, water, climate and market inputs feeds a result card with a gauge, set in highland fields.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcebf1"/><stop offset="1" stop-color="#f4efe2"/></linearGradient>
+    <linearGradient id="h1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9c48f"/><stop offset="1" stop-color="#7fa36a"/></linearGradient>
+    <linearGradient id="h2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9b27a"/><stop offset="1" stop-color="#a88d55"/></linearGradient>
+    <filter id="sh" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1f2a20" flood-opacity=".18"/></filter>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#3f6b34"/></marker>
+  </defs>
+  <rect width="1200" height="380" fill="url(#sky)"/>
+  <circle cx="1040" cy="78" r="38" fill="#f2c14e" opacity=".85"/>
+  <!-- distant ridges -->
+  <path d="M0 250 C120 200 220 215 320 190 S520 170 640 200 S860 160 980 190 S1140 210 1200 195 V380 H0Z" fill="#b9cfa4" opacity=".7"/>
+  <path d="M0 290 C160 250 300 270 420 250 S700 240 820 265 S1060 240 1200 255 V380 H0Z" fill="url(#h1)"/>
+  <path d="M0 330 C200 300 380 320 560 305 S900 300 1200 315 V380 H0Z" fill="url(#h2)"/>
+  <!-- field stripes -->
+  <g stroke="#8a7140" stroke-width="2" opacity=".35" fill="none">
+    <path d="M40 352 C240 330 420 342 600 332"/><path d="M620 340 C800 330 980 334 1180 342"/><path d="M80 368 C300 352 520 360 760 352"/>
+  </g>
+  <!-- tablet with sliders -->
+  <g filter="url(#sh)">
+    <rect x="120" y="48" width="380" height="270" rx="22" fill="#26332a"/>
+    <rect x="136" y="64" width="348" height="238" rx="12" fill="#fbfaf6"/>
+  </g>
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="15" font-weight="700" fill="#1f2a20">
+    <text x="158" y="96">Your inputs</text>
+    <g>
+      <text x="158" y="128" font-size="13" font-weight="600" fill="#5d665e">Altitude · soil pH</text>
+      <rect x="158" y="138" width="300" height="6" rx="3" fill="#e4dfd2"/><rect x="158" y="138" width="190" height="6" rx="3" fill="#74582a"/><circle cx="348" cy="141" r="10" fill="#74582a" stroke="#fff" stroke-width="3"/>
+    </g>
+    <g>
+      <text x="158" y="174" font-size="13" font-weight="600" fill="#5d665e">Planting date · NDVI</text>
+      <rect x="158" y="184" width="300" height="6" rx="3" fill="#e4dfd2"/><rect x="158" y="184" width="120" height="6" rx="3" fill="#3f6b34"/><circle cx="278" cy="187" r="10" fill="#3f6b34" stroke="#fff" stroke-width="3"/>
+    </g>
+    <g>
+      <text x="158" y="220" font-size="13" font-weight="600" fill="#5d665e">Months stored · km to market</text>
+      <rect x="158" y="230" width="300" height="6" rx="3" fill="#e4dfd2"/><rect x="158" y="230" width="236" height="6" rx="3" fill="#2f5d8a"/><circle cx="394" cy="233" r="10" fill="#2f5d8a" stroke="#fff" stroke-width="3"/>
+    </g>
+    <g>
+      <text x="158" y="266" font-size="13" font-weight="600" fill="#5d665e">Contract price · moisture</text>
+      <rect x="158" y="276" width="300" height="6" rx="3" fill="#e4dfd2"/><rect x="158" y="276" width="160" height="6" rx="3" fill="#9a4a28"/><circle cx="318" cy="279" r="10" fill="#9a4a28" stroke="#fff" stroke-width="3"/>
+    </g>
+  </g>
+  <!-- flow arrow -->
+  <path d="M520 183 C580 150 620 150 676 176" fill="none" stroke="#3f6b34" stroke-width="4" stroke-dasharray="2 9" stroke-linecap="round" marker-end="url(#ah)"/>
+  <text x="598" y="140" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="13" font-weight="700" fill="#3f6b34">same formulas as the code</text>
+  <!-- result card with gauge -->
+  <g filter="url(#sh)"><rect x="690" y="70" width="330" height="230" rx="18" fill="#fff"/></g>
+  <rect x="690" y="70" width="330" height="8" rx="4" fill="#3f6b34"/>
+  <g transform="translate(855 210)">
+    <path d="M-110 0 A110 110 0 0 1 -77.8 -77.8" fill="none" stroke="#b3161a" stroke-width="18"/>
+    <path d="M-77.8 -77.8 A110 110 0 0 1 0 -110" fill="none" stroke="#c26a00" stroke-width="18"/>
+    <path d="M0 -110 A110 110 0 0 1 77.8 -77.8" fill="none" stroke="#7fa36a" stroke-width="18"/>
+    <path d="M77.8 -77.8 A110 110 0 0 1 110 0" fill="none" stroke="#2f7d4a" stroke-width="18"/>
+    <line x1="0" y1="0" x2="62" y2="-72" stroke="#1f2a20" stroke-width="6" stroke-linecap="round"/>
+    <circle r="11" fill="#1f2a20"/>
+    <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="13" font-weight="800" fill="#5d665e" text-anchor="middle">
+      <text x="-112" y="22">N</text><text x="-60" y="-70" fill="#fff" font-size="11">S3</text><text x="0" y="-88" font-size="11">S2</text><text x="112" y="22">S1</text>
+    </g>
+  </g>
+  <text x="855" y="262" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="20" font-weight="800" fill="#1f2a20">Answer + verdict</text>
+  <text x="855" y="284" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif" font-size="13" font-weight="600" fill="#5d665e">updates as you move a slider</text>
+  <!-- small farmer figure and crops -->
+  <g transform="translate(1090 300)">
+    <path d="M-6 -60 h12 l6 60 h-24z" fill="#9a4a28"/>
+    <circle cy="-72" r="11" fill="#6b4a32"/>
+    <path d="M-16 -82 h32 l-4 -8 h-24z" fill="#f2c14e"/>
+    <rect x="10" y="-58" width="4" height="54" fill="#5d4a2a" transform="rotate(14 12 -31)"/>
+  </g>
+  <g stroke="#3f6b34" stroke-width="3" stroke-linecap="round" fill="none">
+    <path d="M60 330 v-26 M60 314 l-8 -8 M60 318 l8 -9"/><path d="M84 334 v-30 M84 316 l-8 -8 M84 320 l9 -9"/>
+    <path d="M1150 340 v-26 M1150 324 l-8 -8 M1150 328 l8 -9"/><path d="M1172 344 v-22 M1172 332 l-7 -7"/>
+  </g>
+</svg>
