@@ -615,3 +615,19 @@ a.gl-term::after { content: attr(data-def); position: absolute; left: 0; top: ca
   transition: opacity .12s ease, transform .12s ease; }
 a.gl-term:hover::after, a.gl-term:focus-visible::after { opacity: 1; transform: none; }
 @media (hover: none) { a.gl-term::after { display: none; } }
+
+/* printing: drop interactive-only parts, keep diagrams and tables whole, always print in light colours */
+@media print {
+  .copy-btn, .xlink, .pager, .toc, .lightbox, .map-tip, .layers, .pan-hint, .tool-filter, .gl-tools, .wheel-hint, .swipe-hint,
+  .pano-btn, .kbd-help, .cta-band .btn-row, footer .cols { display: none !important; }
+  #try { display: none !important; }                       /* calculators need a screen */
+  :root, :root[data-theme="dark"], :root:not([data-theme="light"]) { color-scheme: light;
+    --bg: #fbfaf6; --surface: #ffffff; --surface-2: #f3f1ea; --text: #1f2a20; --muted: #5d665e; --border: #ddd8cb;
+    --accent: #3f6b34; --accent-contrast: #ffffff; --link: #2f5d8a;
+    --plan: #74582a; --plan-bg: #f1e8d6; --produce: #3f6b34; --produce-bg: #e3efdd; --move: #2f5d8a; --move-bg: #dde8f3; --sell: #9a4a28; --sell-bg: #f5e1d7; }
+  figure, .diagram, table, .finding, .tool-card, .gantt, .map-card, pre { break-inside: avoid; }
+  h2, h3 { break-after: avoid; }
+  a.gl-term { text-decoration: none; } a.gl-term::after { display: none; }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  img { filter: none !important; }
+}
