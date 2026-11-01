@@ -34,6 +34,8 @@
     .key i { display: inline-block; width: 26px; height: 0; border-top: 3px solid var(--muted); margin-right: 6px; vertical-align: 4px; }
     .key i.fb { border-top-style: dashed; }
     code.rec { font-size: 13px; }
+    .spine-hint { display: none; color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+    @media (max-width: 900px) { .spine-hint { display: block; } }
   </style>
 </head>
 <body>
@@ -62,6 +64,7 @@
 
   <section style="padding-top:8px">
     <div class="key"><span><i></i>forward hand-off (this season)</span><span><i class="fb"></i>feedback (learning loop, next season)</span><span>Hover, tab to or tap a stage to highlight its hand-offs.</span></div>
+    <p class="spine-hint">Scroll the diagram sideways to see all twelve stages &rarr;</p>
     <div class="spine-wrap"><div id="spine" role="group" aria-label="Arc diagram of hand-offs between the twelve stages; the same hand-offs are listed in the table below"></div></div>
     <div class="card spine-info" id="spine-info" aria-live="polite">
       <h3>Select a stage</h3>
