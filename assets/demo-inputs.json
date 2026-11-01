@@ -1,0 +1,492 @@
+{
+ "days": [
+  5,
+  10,
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+  55,
+  60,
+  65,
+  70,
+  75,
+  80,
+  85,
+  90
+ ],
+ "curves": {
+  "UNION-1": [
+   0.0,
+   0.7,
+   6.2,
+   18.4,
+   34.3,
+   50.0,
+   63.4,
+   73.9,
+   81.6,
+   87.2,
+   91.1,
+   93.8,
+   95.7,
+   97.0,
+   97.9,
+   98.5,
+   99.0,
+   99.3
+  ],
+  "SEED-ENT": [
+   0.0,
+   0.0,
+   0.3,
+   2.4,
+   9.0,
+   20.6,
+   35.1,
+   50.0,
+   63.2,
+   73.8,
+   81.9,
+   87.7,
+   91.7,
+   94.5,
+   96.4,
+   97.6,
+   98.4,
+   99.0
+  ],
+  "DEALER-7": [
+   0.0,
+   23.3,
+   81.4,
+   97.9,
+   99.8,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0,
+   100.0
+  ]
+ },
+ "order_months": [
+  "2026-02",
+  "2026-03",
+  "2026-04",
+  "2026-05",
+  "2026-06"
+ ],
+ "order_t": [
+  108.0,
+  6.0,
+  153.7,
+  180.8,
+  39.8
+ ],
+ "totals_kg": {
+  "seed_teff": 7482,
+  "nps": 153825,
+  "urea": 167825,
+  "seed_maize": 7000,
+  "seed_wheat": 50265,
+  "seed_onion": 234,
+  "lime": 270000
+ },
+ "warnings": [
+  "lime for A: order date passed; P(on time) now 84%",
+  "Shortfall 1,000 kg of seed_maize for C",
+  "Shortfall 70,000 kg of lime for A",
+  "Shortfall 265 kg of seed_wheat for B",
+  "Shortfall 3,852 kg of urea for B",
+  "Shortfall 3,292 kg of urea for A",
+  "Shortfall 9,000 kg of urea for B",
+  "Shortfall 3,825 kg of nps for A",
+  "Shortfall 5,840 kg of urea for A",
+  "Shortfall 5,840 kg of urea for A"
+ ],
+ "orders": [
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "lime",
+   "quantity": 108000,
+   "need_by": "2026-04-17",
+   "order_by": "2026-02-22",
+   "p_on_time": 0.904,
+   "cost_birr": 324000
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "A",
+   "item_code": "seed_maize",
+   "quantity": 3000,
+   "need_by": "2026-05-22",
+   "order_by": "2026-03-20",
+   "p_on_time": 0.903,
+   "cost_birr": 480000
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "C",
+   "item_code": "seed_maize",
+   "quantity": 3000,
+   "need_by": "2026-05-22",
+   "order_by": "2026-03-20",
+   "p_on_time": 0.903,
+   "cost_birr": 480000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "C",
+   "item_code": "nps",
+   "quantity": 12000,
+   "need_by": "2026-05-25",
+   "order_by": "2026-04-01",
+   "p_on_time": 0.904,
+   "cost_birr": 900000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "lime",
+   "quantity": 92000,
+   "need_by": "2026-05-26",
+   "order_by": "2026-04-02",
+   "p_on_time": 0.904,
+   "cost_birr": 276000
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "B",
+   "item_code": "seed_wheat",
+   "quantity": 5680,
+   "need_by": "2026-06-10",
+   "order_by": "2026-04-08",
+   "p_on_time": 0.903,
+   "cost_birr": 340800
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "nps",
+   "quantity": 25680,
+   "need_by": "2026-06-13",
+   "order_by": "2026-04-20",
+   "p_on_time": 0.904,
+   "cost_birr": 1926000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 10840,
+   "need_by": "2026-06-20",
+   "order_by": "2026-04-27",
+   "p_on_time": 0.904,
+   "cost_birr": 758800
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "A",
+   "item_code": "seed_teff",
+   "quantity": 2700,
+   "need_by": "2026-06-30",
+   "order_by": "2026-04-28",
+   "p_on_time": 0.903,
+   "cost_birr": 243000
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "B",
+   "item_code": "seed_teff",
+   "quantity": 1182,
+   "need_by": "2026-06-30",
+   "order_by": "2026-04-28",
+   "p_on_time": 0.903,
+   "cost_birr": 106380
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "C",
+   "item_code": "seed_teff",
+   "quantity": 3600,
+   "need_by": "2026-06-30",
+   "order_by": "2026-04-28",
+   "p_on_time": 0.903,
+   "cost_birr": 324000
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "A",
+   "item_code": "nps",
+   "quantity": 18000,
+   "need_by": "2026-05-25",
+   "order_by": "2026-05-08",
+   "p_on_time": 0.918,
+   "cost_birr": 1530000
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "C",
+   "item_code": "nps",
+   "quantity": 12000,
+   "need_by": "2026-05-25",
+   "order_by": "2026-05-08",
+   "p_on_time": 0.918,
+   "cost_birr": 1020000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "nps",
+   "quantity": 18000,
+   "need_by": "2026-07-03",
+   "order_by": "2026-05-10",
+   "p_on_time": 0.904,
+   "cost_birr": 1350000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "nps",
+   "quantity": 7880,
+   "need_by": "2026-07-03",
+   "order_by": "2026-05-10",
+   "p_on_time": 0.904,
+   "cost_birr": 591000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "C",
+   "item_code": "nps",
+   "quantity": 24000,
+   "need_by": "2026-07-03",
+   "order_by": "2026-05-10",
+   "p_on_time": 0.904,
+   "cost_birr": 1800000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "urea",
+   "quantity": 12000,
+   "need_by": "2026-07-06",
+   "order_by": "2026-05-13",
+   "p_on_time": 0.904,
+   "cost_birr": 840000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "C",
+   "item_code": "urea",
+   "quantity": 16000,
+   "need_by": "2026-07-06",
+   "order_by": "2026-05-13",
+   "p_on_time": 0.904,
+   "cost_birr": 1120000
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "A",
+   "item_code": "urea",
+   "quantity": 12000,
+   "need_by": "2026-06-01",
+   "order_by": "2026-05-15",
+   "p_on_time": 0.918,
+   "cost_birr": 960000
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "C",
+   "item_code": "urea",
+   "quantity": 16000,
+   "need_by": "2026-06-01",
+   "order_by": "2026-05-15",
+   "p_on_time": 0.918,
+   "cost_birr": 1280000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "urea",
+   "quantity": 9000,
+   "need_by": "2026-07-10",
+   "order_by": "2026-05-17",
+   "p_on_time": 0.904,
+   "cost_birr": 630000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 3940,
+   "need_by": "2026-07-10",
+   "order_by": "2026-05-17",
+   "p_on_time": 0.904,
+   "cost_birr": 275800
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "C",
+   "item_code": "urea",
+   "quantity": 12000,
+   "need_by": "2026-07-10",
+   "order_by": "2026-05-17",
+   "p_on_time": 0.904,
+   "cost_birr": 840000
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "B",
+   "item_code": "seed_wheat",
+   "quantity": 20000,
+   "need_by": "2026-06-10",
+   "order_by": "2026-05-24",
+   "p_on_time": 0.918,
+   "cost_birr": 1400000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 12840,
+   "need_by": "2026-07-25",
+   "order_by": "2026-06-01",
+   "p_on_time": 0.904,
+   "cost_birr": 898800
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 2000,
+   "need_by": "2026-06-20",
+   "order_by": "2026-06-03",
+   "p_on_time": 0.918,
+   "cost_birr": 160000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "urea",
+   "quantity": 9000,
+   "need_by": "2026-08-14",
+   "order_by": "2026-06-21",
+   "p_on_time": 0.904,
+   "cost_birr": 630000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 3940,
+   "need_by": "2026-08-14",
+   "order_by": "2026-06-21",
+   "p_on_time": 0.904,
+   "cost_birr": 275800
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "C",
+   "item_code": "urea",
+   "quantity": 12000,
+   "need_by": "2026-08-14",
+   "order_by": "2026-06-21",
+   "p_on_time": 0.904,
+   "cost_birr": 840000
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "A",
+   "item_code": "seed_wheat",
+   "quantity": 6585,
+   "need_by": "2026-11-05",
+   "order_by": "2026-09-03",
+   "p_on_time": 0.903,
+   "cost_birr": 395100
+  },
+  {
+   "supplier_id": "SEED-ENT",
+   "cluster_id": "B",
+   "item_code": "seed_wheat",
+   "quantity": 17735,
+   "need_by": "2026-11-05",
+   "order_by": "2026-09-03",
+   "p_on_time": 0.903,
+   "cost_birr": 1064100
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "nps",
+   "quantity": 6585,
+   "need_by": "2026-11-08",
+   "order_by": "2026-09-15",
+   "p_on_time": 0.904,
+   "cost_birr": 493875
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "nps",
+   "quantity": 18000,
+   "need_by": "2026-11-08",
+   "order_by": "2026-09-15",
+   "p_on_time": 0.904,
+   "cost_birr": 1350000
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "urea",
+   "quantity": 3292,
+   "need_by": "2026-11-15",
+   "order_by": "2026-09-22",
+   "p_on_time": 0.904,
+   "cost_birr": 230475
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "B",
+   "item_code": "urea",
+   "quantity": 5148,
+   "need_by": "2026-11-15",
+   "order_by": "2026-09-22",
+   "p_on_time": 0.904,
+   "cost_birr": 360325
+  },
+  {
+   "supplier_id": "UNION-1",
+   "cluster_id": "A",
+   "item_code": "nps",
+   "quantity": 7855,
+   "need_by": "2026-12-25",
+   "order_by": "2026-11-01",
+   "p_on_time": 0.904,
+   "cost_birr": 589125
+  },
+  {
+   "supplier_id": "DEALER-7",
+   "cluster_id": "A",
+   "item_code": "seed_onion",
+   "quantity": 234,
+   "need_by": "2026-12-22",
+   "order_by": "2026-12-05",
+   "p_on_time": 0.918,
+   "cost_birr": 934400
+  }
+ ],
+ "cost_total": 28017780
+}

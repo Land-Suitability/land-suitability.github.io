@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 06 domain model</text>
+<line x1="140" y1="143" x2="140" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="146" y="180" font-size="11" fill="#555">explodes</text>
+<line x1="303" y1="160" x2="200" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="530" y1="95" x2="500" y2="98" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="250" y1="270" x2="280" y2="273" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="780" y1="144" x2="500" y2="242" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="500" y1="280" x2="530" y2="280" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="521" y="276" font-size="11" fill="#555">produces</text>
+<rect x="30" y="50" width="220" height="93" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Production plan (from 04)</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#8a6d3b"/>
+<text x="42" y="96" font-size="12" fill="#222">allocations: cluster,</text>
+<text x="42" y="113" font-size="12" fill="#222">option, hectares</text>
+<text x="42" y="130" font-size="12" fill="#222">planting dates (03)</text>
+<rect x="280" y="50" width="220" height="110" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">InputNorm (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#2f5d8a"/>
+<text x="292" y="96" font-size="12" fill="#222">option, item</text>
+<text x="292" y="113" font-size="12" fill="#222">rate per ha</text>
+<text x="292" y="130" font-size="12" fill="#222">days from planting</text>
+<text x="292" y="147" font-size="12" fill="#222">share of area (lime: 01)</text>
+<rect x="530" y="50" width="220" height="76" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">InputItem (value)</text>
+<line x1="530" y1="78" x2="750" y2="78" stroke="#2f5d8a"/>
+<text x="542" y="96" font-size="12" fill="#222">seed, NPS, urea, lime,</text>
+<text x="542" y="113" font-size="12" fill="#222">crop protection, kits</text>
+<rect x="780" y="50" width="220" height="110" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="890.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Supplier (entity)</text>
+<line x1="780" y1="78" x2="1000" y2="78" stroke="#3f6b34"/>
+<text x="792" y="96" font-size="12" fill="#222">union | seed enterprise |</text>
+<text x="792" y="113" font-size="12" fill="#222">agro-dealer</text>
+<text x="792" y="130" font-size="12" fill="#222">capacity, price per item</text>
+<text x="792" y="147" font-size="12" fill="#222">lead time: median, spread</text>
+<rect x="30" y="225" width="220" height="76" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="140.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">InputRequirement (value)</text>
+<line x1="30" y1="253" x2="250" y2="253" stroke="#2f5d8a"/>
+<text x="42" y="271" font-size="12" fill="#222">cluster, item, quantity</text>
+<text x="42" y="288" font-size="12" fill="#222">need-by date</text>
+<rect x="280" y="225" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="390.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Scheduling service</text>
+<text x="292" y="271" font-size="12" fill="#e7ebe4">explode_plan()</text>
+<text x="292" y="288" font-size="12" fill="#e7ebe4">allocate()</text>
+<text x="292" y="305" font-size="12" fill="#e7ebe4">order_by_date()</text>
+<text x="292" y="322" font-size="12" fill="#e7ebe4">p_on_time()</text>
+<rect x="530" y="225" width="470" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="765.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">PurchaseOrder (output)</text>
+<line x1="530" y1="253" x2="1000" y2="253" stroke="#9a4a28"/>
+<text x="542" y="271" font-size="12" fill="#222">supplier, cluster, item, quantity</text>
+<text x="542" y="288" font-size="12" fill="#222">order-by and need-by dates</text>
+<text x="542" y="305" font-size="12" fill="#222">P(on time), cost</text>
+<text x="542" y="322" font-size="12" fill="#222">+ warnings: shortfalls, late orders</text>
+</svg>

@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Input &amp; Resource Coordination | AIAE</title>
-  <meta name="description" content="Make sure seed, fertilizer, equipment and finance arrive before they are needed.">
+  <meta name="description" content="Stage 06: turning the production plan into dated seed, fertilizer and lime orders that arrive before planting.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-produce">
 <!--
-  Stage 06 page. This file lives on branch `stage/06-input-coordination` and is published at /stages/06-input-coordination/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 06 page. Lives on branch `stage/06-input-coordination`, published at /stages/06-input-coordination/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +56,141 @@
   <section class="stage-hero">
     <span class="pill">Produce</span>
     <h1>06. Input &amp; Resource Coordination</h1>
-    <p class="lead">Make sure seed, fertilizer, equipment and finance arrive before they are needed.</p>
+    <p class="lead">Late seed or fertilizer can cost a whole season. Stage 06 turns the production plan into dated requirements, splits them across suppliers and works backwards from planting day to the date each order must be placed.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/06-input-coordination</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>90%</b><span>on-time target per order</span></div><div class="stat"><b>3</b><span>supplier types: union, seed enterprise, dealer</span></div><div class="stat"><b>7</b><span>input items in the demo</span></div><div class="stat"><b>days</b><span>order-by date for every purchase</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Crop Selection &amp; Production Planning</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/04-crop-planning/">04. Production plan</a><a class="chip" href="/stages/03-climate-intelligence/">03. Planting windows</a><a class="chip" href="/stages/01-land-intelligence/">01. Acid-soil share (lime)</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Input &amp; Resource Coordination</p></div>
+      <div class="card"><h3>This stage</h3><p>Input requirements, supplier allocation and backward scheduling with uncertain lead times.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/07-farm-production/">07. Farm Implementation &amp; Production</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/07-farm-production/">07. Inputs at the cooperative store</a><a class="chip" href="/stages/11-logistics-transport/">11. Inbound transport</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>What inputs does the plan require, by cluster and by date?</li><li>Which suppliers can deliver on time, and with what lead time?</li><li>Which farmers need credit or insurance to take part?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Certified seed and appropriate varieties</li><li>Fertilizers and soil amendments</li><li>Mechanisation and irrigation equipment</li><li>Agricultural finance and insurance</li><li>Supplier and distribution network</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>Production plan (stage 4)</li><li>Supplier catalogues</li><li>Cooperative union records</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Input requirement schedule</li><li>Planned and actual delivery log</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Share of inputs delivered before planting date</li><li>Average delivery delay (days)</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of cooking a holiday meal backwards from the time the guests arrive. The roast needs three hours, so it goes in at three; the butcher needs two days' notice, so you call him on Thursday. Here, planting day is the guests arriving. Every input is ordered early enough that it arrives on time in 9 cases out of 10, and the system says so in advance when that is no longer possible.</p>
+    <div class="grid cols-3"><div class="card"><h3>Timing is yield</h3><p>Fertilizer that arrives after planting, or seed that misses the onset of the rains, cuts yields more than most agronomic mistakes.</p></div><div class="card"><h3>Uncertainty made visible</h3><p>Suppliers differ not only in average lead time but in how unpredictable they are. The schedule accounts for both.</p></div><div class="card"><h3>Shortfalls before the season</h3><p>Capacity gaps are flagged months ahead, when another supplier can still be found.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>What inputs does the plan require, per cluster, item and date?</li><li>Which suppliers can deliver them, and in what split?</li><li>By when must each order be placed to arrive on time with 90% confidence?</li><li>Where are shortfalls or orders already too late, and what are the options?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">The plan is exploded through <strong>InputNorms</strong> into dated <strong>InputRequirements</strong>; the scheduling service turns them into <strong>PurchaseOrders</strong> with order-by dates and on-time probabilities.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: production plan and input norms produce requirements; the scheduling service allocates them to suppliers as purchase orders."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>InputNorm</td><td>Value object</td><td>Rate per hectare of an item for a crop option, when it is applied, and the share of area it applies to.</td></tr><tr><td>InputRequirement</td><td>Value object</td><td>Item, quantity, cluster and need-by date.</td></tr><tr><td>Supplier</td><td>Entity</td><td>Union, seed enterprise or dealer with capacity, prices and a lead-time distribution.</td></tr><tr><td>PurchaseOrder</td><td>Value object (output)</td><td>Supplier, quantity, order-by and need-by dates, probability of on-time arrival, cost.</td></tr><tr><td>Warning</td><td>Output</td><td>Shortfall or late order, raised before the season.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>From plan to requirements</h3><p>Each allocation (cluster, crop option, hectares) is multiplied by input norms: seed and basal NPS before planting, urea split between planting and top dressing about 35 days later, lime 45 days before planting on the acidic share of land flagged by stage 01.</p></div>
+      <div class="card"><h3>Uncertain lead times</h3><p>Each supplier's lead time is lognormal: a median and a spread. The probability of arriving on time when ordered <em>t</em> days ahead is the lead-time distribution evaluated at <em>t</em>. The order-by date is the need-by date minus the 90th percentile lead time.</p></div>
+      <div class="card"><h3>Allocation</h3><p>Requirements are processed in date order. For each, suppliers are tried from most reliable (shortest 90th percentile lead time) to cheapest, within remaining capacity; large orders are split.</p></div>
+      <div class="card"><h3>Early warnings</h3><p>Unmet quantities become shortfall warnings; orders whose date has passed show the reduced on-time probability, so coordinators can expedite, switch supplier or adjust the plan.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Cooperative unions</h3><p>Fertilizer mostly flows through cooperative unions and primary cooperatives, so the union is usually the main supplier and its lead time sets the calendar.</p></div><div class="card"><h3>Seed availability</h3><p>Certified seed of preferred varieties can be scarce; seed enterprises and community seed producers need early, firm orders.</p></div><div class="card"><h3>Blended fertilizers</h3><p>NPS and other blends are recommended based on soil fertility maps; rates here are placeholders for regional recommendations.</p></div><div class="card"><h3>Acid soils need lime early</h3><p>Lime must be applied weeks before planting and is bulky to transport, so it is the earliest order in wetter western areas.</p></div><div class="card"><h3>Credit</h3><p>Input credit through unions and microfinance shapes when farmers can commit; advance payments from buyers (stage 05) can fund inputs.</p></div><div class="card"><h3>Road access</h3><p>Rainy-season roads can close; inputs for remote kebeles are moved to the cooperative store before the rains (stage 11).</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Production plan</td><td>Stage 04 SeasonalProductionPlan</td><td>cluster</td><td>Requirements</td><td>Project</td></tr><tr><td>Input recommendations</td><td>Regional agricultural research and extension guidelines</td><td>crop, zone</td><td>Input norms</td><td>Public</td></tr><tr><td>Soil acidity</td><td>Stage 01 limiting factors (soil pH)</td><td>plot</td><td>Lime share</td><td>Project</td></tr><tr><td>Supplier performance</td><td>Order and delivery records (stage 11)</td><td>per order</td><td>Lead-time distributions</td><td>Project</td></tr><tr><td>Prices</td><td>Union and dealer price lists</td><td>item</td><td>Costing</td><td>By agreement</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: input orders for the stage 04 plan</h2>
+    <p class="section-intro">The stage 04 demo plan exploded with indicative rates, three made-up suppliers and a 90% on-time target, assessed on 1 March 2026. <strong>Rates, prices and suppliers are illustrative.</strong></p>
+    <div class="viz-root" data-chart id="ontime-chart">
+      <h3 class="viz-title">Chance of on-time delivery by how early you order</h3>
+      <p class="viz-sub">Lognormal lead times. To be 90% sure, order about 17 days ahead from the dealer, 53 from the union and 63 from the seed enterprise.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw line" style="background:var(--series-1)"></i>Cooperative union (median 30 d)</span><span><i class="sw line" style="background:var(--series-2)"></i>Seed enterprise (median 40 d)</span><span><i class="sw line" style="background:var(--series-3)"></i>Agro-dealer (median 12 d)</span><span><i class="sw line" style="background:var(--text-primary)"></i>90% target</span></div>
+      <div class="chart-host" role="img" aria-label="Three rising curves; the dealer reaches 90% at about 17 days, the union at about 53, the seed enterprise at about 63."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "line", "categories": ["5 d", "10 d", "15 d", "20 d", "25 d", "30 d", "35 d", "40 d", "45 d", "50 d", "55 d", "60 d", "65 d", "70 d", "75 d", "80 d", "85 d", "90 d"], "xlabel": "Ordered this many days before need", "series": [{"name": "Cooperative union (median 30 d)", "values": [0.0, 0.7, 6.2, 18.4, 34.3, 50.0, 63.4, 73.9, 81.6, 87.2, 91.1, 93.8, 95.7, 97.0, 97.9, 98.5, 99.0, 99.3]}, {"name": "Seed enterprise (median 40 d)", "values": [0.0, 0.0, 0.3, 2.4, 9.0, 20.6, 35.1, 50.0, 63.2, 73.8, 81.9, 87.7, 91.7, 94.5, 96.4, 97.6, 98.4, 99.0]}, {"name": "Agro-dealer (median 12 d)", "values": [0.0, 23.3, 81.4, 97.9, 99.8, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]}], "ref": {"name": "90% target", "values": [90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90, 90], "flat": true, "dash": true}, "unit": "% on time", "dp": 1, "yMin": 0, "yMax": 100}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Ordered this many days before need</th><th class="num">Cooperative union (median 30 d)</th><th class="num">Seed enterprise (median 40 d)</th><th class="num">Agro-dealer (median 12 d)</th><th class="num">90% target</th></tr></thead>
+          <tbody><tr><td>5 d</td><td class="num">0.0</td><td class="num">0.0</td><td class="num">0.0</td><td class="num">90.0</td></tr><tr><td>10 d</td><td class="num">0.7</td><td class="num">0.0</td><td class="num">23.3</td><td class="num">90.0</td></tr><tr><td>15 d</td><td class="num">6.2</td><td class="num">0.3</td><td class="num">81.4</td><td class="num">90.0</td></tr><tr><td>20 d</td><td class="num">18.4</td><td class="num">2.4</td><td class="num">97.9</td><td class="num">90.0</td></tr><tr><td>25 d</td><td class="num">34.3</td><td class="num">9.0</td><td class="num">99.8</td><td class="num">90.0</td></tr><tr><td>30 d</td><td class="num">50.0</td><td class="num">20.6</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>35 d</td><td class="num">63.4</td><td class="num">35.1</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>40 d</td><td class="num">73.9</td><td class="num">50.0</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>45 d</td><td class="num">81.6</td><td class="num">63.2</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>50 d</td><td class="num">87.2</td><td class="num">73.8</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>55 d</td><td class="num">91.1</td><td class="num">81.9</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>60 d</td><td class="num">93.8</td><td class="num">87.7</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>65 d</td><td class="num">95.7</td><td class="num">91.7</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>70 d</td><td class="num">97.0</td><td class="num">94.5</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>75 d</td><td class="num">97.9</td><td class="num">96.4</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>80 d</td><td class="num">98.5</td><td class="num">97.6</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>85 d</td><td class="num">99.0</td><td class="num">98.4</td><td class="num">100.0</td><td class="num">90.0</td></tr><tr><td>90 d</td><td class="num">99.3</td><td class="num">99.0</td><td class="num">100.0</td><td class="num">90.0</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (% on time).</p>
+      </details>
+    </div>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div><div class="viz-root" data-chart id="orders-chart">
+      <h3 class="viz-title">When Meher orders must be placed</h3>
+      <p class="viz-sub">Tonnes of seed, fertilizer and lime by order-by month, for planting from June to July.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Tonnes to order (Meher inputs)</span></div>
+      <div class="chart-host" role="img" aria-label="Bars by month from February to June showing tonnes to order."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["Feb 26", "Mar 26", "Apr 26", "May 26", "Jun 26"], "xlabel": "Order month", "series": [{"name": "Tonnes to order (Meher inputs)", "values": [108.0, 6.0, 153.7, 180.8, 39.8]}], "unit": "t", "dp": 1}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Order month</th><th class="num">Tonnes to order (Meher inputs)</th></tr></thead>
+          <tbody><tr><td>Feb 26</td><td class="num">108.0</td></tr><tr><td>Mar 26</td><td class="num">6.0</td></tr><tr><td>Apr 26</td><td class="num">153.7</td></tr><tr><td>May 26</td><td class="num">180.8</td></tr><tr><td>Jun 26</td><td class="num">39.8</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (t).</p>
+      </details>
+    </div></div>
+      <div class="card" style="margin-top:12px"><h3>Warnings raised before the season</h3><ul class="list-clean"><li>lime for A: order date passed; P(on time) now 84%</li><li>Shortfall 1,000 kg of seed_maize for C</li><li>Shortfall 70,000 kg of lime for A</li><li>Shortfall 265 kg of seed_wheat for B</li><li>Shortfall 3,852 kg of urea for B</li><li>Shortfall 3,292 kg of urea for A</li></ul>
+        <p style="margin-top:10px">Total input cost: 28,017,780 birr. The lime order for cluster A is already past its 90% date; shortfalls in lime, urea and NPS need a second supplier or a smaller lime programme.</p></div>
+    </div>
+    <details class="table-view" style="margin-top:12px"><summary>First purchase orders</summary>
+      <div class="table-wrap" style="margin-top:8px"><table><thead><tr><th>Order by</th><th>Supplier</th><th>Item</th><th>Cluster</th><th class="num">kg</th><th>Need by</th><th class="num">P(on time)</th></tr></thead><tbody><tr><td>2026-02-22</td><td>UNION-1</td><td>lime</td><td>A</td><td class='num'>108,000</td><td>2026-04-17</td><td class='num'>90%</td></tr><tr><td>2026-03-20</td><td>SEED-ENT</td><td>seed_maize</td><td>A</td><td class='num'>3,000</td><td>2026-05-22</td><td class='num'>90%</td></tr><tr><td>2026-03-20</td><td>SEED-ENT</td><td>seed_maize</td><td>C</td><td class='num'>3,000</td><td>2026-05-22</td><td class='num'>90%</td></tr><tr><td>2026-04-01</td><td>UNION-1</td><td>nps</td><td>C</td><td class='num'>12,000</td><td>2026-05-25</td><td class='num'>90%</td></tr><tr><td>2026-04-02</td><td>UNION-1</td><td>lime</td><td>A</td><td class='num'>92,000</td><td>2026-05-26</td><td class='num'>90%</td></tr><tr><td>2026-04-08</td><td>SEED-ENT</td><td>seed_wheat</td><td>B</td><td class='num'>5,680</td><td>2026-06-10</td><td class='num'>90%</td></tr><tr><td>2026-04-20</td><td>UNION-1</td><td>nps</td><td>B</td><td class='num'>25,680</td><td>2026-06-13</td><td class='num'>90%</td></tr><tr><td>2026-04-27</td><td>UNION-1</td><td>urea</td><td>B</td><td class='num'>10,840</td><td>2026-06-20</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>A</td><td class='num'>2,700</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>B</td><td class='num'>1,182</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-04-28</td><td>SEED-ENT</td><td>seed_teff</td><td>C</td><td class='num'>3,600</td><td>2026-06-30</td><td class='num'>90%</td></tr><tr><td>2026-05-08</td><td>DEALER-7</td><td>nps</td><td>A</td><td class='num'>18,000</td><td>2026-05-25</td><td class='num'>92%</td></tr><tr><td>2026-05-08</td><td>DEALER-7</td><td>nps</td><td>C</td><td class='num'>12,000</td><td>2026-05-25</td><td class='num'>92%</td></tr><tr><td>2026-05-10</td><td>UNION-1</td><td>nps</td><td>A</td><td class='num'>18,000</td><td>2026-07-03</td><td class='num'>90%</td></tr></tbody></table></div>
+    </details>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Purchase orders</h3><p>Supplier, quantity, order-by and need-by dates, on-time probability and cost.</p></div><div class="card"><h3>Input calendar</h3><p>What arrives at each cooperative store and when, for stage 07 distribution to farmers.</p></div><div class="card"><h3>Shortfall alerts</h3><p>Gaps and late orders, with options, for coordinators and partners.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;supplier_id&quot;: &quot;UNION-1&quot;,
+  &quot;cluster_id&quot;: &quot;A&quot;,
+  &quot;item_code&quot;: &quot;lime&quot;,
+  &quot;quantity&quot;: 108000,
+  &quot;need_by&quot;: &quot;2026-04-17&quot;,
+  &quot;order_by&quot;: &quot;2026-02-22&quot;,
+  &quot;p_on_time&quot;: 0.904,
+  &quot;cost_birr&quot;: 324000
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Actual delivery dates recorded for every order and compared with the predicted probability</li><li>Lead-time distributions re-estimated per supplier each season</li><li>Applied rates in the field (stage 07) compared with norms</li><li>Shortfall warnings reviewed after the season: were they real?</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Share of inputs delivered before the need-by date</li><li>Average delivery delay (days)</li><li>Share of shortfalls resolved before planting</li><li>Input cost per hectare versus plan</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>Requirements from plan</li><li>Lead-time based backward scheduling</li><li>Allocation with warnings</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Pilot suppliers</h3><ul><li>Map unions, seed producers and dealers</li><li>Collect past delivery dates</li></ul></div><div class="card phase"><h3>Operational</h3><ul><li>Order tracking with stage 11</li><li>SMS alerts to cooperatives</li></ul></div><div class="card phase"><h3>Finance</h3><ul><li>Link input credit and buyer advances (05)</li><li>Group purchasing for better prices</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/inputs/domain.py       domain model (items, norms, suppliers, requirements, purchase orders)
+src/inputs/scheduling.py   explode plan, lognormal lead times, order-by dates, allocation and warnings
+src/demo.py                orders for the stage 04 plan (writes assets/demo-inputs.json)
+tests/test_inputs.py       unit tests</code></pre>
+<pre><code>git switch stage/06-input-coordination
+python3 src/demo.py
+python3 tests/test_inputs.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +205,104 @@
     <span>Stage 06 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>
