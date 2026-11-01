@@ -71,7 +71,7 @@
       <span>Branch <code>stage/12-market-distribution</code></span>
     </div>
     <div class="stats"><div class="stat"><b>93%</b><span>households paid within 14 days</span></div><div class="stat"><b>+8,795</b><span>birr/household income effect (DiD)</span></div><div class="stat"><b>27</b><span>household payments from 3 lots</span></div><div class="stat"><b>3</b><span>learning signals sent back</span></div></div>
-    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#try">Try it</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
@@ -154,6 +154,55 @@
           <tbody><tr><td>S1</td><td class="num">1.90</td><td class="num">1.97</td></tr><tr><td>S2</td><td class="num">1.60</td><td class="num">1.59</td></tr><tr><td>S3</td><td class="num">1.10</td><td class="num">0.83</td></tr></tbody></table></div>
         <p class="viz-sub" style="margin-top:6px">Values (t/ha).</p>
       </details>
+    </div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: settle a delivery</h2>
+    <p class="section-intro">Payable weight removes moisture and foreign matter above the limits; the contract price is multiplied by the grade premium; the cooperative fee is taken from the net. Same steps as <code>settle()</code> in <code>src/distribution/settlement.py</code>.</p>
+    <div class="calc" id="calc-s12">
+      <div>
+      <div class="field"><label for="w">Delivered weight (kg)</label><output id="w-o"></output><input type="range" id="w" min="500" max="20000" step="100" value="9000" data-unit="kg"></div>
+      <div class="field"><label for="mo">Moisture at the buyer's gate</label><output id="mo-o"></output><input type="range" id="mo" min="9" max="18" step="0.1" value="13.2" data-unit="%"><small>Limit 12.5%.</small></div>
+      <div class="field"><label for="fo">Foreign matter</label><output id="fo-o"></output><input type="range" id="fo" min="0" max="6" step="0.1" value="2.4" data-unit="%"><small>Limit 2%.</small></div>
+      <div class="field"><label for="gr">Grade</label><output id="gr-o"></output><select id="gr"><option value="1.05">Grade 1 (+5%)</option><option value="1.0" selected>Grade 2 (contract price)</option><option value="0.93">Grade 3 (-7%)</option></select></div>
+      <div class="field"><label for="pr">Contract price (birr per tonne)</label><output id="pr-o"></output><input type="range" id="pr" min="20000" max="150000" step="500" value="101500" data-unit="birr"></div>
+      <div class="field"><label for="fee">Cooperative service fee</label><output id="fee-o"></output><input type="range" id="fee" min="0" max="10" step="0.5" value="3" data-unit="%"></div>
+      <div class="field"><label for="hh">Households in the lot</label><output id="hh-o"></output><input type="range" id="hh" min="1" max="40" step="1" value="9" data-unit=""></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s12-big"></div>
+        <div id="s12-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s12-v"></div>
+        <p class="note">Each household is paid in proportion to the kilograms it contributed; the average is shown.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s12");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function update() {
+        var w = num("w"), excess = Math.max(0, num("mo") - 12.5) + Math.max(0, num("fo") - 2), payable = w * (1 - excess / 100);
+        var price = num("pr") * parseFloat($("gr").value), gross = w / 1000 * price, before = payable / 1000 * price, fee = before * num("fee") / 100, net = before - fee;
+        $("s12-big").innerHTML = fmt(net) + " birr net<small>about " + fmt(net / num("hh")) + " birr per household on average</small>";
+        $("s12-detail").innerHTML = "Gross " + fmt(gross) + " birr · deductions <b>" + fmt(gross - before) + "</b> (" + fmt(w - payable) + " kg for " + fmt(excess, 1) + " points over the limits) · fee " + fmt(fee) + " birr · payable " + fmt(payable) + " kg at " + fmt(price) + " birr/t.";
+        var v = $("s12-v"); v.className = "verdict " + (excess === 0 ? "good" : excess < 1 ? "warn" : "bad");
+        v.textContent = excess === 0 ? "No quality deductions: the lot meets the limits." : "Drying and cleaning before delivery would have saved " + fmt(gross - before) + " birr on this lot.";
+        $("gr-o").textContent = $("gr").selectedOptions[0].textContent.split(" (")[0];
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s12]", e); }
+    })();
+    </script>
     </div>
   </section>
 
