@@ -4,14 +4,36 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logistics &amp; Transportation | AIAE</title>
-  <meta name="description" content="Move produce from farm to collection centre to buyer, on time and at the lowest cost.">
+  <meta name="description" content="Stage 11: shortest and cheapest routes on rural roads, rainy-season detours, and consolidated pickups that fill trucks.">
   <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="assets/stage.css">
   <script src="/assets/js/site.js"></script>
+  <style>
+    .viz-root { color-scheme: light; --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e; --grid:#e6e4de;
+      --series-1:#2a78d6; --series-2:#eb6834; --series-3:#1baf7a; --series-4:#eda100;
+      background:var(--surface-1); border:1px solid var(--border); border-radius:var(--radius); padding:16px; position:relative; margin-top:12px; }
+    @media (prefers-color-scheme: dark) { :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; } }
+    :root[data-theme="dark"] .viz-root { color-scheme: dark; --surface-1:#1a1a19; --text-primary:#f0efec; --text-secondary:#c3c2b7; --grid:#34332f;
+      --series-1:#3987e5; --series-2:#d95926; --series-3:#199e70; --series-4:#c98500; }
+    .viz-title { margin:0 0 4px; font-size:16px; color:var(--text-primary); }
+    .viz-sub { margin:0 0 12px; font-size:13px; color:var(--text-secondary); }
+    .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--text-secondary); margin-bottom:8px; }
+    .legend span { display:inline-flex; align-items:center; gap:6px; }
+    .sw { width:12px; height:12px; border-radius:3px; display:inline-block; }
+    .sw.line { height:2px; border-radius:0; width:18px; }
+    .chart-host svg { width:100%; height:auto; display:block; }
+    .tip { position:absolute; pointer-events:none; background:var(--surface-1); color:var(--text-primary); border:1px solid var(--grid);
+      border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,.12); display:none; min-width:160px; z-index:5; }
+    .tip b { display:block; margin-bottom:2px; } .tip .r { display:flex; justify-content:space-between; gap:12px; }
+    details.table-view { margin-top:12px; } details.table-view summary { cursor:pointer; color:var(--text-secondary); font-size:14px; }
+</style>
 </head>
 <body class="d-move">
 <!--
-  Stage 11 page. This file lives on branch `stage/11-logistics-transport` and is published at /stages/11-logistics-transport/.
-  Shared CSS/JS come from the hub (main) branch. Edit content here; edit styling on main.
+  Stage 11 page. Lives on branch `stage/11-logistics-transport`, published at /stages/11-logistics-transport/.
+  Shared CSS/JS come from the hub (main). Stage-local styles: assets/stage.css (relative paths).
 -->
 <header class="site-header">
   <div class="container">
@@ -34,51 +56,141 @@
   <section class="stage-hero">
     <span class="pill">Move</span>
     <h1>11. Logistics &amp; Transportation</h1>
-    <p class="lead">Move produce from farm to collection centre to buyer, on time and at the lowest cost.</p>
+    <p class="lead">Grain only earns money once it reaches the buyer. Stage 11 plans the cheapest routes on rural roads, knows which roads close in the rains, and consolidates small pickups into full trucks.</p>
     <div class="meta">
-      <span class="status">Status: skeleton</span>
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
       <span>Branch <code>stage/11-logistics-transport</code></span>
     </div>
+    <div class="stats"><div class="stat"><b>-14%</b><span>collection cost with consolidated routes</span></div><div class="stat"><b>+96%</b><span>worst rainy-season detour</span></div><div class="stat"><b>23 → 19</b><span>truck trips for 176 t</span></div><div class="stat"><b>5 of 12</b><span>kebeles cut off by closures</span></div></div>
+    <nav class="toc" aria-label="On this page"><a class="chip" href="#why">Why</a><a class="chip" href="#domain-model">Domain model</a><a class="chip" href="#methods">Methods</a><a class="chip" href="#amhara">Amhara context</a><a class="chip" href="#data">Data</a><a class="chip" href="#demo">Demo</a><a class="chip" href="#outputs">Outputs</a><a class="chip" href="#validation">Validation</a><a class="chip" href="#roadmap">Roadmap</a><a class="chip" href="#code">Code</a></nav>
   </section>
 
   <section id="position">
     <h2>Position in the chain</h2>
     <div class="flow">
-      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/08-monitoring-risk/">08. Monitoring, Forecasting &amp; Risk</a><a class="chip" href="/stages/10-storage-aggregation/">10. Storage, Processing &amp; Aggregation</a></div></div>
+      <div class="card"><h3>Receives from</h3><div class="chips"><a class="chip" href="/stages/09-harvest-postharvest/">09. Lots ready for pickup</a><a class="chip" href="/stages/10-storage-aggregation/">10. Centres</a><a class="chip" href="/stages/06-input-coordination/">06. Inbound inputs</a><a class="chip" href="/stages/08-monitoring-risk/">08. Volume forecasts</a></div></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>This stage</h3><p>Logistics &amp; Transportation</p></div>
+      <div class="card"><h3>This stage</h3><p>Road network costs, rainy-season detours, consolidated pickup routes and shipments.</p></div>
       <div class="arrow" aria-hidden="true">&rarr;</div>
-      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/12-market-distribution/">12. Market Distribution &amp; Customer Network</a></div></div>
+      <div class="card"><h3>Feeds into</h3><div class="chips"><a class="chip" href="/stages/10-storage-aggregation/">10. Arrivals at centres</a><a class="chip" href="/stages/12-market-distribution/">12. Deliveries to buyers</a><a class="chip" href="/stages/04-crop-planning/">04. Transport cost per tonne</a></div></div>
     </div>
   </section>
 
-  <section id="questions">
-    <h2>Key questions</h2>
-    <ul class="list-clean"><li>What is the cheapest, most reliable route for each shipment?</li><li>Are trucks available when harvest peaks?</li><li>Which alternative routes exist if a road is closed?</li></ul>
-  </section>
-
-  <section id="scope">
-    <div class="grid cols-2">
-      <div class="card"><h3>Scope and components</h3><ul class="list-clean"><li>Farm-to-collection-centre transport</li><li>Collection-centre-to-market distribution</li><li>Vehicle availability</li><li>Route optimisation and alternative routes</li><li>Cost estimation, delivery scheduling and tracking</li></ul></div>
-      <div class="card"><h3>Data sources</h3><ul class="list-clean"><li>OpenStreetMap road network</li><li>Transport operator data</li><li>Stock levels (stage 10)</li></ul></div>
-      <div class="card"><h3>Outputs</h3><ul class="list-clean"><li>Shipment schedule</li><li>Route plans</li><li>Transport cost per tonne</li></ul></div>
-      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Transport cost per tonne</li><li>On-time delivery rate</li></ul></div>
-    </div>
+  <section id="why">
+    <h2>Why this stage matters</h2>
+    <p class="section-intro">Think of a school bus that collects children from many villages. Sending one bus per child is easy to plan but wasteful; one bus doing a well-chosen loop fills its seats and drives far less. In the rains, some village tracks flood, so the bus needs a different loop, and it is better to know that before the rains start.</p>
+    <div class="grid cols-3"><div class="card"><h3>Transport eats margins</h3><p>For bulky, low-value grain from remote kebeles, transport can be one of the largest costs between the farm and the buyer.</p></div><div class="card"><h3>Rain changes the map</h3><p>Earth roads that work in January may be impassable in August; plans must use the season's network.</p></div><div class="card"><h3>Full trucks</h3><p>Small lots from many kebeles become fewer, fuller trips when routes are shared.</p></div></div>
+    <h3 style="margin-top:28px">Key questions</h3>
+    <ul class="list-clean"><li>What is the cheapest route from each kebele to its centre and to buyers, in each season?</li><li>Which kebeles lose access in the rains, and what do detours cost?</li><li>How should pickups be combined to fill trucks and cut trips?</li><li>What does transport add per tonne, for the planner and for contracts?</li></ul>
   </section>
 
   <section id="domain-model">
     <h2>Domain model</h2>
-    <p class="section-intro">To be defined: the entities, value objects and events this stage owns, and the contracts it shares with neighbouring stages.</p>
+    <p class="section-intro">The <strong>RoadNetwork</strong> carries both seasons; the routing service turns <strong>PickupRequests</strong> into <strong>Routes</strong>, and routes carry traceable <strong>Shipments</strong> of lots.</p>
+    <figure class="diagram"><img src="assets/domain-model.svg" alt="Domain model: road network, vehicles and pickup requests feed the routing service, which plans routes that carry shipments."></figure>
+    <div class="table-wrap" style="margin-top:16px">
+      <table><thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead><tbody><tr><td>RoadNetwork</td><td>Entity</td><td>Nodes and road segments with length, surface and rainy-season passability.</td></tr><tr><td>Vehicle</td><td>Value object</td><td>Truck type with capacity, cost per km and fixed cost per trip.</td></tr><tr><td>PickupRequest</td><td>Input</td><td>Tonnes (and lot IDs) waiting at a node for collection.</td></tr><tr><td>Route</td><td>Value object (output)</td><td>Ordered stops, load, cost-weighted distance, cost and cost per tonne.</td></tr><tr><td>Shipment</td><td>Entity</td><td>Lots on a route with departure and arrival, traceable to stage 09.</td></tr></tbody></table>
+    </div>
   </section>
 
   <section id="methods">
-    <h2>Methods and tools</h2>
-    <p class="section-intro">To be defined: analytical methods, models, software and field protocols.</p>
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Cheapest paths: Dijkstra</h3><p>Each road's length is weighted by surface (asphalt 1.0, gravel 1.3, earth 1.7) to reflect fuel, wear and time. In the rainy season, roads marked impassable are removed before the search, so detours show up automatically.</p></div>
+      <div class="card"><h3>Consolidation: Clarke-Wright savings</h3><p>Start with one round trip per kebele. For each pair, the saving from serving both in one trip is d(centre, i) + d(centre, j) &minus; d(i, j). Merge the biggest savings first while the truck has room. Loads larger than a truck first go as full-truck trips.</p></div>
+      <div class="card"><h3>Cost per tonne</h3><p>Route cost = fixed trip cost + cost-weighted km &times; cost per km. Per-tonne costs by kebele and season feed the stage 04 margins and stage 05 contract prices.</p></div>
+      <div class="card"><h3>Season-aware plans</h3><p>Plans are made for both networks. Where rainy-season costs jump, stage 10 can move grain to centres before the rains, or a cheap road repair can be proposed as an investment.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2"><div class="card"><h3>Rugged terrain</h3><p>Escarpments and river gorges make road distances much longer than straight lines; the network, not maps, sets costs.</p></div><div class="card"><h3>Earth roads in Kiremt</h3><p>Many kebele access roads are earth tracks that become impassable in July and August.</p></div><div class="card"><h3>Transport market</h3><p>Most hauling is by private truck owners; pooled demand from cooperatives improves rates and reliability.</p></div><div class="card"><h3>Last mile</h3><p>Donkeys, carts and motor tricycles bring grain from plots to roadside points; the network starts there.</p></div><div class="card"><h3>Fuel prices</h3><p>Fuel price changes shift transport costs quickly; cost per km is a parameter updated each season.</p></div><div class="card"><h3>Security and access</h3><p>Some routes may be temporarily unsafe or closed; the same closure mechanism can remove them from plans.</p></div></div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead><tbody><tr><td>Road network</td><td>OpenStreetMap, rural road authority data, field mapping</td><td>segments</td><td>Network</td><td>Open / public</td></tr><tr><td>Seasonal passability</td><td>Development agents, transporters, Sentinel-1 flood maps</td><td>segments</td><td>Rainy-season closures</td><td>Project</td></tr><tr><td>Pickup volumes</td><td>Stages 09 and 10</td><td>node</td><td>Pickups</td><td>Project</td></tr><tr><td>Transport rates</td><td>Truck owners, cooperative records</td><td>per trip, km</td><td>Vehicle costs</td><td>Project</td></tr><tr><td>Trip records</td><td>Shipment logs, GPS where available</td><td>trip</td><td>Validation</td><td>Project</td></tr></tbody></table></div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo: 12 kebeles around one collection centre</h2>
+    <p class="section-intro">A synthetic network: one collection centre, a market town on an asphalt road and 12 kebeles on gravel and earth roads, with 6 earth roads closing in the rains (J1-K01, K01-K12, J1-K05, J3-K07, K03-K04). 176 t to collect with 10 t trucks. <strong>Made-up roads and places.</strong></p>
+    <div class="viz-root" data-chart id="pt-chart">
+      <h3 class="viz-title">Cost per tonne of a full truck from each kebele to the centre</h3>
+      <p class="viz-sub">10 t truck, 45 birr per km on asphalt, rough roads cost more, 1,500 birr fixed per trip. Five kebeles need long detours when earth roads close.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Dry season</span><span><i class="sw" style="background:var(--series-2)"></i>Rainy season</span></div>
+      <div class="chart-host" role="img" aria-label="Grouped bars per kebele; K01, K04, K05, K07 and K12 cost noticeably more in the rainy season."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["K01", "K02", "K03", "K04", "K05", "K06", "K07", "K08", "K09", "K10", "K11", "K12"], "xlabel": "Kebele", "series": [{"name": "Dry season", "values": [389, 372, 361, 452, 405, 361, 378, 361, 514, 435, 454, 527]}, {"name": "Rainy season", "values": [619, 372, 361, 587, 514, 361, 501, 361, 514, 435, 454, 606]}], "unit": "birr/t"}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Kebele</th><th class="num">Dry season</th><th class="num">Rainy season</th></tr></thead>
+          <tbody><tr><td>K01</td><td class="num">389</td><td class="num">619</td></tr><tr><td>K02</td><td class="num">372</td><td class="num">372</td></tr><tr><td>K03</td><td class="num">361</td><td class="num">361</td></tr><tr><td>K04</td><td class="num">452</td><td class="num">587</td></tr><tr><td>K05</td><td class="num">405</td><td class="num">514</td></tr><tr><td>K06</td><td class="num">361</td><td class="num">361</td></tr><tr><td>K07</td><td class="num">378</td><td class="num">501</td></tr><tr><td>K08</td><td class="num">361</td><td class="num">361</td></tr><tr><td>K09</td><td class="num">514</td><td class="num">514</td></tr><tr><td>K10</td><td class="num">435</td><td class="num">435</td></tr><tr><td>K11</td><td class="num">454</td><td class="num">454</td></tr><tr><td>K12</td><td class="num">527</td><td class="num">606</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (birr/t).</p>
+      </details>
+    </div>
+    <div class="viz-root" data-chart id="sum-chart">
+      <h3 class="viz-title">Total cost to collect 176 t</h3>
+      <p class="viz-sub">Clarke-Wright consolidation: 23 trips become 19; about 14% cheaper in both seasons.</p>
+      <div class="legend" aria-hidden="true"><span><i class="sw" style="background:var(--series-1)"></i>Dry season</span><span><i class="sw" style="background:var(--series-2)"></i>Rainy season</span></div>
+      <div class="chart-host" role="img" aria-label="Grouped bars: one truck per load about 94,000 dry and 107,000 rainy birr; consolidated about 80,000 and 92,000."></div>
+      <div class="tip"></div>
+      <script type="application/json">{"type": "grouped", "categories": ["One truck per load", "Consolidated routes"], "xlabel": "Approach", "series": [{"name": "Dry season", "values": [93675, 80142]}, {"name": "Rainy season", "values": [107346, 92211]}], "unit": "birr"}</script>
+      <details class="table-view"><summary>Show as table</summary>
+        <div class="table-wrap" style="margin-top:8px"><table>
+          <thead><tr><th>Approach</th><th class="num">Dry season</th><th class="num">Rainy season</th></tr></thead>
+          <tbody><tr><td>One truck per load</td><td class="num">93,675</td><td class="num">107,346</td></tr><tr><td>Consolidated routes</td><td class="num">80,142</td><td class="num">92,211</td></tr></tbody></table></div>
+        <p class="viz-sub" style="margin-top:6px">Values (birr).</p>
+      </details>
+    </div>
+    <div class="callout"><strong>Reading it.</strong> Consolidation saves about 14% in both seasons by turning 23 trips into 19. The rainy season raises total cost by about 15%, mostly from K01, K04, K05, K07 and K12. Two options follow: move their grain to the centre before July (stage 10), or price a culvert or gravel repair on the K01 and K05 earth roads against the detour costs.</div>
+  </section>
+
+  <section id="outputs">
+    <h2>Outputs and the contract with other stages</h2>
+    <div class="grid cols-3"><div class="card"><h3>Routes and shipments</h3><p>Ordered stops, loads and costs per trip, shared with transporters and centres.</p></div><div class="card"><h3>Cost per tonne</h3><p>By kebele and season, for stages 04 and 05.</p></div><div class="card"><h3>Access risk</h3><p>Kebeles that lose access in the rains, for stage 10 timing and road investment cases.</p></div></div>
+    <p style="margin-top:20px">Example record sent downstream (synthetic):</p>
+<pre><code>{
+  &quot;vehicle_type&quot;: &quot;10 t truck&quot;,
+  &quot;season&quot;: &quot;dry&quot;,
+  &quot;stops&quot;: [
+    &quot;K01&quot;,
+    &quot;K05&quot;
+  ],
+  &quot;load_t&quot;: 10,
+  &quot;cost_km&quot;: 66.6,
+  &quot;cost_birr&quot;: 4497,
+  &quot;cost_per_t&quot;: 450,
+  &quot;lot_ids&quot;: [
+    &quot;LOT-A-TEFF-2026-W43-004&quot;,
+    &quot;...&quot;
+  ]
+}</code></pre>
+  </section>
+
+  <section id="validation">
+    <h2>Validation and indicators</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>How results are checked</h3><ul class="list-clean"><li>Planned versus actual trip costs and times from shipment logs</li><li>Road passability checked with development agents each rainy season</li><li>Detour factors and surface penalties re-estimated from GPS traces</li><li>Truck fill rate tracked per route</li></ul></div>
+      <div class="card"><h3>Indicators (KPIs)</h3><ul class="list-clean"><li>Transport cost per tonne</li><li>On-time delivery rate</li><li>Average truck fill rate</li><li>Share of grain moved before rainy-season closures</li></ul></div>
+    </div>
   </section>
 
   <section id="roadmap">
-    <h2>Roadmap and status</h2>
-    <p class="section-intro">To be defined: milestones for the pilot woreda, owners and current progress.</p>
+    <h2>Roadmap</h2>
+    <div class="roadmap"><div class="card phase"><h3>Methodology v0.1</h3><ul><li>Dijkstra with surfaces and closures</li><li>Clarke-Wright consolidation</li><li>Demo and tests</li><li><strong>Status: done</strong></li></ul></div><div class="card phase"><h3>Pilot network</h3><ul><li>Map roads from OpenStreetMap and field checks</li><li>Record seasonal closures</li></ul></div><div class="card phase"><h3>Operations</h3><ul><li>Shipment tracking linked to lots</li><li>Shared pickup calendar for cooperatives</li></ul></div><div class="card phase"><h3>Extensions</h3><ul><li>Time windows and multiple truck types</li><li>Inbound input deliveries (06) on return trips</li></ul></div></div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/logistics/domain.py    domain model (road network, vehicles, pickups, routes)
+src/logistics/routing.py   Dijkstra with surfaces and closures, Clarke-Wright savings, route cost
+src/demo.py                12-kebele demo (writes assets/demo-logistics.json)
+tests/test_logistics.py    unit tests</code></pre>
+<pre><code>git switch stage/11-logistics-transport
+python3 src/demo.py
+python3 tests/test_logistics.py</code></pre>
   </section>
 
   <nav class="pager" aria-label="Stage navigation">
@@ -93,5 +205,104 @@
     <span>Stage 11 of 12</span>
   </div>
 </footer>
+
+<script>
+(function () {
+  "use strict";
+  function fmt(v, dp) { return (v === null || v === undefined || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: dp }); }
+  function render(root) {
+    var spec; try { spec = JSON.parse(root.querySelector("script[type='application/json']").textContent); }
+    catch (e) { console.error("[chart] bad spec", e); return; }
+    var host = root.querySelector(".chart-host"), tip = root.querySelector(".tip");
+    function draw() {
+      try {
+        var W = Math.max(320, Math.min(760, host.clientWidth || 760)), H = W < 500 ? 260 : 320;
+        var m = { t: 22, r: 10, b: 30, l: W < 500 ? 44 : 58 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+        var cats = spec.categories, n = cats.length, step = iw / n, S = spec.series, dp = spec.dp || 0;
+        var vals = [];
+        if (spec.type === "stacked") cats.forEach(function (_, i) { var t = 0; S.forEach(function (s) { t += s.values[i] || 0; }); vals.push(t); });
+        else S.forEach(function (s) { s.values.forEach(function (v) { if (v !== null) vals.push(v); }); });
+        if (spec.band) vals = vals.concat(spec.band.upper.filter(function (v) { return v !== null; }), spec.band.lower.filter(function (v) { return v !== null; }));
+        if (spec.ref) vals = vals.concat(spec.ref.values);
+        var lo = spec.yMin !== undefined ? spec.yMin : Math.min(0, Math.min.apply(null, vals));
+        var hi = Math.max.apply(null, vals); if (spec.yMax !== undefined) hi = spec.yMax;
+        var raw = (hi - lo) / 5, mag = Math.pow(10, Math.floor(Math.log10(raw || 1))), tick = [1, 2, 2.5, 5, 10].map(function (k) { return k * mag; }).filter(function (t) { return t >= raw; })[0];
+        hi = Math.ceil(hi / tick) * tick; lo = Math.floor(lo / tick) * tick;
+        function y(v) { return m.t + ih - (v - lo) / (hi - lo) * ih; }
+        function xc(i) { return m.l + i * step + step / 2; }
+        var s = [];
+        for (var g = lo; g <= hi + 1e-9; g += tick) {
+          s.push('<line x1="' + m.l + '" x2="' + (m.l + iw) + '" y1="' + y(g) + '" y2="' + y(g) + '" stroke="var(--grid)"/>');
+          s.push('<text x="' + (m.l - 8) + '" y="' + (y(g) + 4) + '" text-anchor="end" font-size="11" fill="var(--text-secondary)">' + fmt(g, 2) + '</text>');
+        }
+        var every = Math.ceil(n / (W < 500 ? 7 : 13));
+        cats.forEach(function (c, i) { if (i % every === 0) s.push('<text x="' + xc(i) + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + c + '</text>'); });
+        function bar(x0, w, y0, y1, color, round) {
+          var h = y0 - y1; if (Math.abs(h) < 0.5) return "";
+          var r = round ? Math.min(4, Math.abs(h), w / 2) : 0;
+          return '<path fill="' + color + '" d="M' + x0 + ',' + y0 + 'V' + (y1 + r) + (r ? 'Q' + x0 + ',' + y1 + ' ' + (x0 + r) + ',' + y1 : '') + 'H' + (x0 + w - r) + (r ? 'Q' + (x0 + w) + ',' + y1 + ' ' + (x0 + w) + ',' + (y1 + r) : '') + 'V' + y0 + 'Z"/>';
+        }
+        if (spec.band) {
+          var up = [], dn = [];
+          cats.forEach(function (_, i) { if (spec.band.upper[i] !== null) { up.push(xc(i) + ',' + y(spec.band.upper[i])); dn.unshift(xc(i) + ',' + y(spec.band.lower[i])); } });
+          if (up.length) s.push('<path d="M' + up.join('L') + 'L' + dn.join('L') + 'Z" fill="var(--series-' + (spec.band.slot || 1) + ')" opacity="0.18"/>');
+        }
+        if (spec.type === "stacked" || spec.type === "grouped") {
+          var bw = step * (spec.type === "grouped" ? 0.8 : 0.62), k = S.length;
+          cats.forEach(function (_, i) {
+            if (spec.type === "stacked") {
+              var acc = 0, x0 = xc(i) - bw / 2, top = -1;
+              S.forEach(function (sr, j) { if ((sr.values[i] || 0) > 0) top = j; });
+              S.forEach(function (sr, j) { var v = sr.values[i] || 0; if (v <= 0) return;
+                var y0 = y(acc) - (acc > 0 ? 2 : 0); acc += v; s.push(bar(x0, bw, y0, y(acc), 'var(--series-' + (j + 1) + ')', j === top)); });
+            } else {
+              var gw = bw / k;
+              S.forEach(function (sr, j) { var v = sr.values[i]; if (v === null) return;
+                s.push(bar(xc(i) - bw / 2 + j * gw + 1, gw - 2, y(Math.max(lo, 0)), y(v), 'var(--series-' + (j + 1) + ')', true)); });
+            }
+          });
+        } else {
+          S.forEach(function (sr, j) {
+            var d = "", pen = false;
+            sr.values.forEach(function (v, i) { if (v === null) { pen = false; return; } d += (pen ? "L" : "M") + xc(i) + "," + y(v); pen = true; });
+            s.push('<path d="' + d + '" fill="none" stroke="var(--series-' + (j + 1) + ')" stroke-width="2"' + (sr.dash ? ' stroke-dasharray="6,4"' : '') + '/>');
+          });
+        }
+        if (spec.ref) {
+          var p = "M" + (m.l) + "," + y(spec.ref.values[0]) + "H" + (m.l + step);
+          for (var i2 = 1; i2 < n; i2++) p += "V" + y(spec.ref.values[i2]) + "H" + (m.l + (i2 + 1) * step);
+          s.push('<path d="' + (spec.ref.flat ? "M" + m.l + "," + y(spec.ref.values[0]) + "H" + (m.l + iw) : p) + '" fill="none" stroke="var(--text-primary)" stroke-width="2"' + (spec.ref.dash ? ' stroke-dasharray="5,4"' : '') + '/>');
+          s.push('<text x="' + (m.l + 4) + '" y="' + (y(spec.ref.values[0]) - 6) + '" font-size="12" fill="var(--text-primary)">' + spec.ref.name + '</text>');
+        }
+        (spec.marks || []).forEach(function (mk) { s.push('<text x="' + xc(mk.i) + '" y="' + (y(mk.v) - 8) + '" text-anchor="middle" font-size="11" fill="var(--text-secondary)">' + mk.text + '</text>'); });
+        s.push('<line class="guide" x1="0" x2="0" y1="' + m.t + '" y2="' + (m.t + ih) + '" stroke="var(--text-secondary)" stroke-width="1" style="display:none"/>');
+        cats.forEach(function (_, i) { s.push('<rect class="hit" data-i="' + i + '" x="' + (m.l + i * step) + '" y="' + m.t + '" width="' + step + '" height="' + ih + '" fill="transparent"/>'); });
+        host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">' + s.join("") + '</svg>';
+        var guide = host.querySelector(".guide");
+        host.querySelectorAll(".hit").forEach(function (r) {
+          r.addEventListener("mousemove", function (ev) {
+            var i = +r.dataset.i, rows = '<b>' + cats[i] + '</b>';
+            S.forEach(function (sr) { rows += '<div class="r"><span>' + sr.name + '</span><span>' + fmt(sr.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>'; });
+            if (spec.band && spec.band.upper[i] !== null) rows += '<div class="r"><span>' + spec.band.name + '</span><span>' + fmt(spec.band.lower[i], dp) + ' to ' + fmt(spec.band.upper[i], dp) + '</span></div>';
+            if (spec.ref) rows += '<div class="r"><span>' + spec.ref.name + '</span><span>' + fmt(spec.ref.values[i], dp) + (spec.unit ? ' ' + spec.unit : '') + '</span></div>';
+            tip.innerHTML = rows; tip.style.display = "block";
+            if (spec.type === "line") { guide.style.display = ""; guide.setAttribute("x1", xc(i)); guide.setAttribute("x2", xc(i)); }
+            else r.setAttribute("fill", "rgba(127,127,127,.08)");
+            var box = root.getBoundingClientRect(), left = ev.clientX - box.left + 14;
+            if (left + tip.offsetWidth > box.width - 8) left = ev.clientX - box.left - tip.offsetWidth - 14;
+            tip.style.left = left + "px"; tip.style.top = (ev.clientY - box.top + 10) + "px";
+          });
+          r.addEventListener("mouseleave", function () { tip.style.display = "none"; guide.style.display = "none"; r.setAttribute("fill", "transparent"); });
+        });
+      } catch (e) { host.innerHTML = '<p>Chart could not be drawn. See the table below.</p>'; console.error("[chart]", e); }
+    }
+    draw();
+    var last = host.clientWidth;
+    window.addEventListener("resize", function () { if (Math.abs(host.clientWidth - last) > 20) { last = host.clientWidth; draw(); } });
+  }
+  document.querySelectorAll(".viz-root[data-chart]").forEach(render);
+})();
+</script>
+
 </body>
 </html>

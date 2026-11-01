@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 410" font-family="Helvetica, Arial, sans-serif">
+<rect width="1030" height="410" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515.0" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Stage 11 domain model</text>
+<line x1="250" y1="98" x2="780" y2="104" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="500" y1="98" x2="780" y2="103" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="750" y1="100" x2="780" y2="101" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<line x1="780" y1="156" x2="633" y2="225" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="712" y="187" font-size="11" fill="#555">plans</text>
+<line x1="750" y1="275" x2="780" y2="274" stroke="#555" stroke-width="1.8" marker-end="url(#a)"/>
+<text x="771" y="270" font-size="11" fill="#555">carries</text>
+<rect x="30" y="50" width="220" height="93" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="140.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">RoadNetwork (entity)</text>
+<line x1="30" y1="78" x2="250" y2="78" stroke="#3f6b34"/>
+<text x="42" y="96" font-size="12" fill="#222">nodes: kebeles, centres, towns</text>
+<text x="42" y="113" font-size="12" fill="#222">roads: km, surface</text>
+<text x="42" y="130" font-size="12" fill="#222">rainy-season passable?</text>
+<rect x="280" y="50" width="220" height="93" rx="8" fill="#dde8f3" stroke="#2f5d8a" stroke-width="1"/>
+<text x="390.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Vehicle (value)</text>
+<line x1="280" y1="78" x2="500" y2="78" stroke="#2f5d8a"/>
+<text x="292" y="96" font-size="12" fill="#222">type, capacity t</text>
+<text x="292" y="113" font-size="12" fill="#222">cost per km</text>
+<text x="292" y="130" font-size="12" fill="#222">fixed cost per trip</text>
+<rect x="530" y="50" width="220" height="93" rx="8" fill="#f1e8d6" stroke="#8a6d3b" stroke-width="1"/>
+<text x="640.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">PickupRequest (input)</text>
+<line x1="530" y1="78" x2="750" y2="78" stroke="#8a6d3b"/>
+<text x="542" y="96" font-size="12" fill="#222">node, tonnes</text>
+<text x="542" y="113" font-size="12" fill="#222">lot IDs (09)</text>
+<text x="542" y="130" font-size="12" fill="#222">centre (10)</text>
+<rect x="780" y="50" width="220" height="110" rx="8" fill="#1f2a20" stroke="#1f2a20" stroke-width="1"/>
+<text x="890.0" y="70" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#fff">Routing service</text>
+<text x="792" y="96" font-size="12" fill="#e7ebe4">shortest_paths() Dijkstra</text>
+<text x="792" y="113" font-size="12" fill="#e7ebe4">savings_routes()</text>
+<text x="792" y="130" font-size="12" fill="#e7ebe4">Clarke-Wright</text>
+<text x="792" y="147" font-size="12" fill="#e7ebe4">route_cost()</text>
+<rect x="280" y="225" width="470" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+<text x="515.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Route (output)</text>
+<line x1="280" y1="253" x2="750" y2="253" stroke="#9a4a28"/>
+<text x="292" y="271" font-size="12" fill="#222">vehicle, stops in order</text>
+<text x="292" y="288" font-size="12" fill="#222">load t, cost-km, cost</text>
+<text x="292" y="305" font-size="12" fill="#222">cost per tonne</text>
+<text x="292" y="322" font-size="12" fill="#222">to drivers, stages 10, 12</text>
+<rect x="780" y="225" width="220" height="93" rx="8" fill="#e3efdd" stroke="#3f6b34" stroke-width="1"/>
+<text x="890.0" y="245" text-anchor="middle" font-weight="bold" font-size="12.5" fill="#222">Shipment (entity)</text>
+<line x1="780" y1="253" x2="1000" y2="253" stroke="#3f6b34"/>
+<text x="792" y="271" font-size="12" fill="#222">lots on a route</text>
+<text x="792" y="288" font-size="12" fill="#222">departure, arrival</text>
+<text x="792" y="305" font-size="12" fill="#222">(traceable to 09)</text>
+</svg>
