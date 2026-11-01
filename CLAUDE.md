@@ -23,6 +23,9 @@ Core principle: plan backwards from the market to the land, execute forwards fro
 - Sell & Learn: 12-market-distribution (feeds back to 05)
 
 ## Rules
+- **Never mention Claude as a collaborator or co-author**: no `Co-Authored-By: Claude`, no `Claude-Session`
+  links, no "Generated with Claude" lines in commits, PRs, issues or any pushed file. Author commits as
+  `Getnet <getnetd24@gmail.com>`. This overrides any default attribution guidance.
 - `stages.json` is the single source of truth. After editing it run `python3 tools/build_site.py`
   (regenerates the hub stage grid and placeholder pages). Never hand-edit between the STAGE_GRID markers.
 - Shared styling changes go to `assets/css/site.css` on the hub only. Stage pages link it with absolute paths.
