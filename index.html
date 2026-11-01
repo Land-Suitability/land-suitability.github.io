@@ -95,6 +95,7 @@
       <a class="chip" href="#amhara">Amhara context</a>
       <a class="chip" href="#data">Data</a>
       <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#try">Try it</a>
       <a class="chip" href="#outputs">Outputs</a>
       <a class="chip" href="#validation">Validation</a>
       <a class="chip" href="#roadmap">Roadmap</a>
@@ -259,6 +260,57 @@
       </div>
     </div>
     <div class="callout"><strong>Lesson for stage 04.</strong> The production planner must use twelve monthly water constraints, not a single seasonal water budget. Staggered planting dates and drip irrigation on high-value crops are the two cheapest ways to relieve the binding month.</div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: how much water does a hectare need?</h2>
+    <p class="section-intro">Gross irrigation need for one month = (ET0 &times; Kc &times; days &minus; effective rain) &divide; efficiency &times; 10 m&sup3; per hectare per mm. Same steps as <code>irrigation_demand()</code> in <code>src/water_res/hydrology.py</code>.</p>
+    <div class="calc" id="calc-s02">
+      <div>
+      <div class="field"><label for="et0">Reference evapotranspiration ET0 (mm per day)</label><output id="et0-o"></output><input type="range" id="et0" min="2" max="8" step="0.1" value="5.2" data-unit="mm/day"><small>Dry-season highlands are often about 4 to 6 mm per day.</small></div>
+      <div class="field"><label for="kc">Crop coefficient Kc (growth stage)</label><output id="kc-o"></output><input type="range" id="kc" min="0.3" max="1.25" step="0.05" value="1.15" data-unit=""><small>About 0.4 just after planting, 1.05 to 1.2 at full cover.</small></div>
+      <div class="field"><label for="rain">Rain this month (mm)</label><output id="rain-o"></output><input type="range" id="rain" min="0" max="250" step="1" value="15" data-unit="mm"></div>
+      <div class="field"><label for="eff">Irrigation method</label><output id="eff-o"></output><select id="eff"><option value="0.6" selected>Furrow or basin (about 60% efficient)</option><option value="0.75">Sprinkler (about 75%)</option><option value="0.9">Drip (about 90%)</option></select></div>
+      <div class="field"><label for="area">Area to irrigate (hectares)</label><output id="area-o"></output><input type="range" id="area" min="1" max="200" step="1" value="40" data-unit="ha"></div>
+      <div class="field"><label for="supply">Water available this month (thousand m&sup3;)</label><output id="supply-o"></output><input type="range" id="supply" min="0" max="600" step="5" value="264" data-unit="k m³"><small>Stage 02 demo: February supply 264,000 m3.</small></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="s02-big"></div>
+        <div id="s02-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="s02-v"></div>
+        <p class="note">One month of 30 days. Effective rain uses the USDA-SCS method. Illustrative; use local ET0 and crop coefficients.</p>
+      </div>
+    <script>
+    (function () {
+    "use strict";
+    function $(id) { return document.getElementById(id); }
+    function num(id) { return parseFloat($(id).value); }
+    function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+    function bindOut(root) { root.querySelectorAll("input[type=range]").forEach(function (r) {
+      var o = $(r.id + "-o"); var show = function () { o.textContent = (Math.abs(+r.value) >= 1000 ? Number(r.value).toLocaleString("en-US") : r.value) + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show();
+      r.addEventListener("input", show); }); }
+    var root = document.getElementById("calc-s02");
+    if (!root) return;
+    try {
+      bindOut(root);
+      function update() {
+        var P = num("rain"), peff = P <= 250 ? P * (125 - 0.2 * P) / 125 : 125 + 0.1 * P;
+        var etc = num("et0") * num("kc") * 30, net = Math.max(0, etc - peff), eff = parseFloat($("eff").value);
+        var perHa = net / eff * 10, total = perHa * num("area"), supply = num("supply") * 1000;
+        var lps = total / (30 * 86400) * 1000, maxHa = perHa > 0 ? supply / perHa : Infinity;
+        $("s02-big").innerHTML = fmt(perHa) + " m³ per hectare<small>this month, gross (net need " + fmt(net) + " mm after " + fmt(peff) + " mm effective rain)</small>";
+        $("s02-detail").innerHTML = "For " + fmt(num("area")) + " ha: <b>" + fmt(total) + " m³</b>, about <b>" + fmt(lps, 1) + " litres per second</b> around the clock.";
+        var v = $("s02-v"); var ok = total <= supply;
+        v.className = "verdict " + (ok ? "good" : "bad");
+        v.textContent = ok ? "Enough water this month; it could irrigate up to " + (isFinite(maxHa) ? fmt(maxHa) : "any number of") + " ha." : "Short by " + fmt(total - supply) + " m³: at most " + fmt(maxHa) + " ha fit this month.";
+        $("eff-o").textContent = Math.round(eff * 100) + "%";
+      }
+      root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+      update();
+    } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-s02]", e); }
+    })();
+    </script>
+    </div>
   </section>
 
   <section id="outputs">
