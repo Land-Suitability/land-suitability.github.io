@@ -437,3 +437,14 @@ figure.diagram img, .zoomable { cursor: zoom-in; }
 .qcard .icon { width: 36px; height: 36px; padding: 7px; border-radius: 10px; background: var(--d-bg); color: var(--d); }
 .qcard b { display: block; font-size: 15.5px; line-height: 1.35; }
 .qcard small { color: var(--muted); font-size: 13px; }
+
+/* mobile: swipeable question cards, no keyboard tips on touch screens */
+@media (max-width: 700px) {
+  .qgrid { grid-auto-flow: column; grid-auto-columns: 82%; grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory;
+    padding-bottom: 8px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; scroll-padding-inline: 16px; scrollbar-width: none; }
+  .qgrid::-webkit-scrollbar { display: none; }
+  .qgrid .qcard { scroll-snap-align: start; }
+  .swipe-hint { display: block; }
+}
+.swipe-hint { display: none; color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+@media (pointer: coarse) { .wheel-hint .kbd-tip, .tool-btn kbd { display: none; } }

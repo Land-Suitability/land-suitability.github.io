@@ -115,7 +115,15 @@
       }
       g.addEventListener("mouseenter", show);
       g.addEventListener("focus", show);
-      g.addEventListener("click", function () { location.href = "/stages/" + s.slug + "/"; });
+      // touch screens have no hover: first tap shows the details, a second tap opens the stage
+      // remember the state at touch-down: the focus event that follows a tap already marks the node active
+      var lastPointer = "mouse", wasActive = false;
+      g.addEventListener("pointerdown", function (e) { lastPointer = e.pointerType || "mouse"; wasActive = g.classList.contains("active"); });
+      g.addEventListener("click", function () {
+        var touch = lastPointer === "touch" || lastPointer === "pen";
+        if (touch && !wasActive) { show(); panel.scrollIntoView({ behavior: "smooth", block: "nearest" }); return; }
+        location.href = "/stages/" + s.slug + "/";
+      });
       g.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); location.href = "/stages/" + s.slug + "/"; } });
       nodes.push(g);
       svg.appendChild(g);
