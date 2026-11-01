@@ -604,3 +604,14 @@ pre.has-copy:hover .copy-btn, .copy-btn:focus-visible { opacity: 1; }
 @media (max-width: 480px) { .ways { grid-template-columns: 1fr; } }
 :root[data-theme="dark"] .way-img { filter: brightness(.88) saturate(.95); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .way-img { filter: brightness(.88) saturate(.95); } }
+
+/* glossary terms in running text: dotted underline, definition on hover or keyboard focus */
+a.gl-term { color: inherit; text-decoration: underline dotted; text-decoration-color: var(--d, var(--accent)); text-decoration-thickness: 2px;
+  text-underline-offset: 3px; position: relative; }
+a.gl-term:hover, a.gl-term:focus-visible { text-decoration-style: solid; }
+a.gl-term::after { content: attr(data-def); position: absolute; left: 0; top: calc(100% + 8px); width: max-content; max-width: min(300px, 78vw);
+  background: #1f2a20; color: #fff; font-size: 13px; font-weight: 400; line-height: 1.45; padding: 8px 11px; border-radius: 9px;
+  box-shadow: 0 8px 22px rgba(0,0,0,.25); white-space: normal; z-index: 30; opacity: 0; pointer-events: none; transform: translateY(-3px);
+  transition: opacity .12s ease, transform .12s ease; }
+a.gl-term:hover::after, a.gl-term:focus-visible::after { opacity: 1; transform: none; }
+@media (hover: none) { a.gl-term::after { display: none; } }

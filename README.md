@@ -48,6 +48,7 @@ how-it-works.html              one season told in 13 steps with a scrolling seas
 data-spine.html                interactive arc diagram of every hand-off between stages
 glossary.html                  plain-language glossary with search
 tools.html                     index of the twelve stage calculators ("Try it" sections)
+assets/data/glossary.json      glossary terms (used by glossary.html and for in-text definitions on stage pages)
 findings.html                  one chart per stage demo result (synthetic data)
 pilot-map.html                 illustrated, layered map of a fictional pilot woreda
 brief.html                     two-page concept brief (rendered to assets/AIAE-concept-brief.pdf)

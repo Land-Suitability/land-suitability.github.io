@@ -402,6 +402,47 @@
     Object.keys(map).forEach(function (id) { io.observe(document.getElementById(id)); });
   }
 
+  // ---------------- glossary terms explained in context (stage pages and the story page)
+  function glossTerms() {
+    if (!currentSlug() && !/how-it-works/.test(location.pathname)) return;
+    var SKIP = { "Zone": 1, "Terrace": 1, "Recharge": 1, "Amhara Region": 1, "S1, S2, S3, N": 1 }, MAX = 14;
+    fetch("/assets/data/glossary.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+      var terms = [];
+      Object.keys(d.groups).forEach(function (k) {
+        d.groups[k].forEach(function (t) {
+          if (SKIP[t[0]]) return;
+          var id = t[0].toLowerCase().replace(/[^a-z0-9]+/g, "-"), def = t[0] + (t[1] ? " (" + t[1] + ")" : "") + ": " + t[2];
+          var esc = function (x) { return x.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); };
+          terms.push({ re: new RegExp("(^|[^A-Za-z0-9-])(" + esc(t[0]) + "(?:s|es)?)(?![A-Za-z0-9])", "i"), id: id, def: def, len: t[0].length });
+          if (/^[A-Z][A-Za-z0-9]{1,4}$/.test(t[1])) terms.push({ re: new RegExp("(^|[^A-Za-z0-9])(" + esc(t[1]) + ")(?![A-Za-z0-9])"), id: id, def: def, len: t[1].length });
+        });
+      });
+      terms.sort(function (a, b) { return b.len - a.len; });           // longest first: "Cooperative union" before "union"
+      var done = {}, count = 0;
+      var blocks = document.querySelectorAll("main p, main li, main td, main dd");
+      for (var i = 0; i < blocks.length && count < MAX; i++) {
+        var el = blocks[i];
+        if (el.closest("a, code, pre, h1, h2, h3, .calc, .toc, .chain-nav, .pager, svg, button, label, .gl-term, nav, .stage-hero")) continue;
+        var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, { acceptNode: function (n) {
+          return n.parentElement.closest("a, code, button, .gl-term, script, style") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } });
+        var nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (node) {
+          for (var j = 0; j < terms.length && count < MAX; j++) {
+            var t = terms[j]; if (done[t.id]) continue;
+            var m = t.re.exec(node.nodeValue); if (!m) continue;
+            var start = m.index + m[1].length, word = m[2];
+            var after = node.splitText(start); after.nodeValue = after.nodeValue.slice(word.length);
+            var a = document.createElement("a");
+            a.className = "gl-term"; a.href = "/glossary.html#" + t.id; a.textContent = word; a.setAttribute("data-def", t.def);
+            node.parentNode.insertBefore(a, after);
+            done[t.id] = 1; count++;
+            node = after;                                       // keep scanning the rest of this text for other terms
+          }
+        });
+      }
+    }).catch(function (e) { log("glossary terms", e); });
+  }
+
   // ---------------- copy buttons on code blocks
   function copyCode() {
     if (!navigator.clipboard) return;
@@ -421,7 +462,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode];
+    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode, glossTerms];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();
