@@ -5,6 +5,8 @@ from .domain import (MONTHS, ClusterWaterContext, Confidence, CropCoefficients, 
 from .handoff import AvailableLandGrid, load_handoff
 from .mapping import (AccessClass, Geology, GwClass, MappingRules, WaterAvailabilityMap, WaterPoint, d8_receivers,
                       fill_depressions, flow_accumulation, groundwater_potential, stream_flow_m3, water_access)
+from .irrigation import (CommandArea, FactorBand, IrrigationMethod, IrrigationSuitability, WaterAccessGrid,
+                         assess_irrigation, command_areas, load_water_handoff, reference_gross_m3_per_ha)
 from .hydrology import effective_rainfall, et0_hargreaves, extraterrestrial_radiation, irrigation_demand, kc_daily
 
 __all__ = [
@@ -15,4 +17,6 @@ __all__ = [
     "AvailableLandGrid", "load_handoff", "AccessClass", "Geology", "GwClass", "MappingRules", "WaterAvailabilityMap",
     "WaterPoint", "d8_receivers", "fill_depressions", "flow_accumulation", "groundwater_potential", "stream_flow_m3",
     "water_access",
+    "CommandArea", "FactorBand", "IrrigationMethod", "IrrigationSuitability", "WaterAccessGrid", "assess_irrigation",
+    "command_areas", "load_water_handoff", "reference_gross_m3_per_ha",
 ]

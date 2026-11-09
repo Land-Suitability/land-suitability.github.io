@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Irrigated Land Suitability | Stage 02 | AIAE</title>
+  <meta name="description" content="Phase 1, module 3: which available land can be irrigated well, by surface, sprinkler or drip, and how much of it the dry-season water can actually serve.">
+  <link rel="canonical" href="https://land-suitability.github.io/stages/02-water-resources/irrigated-suitability/">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#3f6b34">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Irrigated land suitability | AIAE">
+  <meta property="og:description" content="Land and water together: suitability for surface, sprinkler and drip irrigation, and the hectares the water can serve. Phase 1, module 3.">
+  <meta property="og:url" content="https://land-suitability.github.io/stages/02-water-resources/irrigated-suitability/">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social/02-water-resources.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="../assets/stage.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .chart h3 { margin: 0 0 4px; font-size: 16px; } .chart p.note { margin: 0 0 10px; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .chart svg text { fill: var(--text); font-size: 13px; } .chart svg .muted { fill: var(--muted); }
+    .chart svg .base { fill: var(--muted); opacity: .28; }
+    .pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 0; }
+    .pipeline span { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: 14px; }
+    .pipeline span.here { border: 2px solid var(--accent); font-weight: 700; }
+    .pipeline i { color: var(--muted); font-style: normal; }
+    .req th, .req td { text-align: center; } .req td:first-child, .req th:first-child { text-align: left; }
+    .m-surface, .m-sprinkler, .m-drip { font-weight: 700; }
+    .m-surface { color: #6b4f22; } .m-sprinkler { color: #1a56a0; } .m-drip { color: #0f6a4b; }
+    :root[data-theme="dark"] .m-surface { color: #e0c088; } :root[data-theme="dark"] .m-sprinkler { color: #8ab8e6; } :root[data-theme="dark"] .m-drip { color: #74d4ad; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .m-surface { color: #e0c088; }
+      :root:not([data-theme="light"]) .m-sprinkler { color: #8ab8e6; } :root:not([data-theme="light"]) .m-drip { color: #74d4ad; } }
+  </style>
+</head>
+<body class="d-plan">
+<!--
+  Phase 1, module 3: irrigated land suitability. Lives on branch `stage/02-water-resources`, published at
+  /stages/02-water-resources/irrigated-suitability/. Reads module 1's hand-off (data/handoff-module1.json)
+  and module 2's (assets/handoff-water-availability.json); writes assets/handoff-irrigated-suitability.json.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/roadmap.html">Phase 1 roadmap</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/roadmap.html">Phase 1 roadmap</a> / <a href="../">Stage 02</a> / Irrigated land suitability</p>
+
+  <section class="stage-hero has-art">
+    <img class="stage-art" src="../assets/irrigated-suitability-hero.svg" alt="">
+    <span class="pill">Plan · Phase 1 · Module 3</span>
+    <h1>Irrigated land suitability</h1>
+    <p class="lead">Module 1 found the available land; module 2 found how each field can reach water. This module brings them together: which land can be irrigated well, by surface, sprinkler or drip, and how much of it the dry-season water can actually serve.</p>
+    <div class="meta">
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
+      <span>Code <code>src/water_res/irrigation.py</code></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>7,906 ha</b><span>suitable (S1 or S2) for drip; 844 ha for surface</span></div>
+      <div class="stat"><b>334 ha</b><span>irrigable with drip in the dry season</span></div>
+      <div class="stat"><b>2.6&times;</b><span>the area surface irrigation could serve with the same water</span></div>
+      <div class="stat"><b>392</b><span>command areas: 6 stream basins, springs and well sites</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#position">Phase 1</a>
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#methods">Methods</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#try">Try it</a>
+      <a class="chip" href="#outputs">Outputs</a>
+      <a class="chip" href="#roadmap">Next</a>
+    </nav>
+  </section>
+
+  <section id="position">
+    <h2>Where this sits in Phase 1</h2>
+    <p class="section-intro">This module reads both earlier hand-off files: land from module 1, water from module 2. Its own hand-off, a list of command areas with their irrigable land and their water, is what module 4 uses to choose high-value crops.</p>
+    <div class="pipeline" aria-label="Phase 1 sequence">
+      <span><a href="/stages/01-land-intelligence/availability/">1 Land availability and suitability</a></span><i>&rarr;</i>
+      <span><a href="../water-availability/">2 Water availability mapping</a></span><i>&rarr;</i>
+      <span class="here">3 Irrigated land suitability</span><i>&rarr;</i><span>4 High-value crop guidance</span>
+    </div>
+    <p style="margin-top:12px"><a class="btn" href="/roadmap.html">See the full Phase 1 roadmap &rarr;</a></p>
+  </section>
+
+  <section id="why">
+    <h2>Why a separate irrigation assessment</h2>
+    <p class="section-intro"><strong>Analogy: land and water are the cook and the ingredients; the irrigation method is the kitchen that brings them together, and it has to fit the room.</strong> Furrows need flat, deep, well-drained land; a sprinkler needs pressure; drip fits steep plots and small water sources. Land that is good for rain-fed teff can be poor for furrows, and the other way round.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Method by method</h3><p>Only 844 ha of the available land suit surface irrigation, mostly because of slope; 7,906 ha suit drip.</p></div>
+      <div class="card"><h3>Water sets the ceiling</h3><p>Of that land, the dry-season water can serve about 334 ha with drip, 206 ha with sprinkler and 130 ha with surface irrigation.</p></div>
+      <div class="card"><h3>Efficiency is area</h3><p>Drip loses about 10% of the water, furrows about 40%. With water as the limit, the more efficient method irrigates more land, not just the same land with less.</p></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">Each irrigation method has its own requirements. The worst of slope, soil depth, drainage and water access gives the class. Fields served by one water body form a <strong>command area</strong>, and the water in its tightest dry-season month caps how many hectares it can irrigate.</p>
+    <figure class="diagram"><img src="../assets/irrigated-suitability-domain.svg" alt="Domain model: module 1 and 2 hand-offs feed method requirements; the worst factor gives the class; command areas group fields by water body and are handed to module 4."></figure>
+  </section>
+
+  <section id="methods">
+    <h2>Methods</h2>
+    <div class="table-wrap">
+      <table class="req">
+        <thead><tr><th>Factor (S1 / S2 / S3 limits)</th><th class="m-surface">Surface</th><th class="m-sprinkler">Sprinkler</th><th class="m-drip">Drip</th></tr></thead>
+        <tbody>
+          <tr><td>Slope, at most (%)</td><td>2 / 5 / 8</td><td>5 / 12 / 20</td><td>8 / 15 / 25</td></tr>
+          <tr><td>Soil depth, at least (cm)</td><td>90 / 60 / 40</td><td>75 / 50 / 30</td><td>60 / 40 / 25</td></tr>
+          <tr><td>Drainage class, at least (1 to 5)</td><td>4 / 3 / 2</td><td>3.5 / 2.5 / 1.5</td><td>3 / 2 / 1.5</td></tr>
+          <tr><td>Water access S1</td><td>gravity</td><td>pumped (pressure)</td><td>gravity, pumped or wells</td></tr>
+          <tr><td>Water access S2 / S3</td><td>pumped / wells</td><td>gravity or wells / -</td><td>- / harvest only</td></tr>
+          <tr><td>Application efficiency</td><td>60%</td><td>75%</td><td>90%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid cols-2" style="margin-top:14px">
+      <div class="card"><h3>Class per field</h3><p>Each factor gets S1 to N against the method's limits; the field takes the worst (the FAO limiting-factor rule used in stage 01). The best method for a field is the cheapest one that reaches its best class: surface, then sprinkler, then drip.</p></div>
+      <div class="card"><h3>Command areas</h3><p>Fields are grouped by the water body that serves them: all intakes of one stream basin, one spring, or one well site. A basin's supply is the flow at its outlet, so intakes never double count.</p></div>
+      <div class="card"><h3>Water-limited hectares</h3><p>A crop-neutral reference demand (Kc 1.0, November to April, net of effective rain) is divided by the method's efficiency. For streams and springs the tightest month decides; for wells, a year's recharge against the season.</p></div>
+      <div class="card"><h3>What is not yet assessed</h3><p>Soil texture and infiltration, and salinity or sodicity, are not in the hand-off yet. They are flagged as missing, never assumed suitable, and come with the field soil survey.</p></div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Furrows on the valley floors</h3><p>Traditional diversions and furrows work on flat valley land near streams. That land is limited, and on heavy Vertisols poor drainage lowers its class for surface irrigation.</p></div>
+      <div class="card"><h3>Slopes and terraces</h3><p>Much farmland is sloping. Drip and small sprinkler sets on terraces open land that furrows cannot reach, but they need investment and maintenance.</p></div>
+      <div class="card"><h3>Household-scale irrigation</h3><p>Motor pumps, hand-dug wells and small drip kits are spreading among smallholders; they fit the small command areas this module finds.</p></div>
+      <div class="card"><h3>Shared water, shared rules</h3><p>Intakes along one stream draw on one supply. Water-user associations allocate it; this module shows why their rules matter in the driest months.</p></div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo on the landscape of modules 1 and 2</h2>
+    <p class="section-intro">The same made-up 16 km landscape, read from the two hand-off files. Reference demand peaks in March at 2,717 m&sup3; per hectare for surface irrigation, 2,173 for sprinkler and 1,811 for drip. <strong>Synthetic data only.</strong></p>
+    <figure class="diagram"><img src="../assets/irrigation-maps.svg" alt="Three synthetic maps: suitability for surface irrigation, suitability for drip irrigation, and the best method per field."></figure>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="chart" id="chart-suit"><h3>Suitable land by method</h3><p class="note">Available land in S1 to N, per irrigation method.</p></div>
+      <div class="chart" id="chart-water"><h3>Suitable land versus what the water serves</h3><p class="note">S1 plus S2 land, and the part the dry-season water can irrigate.</p></div>
+    </div>
+    <div class="callout"><strong>What this shows.</strong> Slope is the most common limit, so surface irrigation suits only 844 ha while drip suits 7,906 ha. Water then cuts all three down: in the driest months the water bodies can serve about 130 ha with furrows, 206 ha with sprinklers and 334 ha with drip. The largest stream basin has 2,775 ha of drip-suitable land but water for 93 ha. For the pilot, this argues for small, efficient, high-value irrigated plots rather than large furrow schemes: exactly the question of module 4.</div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: which method suits this field?</h2>
+    <p class="section-intro">Describe a field. The same limits as <code>assess_irrigation()</code> give the class for each method and the cheapest method that reaches the best class.</p>
+    <div class="calc" id="calc-ir">
+      <div>
+        <div class="field"><label for="ir-s">Slope</label><output id="ir-s-o"></output><input type="range" id="ir-s" min="0" max="35" step="0.5" value="6" data-unit="%"></div>
+        <div class="field"><label for="ir-d">Soil depth</label><output id="ir-d-o"></output><input type="range" id="ir-d" min="10" max="150" step="5" value="80" data-unit="cm"></div>
+        <div class="field"><label for="ir-dr">Drainage (1 very poor to 5 well drained)</label><output id="ir-dr-o"></output><input type="range" id="ir-dr" min="1" max="5" step="0.5" value="3.5" data-unit=""></div>
+        <div class="field"><label for="ir-a">Water access (from module 2)</label><output id="ir-a-o"></output>
+          <select id="ir-a"><option value="GRAVITY" selected>Gravity canal</option><option value="PUMPED">Pumped lift</option><option value="GROUNDWATER">Shallow wells</option><option value="HARVEST_ONLY">Rainwater harvesting only</option></select></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="ir-big"></div>
+        <div class="table-wrap"><table id="ir-t" style="width:100%;border-collapse:collapse;font-size:14px"></table></div>
+        <div class="verdict" id="ir-v"></div>
+      </div>
+    </div>
+    <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      var root = $("calc-ir"); if (!root) return;
+      try {
+        root.querySelectorAll("input[type=range]").forEach(function (r) {
+          var o = $(r.id + "-o"), show = function () { o.textContent = r.value + (r.dataset.unit ? " " + r.dataset.unit : ""); }; show(); r.addEventListener("input", show); });
+        var REQ = { surface: { slope: [2, 5, 8, 0], depth: [90, 60, 40, 1], drain: [4, 3, 2, 1] },
+                    sprinkler: { slope: [5, 12, 20, 0], depth: [75, 50, 30, 1], drain: [3.5, 2.5, 1.5, 1] },
+                    drip: { slope: [8, 15, 25, 0], depth: [60, 40, 25, 1], drain: [3, 2, 1.5, 1] } };
+        var ACC = { surface: { GRAVITY: 3, PUMPED: 2, GROUNDWATER: 1, HARVEST_ONLY: 0 }, sprinkler: { GRAVITY: 2, PUMPED: 3, GROUNDWATER: 2, HARVEST_ONLY: 0 },
+                    drip: { GRAVITY: 3, PUMPED: 3, GROUNDWATER: 3, HARVEST_ONLY: 1 } };
+        var CL = ["N", "S3", "S2", "S1"], NAME = { slope: "slope", depth: "soil depth", drain: "drainage", water: "water access" };
+        function rank(v, b) { return b[3] ? (v >= b[0] ? 3 : v >= b[1] ? 2 : v >= b[2] ? 1 : 0) : (v <= b[0] ? 3 : v <= b[1] ? 2 : v <= b[2] ? 1 : 0); }
+        function update() {
+          var x = { slope: +$("ir-s").value, depth: +$("ir-d").value, drain: +$("ir-dr").value }, acc = $("ir-a").value, res = {};
+          ["surface", "sprinkler", "drip"].forEach(function (m) {
+            var parts = { slope: rank(x.slope, REQ[m].slope), depth: rank(x.depth, REQ[m].depth), drain: rank(x.drain, REQ[m].drain), water: ACC[m][acc] };
+            var r = Math.min.apply(null, Object.values(parts)), lim = Object.keys(parts).filter(function (k) { return parts[k] === r && r < 3; }).map(function (k) { return NAME[k]; });
+            res[m] = [r, lim];
+          });
+          var top = Math.max(res.surface[0], res.sprinkler[0], res.drip[0]), best = ["surface", "sprinkler", "drip"].filter(function (m) { return res[m][0] === top; })[0];
+          $("ir-big").innerHTML = top >= 1 ? 'Best: <span class="m-' + best + '">' + best + "</span> (" + CL[top] + ")" : "Not suitable for irrigation";
+          var td = 'style="padding:6px;border-top:1px solid var(--border)"';
+          $("ir-t").innerHTML = '<tr><th style="text-align:left;padding:6px">Method</th><th style="text-align:left;padding:6px">Class</th><th style="text-align:left;padding:6px">Limited by</th></tr>' +
+            ["surface", "sprinkler", "drip"].map(function (m) { return "<tr><td " + td + ' class="m-' + m + '">' + m + "</td><td " + td + "><b>" + CL[res[m][0]] + "</b></td><td " + td + ">" + (res[m][1].join(", ") || "nothing") + "</td></tr>"; }).join("");
+          var v = $("ir-v"); v.className = "verdict " + (top >= 2 ? "good" : top === 1 ? "warn" : "bad");
+          v.textContent = top >= 2 ? "Irrigable with " + best + (best === "drip" ? ": drip also stretches scarce water furthest." : ", the cheapest method that reaches this class.") :
+            top === 1 ? "Only marginal for irrigation: invest first (terraces, drainage) or keep it rain-fed." : "Keep this field rain-fed.";
+          $("ir-a-o").textContent = "";
+        }
+        root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+        update();
+      } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-ir]", e); }
+    })();
+    </script>
+  </section>
+
+  <section id="outputs">
+    <h2>Output: what module 4 receives</h2>
+    <p class="section-intro">A list of command areas with their suitable and irrigable hectares per method, the best method, twelve months of water and the mean altitude, plus the monthly climate. Shallow-well sites are pooled into one record whose irrigable area is the sum of each site's own limit.</p>
+<pre><code>{
+  "source_id": "BASIN-13-00", "kind": "stream", "mean_altitude_m": 2037,
+  "best_method": "drip",
+  "suitable_ha":  {"surface": 350.0, "sprinkler": 2118.8, "drip": 2775.0},
+  "irrigable_ha": {"surface": 61.8,  "sprinkler": 77.3,   "drip": 92.8},
+  "sustainable_m3": [258475, 193856, 168009, 193856, ...]
+}</code></pre>
+    <p class="note">From <code>assets/handoff-irrigated-suitability.json</code> (synthetic, v0.1).</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>What comes next</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Validate</h3><p>Compare the classes with existing small-scale schemes and household irrigation in the pilot woreda; agree limits with the regional irrigation office.</p></div>
+      <div class="card"><h3>Complete the soils</h3><p>Add texture, infiltration and salinity from the field soil survey so that no factor is left unassessed.</p></div>
+      <div class="card"><h3>Module 4</h3><p><a href="/stages/04-crop-planning/high-value-crops/">High-value crop guidance</a>: which crops pay best on these command areas with their water, and how to grow them.</p></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/water_res/irrigation.py      method requirements, classes, command areas, reference demand
+src/demo_irrigation.py           demo on the module 1 and 2 hand-offs (maps, JSON, hand-off)
+tests/test_irrigation.py         unit tests for every rule</code></pre>
+<pre><code>git switch stage/02-water-resources
+python3 src/demo_water_map.py    # module 2 (writes its hand-off)
+python3 src/demo_irrigation.py   # module 3
+python3 tests/test_irrigation.py</code></pre>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. Phase 1, module 3.</span>
+    <span>Synthetic data only. No personal data.</span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  fetch("../assets/demo-irrigated-suitability.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+    var fmt = function (v) { return Math.round(v).toLocaleString("en-US"); };
+    var M = [["surface", "Surface"], ["sprinkler", "Sprinkler"], ["drip", "Drip"]], C = [["S1", "#1a9641"], ["S2", "#a6d96a"], ["S3", "#fdae61"], ["N", "#d7191c"]];
+    var total = Object.values(d.hectares_by_method.surface).reduce(function (a, b) { return a + b; }, 0), g = "";
+    M.forEach(function (m, k) {
+      var y = 8 + k * 34, x = 84;
+      g += '<text x="0" y="' + (y + 16) + '">' + m[1] + "</text>";
+      C.forEach(function (c) { var w = d.hectares_by_method[m[0]][c[0]] / total * 290; g += '<rect x="' + x.toFixed(1) + '" y="' + y + '" width="' + Math.max(0, w - 1.5).toFixed(1) + '" height="22" rx="3" fill="' + c[1] + '"><title>' + m[1] + " " + c[0] + ": " + fmt(d.hectares_by_method[m[0]][c[0]]) + " ha</title></rect>"; x += w; });
+    });
+    g += '<g transform="translate(84,128)">' + C.map(function (c, i) { return '<rect x="' + i * 62 + '" y="-10" width="12" height="12" rx="2" fill="' + c[1] + '"/><text x="' + (i * 62 + 17) + '">' + c[0] + "</text>"; }).join("") + "</g>";
+    document.getElementById("chart-suit").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 138" role="img" aria-label="Suitability classes per irrigation method">' + g + "</svg>");
+    var h = "", max = d.suitable_ha.drip, col = { surface: "#8a6d3b", sprinkler: "#1f63b8", drip: "#137a57" };
+    M.forEach(function (m, k) {
+      var y = 8 + k * 34, s = d.suitable_ha[m[0]], ir = d.irrigable_ha[m[0]];
+      h += '<text x="0" y="' + (y + 16) + '">' + m[1] + "</text>" +
+        '<rect class="base" x="84" y="' + y + '" width="' + (s / max * 165).toFixed(1) + '" height="22" rx="3"><title>' + m[1] + " suitable: " + fmt(s) + " ha</title></rect>" +
+        '<rect x="84" y="' + y + '" width="' + Math.max(2, ir / max * 200).toFixed(1) + '" height="22" rx="3" fill="' + col[m[0]] + '"><title>' + m[1] + " irrigable with the water: " + fmt(ir) + " ha</title></rect>" +
+        '<text x="' + (90 + s / max * 165).toFixed(1) + '" y="' + (y + 16) + '" class="muted">' + fmt(ir) + " of " + fmt(s) + " ha</text>";
+    });
+    h += '<g transform="translate(84,128)"><rect width="12" height="12" y="-10" rx="2" fill="#137a57"/><text x="17">has water</text><rect x="100" width="12" height="12" y="-10" rx="2" class="base"/><text x="117">suitable, no water</text></g>';
+    document.getElementById("chart-water").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 138" role="img" aria-label="Suitable versus water-limited irrigable hectares per method">' + h + "</svg>");
+  }).catch(function (e) { if (window.console) console.error("[irrigation charts]", e); });
+})();
+</script>
+</body>
+</html>

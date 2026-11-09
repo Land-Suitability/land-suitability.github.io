@@ -1,0 +1,249 @@
+{
+ "note": "Synthetic landscape of modules 1 and 2; indicative requirements v0.1. Not real land or water.",
+ "hectares_by_method": {
+  "surface": {
+   "S1": 150.0,
+   "S2": 693.75,
+   "S3": 2081.25,
+   "N": 11331.25
+  },
+  "sprinkler": {
+   "S1": 31.25,
+   "S2": 5750.0,
+   "S3": 4918.75,
+   "N": 3556.25
+  },
+  "drip": {
+   "S1": 2906.25,
+   "S2": 5000.0,
+   "S3": 6118.75,
+   "N": 231.25
+  }
+ },
+ "best_method_ha": {
+  "surface": 150.0,
+  "sprinkler": 2906.25,
+  "drip": 4850.0
+ },
+ "suitable_ha": {
+  "surface": 843.75,
+  "sprinkler": 5781.25,
+  "drip": 7906.25
+ },
+ "irrigable_ha": {
+  "surface": 130.01468801766978,
+  "sprinkler": 205.62631143014906,
+  "drip": 333.86129210381006
+ },
+ "best_mix_irrigable_ha": 333.86129210381006,
+ "command_areas": 392,
+ "reference_peak_month": "Mar",
+ "reference_peak_m3_per_ha": {
+  "surface": 2716.5000000000005,
+  "sprinkler": 2173.2000000000003,
+  "drip": 1811.0
+ },
+ "top_command_areas": [
+  {
+   "source_id": "BASIN-13-00",
+   "kind": "stream",
+   "mean_altitude_m": 2037,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 350.0,
+    "sprinkler": 2118.8,
+    "drip": 2775.0
+   },
+   "irrigable_ha": {
+    "surface": 61.8,
+    "sprinkler": 77.3,
+    "drip": 92.8
+   },
+   "sustainable_m3": [
+    258475,
+    193856,
+    168009,
+    193856,
+    323094,
+    775425,
+    3554031,
+    5169500,
+    3877125,
+    2261656,
+    969281,
+    516950
+   ]
+  },
+  {
+   "source_id": "BASIN-36-00",
+   "kind": "stream",
+   "mean_altitude_m": 1627,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 18.8,
+    "drip": 93.8
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 18.8,
+    "drip": 88.6
+   },
+   "sustainable_m3": [
+    246925,
+    185194,
+    160501,
+    185194,
+    308656,
+    740775,
+    3395219,
+    4938500,
+    3703875,
+    2160594,
+    925969,
+    493850
+   ]
+  },
+  {
+   "source_id": "BASIN-53-16",
+   "kind": "stream",
+   "mean_altitude_m": 1910,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 287.5,
+    "sprinkler": 962.5,
+    "drip": 1193.8
+   },
+   "irrigable_ha": {
+    "surface": 39.3,
+    "sprinkler": 49.1,
+    "drip": 59.0
+   },
+   "sustainable_m3": [
+    164325,
+    123244,
+    106811,
+    123244,
+    205406,
+    492975,
+    2259469,
+    3286500,
+    2464875,
+    1437844,
+    616219,
+    328650
+   ]
+  },
+  {
+   "source_id": "BASIN-00-15",
+   "kind": "stream",
+   "mean_altitude_m": 2231,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 93.8,
+    "sprinkler": 706.2,
+    "drip": 900.0
+   },
+   "irrigable_ha": {
+    "surface": 21.7,
+    "sprinkler": 27.1,
+    "drip": 32.5
+   },
+   "sustainable_m3": [
+    90650,
+    67988,
+    58922,
+    67988,
+    113312,
+    271950,
+    1246438,
+    1813000,
+    1359750,
+    793188,
+    339938,
+    181300
+   ]
+  },
+  {
+   "source_id": "BASIN-00-55",
+   "kind": "stream",
+   "mean_altitude_m": 2507,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 37.5,
+    "drip": 56.2
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 8.1,
+    "drip": 9.7
+   },
+   "sustainable_m3": [
+    27125,
+    20344,
+    17631,
+    20344,
+    33906,
+    81375,
+    372969,
+    542500,
+    406875,
+    237344,
+    101719,
+    54250
+   ]
+  },
+  {
+   "source_id": "BASIN-61-00",
+   "kind": "stream",
+   "mean_altitude_m": 1429,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 25.0
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 9.0
+   },
+   "sustainable_m3": [
+    25200,
+    18900,
+    16380,
+    18900,
+    31500,
+    75600,
+    346500,
+    504000,
+    378000,
+    220500,
+    94500,
+    50400
+   ]
+  }
+ ],
+ "missing_factors": [
+  "soil texture and infiltration",
+  "salinity and sodicity"
+ ],
+ "irrigable_by_kind": {
+  "stream": {
+   "surface": 122.85753727222527,
+   "sprinkler": 180.43493465856798,
+   "drip": 291.6923799006074
+  },
+  "spring": {
+   "surface": 7.157150745444505,
+   "sprinkler": 8.946438431805632,
+   "drip": 14.11794588625069
+  },
+  "groundwater": {
+   "surface": 0.0,
+   "sprinkler": 16.244938339775445,
+   "drip": 28.05096631695196
+  }
+ }
+}

@@ -20,6 +20,10 @@ published under `/stages/02-water-resources/`.
 | `src/water_res/handoff.py` | Reads and checks module 1's hand-off (`data/handoff-module1.json`) |
 | `src/demo_water_map.py` | Mapping demo on module 1's landscape (writes `assets/water-maps.svg`, `assets/demo-water-availability.json`) |
 | `tests/test_mapping.py` | Unit tests for the mapping rules |
+| `irrigated-suitability/index.html` | Phase 1, module 3: irrigated land suitability page (per-method classes, command areas, calculator) |
+| `src/water_res/irrigation.py` | Method requirements, irrigation classes, command areas, reference dry-season demand |
+| `src/demo_irrigation.py` | Module 3 demo on the module 1 and 2 hand-offs (writes `assets/irrigation-maps.svg`, `assets/handoff-irrigated-suitability.json`) |
+| `tests/test_irrigation.py` | Unit tests for the irrigation rules |
 
 ```bash
 pip install numpy scipy        # scipy is optional; it is used for the crop-mix optimisation step
@@ -27,6 +31,8 @@ python3 src/demo.py
 python3 tests/test_water.py    # or: python3 -m pytest tests
 python3 src/demo_water_map.py
 python3 tests/test_mapping.py
+python3 src/demo_irrigation.py   # after demo_water_map.py: reads its hand-off
+python3 tests/test_irrigation.py
 ```
 
 Key design decision: the water budget passed to stage 04 is **twelve monthly limits**, not one

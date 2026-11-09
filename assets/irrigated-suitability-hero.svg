@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="t d" font-family="Helvetica, Arial, sans-serif">
+<title id="t">Which method fits which land?</title>
+<desc id="d">Three irrigated plots: furrows on flat valley land, a sprinkler on a gentle slope, and drip lines on a steeper terraced slope, all fed from one stream.</desc>
+<style>.cloud{animation:drift 11s ease-in-out infinite alternate}.glow{animation:breathe 5s ease-in-out infinite}.spray{animation:spin 2.4s linear infinite;transform-origin:420px 196px}.drop{animation:fall 1.4s ease-in infinite}@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(14px)}}@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.65}}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fall{0%{opacity:0;transform:translateY(-4px)}40%{opacity:1}100%{opacity:0;transform:translateY(6px)}}@media (prefers-reduced-motion:reduce){.cloud,.glow,.spray,.drop{animation:none}}</style>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6f2"/><stop offset="1" stop-color="#f4efe2"/></linearGradient></defs>
+<rect width="640" height="400" fill="url(#sky)"/>
+<circle class="glow" cx="560" cy="62" r="56" fill="#ffe7a3" opacity=".5"/><circle cx="560" cy="62" r="28" fill="#f2c14e"/>
+<g class="cloud" fill="#fff" opacity=".95"><ellipse cx="200" cy="56" rx="46" ry="16"/><ellipse cx="226" cy="46" rx="30" ry="20"/><ellipse cx="176" cy="52" rx="22" ry="14"/></g>
+<!-- steep slope on the right, gentle middle, flat valley left -->
+<path d="M0 300 L250 290 C330 270 380 240 450 200 C520 160 580 120 640 100 L640 400 L0 400 Z" fill="#a9c48f"/>
+<path d="M0 320 C150 312 260 312 640 300 V400 H0Z" fill="#c8b483"/>
+<!-- stream along the valley -->
+<path d="M640 330 C480 340 300 348 0 344" fill="none" stroke="#4f97c9" stroke-width="8"/><path d="M640 330 C480 340 300 348 0 344" fill="none" stroke="#9fd0ee" stroke-width="2.5"/>
+<!-- furrows on flat land -->
+<g transform="translate(40 300)"><rect width="190" height="34" fill="#9a7b4f"/>
+  <g stroke="#5aa0c8" stroke-width="3"><path d="M0 7 h190 M0 17 h190 M0 27 h190"/></g><g stroke="#3f6b34" stroke-width="2" stroke-dasharray="3 5"><path d="M0 12 h190 M0 22 h190"/></g></g>
+<!-- sprinkler on gentle slope -->
+<g><path d="M330 268 L520 210 L520 236 L330 292 Z" fill="#7fb069"/><path d="M420 240 v-44" stroke="#5d6d7e" stroke-width="3"/>
+  <g class="spray" stroke="#5aa0c8" stroke-width="2" fill="none"><path d="M420 196 q-30 -6 -48 10"/><path d="M420 196 q30 -6 48 10"/></g>
+  <circle cx="420" cy="196" r="4" fill="#2f5d8a"/></g>
+<!-- drip lines on terraces, steep -->
+<g><path d="M520 182 L640 140 L640 154 L520 196 Z" fill="#93c47d"/><path d="M528 160 L640 122 L640 134 L528 172 Z" fill="#93c47d"/><path d="M536 138 L640 104 L640 114 L536 148 Z" fill="#93c47d"/>
+  <g stroke="#1f4e8c" stroke-width="1.6"><path d="M520 188 L640 147"/><path d="M528 166 L640 128"/><path d="M536 143 L640 109"/></g>
+  <g fill="#2a78d6"><circle class="drop" cx="560" cy="178" r="2"/><circle class="drop" cx="600" cy="164" r="2" style="animation-delay:.5s"/><circle class="drop" cx="580" cy="149" r="2" style="animation-delay:.9s"/></g></g>
+<g font-size="12" font-weight="bold">
+  <g transform="translate(70 282)"><rect x="-6" y="-14" width="120" height="20" rx="10" fill="#8a6d3b"/><text x="54" fill="#fff" text-anchor="middle">surface: flat land</text></g>
+  <g transform="translate(330 170)"><rect x="-6" y="-14" width="132" height="20" rx="10" fill="#2a78d6"/><text x="60" fill="#fff" text-anchor="middle">sprinkler: gentle</text></g>
+  <g transform="translate(496 222)"><rect x="-6" y="-14" width="132" height="20" rx="10" fill="#159a6e"/><text x="60" fill="#fff" text-anchor="middle">drip: steep, scarce</text></g>
+</g>
+</svg>

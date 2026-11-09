@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 330" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Domain model: module 1 land layers and module 2 water access feed per-method factor bands; the worst factor gives the irrigation class; fields grouped by water body form command areas with water-limited hectares, handed to module 4.">
+<rect width="1030" height="330" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Irrigated land suitability domain model</text>
+<g font-size="12" fill="#1f2a20">
+  <rect x="20" y="52" width="200" height="110" rx="8" fill="#f1e8d6" stroke="#74582a"/>
+  <text x="120" y="74" text-anchor="middle" font-weight="bold">Module 1 hand-off</text>
+  <text x="34" y="98">available land</text><text x="34" y="116">slope, soil depth,</text><text x="34" y="134">drainage, altitude</text>
+  <rect x="20" y="176" width="200" height="108" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="120" y="198" text-anchor="middle" font-weight="bold">Module 2 hand-off</text>
+  <text x="34" y="222">access class and intake</text><text x="34" y="240">water bodies, 12 months</text><text x="34" y="258">climate: ET0 and rain</text>
+  <rect x="268" y="52" width="230" height="232" rx="8" fill="#e3efdd" stroke="#3f6b34"/>
+  <text x="383" y="74" text-anchor="middle" font-weight="bold">FactorBand per method</text>
+  <text x="282" y="100">surface: slope 2/5/8%,</text><text x="282" y="118">depth 90/60/40 cm, drainage</text>
+  <text x="282" y="146">sprinkler: slope 5/12/20%,</text><text x="282" y="164">needs pressure (pump)</text>
+  <text x="282" y="192">drip: slope 8/15/25%,</text><text x="282" y="210">fits wells and small yields</text>
+  <text x="282" y="240" fill="#5d665e">not yet: texture, salinity</text><text x="282" y="258" fill="#5d665e">(flagged, never assumed)</text>
+  <rect x="546" y="52" width="210" height="110" rx="8" fill="#1f2a20"/>
+  <text x="651" y="74" text-anchor="middle" font-weight="bold" fill="#fff">IrrigationClass</text>
+  <text x="560" y="100" fill="#fff">S1..N per field and method:</text><text x="560" y="118" fill="#fff">the worst factor wins;</text><text x="560" y="136" fill="#fff">best = cheapest top method</text>
+  <rect x="546" y="176" width="210" height="108" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="651" y="198" text-anchor="middle" font-weight="bold">CommandArea</text>
+  <text x="560" y="222">fields of one water body;</text><text x="560" y="240">water in the leanest dry</text><text x="560" y="258">month caps the hectares</text>
+  <rect x="804" y="52" width="206" height="232" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+  <text x="907" y="74" text-anchor="middle" font-weight="bold">Hand-off to module 4</text>
+  <text x="818" y="100">per command area:</text><text x="818" y="120">suitable and irrigable ha</text><text x="818" y="140">per method, best method,</text><text x="818" y="160">12 months of water,</text><text x="818" y="180">mean altitude</text>
+  <text x="818" y="214">plus the climate for</text><text x="818" y="232">crop water needs</text>
+</g>
+<g stroke="#555" stroke-width="1.8" fill="none" marker-end="url(#a)">
+  <path d="M220 107 L266 120"/><path d="M220 230 L266 210"/><path d="M498 107 L544 107"/><path d="M651 162 L651 174"/>
+  <path d="M220 250 C380 300 500 270 544 250"/><path d="M756 230 L802 200"/>
+</g>
+</svg>
