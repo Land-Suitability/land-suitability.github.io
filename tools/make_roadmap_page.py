@@ -80,18 +80,18 @@ MODULES = (
            "A map of the wells and taps, not just the size of the tank.", "produce"),
     Module(3, "Irrigated land suitability analysis", "Which available land can be irrigated well, by which method?",
            ("01-land-intelligence", "02-water-resources"), "i-04",
-           (Part("3a Irrigation land factors: slope, soil depth, texture, drainage, salinity", "next"),
-            Part("3b Water access from module 2: source, distance, lift, command area", "planned"),
-            Part("3c Classes S1 to N per method: surface, sprinkler, drip", "planned")),
+           (Part("3a Irrigation land factors per method: slope, soil depth, drainage (texture and salinity flagged as missing)", "done", "/stages/02-water-resources/irrigated-suitability/"),
+            Part("3b Water access from module 2, and command areas per water body", "done", "/stages/02-water-resources/irrigated-suitability/"),
+            Part("3c Classes S1 to N per method (surface, sprinkler, drip) and water-limited hectares", "done", "/stages/02-water-resources/irrigated-suitability/")),
            ("AvailableLand from module 1", "WaterAvailabilityMap from module 2", "Soil physical properties", "Irrigation method requirements"),
            "IrrigatedSuitability: S1 to N per method, and irrigable command areas with their water",
            ("Classes checked against existing irrigation schemes", "Command areas agreed with water-user associations", "Monthly water limits respected in every command area"),
            "Good land and water are not enough; they must meet: water has to reach the field at the right height and soil."),
     Module(4, "High-value crop production guidance", "Which high-value crops suit each irrigable area, and how should they be grown?",
            ("04-crop-planning", "07-farm-production"), "i-07",
-           (Part("4a Crop requirements for onion, tomato, pepper, potato and garlic", "planned"),
-            Part("4b Crop choice per command area: water per month, margin, market window", "planned"),
-            Part("4c Production guides: calendar, inputs, irrigation schedule, post-harvest care", "planned")),
+           (Part("4a Crop profiles for onion, tomato, hot pepper, potato and garlic", "done", "/stages/04-crop-planning/high-value-crops/"),
+            Part("4b Crops and planting dates per command area within monthly water and markets", "done", "/stages/04-crop-planning/high-value-crops/"),
+            Part("4c Dated production guides: nursery, irrigation per stage, inputs, harvest, post-harvest", "done", "/stages/04-crop-planning/high-value-crops/")),
            ("IrrigatedSuitability from module 3", "Monthly water from module 2", "Prices and market windows (stage 05)", "Agronomic practice from research partners"),
            "CropGuide: recommended crops per command area, with calendar, inputs and irrigation schedule",
            ("Guides reviewed by extension and research partners", "Recommendations tested on demonstration plots", "Farmers and development agents can use them in the field"),
@@ -172,7 +172,7 @@ def build() -> str:
     <span class="eyebrow">Build roadmap</span>
     <h1>Phase 1: built one module at a time</h1>
     <p class="lead">The twelve stages describe the whole system. Phase 1 builds its foundation in a fixed order, and each module is finished before the next one starts: first the land, then the water, then where the two meet for irrigation, and finally what to grow there.</p>
-    <p class="note">Sequence set with the project's academic lead. Each module's output is the next module's input.</p>
+    <p class="note">Sequence set with the project's academic lead. Each module's output is the next module's input. <strong>All four modules are built (v0.1, synthetic demos).</strong> Next: validate each with the pilot woreda's real data, in the same order.</p>
   </section>
 
   <div class="flow" aria-label="Phase 1 sequence">

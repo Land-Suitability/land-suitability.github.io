@@ -116,6 +116,8 @@
       { title: "Phase 1 roadmap: one module at a time", href: "/roadmap.html", sub: "Land, water, irrigated suitability, high-value crops", icon: "d-plan", domain: "" },
       { title: "Land availability (Phase 1, module 1a)", href: "/stages/01-land-intelligence/availability/", sub: "In use, expandable, conditional, excluded", icon: "i-01", domain: "plan" },
       { title: "Water availability mapping (Phase 1, module 2)", href: "/stages/02-water-resources/water-availability/", sub: "Streams, groundwater, springs, access per field", icon: "i-02", domain: "plan" },
+      { title: "Irrigated land suitability (Phase 1, module 3)", href: "/stages/02-water-resources/irrigated-suitability/", sub: "Surface, sprinkler, drip; command areas", icon: "i-02", domain: "plan" },
+      { title: "High-value crop guidance (Phase 1, module 4)", href: "/stages/04-crop-planning/high-value-crops/", sub: "Onion, tomato, pepper, potato, garlic: plan and guides", icon: "i-04", domain: "plan" },
       { title: "Pilot map: the chain on one map", href: "/pilot-map.html", sub: "Fictional woreda with a layer per stage", icon: "i-01", domain: "" },
       { title: "People in the chain: who does what", href: "/people.html", sub: "Ten roles and the stages they lead", icon: "i-07", domain: "" },
       { title: "Findings: what the demos show", href: "/findings.html", sub: "One chart per stage, synthetic data", icon: "d-sell", domain: "" },

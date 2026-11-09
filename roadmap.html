@@ -63,14 +63,14 @@
     <span class="eyebrow">Build roadmap</span>
     <h1>Phase 1: built one module at a time</h1>
     <p class="lead">The twelve stages describe the whole system. Phase 1 builds its foundation in a fixed order, and each module is finished before the next one starts: first the land, then the water, then where the two meet for irrigation, and finally what to grow there.</p>
-    <p class="note">Sequence set with the project's academic lead. Each module's output is the next module's input.</p>
+    <p class="note">Sequence set with the project's academic lead. Each module's output is the next module's input. <strong>All four modules are built (v0.1, synthetic demos).</strong> Next: validate each with the pilot woreda's real data, in the same order.</p>
   </section>
 
   <div class="flow" aria-label="Phase 1 sequence">
       <div class="f d-plan"><span class="n">Module 1 · <span class="badge st-done">v0.1 built</span></span><b>Agricultural land availability and suitability</b><small>AvailableLand</small></div>
       <div class="f d-produce"><span class="n">Module 2 · <span class="badge st-done">v0.1 built</span></span><b>Water resource availability mapping</b><small>WaterAvailabilityMap</small></div>
-      <div class="f d-plan"><span class="n">Module 3 · <span class="badge st-next">next</span></span><b>Irrigated land suitability analysis</b><small>IrrigatedSuitability</small></div>
-      <div class="f d-sell"><span class="n">Module 4 · <span class="badge st-plan">planned</span></span><b>High-value crop production guidance</b><small>CropGuide</small></div>
+      <div class="f d-plan"><span class="n">Module 3 · <span class="badge st-done">v0.1 built</span></span><b>Irrigated land suitability analysis</b><small>IrrigatedSuitability</small></div>
+      <div class="f d-sell"><span class="n">Module 4 · <span class="badge st-done">v0.1 built</span></span><b>High-value crop production guidance</b><small>CropGuide</small></div>
   </div>
 
   <section class="module d-plan" id="module-1">
@@ -106,11 +106,11 @@
   <section class="module d-plan" id="module-3">
     <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg></div>
     <div>
-      <h2>Module 3: Irrigated land suitability analysis <span class="badge st-next">next</span></h2>
+      <h2>Module 3: Irrigated land suitability analysis <span class="badge st-done">v0.1 built</span></h2>
       <p class="q">Which available land can be irrigated well, by which method?</p>
       <p class="analogy">Good land and water are not enough; they must meet: water has to reach the field at the right height and soil.</p>
       <div class="cols">
-        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-next">next</span><span>3a Irrigation land factors: slope, soil depth, texture, drainage, salinity</span></li><li><span class="badge st-plan">planned</span><span>3b Water access from module 2: source, distance, lift, command area</span></li><li><span class="badge st-plan">planned</span><span>3c Classes S1 to N per method: surface, sprinkler, drip</span></li></ul></div>
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/irrigated-suitability/">3a Irrigation land factors per method: slope, soil depth, drainage (texture and salinity flagged as missing)</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/irrigated-suitability/">3b Water access from module 2, and command areas per water body</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/irrigated-suitability/">3c Classes S1 to N per method (surface, sprinkler, drip) and water-limited hectares</a></span></li></ul></div>
         <div class="box"><h3>Inputs</h3><ul><li>AvailableLand from module 1</li><li>WaterAvailabilityMap from module 2</li><li>Soil physical properties</li><li>Irrigation method requirements</li></ul></div>
         <div class="box"><h3>Done when</h3><ul><li>Classes checked against existing irrigation schemes</li><li>Command areas agreed with water-user associations</li><li>Monthly water limits respected in every command area</li></ul></div>
       </div>
@@ -121,11 +121,11 @@
   <section class="module d-sell" id="module-4">
     <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg></div>
     <div>
-      <h2>Module 4: High-value crop production guidance <span class="badge st-plan">planned</span></h2>
+      <h2>Module 4: High-value crop production guidance <span class="badge st-done">v0.1 built</span></h2>
       <p class="q">Which high-value crops suit each irrigable area, and how should they be grown?</p>
       <p class="analogy">The menu is written only after we know the kitchen and the ingredients.</p>
       <div class="cols">
-        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-plan">planned</span><span>4a Crop requirements for onion, tomato, pepper, potato and garlic</span></li><li><span class="badge st-plan">planned</span><span>4b Crop choice per command area: water per month, margin, market window</span></li><li><span class="badge st-plan">planned</span><span>4c Production guides: calendar, inputs, irrigation schedule, post-harvest care</span></li></ul></div>
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/04-crop-planning/high-value-crops/">4a Crop profiles for onion, tomato, hot pepper, potato and garlic</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/04-crop-planning/high-value-crops/">4b Crops and planting dates per command area within monthly water and markets</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/04-crop-planning/high-value-crops/">4c Dated production guides: nursery, irrigation per stage, inputs, harvest, post-harvest</a></span></li></ul></div>
         <div class="box"><h3>Inputs</h3><ul><li>IrrigatedSuitability from module 3</li><li>Monthly water from module 2</li><li>Prices and market windows (stage 05)</li><li>Agronomic practice from research partners</li></ul></div>
         <div class="box"><h3>Done when</h3><ul><li>Guides reviewed by extension and research partners</li><li>Recommendations tested on demonstration plots</li><li>Farmers and development agents can use them in the field</li></ul></div>
       </div>
