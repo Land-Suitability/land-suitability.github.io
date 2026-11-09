@@ -15,11 +15,18 @@ published under `/stages/04-crop-planning/`.
 | `src/crop_plan/` | Python package: domain model and the market-backwards linear programme (HiGHS via scipy) |
 | `src/demo.py` | Three-cluster, two-season demo (writes assets/demo-plan.json) |
 | `tests/test_planner.py` | Unit tests |
+| `high-value-crops/index.html` | Phase 1, module 4: high-value crop guidance page (plan, comparisons, water use, dated guides, calculator) |
+| `src/crop_plan/high_value.py` | Crop profiles, water need per planting date and method, command areas as planning units, guides |
+| `src/demo_high_value.py` | Module 4 demo on module 3's command areas (writes `assets/demo-high-value.json`) |
+| `data/handoff-module3.json` | Module 3's output (stage/02-water-resources), with the commit it came from |
+| `tests/test_high_value.py` | Unit tests, including a planner run |
 
 ```bash
 pip install numpy scipy
 python3 src/demo.py
 python3 tests/test_planner.py
+python3 src/demo_high_value.py
+python3 tests/test_high_value.py
 ```
 
 Prices, costs and yields in the demo are illustrative. Water enters as twelve monthly constraints per cluster (see stage 02).

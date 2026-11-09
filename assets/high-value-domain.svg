@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 330" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Domain model: module 3 command areas and climate, high-value crop profiles and market limits feed the stage 04 planner; it returns the crop plan with planting dates and shadow prices, and crop guides for each recommended crop.">
+<rect width="1030" height="330" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">High-value crop guidance domain model</text>
+<g font-size="12" fill="#1f2a20">
+  <rect x="20" y="52" width="210" height="96" rx="8" fill="#f1e8d6" stroke="#74582a"/>
+  <text x="125" y="74" text-anchor="middle" font-weight="bold">Module 3 hand-off</text>
+  <text x="34" y="98">command areas: land per</text><text x="34" y="116">method, 12 months of water,</text><text x="34" y="134">altitude; monthly climate</text>
+  <rect x="20" y="160" width="210" height="124" rx="8" fill="#e3efdd" stroke="#3f6b34"/>
+  <text x="125" y="182" text-anchor="middle" font-weight="bold">HighValueCrop (value)</text>
+  <text x="34" y="206">onion, tomato, hot pepper,</text><text x="34" y="224">potato, garlic: Kc curve,</text><text x="34" y="242">altitude, yield, price, cost,</text><text x="34" y="260">market size (indicative)</text>
+  <rect x="278" y="52" width="220" height="96" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="388" y="74" text-anchor="middle" font-weight="bold">CropOption per date</text>
+  <text x="292" y="98">crop x planting date x method</text><text x="292" y="116">12 months of water need</text><text x="292" y="134">(Kc x ET0, effective rain)</text>
+  <rect x="278" y="160" width="220" height="124" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="388" y="182" text-anchor="middle" font-weight="bold">CommandAreaUnit</text>
+  <text x="292" y="206">land for its best method</text><text x="292" y="224">monthly water (wells: a</text><text x="292" y="242">year spread over Oct to May)</text><text x="292" y="260">yield factor from altitude</text>
+  <rect x="546" y="52" width="210" height="232" rx="8" fill="#1f2a20"/>
+  <text x="651" y="74" text-anchor="middle" font-weight="bold" fill="#fff">Stage 04 planner</text>
+  <text x="560" y="100" fill="#fff">linear programme:</text><text x="560" y="120" fill="#fff">maximise net income</text><text x="560" y="140" fill="#fff">within land, monthly water</text><text x="560" y="160" fill="#fff">and market limits</text>
+  <text x="560" y="194" fill="#fff">staggered planting comes</text><text x="560" y="212" fill="#fff">from offering four dates</text><text x="560" y="246" fill="#cfd8cc">shadow prices say</text><text x="560" y="264" fill="#cfd8cc">what binds</text>
+  <rect x="804" y="52" width="206" height="110" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+  <text x="907" y="74" text-anchor="middle" font-weight="bold">Crop plan (output)</text>
+  <text x="818" y="98">hectares per crop, date</text><text x="818" y="116">and command area; tonnes,</text><text x="818" y="134">income; what binds</text>
+  <rect x="804" y="176" width="206" height="108" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+  <text x="907" y="198" text-anchor="middle" font-weight="bold">CropGuide (output)</text>
+  <text x="818" y="222">dated steps: nursery, beds,</text><text x="818" y="240">irrigation per stage, inputs,</text><text x="818" y="258">harvest, post-harvest care</text>
+</g>
+<g stroke="#555" stroke-width="1.8" fill="none" marker-end="url(#a)">
+  <path d="M230 100 L276 100"/><path d="M230 120 C250 160 260 200 276 210"/><path d="M230 222 L276 120"/>
+  <path d="M498 100 L544 120"/><path d="M498 222 L544 200"/><path d="M230 270 C380 320 500 300 544 260"/>
+  <path d="M756 110 L802 107"/><path d="M756 230 L802 230"/>
+</g>
+</svg>

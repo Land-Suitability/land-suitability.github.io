@@ -1,0 +1,401 @@
+{
+ "contract": "aiae.phase1.irrigated_suitability",
+ "version": "0.1",
+ "producer": "stage/02-water-resources src/demo_irrigation.py",
+ "note": "Command areas with irrigable land and their water. Synthetic; indicative v0.1.",
+ "command_areas": [
+  {
+   "source_id": "BASIN-13-00",
+   "kind": "stream",
+   "mean_altitude_m": 2037,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 350.0,
+    "sprinkler": 2118.8,
+    "drip": 2775.0
+   },
+   "irrigable_ha": {
+    "surface": 61.8,
+    "sprinkler": 77.3,
+    "drip": 92.8
+   },
+   "sustainable_m3": [
+    258475,
+    193856,
+    168009,
+    193856,
+    323094,
+    775425,
+    3554031,
+    5169500,
+    3877125,
+    2261656,
+    969281,
+    516950
+   ]
+  },
+  {
+   "source_id": "BASIN-36-00",
+   "kind": "stream",
+   "mean_altitude_m": 1627,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 18.8,
+    "drip": 93.8
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 18.8,
+    "drip": 88.6
+   },
+   "sustainable_m3": [
+    246925,
+    185194,
+    160501,
+    185194,
+    308656,
+    740775,
+    3395219,
+    4938500,
+    3703875,
+    2160594,
+    925969,
+    493850
+   ]
+  },
+  {
+   "source_id": "BASIN-53-16",
+   "kind": "stream",
+   "mean_altitude_m": 1910,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 287.5,
+    "sprinkler": 962.5,
+    "drip": 1193.8
+   },
+   "irrigable_ha": {
+    "surface": 39.3,
+    "sprinkler": 49.1,
+    "drip": 59.0
+   },
+   "sustainable_m3": [
+    164325,
+    123244,
+    106811,
+    123244,
+    205406,
+    492975,
+    2259469,
+    3286500,
+    2464875,
+    1437844,
+    616219,
+    328650
+   ]
+  },
+  {
+   "source_id": "BASIN-00-15",
+   "kind": "stream",
+   "mean_altitude_m": 2231,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 93.8,
+    "sprinkler": 706.2,
+    "drip": 900.0
+   },
+   "irrigable_ha": {
+    "surface": 21.7,
+    "sprinkler": 27.1,
+    "drip": 32.5
+   },
+   "sustainable_m3": [
+    90650,
+    67988,
+    58922,
+    67988,
+    113312,
+    271950,
+    1246438,
+    1813000,
+    1359750,
+    793188,
+    339938,
+    181300
+   ]
+  },
+  {
+   "source_id": "BASIN-00-55",
+   "kind": "stream",
+   "mean_altitude_m": 2507,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 37.5,
+    "drip": 56.2
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 8.1,
+    "drip": 9.7
+   },
+   "sustainable_m3": [
+    27125,
+    20344,
+    17631,
+    20344,
+    33906,
+    81375,
+    372969,
+    542500,
+    406875,
+    237344,
+    101719,
+    54250
+   ]
+  },
+  {
+   "source_id": "BASIN-61-00",
+   "kind": "stream",
+   "mean_altitude_m": 1429,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 25.0
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 9.0
+   },
+   "sustainable_m3": [
+    25200,
+    18900,
+    16380,
+    18900,
+    31500,
+    75600,
+    346500,
+    504000,
+    378000,
+    220500,
+    94500,
+    50400
+   ]
+  },
+  {
+   "source_id": "SP-1",
+   "kind": "spring",
+   "mean_altitude_m": 2568,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 50.0,
+    "sprinkler": 406.2,
+    "drip": 593.8
+   },
+   "irrigable_ha": {
+    "surface": 2.6,
+    "sprinkler": 3.2,
+    "drip": 3.8
+   },
+   "sustainable_m3": [
+    8365,
+    6926,
+    6971,
+    6746,
+    8365,
+    10793,
+    13942,
+    13942,
+    13492,
+    12547,
+    10793,
+    9759
+   ]
+  },
+  {
+   "source_id": "SP-3",
+   "kind": "spring",
+   "mean_altitude_m": 2308,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 25.0,
+    "sprinkler": 125.0,
+    "drip": 181.2
+   },
+   "irrigable_ha": {
+    "surface": 2.3,
+    "sprinkler": 2.9,
+    "drip": 3.5
+   },
+   "sustainable_m3": [
+    7601,
+    6293,
+    6334,
+    6130,
+    7601,
+    9808,
+    12668,
+    12668,
+    12260,
+    11402,
+    9808,
+    8868
+   ]
+  },
+  {
+   "source_id": "SP-5",
+   "kind": "spring",
+   "mean_altitude_m": 2375,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 37.5,
+    "sprinkler": 237.5,
+    "drip": 443.8
+   },
+   "irrigable_ha": {
+    "surface": 2.3,
+    "sprinkler": 2.8,
+    "drip": 3.4
+   },
+   "sustainable_m3": [
+    7365,
+    6098,
+    6138,
+    5940,
+    7365,
+    9503,
+    12275,
+    12275,
+    11879,
+    11048,
+    9503,
+    8592
+   ]
+  },
+  {
+   "source_id": "SP-6",
+   "kind": "spring",
+   "mean_altitude_m": 2384,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 12.5
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 0.0,
+    "drip": 3.4
+   },
+   "sustainable_m3": [
+    7350,
+    6086,
+    6125,
+    5928,
+    7350,
+    9484,
+    12250,
+    12250,
+    11855,
+    11025,
+    9484,
+    8575
+   ]
+  },
+  {
+   "source_id": "WELLS-POOLED",
+   "kind": "groundwater",
+   "sites": 382,
+   "mean_altitude_m": 2043,
+   "best_method": "drip",
+   "suitable_ha": {
+    "surface": 0.0,
+    "sprinkler": 1168.8,
+    "drip": 1631.2
+   },
+   "irrigable_ha": {
+    "surface": 0.0,
+    "sprinkler": 16.2,
+    "drip": 28.1
+   },
+   "sustainable_m3": [
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800,
+    50800
+   ]
+  }
+ ],
+ "method_efficiency": {
+  "surface": 0.6,
+  "sprinkler": 0.75,
+  "drip": 0.9
+ },
+ "climate": {
+  "months": [
+   "Jan",
+   "Feb",
+   "Mar",
+   "Apr",
+   "May",
+   "Jun",
+   "Jul",
+   "Aug",
+   "Sep",
+   "Oct",
+   "Nov",
+   "Dec"
+  ],
+  "et0_mm_day": [
+   4.48,
+   5.22,
+   5.73,
+   5.78,
+   5.42,
+   4.61,
+   3.84,
+   3.86,
+   4.41,
+   4.46,
+   4.24,
+   4.16
+  ],
+  "rain_mm": [
+   3.0,
+   2.0,
+   15.0,
+   25.0,
+   80.0,
+   190.0,
+   400.0,
+   380.0,
+   220.0,
+   90.0,
+   15.0,
+   4.0
+  ]
+ },
+ "from_module_2": {
+  "module_2": "stage/02-water-resources src/demo_water_map.py",
+  "module_1": {
+   "branch": "stage/01-land-intelligence",
+   "commit": "c75805e",
+   "path": "assets/handoff-available-land.json"
+  }
+ },
+ "provenance": {
+  "branch": "stage/02-water-resources",
+  "commit": "5d0896f",
+  "path": "assets/handoff-irrigated-suitability.json"
+ }
+}

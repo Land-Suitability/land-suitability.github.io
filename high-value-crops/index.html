@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>High-Value Crop Guidance | Stage 04 | AIAE</title>
+  <meta name="description" content="Phase 1, module 4: which high-value crops (onion, tomato, hot pepper, potato, garlic) pay best on each irrigable command area with its water, when to plant them, and how to grow them.">
+  <link rel="canonical" href="https://land-suitability.github.io/stages/04-crop-planning/high-value-crops/">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#3f6b34">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="High-value crop guidance | AIAE">
+  <meta property="og:description" content="Crops, planting dates and production guides for the irrigable command areas: Phase 1, module 4.">
+  <meta property="og:url" content="https://land-suitability.github.io/stages/04-crop-planning/high-value-crops/">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social/04-crop-planning.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="../assets/stage.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .chart h3 { margin: 0 0 4px; font-size: 16px; } .chart p.note { margin: 0 0 10px; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .chart svg text { fill: var(--text); font-size: 12.5px; } .chart svg .muted { fill: var(--muted); }
+    .chart svg .grid line { stroke: var(--border); }
+    .pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 0; }
+    .pipeline span { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: 14px; }
+    .pipeline span.here { border: 2px solid var(--accent); font-weight: 700; }
+    .pipeline i { color: var(--muted); font-style: normal; }
+    .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); margin: 8px 0 0; }
+    .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+    .guide { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 14px; }
+    .guide h3 { margin: 0 0 2px; } .guide .sub { color: var(--muted); font-size: 13.5px; margin: 0 0 8px; }
+    .guide svg { width: 100%; height: auto; display: block; }
+    .guide svg text { fill: var(--text); font-size: 12px; } .guide svg .muted { fill: var(--muted); } .guide svg .tick { stroke: var(--border); }
+    .guides-grid { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  </style>
+</head>
+<body class="d-plan">
+<!--
+  Phase 1, module 4: high-value crop guidance. Lives on branch `stage/04-crop-planning`, published at
+  /stages/04-crop-planning/high-value-crops/. Reads module 3's hand-off (data/handoff-module3.json) and
+  uses the stage 04 planner. Code: src/crop_plan/high_value.py, demo: src/demo_high_value.py.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/roadmap.html">Phase 1 roadmap</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/roadmap.html">Phase 1 roadmap</a> / <a href="../">Stage 04</a> / High-value crop guidance</p>
+
+  <section class="stage-hero has-art">
+    <img class="stage-art" src="../assets/high-value-hero.svg" alt="">
+    <span class="pill">Plan · Phase 1 · Module 4</span>
+    <h1>High-value crop guidance</h1>
+    <p class="lead">The last module of Phase 1. Module 3 found the irrigable command areas and their water; this module chooses which high-value crops to grow on them, when to plant each, and gives a dated production guide for every recommended crop.</p>
+    <div class="meta">
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
+      <span>Code <code>src/crop_plan/high_value.py</code></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>603 ha</b><span>planted with five high-value crops in the dry season</span></div>
+      <div class="stat"><b>94 M</b><span>birr expected net income (synthetic prices)</span></div>
+      <div class="stat"><b>+28%</b><span>from staggering the planting dates, with the same water</span></div>
+      <div class="stat"><b>2.4&times;</b><span>the income of growing onion only</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#position">Phase 1</a>
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#crops">Crops</a>
+      <a class="chip" href="#methods">Methods</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#guides">Guides</a>
+      <a class="chip" href="#try">Try it</a>
+      <a class="chip" href="#roadmap">Next</a>
+    </nav>
+  </section>
+
+  <section id="position">
+    <h2>Where this sits in Phase 1</h2>
+    <p class="section-intro">The last step of the chain the professor set out: land, then water, then where they meet for irrigation, then what to grow there. This module reads module 3's hand-off and uses the stage 04 planner that already balances land, monthly water and markets.</p>
+    <div class="pipeline" aria-label="Phase 1 sequence">
+      <span><a href="/stages/01-land-intelligence/availability/">1 Land availability and suitability</a></span><i>&rarr;</i>
+      <span><a href="/stages/02-water-resources/water-availability/">2 Water availability mapping</a></span><i>&rarr;</i>
+      <span><a href="/stages/02-water-resources/irrigated-suitability/">3 Irrigated land suitability</a></span><i>&rarr;</i>
+      <span class="here">4 High-value crop guidance</span>
+    </div>
+    <p style="margin-top:12px"><a class="btn" href="/roadmap.html">See the full Phase 1 roadmap &rarr;</a> <a class="btn" href="../">The stage 04 planner</a></p>
+  </section>
+
+  <section id="why">
+    <h2>Why high-value crops, and why a plan</h2>
+    <p class="section-intro"><strong>Analogy: modules 1 to 3 found the kitchen and the ingredients; this module writes the menu and a recipe card for each dish.</strong> Dry-season water is scarce, so every cubic metre should earn as much as it can. Vegetables and spices earn several times more per hectare than irrigated cereals, but each market is limited and each crop peaks in a different month.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Mix beats one crop</h3><p>Onion alone would saturate its market at about 200 ha. A mix of five crops earns 2.4 times as much from the same command areas.</p></div>
+      <div class="card"><h3>Stagger the planting</h3><p>Crops planted from October to January peak in different months, so the same water serves more land: 28% more income than planting everything in mid-November.</p></div>
+      <div class="card"><h3>Then markets bind</h3><p>With staggering, the water stretches until buyers are the limit: every crop reaches its market cap, which points straight to stage 05.</p></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">Each crop is offered at four planting dates under each irrigation method, with twelve months of water need. Each command area brings its land, its monthly water and its altitude. The stage 04 planner chooses the hectares; a guide is written for every crop it recommends.</p>
+    <figure class="diagram"><img src="../assets/high-value-domain.svg" alt="Domain model: module 3 command areas, crop profiles and market limits feed the stage 04 planner, which returns the crop plan and crop guides."></figure>
+  </section>
+
+  <section id="crops">
+    <h2>The five crops</h2>
+    <p class="section-intro">Indicative profiles. Crop coefficients and stage lengths follow FAO-56; yields, prices, costs and market sizes are synthetic placeholders until stage 05 provides market data.</p>
+    <div class="table-wrap">
+      <table id="crop-table">
+        <thead><tr><th>Crop</th><th class="num">Days in field</th><th>Best altitude (m)</th><th class="num">Yield (t/ha)</th><th class="num">Price (birr/t)</th><th class="num">Net margin (birr/ha)</th><th class="num">Market (t)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="methods">
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Water need per crop and date</h3><p>Daily crop water use is the crop coefficient (FAO-56 curve) times reference evapotranspiration, added up per month, minus effective rain (USDA-SCS), divided by the method's efficiency: the same steps as the stage 02 budget, using the climate that comes with the module 3 hand-off.</p></div>
+      <div class="card"><h3>Command areas as planning units</h3><p>Each command area offers the land suitable for its best method and its water month by month. Shallow wells use storage: a year's sustainable recharge is spread over October to May. Altitude gives a yield factor: 1.0 in a crop's best band, 0.7 in its acceptable band, 0 outside.</p></div>
+      <div class="card"><h3>The planner</h3><p>The stage 04 linear programme maximises expected net income within land, twelve monthly water limits per command area and market limits per crop. Offering four planting dates lets it stagger planting by itself.</p></div>
+      <div class="card"><h3>Guides</h3><p>For every recommended crop, a dated guide at its main planting date: nursery, bed preparation, irrigation per growth stage (mm per week), fertilizer, scouting, harvest and post-harvest care.</p></div>
+    </div>
+    <div class="callout"><strong>Why 603 ha when module 3 said about 334?</strong> Module 3 used a crop-neutral reference: full crop cover (Kc 1.0) in every dry month at once. Real crops use less water early and late in their cycle, and staggered planting spreads their peaks, so the same water serves more land.</div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Onion and garlic</h3><p>Irrigated onion is already a common dry-season crop in Amhara's valleys; cured bulbs and garlic store for months, so they suit farmers far from markets.</p></div>
+      <div class="card"><h3>Hot pepper</h3><p>Pepper for berbere is in demand across Ethiopia; dried red pepper keeps and travels well, which matters on roads that close in the rains.</p></div>
+      <div class="card"><h3>Potato in the highlands</h3><p>Potato fits the cooler, higher command areas; clean seed tubers and diffuse-light stores are the main constraints.</p></div>
+      <div class="card"><h3>Tomato needs a buyer first</h3><p>Tomato is perishable: it should be planted only with a buyer and transport arranged (stages 05 and 11), and harvested into crates.</p></div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo on module 3's command areas</h2>
+    <p class="section-intro">Eleven command areas from module 3 with 7,906 ha suitable for their best method (drip in every case), five crops at four planting dates. <strong>Synthetic data and prices; not advice for real fields.</strong></p>
+    <div class="grid cols-2">
+      <div class="chart" id="chart-plan"><h3>What to plant, and when</h3><p class="note">Hectares by crop and planting month.</p></div>
+      <div class="chart" id="chart-compare"><h3>What mixing and staggering are worth</h3><p class="note">Expected net income, million birr.</p></div>
+    </div>
+    <div class="chart" id="chart-water" style="margin-top:16px"><h3>Water use in the largest command area</h3><p class="note">Monthly water used by each crop (stacked) against the sustainable supply of the basin (line).</p></div>
+    <div class="table-wrap" style="margin-top:16px"><table id="area-table"><thead><tr><th>Command area</th><th class="num">Suitable (ha)</th><th class="num">Planted (ha)</th><th>Crops (planting month, ha)</th></tr></thead><tbody></tbody></table></div>
+    <div class="callout"><strong>What this shows.</strong> The planner plants about 603 ha: onion, potato, tomato, hot pepper and garlic, with planting spread from October to January. The largest basin uses its water fully in its tightest month. Every crop reaches its market limit, so the next gain comes from markets (stage 05), not from more water or land.</div>
+  </section>
+
+  <section id="guides">
+    <h2>Production guides</h2>
+    <p class="section-intro">A dated recipe card for each recommended crop at its main planting date, with drip irrigation. Templates to adapt with development agents and research partners.</p>
+    <div class="guides-grid" id="guides-host"></div>
+    <div class="legend" id="guide-legend"></div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: water and money for one plot</h2>
+    <p class="section-intro">The same water calculation as <code>water_need_m3_ha()</code> and the same synthetic economics. Compare the plot's peak-month need with what a stream gives.</p>
+    <div class="calc" id="calc-hv">
+      <div>
+        <div class="field"><label for="hv-c">Crop</label><output id="hv-c-o"></output><select id="hv-c"></select></div>
+        <div class="field"><label for="hv-p">Planting (transplanting) date</label><output id="hv-p-o"></output>
+          <select id="hv-p"><option value="10">15 October</option><option value="11" selected>15 November</option><option value="12">15 December</option><option value="1">15 January</option></select></div>
+        <div class="field"><label for="hv-m">Irrigation method</label><output id="hv-m-o"></output>
+          <select id="hv-m"><option value="surface">Surface (60%)</option><option value="sprinkler">Sprinkler (75%)</option><option value="drip" selected>Drip (90%)</option></select></div>
+        <div class="field"><label for="hv-a">Plot area</label><output id="hv-a-o"></output><input type="range" id="hv-a" min="0.25" max="20" step="0.25" value="2" data-unit="ha"></div>
+        <div class="field"><label for="hv-q">Stream or well yield in the dry season</label><output id="hv-q-o"></output><input type="range" id="hv-q" min="0" max="20" step="0.5" value="3" data-unit="l/s"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="hv-big"></div>
+        <div id="hv-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <svg id="hv-svg" viewBox="0 0 300 110" style="width:100%;height:auto" role="img" aria-label="Monthly water need of the plot"></svg>
+        <div class="verdict" id="hv-v"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="outputs">
+    <h2>Output: the crop plan</h2>
+    <p class="section-intro">Per command area: crops, planting dates and hectares; per crop: tonnes and the guide. The full output is <code>assets/demo-high-value.json</code>; stage 06 (inputs) and stage 07 (field operations) read the plan and the guides.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>Phase 1 is complete: what comes next</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Validate with real data</h3><p>Replace the synthetic layers of all four modules with the pilot woreda's data, field checks and agreed thresholds, module by module, in the same order.</p></div>
+      <div class="card"><h3>Markets</h3><p>Replace the synthetic prices and market limits with stage 05 contracts and market studies: the plan says markets are now the binding limit.</p></div>
+      <div class="card"><h3>Demonstration plots</h3><p>Test the guides on demonstration plots with development agents (stage 07) before any recommendation reaches farmers.</p></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/crop_plan/high_value.py     crop profiles, water need per date and method, command areas as units, guides
+src/demo_high_value.py          plan on module 3's command areas, comparisons, guides (writes JSON)
+data/handoff-module3.json       module 3's output, with the commit it came from
+tests/test_high_value.py        unit tests, including a planner run</code></pre>
+<pre><code>git switch stage/04-crop-planning
+python3 src/demo_high_value.py
+python3 tests/test_high_value.py</code></pre>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. Phase 1, module 4.</span>
+    <span>Synthetic data and prices only. No personal data.</span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  var COL = { onion: "#c98a3e", tomato: "#d1402f", pepper: "#8f2a1e", potato: "#2a78d6", garlic: "#7a5bb0" };
+  var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], EFF = { surface: 0.6, sprinkler: 0.75, drip: 0.9 };
+  function $(id) { return document.getElementById(id); }
+  function fmt(v, dp) { return Number(v).toLocaleString("en-US", { maximumFractionDigits: dp || 0, minimumFractionDigits: dp || 0 }); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  fetch("../assets/demo-high-value.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+    var crops = {}; d.crops.forEach(function (c) { crops[c.key] = c; });
+    // crop table
+    $("crop-table").querySelector("tbody").innerHTML = d.crops.map(function (c) {
+      return "<tr><td><i style=\"display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:" + COL[c.key] + "\"></i>" + esc(c.name) + "</td><td class=\"num\">" + c.field_days +
+        "</td><td>" + c.altitude_opt[0] + " to " + c.altitude_opt[1] + "</td><td class=\"num\">" + c.yield_t_ha + "</td><td class=\"num\">" + fmt(c.price_birr_t) +
+        "</td><td class=\"num\">" + fmt(c.margin_birr_ha) + "</td><td class=\"num\">" + fmt(c.market_max_t) + "</td></tr>"; }).join("");
+
+    // plan: stacked bars by planting month
+    var months = ["Oct", "Nov", "Dec", "Jan"], keys = d.crops.map(function (c) { return c.key; }), cell = {};
+    d.ha_by_crop_and_month.forEach(function (r) { cell[r.crop + r.month] = r.ha; });
+    var maxM = Math.max.apply(null, months.map(function (m) { return keys.reduce(function (s, k) { return s + (cell[k + m] || 0); }, 0); }));
+    var g = "", bw = 54;
+    months.forEach(function (m, i) {
+      var x = 40 + i * 82, y = 170, tot = 0;
+      keys.forEach(function (k) { var v = cell[k + m] || 0; if (!v) return; var hgt = v / maxM * 140; y -= hgt;
+        g += '<rect x="' + x + '" y="' + y.toFixed(1) + '" width="' + bw + '" height="' + Math.max(0, hgt - 1.5).toFixed(1) + '" rx="2" fill="' + COL[k] + '"><title>' + esc(crops[k].name) + ", planted " + m + ": " + fmt(v, 1) + " ha</title></rect>"; tot += v; });
+      g += '<text x="' + (x + bw / 2) + '" y="188" text-anchor="middle">15 ' + m + "</text>" + '<text x="' + (x + bw / 2) + '" y="' + (y - 5).toFixed(1) + '" text-anchor="middle" class="muted">' + fmt(tot) + " ha</text>";
+    });
+    $("chart-plan").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 196" role="img" aria-label="Hectares by crop and planting month">' + g + "</svg>" +
+      '<div class="legend">' + d.crops.map(function (c) { return '<span><i style="background:' + COL[c.key] + '"></i>' + esc(c.name) + " " + fmt(d.ha_by_crop[c.key] || 0) + " ha</span>"; }).join("") + "</div>");
+
+    // comparisons
+    var cmp = [["Recommended mix, staggered", d.comparisons.recommended, "#1f63b8"], ["All planted 15 November", d.comparisons.single_date_nov, "#8aa9cf"], ["Onion only", d.comparisons.onion_only, "#c98a3e"]];
+    var cmax = cmp[0][1], h = "";
+    cmp.forEach(function (c, i) { var y = 10 + i * 46, w = c[1] / cmax * 220;
+      h += '<text x="0" y="' + (y + 12) + '">' + c[0] + "</text>" + '<rect x="0" y="' + (y + 18) + '" width="' + w.toFixed(1) + '" height="18" rx="3" fill="' + c[2] + '"><title>' + c[0] + ": " + fmt(c[1] / 1e6, 1) + " million birr</title></rect>" +
+        '<text x="' + (w + 6).toFixed(1) + '" y="' + (y + 32) + '" class="muted">' + fmt(c[1] / 1e6, 1) + " M</text>"; });
+    $("chart-compare").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 150" role="img" aria-label="Net income of three strategies">' + h + "</svg>");
+
+    // water use vs supply, largest command area
+    var la = d.largest_area, order = [9, 10, 11, 0, 1, 2, 3, 4, 5], used = order.map(function (m) { return keys.reduce(function (s, k) { return s + ((la.use_m3[k] || [])[m] || 0); }, 0); });
+    var sup = order.map(function (m) { return la.supply_m3[m]; }), wmax = Math.max.apply(null, used) * 1.7, W = 640, H = 210, x0 = 60, colw = (W - x0 - 20) / order.length;
+    var wsvg = '<g class="grid">' + [0, 0.25, 0.5, 0.75, 1].map(function (t) { var y = 180 - t * 160; return '<line x1="' + x0 + '" x2="' + (W - 20) + '" y1="' + y + '" y2="' + y + '"/><text x="' + (x0 - 6) + '" y="' + (y + 4) + '" text-anchor="end" class="muted">' + fmt(t * wmax / 1000) + "k</text>"; }).join("") + "</g>";
+    order.forEach(function (m, i) { var x = x0 + i * colw + 8, y = 180;
+      keys.forEach(function (k) { var v = (la.use_m3[k] || [])[m] || 0; if (!v) return; var hh = v / wmax * 160; y -= hh;
+        wsvg += '<rect x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + (colw - 16).toFixed(1) + '" height="' + Math.max(0, hh - 1).toFixed(1) + '" fill="' + COL[k] + '"><title>' + MON[m] + " " + esc(crops[k].name) + ": " + fmt(v) + " m3</title></rect>"; });
+      wsvg += '<text x="' + (x + (colw - 16) / 2).toFixed(1) + '" y="198" text-anchor="middle">' + MON[m] + "</text>"; });
+    var pts = order.map(function (m, i) { return (x0 + i * colw + colw / 2).toFixed(1) + "," + Math.max(8, 180 - Math.min(la.supply_m3[m], wmax) / wmax * 160).toFixed(1); }).join(" ");
+    wsvg += '<polyline points="' + pts + '" fill="none" stroke="var(--text)" stroke-width="2" stroke-dasharray="5 4"/>' +
+      '<text x="' + (W - 22) + '" y="14" text-anchor="end" class="muted" font-size="11">dashed: sustainable supply of ' + esc(la.id) + " (runs off the top after the rains)</text>";
+    $("chart-water").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Monthly water use by crop against supply in the largest command area">' + wsvg + "</svg>");
+
+    // per-area table
+    $("area-table").querySelector("tbody").innerHTML = d.per_area.map(function (a) {
+      return "<tr><td>" + esc(a.area) + "</td><td class=\"num\">" + fmt(a.suitable_ha) + "</td><td class=\"num\">" + fmt(a.planted_ha, 1) + "</td><td>" +
+        a.crops.map(function (c) { return esc(c.crop) + " (" + c.planted + ", " + fmt(c.ha, 1) + ")"; }).join("; ") + "</td></tr>"; }).join("");
+
+    // guides as dated timelines, September to July
+    var KIND = { nursery: ["#7a5bb0", "nursery"], field: ["#8a6d3b", "field work"], water: ["#2a78d6", "irrigation"], input: ["#1baf7a", "fertilizer and weeding"], care: ["#eda100", "scouting and care"], harvest: ["#d1402f", "harvest"] };
+    var t0 = Date.UTC(2026, 8, 1), t1 = Date.UTC(2027, 6, 31), span = t1 - t0, GX = 300, GW = 336;
+    function px(iso) { var t = Date.parse(iso + "T00:00:00Z"); return GX + Math.max(0, Math.min(1, (t - t0) / span)) * GW; }
+    $("guides-host").innerHTML = Object.keys(d.guides).map(function (k) {
+      var gd = d.guides[k], rows = gd.steps, svg = "", y = 22;
+      svg += [8, 9, 10, 11, 0, 1, 2, 3, 4, 5, 6].map(function (m, i) { var x = GX + i * GW / 11; return '<line class="tick" x1="' + x + '" x2="' + x + '" y1="14" y2="' + (16 + rows.length * 20) + '"/><text x="' + (x + 3) + '" y="11" class="muted">' + MON[m] + "</text>"; }).join("");
+      rows.forEach(function (s) { var a = px(s.start), b = Math.max(px(s.end), a + 4);
+        svg += '<text x="0" y="' + (y + 11) + '">' + esc(s.what.length > 48 ? s.what.slice(0, 47) + "…" : s.what) + "<title>" + esc(s.what) + "</title></text>" +
+          '<rect x="' + a.toFixed(1) + '" y="' + (y + 1) + '" width="' + (b - a).toFixed(1) + '" height="13" rx="3" fill="' + KIND[s.kind][0] + '"><title>' + esc(s.what) + ": " + s.start + " to " + s.end + "</title></rect>"; y += 20; });
+      return '<div class="guide"><h3><i style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;background:' + COL[k] + '"></i>' + esc(gd.name) + '</h3><p class="sub">Planted ' + gd.planting + ", " + gd.field_days + " days in the field, drip irrigation, net margin about " + fmt(gd.margin_birr_ha) + ' birr per hectare (synthetic)</p><svg viewBox="0 0 640 ' + (24 + rows.length * 20) + '" role="img" aria-label="Dated production guide for ' + esc(gd.name) + '">' + svg + "</svg></div>";
+    }).join("");
+    $("guide-legend").innerHTML = Object.keys(KIND).map(function (k) { return '<span><i style="background:' + KIND[k][0] + '"></i>' + KIND[k][1] + "</span>"; }).join("");
+
+    // calculator: same water method as the Python code
+    var sel = $("hv-c"); sel.innerHTML = d.crops.map(function (c) { return '<option value="' + c.key + '"' + (c.key === "onion" ? " selected" : "") + ">" + esc(c.name) + "</option>"; }).join("");
+    var root = $("calc-hv");
+    root.querySelectorAll("input[type=range]").forEach(function (r) { var o = $(r.id + "-o"), show = function () { o.textContent = r.value + " " + r.dataset.unit; }; show(); r.addEventListener("input", show); });
+    function peff(p) { return p <= 250 ? p * (125 - 0.2 * p) / 125 : 125 + 0.1 * p; }
+    function need(c, pm, method) {
+      var st = c.stages, kc = c.kc, k = [], i;
+      for (i = 0; i < st[0]; i++) k.push(kc[0]);
+      for (i = 1; i <= st[1]; i++) k.push(kc[0] + (kc[1] - kc[0]) * i / st[1]);
+      for (i = 0; i < st[2]; i++) k.push(kc[1]);
+      for (i = 1; i <= st[3]; i++) k.push(kc[1] + (kc[2] - kc[1]) * i / st[3]);
+      var start = DAYS.slice(0, pm - 1).reduce(function (a, b) { return a + b; }, 0) + 14, mod = [], m, dd;
+      for (m = 0; m < 12; m++) for (dd = 0; dd < DAYS[m]; dd++) mod.push(m);
+      var etc = new Array(12).fill(0), days = new Array(12).fill(0);
+      k.forEach(function (kv, j) { var mm = mod[(start + j) % 365]; etc[mm] += d.climate.et0_mm_day[mm] * kv; days[mm] += 1; });
+      return etc.map(function (e, mm) { return Math.max(0, e - peff(d.climate.rain_mm[mm]) * days[mm] / DAYS[mm]) / EFF[method] * 10; });
+    }
+    function update() {
+      var c = crops[$("hv-c").value], pm = +$("hv-p").value, method = $("hv-m").value, area = +$("hv-a").value, q = +$("hv-q").value;
+      var w = need(c, pm, method), season = w.reduce(function (a, b) { return a + b; }, 0) * area, peakM = w.indexOf(Math.max.apply(null, w)), peak = w[peakM] * area;
+      var have = q / 1000 * DAYS[peakM] * 86400, margin = (c.yield_t_ha * c.price_birr_t - c.cost_birr_ha) * area;
+      $("hv-big").innerHTML = fmt(season) + " m&sup3; for the season<small>peak " + MON[peakM] + ": " + fmt(peak) + " m&sup3; (" + fmt(peak / DAYS[peakM] / 86.4, 1) + " l/s around the clock)</small>";
+      $("hv-detail").innerHTML = "Expected net margin about <b>" + fmt(margin) + " birr</b> (synthetic prices). A " + q + " l/s source gives " + fmt(have) + " m&sup3; in " + MON[peakM] + ".";
+      var mx = Math.max.apply(null, w) * area || 1, bars = "", ord = [9, 10, 11, 0, 1, 2, 3, 4, 5];
+      ord.forEach(function (m, i) { var hh = w[m] * area / mx * 80; bars += '<rect x="' + (8 + i * 32) + '" y="' + (90 - hh).toFixed(1) + '" width="24" height="' + hh.toFixed(1) + '" rx="2" fill="' + COL[c.key] + '"><title>' + MON[m] + ": " + fmt(w[m] * area) + " m3</title></rect>" +
+        '<text x="' + (20 + i * 32) + '" y="104" text-anchor="middle" font-size="10" fill="currentColor">' + MON[m] + "</text>"; });
+      if (have > 0) { var yy = Math.max(4, 90 - have / mx * 80); bars += '<line x1="4" x2="296" y1="' + yy.toFixed(1) + '" y2="' + yy.toFixed(1) + '" stroke="currentColor" stroke-dasharray="4 3"/>'; }
+      $("hv-svg").innerHTML = bars;
+      var v = $("hv-v"), ok = have >= peak;
+      v.className = "verdict " + (ok ? "good" : have >= peak * 0.6 ? "warn" : "bad");
+      v.textContent = ok ? "The source covers the peak month." : "The source covers " + Math.round(have / peak * 100) + "% of the peak month: plant less, use drip, or plant a month earlier.";
+      ["hv-c-o", "hv-p-o", "hv-m-o"].forEach(function (id) { $(id).textContent = ""; });
+    }
+    root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+    update();
+  }).catch(function (e) { if (window.console) console.error("[high-value page]", e); var r = $("calc-hv"); if (r) r.insertAdjacentHTML("beforeend", '<p class="note">Could not load the demo data: ' + e.message + "</p>"); });
+})();
+</script>
+</body>
+</html>

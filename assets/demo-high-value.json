@@ -1,0 +1,956 @@
+{
+ "note": "Synthetic command areas from module 3; indicative crop economics v0.1. Not real prices or advice.",
+ "provenance": {
+  "branch": "stage/02-water-resources",
+  "commit": "5d0896f",
+  "path": "assets/handoff-irrigated-suitability.json"
+ },
+ "command_areas": 11,
+ "suitable_ha": 7906.3,
+ "planted_ha": 603.2547699214366,
+ "net_income_birr": 93615039.28170593,
+ "ha_by_crop": {
+  "onion": 202.02020202020202,
+  "potato": 166.66666666666666,
+  "garlic": 49.38271604938272,
+  "tomato": 111.11111111111111,
+  "pepper": 74.07407407407406
+ },
+ "tonnes_by_crop": {
+  "onion": 4000.0,
+  "potato": 3000.0,
+  "garlic": 399.9999999999999,
+  "tomato": 2500.0,
+  "pepper": 800.0
+ },
+ "ha_by_crop_and_month": [
+  {
+   "crop": "onion",
+   "month": "Oct",
+   "ha": 98.65000476633244
+  },
+  {
+   "crop": "potato",
+   "month": "Oct",
+   "ha": 135.52858699445449
+  },
+  {
+   "crop": "garlic",
+   "month": "Jan",
+   "ha": 22.820280689959443
+  },
+  {
+   "crop": "onion",
+   "month": "Nov",
+   "ha": 63.745839981566235
+  },
+  {
+   "crop": "tomato",
+   "month": "Oct",
+   "ha": 86.00000361593521
+  },
+  {
+   "crop": "tomato",
+   "month": "Jan",
+   "ha": 25.11110749517589
+  },
+  {
+   "crop": "pepper",
+   "month": "Oct",
+   "ha": 13.556930453199346
+  },
+  {
+   "crop": "pepper",
+   "month": "Jan",
+   "ha": 60.51714362087472
+  },
+  {
+   "crop": "potato",
+   "month": "Dec",
+   "ha": 31.1380796722122
+  },
+  {
+   "crop": "garlic",
+   "month": "Nov",
+   "ha": 14.765248971847463
+  },
+  {
+   "crop": "garlic",
+   "month": "Oct",
+   "ha": 8.299671202595132
+  },
+  {
+   "crop": "garlic",
+   "month": "Dec",
+   "ha": 3.497515184980675
+  },
+  {
+   "crop": "onion",
+   "month": "Jan",
+   "ha": 39.62435727230335
+  }
+ ],
+ "comparisons": {
+  "recommended": 93615039.28170593,
+  "onion_only": 39676767.67676767,
+  "single_date_nov": 72887094.37300402
+ },
+ "binding": [
+  {
+   "constraint": "demand max garlic",
+   "value_birr": 31604.938271604944
+  },
+  {
+   "constraint": "demand max pepper",
+   "value_birr": 14259.259259259261
+  },
+  {
+   "constraint": "demand max onion",
+   "value_birr": 9919.19191919192
+  },
+  {
+   "constraint": "demand max tomato",
+   "value_birr": 5555.555555555557
+  },
+  {
+   "constraint": "demand max potato",
+   "value_birr": 5333.333333333333
+  }
+ ],
+ "largest_area": {
+  "id": "BASIN-13-00",
+  "supply_m3": [
+   258475.0,
+   193856.0,
+   168009.0,
+   193856.0,
+   323094.0,
+   775425.0,
+   3554031.0,
+   5169500.0,
+   3877125.0,
+   2261656.0,
+   969281.0,
+   516950.0
+  ],
+  "use_m3": {
+   "onion": [
+    155140.470799518,
+    148447.00336081657,
+    57651.769184287084,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    11962.131234431878,
+    112850.55549329761,
+    142753.42332926934
+   ],
+   "potato": [
+    90231.9517746893,
+    15670.773213930195,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    46935.52634381356,
+    92181.77348043527
+   ],
+   "garlic": [
+    13102.577425792699,
+    29738.22342525321,
+    41182.23920912381,
+    37881.66594533267,
+    21760.684345789763,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "crops": [
+  {
+   "key": "onion",
+   "name": "Onion",
+   "yield_t_ha": 22,
+   "price_birr_t": 18000,
+   "cost_birr_ha": 160000,
+   "margin_birr_ha": 236000,
+   "field_days": 150,
+   "altitude_opt": [
+    1300,
+    2200
+   ],
+   "market_max_t": 4000,
+   "kc": [
+    0.7,
+    1.05,
+    0.75
+   ],
+   "stages": [
+    15,
+    25,
+    70,
+    40
+   ],
+   "nursery_days": 45
+  },
+  {
+   "key": "tomato",
+   "name": "Tomato",
+   "yield_t_ha": 25,
+   "price_birr_t": 14000,
+   "cost_birr_ha": 190000,
+   "margin_birr_ha": 160000,
+   "field_days": 125,
+   "altitude_opt": [
+    1000,
+    2000
+   ],
+   "market_max_t": 2500,
+   "kc": [
+    0.6,
+    1.15,
+    0.8
+   ],
+   "stages": [
+    25,
+    35,
+    40,
+    25
+   ],
+   "nursery_days": 30
+  },
+  {
+   "key": "pepper",
+   "name": "Hot pepper",
+   "yield_t_ha": 12,
+   "price_birr_t": 30000,
+   "cost_birr_ha": 170000,
+   "margin_birr_ha": 190000,
+   "field_days": 120,
+   "altitude_opt": [
+    1200,
+    2000
+   ],
+   "market_max_t": 800,
+   "kc": [
+    0.6,
+    1.05,
+    0.9
+   ],
+   "stages": [
+    25,
+    35,
+    40,
+    20
+   ],
+   "nursery_days": 40
+  },
+  {
+   "key": "potato",
+   "name": "Potato",
+   "yield_t_ha": 20,
+   "price_birr_t": 12000,
+   "cost_birr_ha": 120000,
+   "margin_birr_ha": 120000,
+   "field_days": 115,
+   "altitude_opt": [
+    1800,
+    2800
+   ],
+   "market_max_t": 3000,
+   "kc": [
+    0.5,
+    1.15,
+    0.75
+   ],
+   "stages": [
+    25,
+    30,
+    30,
+    30
+   ],
+   "nursery_days": 0
+  },
+  {
+   "key": "garlic",
+   "name": "Garlic",
+   "yield_t_ha": 9,
+   "price_birr_t": 60000,
+   "cost_birr_ha": 230000,
+   "margin_birr_ha": 310000,
+   "field_days": 140,
+   "altitude_opt": [
+    1900,
+    2800
+   ],
+   "market_max_t": 400,
+   "kc": [
+    0.7,
+    1.0,
+    0.7
+   ],
+   "stages": [
+    20,
+    30,
+    70,
+    20
+   ],
+   "nursery_days": 0
+  }
+ ],
+ "climate": {
+  "months": [
+   "Jan",
+   "Feb",
+   "Mar",
+   "Apr",
+   "May",
+   "Jun",
+   "Jul",
+   "Aug",
+   "Sep",
+   "Oct",
+   "Nov",
+   "Dec"
+  ],
+  "et0_mm_day": [
+   4.48,
+   5.22,
+   5.73,
+   5.78,
+   5.42,
+   4.61,
+   3.84,
+   3.86,
+   4.41,
+   4.46,
+   4.24,
+   4.16
+  ],
+  "rain_mm": [
+   3.0,
+   2.0,
+   15.0,
+   25.0,
+   80.0,
+   190.0,
+   400.0,
+   380.0,
+   220.0,
+   90.0,
+   15.0,
+   4.0
+  ]
+ },
+ "per_area": [
+  {
+   "area": "BASIN-13-00",
+   "suitable_ha": 2775.0,
+   "planted_ha": 179.1,
+   "crops": [
+    {
+     "crop": "Onion",
+     "planted": "Oct",
+     "ha": 97.8
+    },
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 58.5
+    },
+    {
+     "crop": "Garlic",
+     "planted": "Jan",
+     "ha": 22.8
+    }
+   ]
+  },
+  {
+   "area": "WELLS-POOLED",
+   "suitable_ha": 1631.2,
+   "planted_ha": 74.2,
+   "crops": [
+    {
+     "crop": "Onion",
+     "planted": "Jan",
+     "ha": 39.6
+    },
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 33.7
+    },
+    {
+     "crop": "Onion",
+     "planted": "Oct",
+     "ha": 0.9
+    }
+   ]
+  },
+  {
+   "area": "BASIN-53-16",
+   "suitable_ha": 1193.8,
+   "planted_ha": 133.4,
+   "crops": [
+    {
+     "crop": "Tomato",
+     "planted": "Oct",
+     "ha": 74.9
+    },
+    {
+     "crop": "Hot pepper",
+     "planted": "Jan",
+     "ha": 51.5
+    },
+    {
+     "crop": "Hot pepper",
+     "planted": "Oct",
+     "ha": 7.0
+    }
+   ]
+  },
+  {
+   "area": "BASIN-00-15",
+   "suitable_ha": 900.0,
+   "planted_ha": 64.3,
+   "crops": [
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 33.2
+    },
+    {
+     "crop": "Potato",
+     "planted": "Dec",
+     "ha": 31.1
+    }
+   ]
+  },
+  {
+   "area": "SP-1",
+   "suitable_ha": 593.8,
+   "planted_ha": 4.3,
+   "crops": [
+    {
+     "crop": "Garlic",
+     "planted": "Nov",
+     "ha": 4.2
+    },
+    {
+     "crop": "Garlic",
+     "planted": "Oct",
+     "ha": 0.2
+    }
+   ]
+  },
+  {
+   "area": "SP-5",
+   "suitable_ha": 443.8,
+   "planted_ha": 4.9,
+   "crops": [
+    {
+     "crop": "Garlic",
+     "planted": "Oct",
+     "ha": 4.0
+    },
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 0.9
+    }
+   ]
+  },
+  {
+   "area": "SP-3",
+   "suitable_ha": 181.2,
+   "planted_ha": 5.6,
+   "crops": [
+    {
+     "crop": "Garlic",
+     "planted": "Dec",
+     "ha": 3.5
+    },
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 2.1
+    }
+   ]
+  },
+  {
+   "area": "BASIN-36-00",
+   "suitable_ha": 93.8,
+   "planted_ha": 93.8,
+   "crops": [
+    {
+     "crop": "Onion",
+     "planted": "Nov",
+     "ha": 63.7
+    },
+    {
+     "crop": "Tomato",
+     "planted": "Jan",
+     "ha": 25.1
+    },
+    {
+     "crop": "Tomato",
+     "planted": "Oct",
+     "ha": 4.9
+    }
+   ]
+  },
+  {
+   "area": "BASIN-00-55",
+   "suitable_ha": 56.2,
+   "planted_ha": 17.8,
+   "crops": [
+    {
+     "crop": "Garlic",
+     "planted": "Nov",
+     "ha": 10.6
+    },
+    {
+     "crop": "Potato",
+     "planted": "Oct",
+     "ha": 7.2
+    }
+   ]
+  },
+  {
+   "area": "BASIN-61-00",
+   "suitable_ha": 25.0,
+   "planted_ha": 21.7,
+   "crops": [
+    {
+     "crop": "Hot pepper",
+     "planted": "Jan",
+     "ha": 9.0
+    },
+    {
+     "crop": "Hot pepper",
+     "planted": "Oct",
+     "ha": 6.6
+    },
+    {
+     "crop": "Tomato",
+     "planted": "Oct",
+     "ha": 6.1
+    }
+   ]
+  },
+  {
+   "area": "SP-6",
+   "suitable_ha": 12.5,
+   "planted_ha": 4.1,
+   "crops": [
+    {
+     "crop": "Garlic",
+     "planted": "Oct",
+     "ha": 4.1
+    }
+   ]
+  }
+ ],
+ "guides": {
+  "onion": {
+   "name": "Onion",
+   "planting": "15 Oct",
+   "field_days": 150,
+   "margin_birr_ha": 236000,
+   "steps": [
+    {
+     "start": "2026-08-31",
+     "end": "2026-10-14",
+     "what": "Raise seedlings in a shaded nursery bed",
+     "kind": "nursery"
+    },
+    {
+     "start": "2026-10-05",
+     "end": "2026-10-14",
+     "what": "Prepare beds and lay drip lines",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-15",
+     "what": "Transplant seedlings",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-29",
+     "what": "Irrigate about 26 mm a week (establishment)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-10-30",
+     "end": "2026-11-23",
+     "what": "Irrigate about 32 mm a week (development)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-11-24",
+     "end": "2027-02-01",
+     "what": "Irrigate about 38 mm a week (mid-season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-02-02",
+     "end": "2027-03-13",
+     "what": "Irrigate about 33 mm a week (late season)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-18",
+     "what": "Basal fertilizer at planting (rate from soil test)",
+     "kind": "input"
+    },
+    {
+     "start": "2026-11-11",
+     "end": "2026-11-14",
+     "what": "Top-dress nitrogen; weed",
+     "kind": "input"
+    },
+    {
+     "start": "2026-10-30",
+     "end": "2027-02-02",
+     "what": "Scout weekly for pests and disease (stage 08 alerts)",
+     "kind": "care"
+    },
+    {
+     "start": "2027-02-02",
+     "end": "2027-03-13",
+     "what": "Harvest at maturity; stop irrigation 10 to 14 days before",
+     "kind": "harvest"
+    },
+    {
+     "start": "2027-03-14",
+     "end": "2027-03-28",
+     "what": "Bulbs store for months in a dry, ventilated store (stage 10).",
+     "kind": "care"
+    }
+   ]
+  },
+  "tomato": {
+   "name": "Tomato",
+   "planting": "15 Oct",
+   "field_days": 125,
+   "margin_birr_ha": 160000,
+   "steps": [
+    {
+     "start": "2026-09-15",
+     "end": "2026-10-14",
+     "what": "Raise seedlings in a shaded nursery bed",
+     "kind": "nursery"
+    },
+    {
+     "start": "2026-10-05",
+     "end": "2026-10-14",
+     "what": "Prepare beds and lay drip lines",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-15",
+     "what": "Transplant seedlings",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-11-08",
+     "what": "Irrigate about 22 mm a week (establishment)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-11-09",
+     "end": "2026-12-13",
+     "what": "Irrigate about 32 mm a week (development)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-12-14",
+     "end": "2027-01-22",
+     "what": "Irrigate about 42 mm a week (mid-season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-01-23",
+     "end": "2027-02-16",
+     "what": "Irrigate about 35 mm a week (late season)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-18",
+     "what": "Basal fertilizer at planting (rate from soil test)",
+     "kind": "input"
+    },
+    {
+     "start": "2026-11-26",
+     "end": "2026-11-29",
+     "what": "Top-dress nitrogen; weed",
+     "kind": "input"
+    },
+    {
+     "start": "2026-11-09",
+     "end": "2027-01-23",
+     "what": "Scout weekly for pests and disease (stage 08 alerts)",
+     "kind": "care"
+    },
+    {
+     "start": "2027-01-23",
+     "end": "2027-02-16",
+     "what": "Harvest at maturity; stop irrigation 10 to 14 days before",
+     "kind": "harvest"
+    },
+    {
+     "start": "2027-02-17",
+     "end": "2027-03-03",
+     "what": "Perishable: harvest to a buyer within days; crates, not sacks.",
+     "kind": "care"
+    }
+   ]
+  },
+  "pepper": {
+   "name": "Hot pepper",
+   "planting": "15 Jan",
+   "field_days": 120,
+   "margin_birr_ha": 190000,
+   "steps": [
+    {
+     "start": "2026-12-06",
+     "end": "2027-01-14",
+     "what": "Raise seedlings in a shaded nursery bed",
+     "kind": "nursery"
+    },
+    {
+     "start": "2027-01-05",
+     "end": "2027-01-14",
+     "what": "Prepare beds and lay drip lines",
+     "kind": "field"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-01-15",
+     "what": "Transplant seedlings",
+     "kind": "field"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-02-08",
+     "what": "Irrigate about 22 mm a week (establishment)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-02-09",
+     "end": "2027-03-15",
+     "what": "Irrigate about 30 mm a week (development)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-03-16",
+     "end": "2027-04-24",
+     "what": "Irrigate about 38 mm a week (mid-season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-04-25",
+     "end": "2027-05-14",
+     "what": "Irrigate about 35 mm a week (late season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-01-18",
+     "what": "Basal fertilizer at planting (rate from soil test)",
+     "kind": "input"
+    },
+    {
+     "start": "2027-02-26",
+     "end": "2027-03-01",
+     "what": "Top-dress nitrogen; weed",
+     "kind": "input"
+    },
+    {
+     "start": "2027-02-09",
+     "end": "2027-04-25",
+     "what": "Scout weekly for pests and disease (stage 08 alerts)",
+     "kind": "care"
+    },
+    {
+     "start": "2027-04-25",
+     "end": "2027-05-14",
+     "what": "Harvest at maturity; stop irrigation 10 to 14 days before",
+     "kind": "harvest"
+    },
+    {
+     "start": "2027-05-15",
+     "end": "2027-05-29",
+     "what": "Sells green or dried; dried red pepper keeps and travels well.",
+     "kind": "care"
+    }
+   ]
+  },
+  "potato": {
+   "name": "Potato",
+   "planting": "15 Oct",
+   "field_days": 115,
+   "margin_birr_ha": 120000,
+   "steps": [
+    {
+     "start": "2026-10-05",
+     "end": "2026-10-14",
+     "what": "Prepare beds and lay drip lines",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-15",
+     "what": "Plant",
+     "kind": "field"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-11-08",
+     "what": "Irrigate about 18 mm a week (establishment)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-11-09",
+     "end": "2026-12-08",
+     "what": "Irrigate about 30 mm a week (development)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-12-09",
+     "end": "2027-01-07",
+     "what": "Irrigate about 42 mm a week (mid-season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-01-08",
+     "end": "2027-02-06",
+     "what": "Irrigate about 34 mm a week (late season)",
+     "kind": "water"
+    },
+    {
+     "start": "2026-10-15",
+     "end": "2026-10-18",
+     "what": "Basal fertilizer at planting (rate from soil test)",
+     "kind": "input"
+    },
+    {
+     "start": "2026-11-24",
+     "end": "2026-11-27",
+     "what": "Top-dress nitrogen; weed",
+     "kind": "input"
+    },
+    {
+     "start": "2026-11-09",
+     "end": "2027-01-08",
+     "what": "Scout weekly for pests and disease (stage 08 alerts)",
+     "kind": "care"
+    },
+    {
+     "start": "2027-01-08",
+     "end": "2027-02-06",
+     "what": "Harvest at maturity; stop irrigation 10 to 14 days before",
+     "kind": "harvest"
+    },
+    {
+     "start": "2027-02-07",
+     "end": "2027-02-21",
+     "what": "Needs clean seed tubers; store in diffuse light, not in the dark.",
+     "kind": "care"
+    }
+   ]
+  },
+  "garlic": {
+   "name": "Garlic",
+   "planting": "15 Jan",
+   "field_days": 140,
+   "margin_birr_ha": 310000,
+   "steps": [
+    {
+     "start": "2027-01-05",
+     "end": "2027-01-14",
+     "what": "Prepare beds and lay drip lines",
+     "kind": "field"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-01-15",
+     "what": "Plant",
+     "kind": "field"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-02-03",
+     "what": "Irrigate about 26 mm a week (establishment)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-02-04",
+     "end": "2027-03-05",
+     "what": "Irrigate about 31 mm a week (development)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-03-06",
+     "end": "2027-05-14",
+     "what": "Irrigate about 36 mm a week (mid-season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-05-15",
+     "end": "2027-06-03",
+     "what": "Irrigate about 31 mm a week (late season)",
+     "kind": "water"
+    },
+    {
+     "start": "2027-01-15",
+     "end": "2027-01-18",
+     "what": "Basal fertilizer at planting (rate from soil test)",
+     "kind": "input"
+    },
+    {
+     "start": "2027-02-19",
+     "end": "2027-02-22",
+     "what": "Top-dress nitrogen; weed",
+     "kind": "input"
+    },
+    {
+     "start": "2027-02-04",
+     "end": "2027-05-15",
+     "what": "Scout weekly for pests and disease (stage 08 alerts)",
+     "kind": "care"
+    },
+    {
+     "start": "2027-05-15",
+     "end": "2027-06-03",
+     "what": "Harvest at maturity; stop irrigation 10 to 14 days before",
+     "kind": "harvest"
+    },
+    {
+     "start": "2027-06-04",
+     "end": "2027-06-18",
+     "what": "High value per kilogram; cured bulbs keep for months.",
+     "kind": "care"
+    }
+   ]
+  }
+ }
+}
