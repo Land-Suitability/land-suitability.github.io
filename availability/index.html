@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Land Availability | Stage 01 | AIAE</title>
+  <meta name="description" content="Phase 1, module 1: which land may be farmed at all, and on what terms. Land cover, protected areas, church forests, slopes, water buffers, communal grazing and roads turn into in use, expandable, conditional and excluded land, then combine with suitability.">
+  <link rel="canonical" href="https://land-suitability.github.io/stages/01-land-intelligence/availability/">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#3f6b34">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Land availability | AIAE Stage 01">
+  <meta property="og:description" content="Which land may be farmed at all, and on what terms: the first step of Phase 1.">
+  <meta property="og:url" content="https://land-suitability.github.io/stages/01-land-intelligence/availability/">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social/01-land-intelligence.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="../assets/stage.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .st-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+    .st-in { background: #3f6b34; color: #fff; } .st-ex { background: #8cc37a; color: #1f2a20; }
+    .st-co { background: #e3a64b; color: #1f2a20; } .st-no { background: #6f6a5e; color: #fff; }
+    .chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .chart h3 { margin: 0 0 4px; font-size: 16px; } .chart p.note { margin: 0 0 10px; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .chart svg text { fill: var(--text); font-size: 13px; } .chart svg .muted { fill: var(--muted); }
+    .chart svg .base { fill: var(--muted); opacity: .3; } .chart svg .avail { fill: #2f7d4a; }
+    .pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 0; }
+    .pipeline span { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: 14px; }
+    .pipeline span.here { border: 2px solid var(--plan, #74582a); font-weight: 700; }
+    .pipeline i { color: var(--muted); font-style: normal; }
+  </style>
+</head>
+<body class="d-plan">
+<!--
+  Phase 1, module 1 (part a): land availability. Lives on branch `stage/01-land-intelligence`,
+  published at /stages/01-land-intelligence/availability/. Code: src/land_intel/availability.py,
+  demo: src/demo_availability.py (writes ../assets/availability-maps.svg and ../assets/demo-availability.json).
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/roadmap.html">Phase 1 roadmap</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/roadmap.html">Phase 1 roadmap</a> / <a href="../">Stage 01</a> / Land availability</p>
+
+  <section class="stage-hero has-art">
+    <img class="stage-art" src="../assets/availability-hero.svg" alt="">
+    <span class="pill">Plan · Phase 1 · Module 1</span>
+    <h1>Land availability</h1>
+    <p class="lead">Before asking how well a crop would grow, ask whether the land may be farmed at all. Forest, water, towns, church forests, very steep slopes and river banks are taken out first; open land is checked for slopes, grazing rights and access. What remains is the land a plan can honestly count on.</p>
+    <div class="meta">
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
+      <span>Code <code>src/land_intel/availability.py</code></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>statuses: in use, expandable, conditional, excluded</span></div>
+      <div class="stat"><b>11</b><span>reasons, each recorded per cell</span></div>
+      <div class="stat"><b>29%</b><span>of the demo landscape excluded</span></div>
+      <div class="stat"><b>62%</b><span>of teff-suitable land is also available</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#position">Phase 1</a>
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#methods">Rules</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#data">Data</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#try">Try it</a>
+      <a class="chip" href="#outputs">Outputs</a>
+      <a class="chip" href="#roadmap">Next</a>
+    </nav>
+  </section>
+
+  <section id="position">
+    <h2>Where this sits in Phase 1</h2>
+    <p class="section-intro">Phase 1 builds the system one module at a time, each one feeding the next. Module 1 has two parts: availability (this page) and suitability (the main stage 01 page). Together they answer "which land, and how good is it?".</p>
+    <div class="pipeline" aria-label="Phase 1 sequence">
+      <span class="here">1a Land availability</span><i>+</i><span><a href="../">1b Land suitability</a></span><i>&rarr;</i>
+      <span>2 Water availability mapping</span><i>&rarr;</i><span>3 Irrigated land suitability</span><i>&rarr;</i><span>4 High-value crop guidance</span>
+    </div>
+    <p style="margin-top:12px"><a class="btn" href="/roadmap.html">See the full Phase 1 roadmap &rarr;</a></p>
+  </section>
+
+  <section id="why">
+    <h2>Why availability comes first</h2>
+    <p class="section-intro"><strong>Analogy: a job applicant's skills versus whether they are free to take the job.</strong> Suitability measures the skills of a piece of land. Availability asks whether it is free: a deep, well-drained soil under a church forest or a lake shore is not a candidate, however good it is. A plan that skips this step promises hectares that do not exist.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Honest plans</h3><p>Stage 04 plans with the land that is both suitable and available. In the demo that is only 62% of the land suitable for teff.</p></div>
+      <div class="card"><h3>Explainable decisions</h3><p>Every cell keeps its reasons ("excluded: forest and very steep"), so the kebele land committee can see why, and challenge it.</p></div>
+      <div class="card"><h3>Protect what must stay</h3><p>Forests, wetlands, river banks and rehabilitated land stay out of the plan from the start, instead of being negotiated away later.</p></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">Five co-registered input layers go through one set of rules. The result is a status and a set of reasons for every cell, and, combined with the suitability engine, an <strong>AvailableLand</strong> record per planning cluster.</p>
+    <figure class="diagram"><img src="../assets/availability-domain.svg" alt="Domain model: input layers go through availability rules to an availability result, which with suitability becomes the available land record for stages 02 and 04."></figure>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>LandCover</td><td>Enum</td><td>What covers the ground today, aligned with ESA WorldCover codes.</td></tr>
+          <tr><td>AvailabilityRules</td><td>Value object</td><td>The thresholds: maximum slope, terrace slope, water buffer, remote distance. Indicative, to be agreed locally.</td></tr>
+          <tr><td>Reason</td><td>Bit flags</td><td>Hard reasons exclude; soft reasons make open land conditional. A cell can carry several.</td></tr>
+          <tr><td>AvailabilityStatus</td><td>Enum</td><td>In use (current cropland), expandable (open land, no other claim), conditional (needs terraces, agreement or access), excluded.</td></tr>
+          <tr><td>AvailabilityResult</td><td>Entity</td><td>Status and reasons for every cell, with hectares and a plain-language explanation per cell.</td></tr>
+          <tr><td>AvailableLand</td><td>Output</td><td>Per planning cluster: hectares by status and hectares both available and S1 or S2 per crop.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="methods">
+    <h2>Rules</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Hard constraints: excluded</h3>
+        <ul class="list-clean">
+          <li><span class="st-pill st-no">excluded</span> Forest, open water, wetland, built-up land, bare rock</li>
+          <li><span class="st-pill st-no">excluded</span> Protected land: reserves, church forests, area exclosures</li>
+          <li><span class="st-pill st-no">excluded</span> Slope above 30%</li>
+          <li><span class="st-pill st-no">excluded</span> A 30 m strip along rivers and lakes</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Soft constraints: conditional</h3>
+        <ul class="list-clean">
+          <li><span class="st-pill st-co">conditional</span> Slope 15 to 30%: terraces or bunds first</li>
+          <li><span class="st-pill st-co">conditional</span> Communal grazing land: community agreement first</li>
+          <li><span class="st-pill st-co">conditional</span> More than 5 km from a road: access first</li>
+        </ul>
+        <p class="note">Existing cropland stays <span class="st-pill st-in">in use</span> even with a soft reason; the reason is kept as a note (for example "terraces needed").</p>
+      </div>
+      <div class="card">
+        <h3>Order of the rules</h3>
+        <p>Hard reasons always win. Then current cropland is in use, and open land (grassland, shrubland) is expandable when it has no soft reason and conditional when it has one. Missing slope or road data raises an error instead of guessing.</p>
+      </div>
+      <div class="card">
+        <h3>Combine with suitability</h3>
+        <p>Available land (in use plus expandable) is overlaid on the suitability classes from the main stage 01 engine. The plannable area for a crop is the land that is both available and S1 or S2.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Church forests</h3><p>Small forests around Orthodox churches are among the last native woodland in the highlands. They are excluded outright, whatever their soil.</p></div>
+      <div class="card"><h3>Area exclosures</h3><p>Degraded hillsides closed to grazing and cultivation for rehabilitation are protected land in this model, so a plan never undoes years of restoration.</p></div>
+      <div class="card"><h3>Communal grazing</h3><p>Livestock is part of almost every farm. Converting common grazing land needs the community's agreement, so it is conditional, never simply expandable.</p></div>
+      <div class="card"><h3>Use rights, not ownership</h3><p>Land is held under use-right certificates. "Expandable" marks a candidate to discuss with the kebele land committee, never land to be taken.</p></div>
+      <div class="card"><h3>Terraced slopes</h3><p>Soil and water conservation campaigns have terraced many slopes. Existing terraces lower the effective risk; their mapping is a planned input.</p></div>
+      <div class="card"><h3>Rainy-season access</h3><p>Earth roads close in the main rains. Remoteness here uses distance to an all-weather road (stage 11 refines it with seasonal routes).</p></div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead>
+        <tbody>
+          <tr><td>Land cover</td><td>ESA WorldCover; Dynamic World (Sentinel-2)</td><td>10 m</td><td>Cropland, forest, water, built-up, open land</td><td>Open</td></tr>
+          <tr><td>Slope</td><td>Copernicus DEM GLO-30</td><td>30 m</td><td>Very steep and terrace bands</td><td>Open</td></tr>
+          <tr><td>Rivers and lakes</td><td>Land cover water class; HydroRIVERS</td><td>10 to 90 m</td><td>Water buffers</td><td>Open</td></tr>
+          <tr><td>Roads</td><td>OpenStreetMap; woreda road inventory</td><td>lines</td><td>Distance to an all-weather road</td><td>Open / by agreement</td></tr>
+          <tr><td>Protected areas</td><td>World Database on Protected Areas; regional and woreda records</td><td>polygons</td><td>Reserves, church forests, exclosures</td><td>Open / by agreement</td></tr>
+          <tr><td>Grazing and holdings</td><td>Kebele land administration, participatory mapping</td><td>polygons</td><td>Communal grazing, use rights</td><td>Restricted, aggregated only</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo on the synthetic landscape</h2>
+    <p class="section-intro">The same made-up 16 km landscape as the suitability demo (25,600 ha), now with land cover, a lake and river, a town and three villages, four church forests, communal grazing in the wet valley and around villages, and one road. <strong>No real land.</strong></p>
+    <figure class="diagram"><img src="../assets/availability-maps.svg" alt="Three synthetic maps: land cover, availability status, and land that is both available and suitable for teff."></figure>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="chart" id="chart-status"><h3>Where the land goes</h3><p class="note">Share of the 25,600 ha by availability status.</p></div>
+      <div class="chart" id="chart-crops"><h3>Suitable is not the same as available</h3><p class="note">S1 plus S2 land: the bar is all of it, the green part is also available (in use or expandable).</p></div>
+    </div>
+    <div class="table-wrap" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Crop</th><th class="num">S1 + S2 anywhere</th><th class="num">S1 + S2 and available</th><th class="num">Share</th><th class="num">Available S1</th><th class="num">Available S2</th></tr></thead>
+        <tbody>
+          <tr><td>Teff</td><td class="num">23,075 ha</td><td class="num">14,256 ha</td><td class="num">62%</td><td class="num">9,494 ha</td><td class="num">4,762 ha</td></tr>
+          <tr><td>Bread wheat</td><td class="num">19,912 ha</td><td class="num">13,162 ha</td><td class="num">66%</td><td class="num">8,806 ha</td><td class="num">4,356 ha</td></tr>
+          <tr><td>Maize</td><td class="num">19,469 ha</td><td class="num">13,038 ha</td><td class="num">67%</td><td class="num">7,575 ha</td><td class="num">5,462 ha</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout"><strong>What this shows.</strong> About a third of the land that suitability alone would offer for teff is not available: it is forest, water, river bank, town, protected, or open land that first needs terraces, a grazing agreement or a road. Most excluded area is escarpment forest and very steep land; most conditional area is open land that needs terraces or lies far from the road.</div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: is this land available?</h2>
+    <p class="section-intro">Describe one piece of land. The same rules as <code>assess_availability()</code> decide its status and list every reason.</p>
+    <div class="calc" id="calc-av">
+      <div>
+        <div class="field"><label for="av-cover">Land cover today</label><output id="av-cover-o"></output>
+          <select id="av-cover"><option value="crop" selected>Cropland</option><option value="grass">Grassland</option><option value="shrub">Shrubland</option><option value="forest">Forest</option><option value="water">Open water</option><option value="wetland">Wetland</option><option value="built">Built-up</option><option value="bare">Bare rock or soil</option></select></div>
+        <div class="field"><label for="av-slope">Slope</label><output id="av-slope-o"></output><input type="range" id="av-slope" min="0" max="60" step="1" value="12" data-unit="%"></div>
+        <div class="field"><label for="av-road">Distance to an all-weather road</label><output id="av-road-o"></output><input type="range" id="av-road" min="0" max="15" step="0.5" value="2" data-unit="km"></div>
+        <div class="field"><label for="av-water">Distance to a river or lake</label><output id="av-water-o"></output><input type="range" id="av-water" min="0" max="500" step="10" value="200" data-unit="m"></div>
+        <div class="field"><label><input type="checkbox" id="av-prot"> Inside a reserve, church forest or area exclosure</label></div>
+        <div class="field"><label><input type="checkbox" id="av-graze"> Used as communal grazing</label></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="av-big"></div>
+        <div id="av-reasons" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="av-v"></div>
+        <p class="note">Indicative thresholds (30% slope, 15% for terraces, 30 m water buffer, 5 km to a road), to be agreed with the woreda office.</p>
+      </div>
+    </div>
+    <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      var root = $("calc-av"); if (!root) return;
+      try {
+        root.querySelectorAll("input[type=range]").forEach(function (r) {
+          var o = $(r.id + "-o"), show = function () { o.textContent = r.value + " " + r.dataset.unit; }; show(); r.addEventListener("input", show); });
+        function update() {
+          var cover = $("av-cover").value, slope = +$("av-slope").value, road = +$("av-road").value, water = +$("av-water").value;
+          var hard = [], soft = [];
+          var FIX = { "terraces needed": "terraces or bunds are built", "communal grazing": "the community agrees to a change of use", "far from a road": "all-weather access is arranged" };
+          var HC = { forest: "forest", water: "open water", wetland: "wetland", built: "built-up", bare: "bare rock or soil" };
+          if (HC[cover]) hard.push(HC[cover]);
+          if ($("av-prot").checked) hard.push("protected area");
+          if (slope > 30) hard.push("very steep slope");
+          if (water < 30 && cover !== "water" && cover !== "wetland") hard.push("river or lake buffer");
+          if (slope > 15 && slope <= 30) soft.push("terraces needed");
+          if ($("av-graze").checked && cover !== "crop") soft.push("communal grazing");
+          if (road > 5) soft.push("far from a road");
+          var open = cover === "grass" || cover === "shrub", st;
+          if (hard.length) st = ["excluded", "st-no"];
+          else if (cover === "crop") st = ["in use", "st-in"];
+          else if (open && !soft.length) st = ["expandable", "st-ex"];
+          else if (open) st = ["conditional", "st-co"];
+          else st = ["excluded", "st-no"];
+          $("av-big").innerHTML = '<span class="st-pill ' + st[1] + '" style="font-size:22px;padding:4px 16px">' + st[0] + "</span>";
+          $("av-reasons").innerHTML = (hard.length ? "<b>Hard:</b> " + hard.join(", ") + "<br>" : "") + (soft.length ? "<b>" + (cover === "crop" && !hard.length ? "Notes" : "Soft") + ":</b> " + soft.join(", ") : (hard.length ? "" : "No constraint applies."));
+          var v = $("av-v");
+          v.className = "verdict " + (st[0] === "excluded" ? "bad" : st[0] === "conditional" ? "warn" : "good");
+          v.textContent = st[0] === "excluded" ? "Kept out of every plan." : st[0] === "conditional" ? "Possible only after " + soft.map(function (r) { return FIX[r]; }).join(" and ") + "." :
+            st[0] === "expandable" ? "A candidate to discuss with the kebele land committee." : "Already farmed: available to the plan now" + (soft.length ? ", with a note." : ".");
+          $("av-cover-o").textContent = "";
+        }
+        root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+        update();
+      } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-av]", e); }
+    })();
+    </script>
+  </section>
+
+  <section id="outputs">
+    <h2>Output: what stages 02 and 04 receive</h2>
+    <p class="section-intro">One record per planning cluster. Stage 02 (water) only looks for water for land that is available; stage 04 (planning) only allocates hectares that are both available and suitable.</p>
+<pre><code>{
+  "cluster_id": "DEMO-CLUSTER",
+  "hectares_by_status": {"IN_USE": 13525, "EXPANDABLE": 731, "CONDITIONAL": 3944, "EXCLUDED": 7400},
+  "suitable_available_ha": {
+    "teff":        {"S1": 9494, "S2": 4762},
+    "bread_wheat": {"S1": 8806, "S2": 4356},
+    "maize":       {"S1": 7575, "S2": 5462}
+  },
+  "rules_version": "0.1"
+}</code></pre>
+  </section>
+
+  <section id="roadmap">
+    <h2>What comes next</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Validate</h3><p>Compare the cropland and forest layers with field checks in the pilot kebeles; agree the thresholds with the woreda office and land committees.</p></div>
+      <div class="card"><h3>Real layers</h3><p>Replace the synthetic layers with WorldCover, the DEM, roads, protected areas, exclosures and participatory grazing maps for the pilot woreda.</p></div>
+      <div class="card"><h3>Module 2</h3><p>Water availability mapping: where water can come from for the available land, month by month (stage 02).</p></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/land_intel/availability.py   domain model and rules (statuses, reasons, AvailableLand)
+src/demo_availability.py         synthetic demo: maps, hectares, available and suitable land
+tests/test_availability.py       unit tests for every rule</code></pre>
+<pre><code>git switch stage/01-land-intelligence
+python3 src/demo_availability.py
+python3 tests/test_availability.py</code></pre>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. Phase 1, module 1a.</span>
+    <span>Synthetic data only. No personal data.</span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  // charts from the demo output, so the page always matches the code
+  fetch("../assets/demo-availability.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+    var fmt = function (v) { return Math.round(v).toLocaleString("en-US"); };
+    var st = d.hectares_by_status, total = d.total_ha;
+    var parts = [["IN_USE", "in use", "#3f6b34"], ["EXPANDABLE", "expandable", "#8cc37a"], ["CONDITIONAL", "conditional", "#e3a64b"], ["EXCLUDED", "excluded", "#8a8476"]];
+    var x = 0, bar = "", labels = "";
+    parts.forEach(function (p, k) {
+      var w = st[p[0]] / total * 380;
+      bar += '<rect x="' + x.toFixed(1) + '" y="10" width="' + Math.max(0, w - 2).toFixed(1) + '" height="34" rx="4" fill="' + p[2] + '"><title>' + p[1] + ": " + fmt(st[p[0]]) + " ha</title></rect>";
+      labels += '<g transform="translate(0,' + (66 + k * 22) + ')"><rect width="12" height="12" rx="2" y="-10" fill="' + p[2] + '"/><text x="18">' + p[1] + " " + Math.round(st[p[0]] / total * 100) + '% <tspan class="muted">(' + fmt(st[p[0]]) + " ha)</tspan></text></g>";
+      x += w;
+    });
+    document.getElementById("chart-status").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 146" role="img" aria-label="Availability status shares">' + bar + labels + "</svg>");
+    var crops = [["teff", "Teff"], ["bread_wheat", "Bread wheat"], ["maize", "Maize"]], max = Math.max.apply(null, crops.map(function (c) { return d.suitable_anywhere_ha[c[0]]; }));
+    var g = "";
+    crops.forEach(function (c, k) {
+      var any = d.suitable_anywhere_ha[c[0]], av = d.available_and_suitable_ha[c[0]].S1 + d.available_and_suitable_ha[c[0]].S2, y = 10 + k * 40;
+      g += '<text x="0" y="' + (y + 20) + '">' + c[1] + "</text>" +
+        '<rect class="base" x="92" y="' + (y + 4) + '" width="' + (any / max * 190).toFixed(1) + '" height="22" rx="4"><title>' + c[1] + " S1+S2 anywhere: " + fmt(any) + " ha</title></rect>" +
+        '<rect class="avail" x="92" y="' + (y + 4) + '" width="' + (av / max * 190).toFixed(1) + '" height="22" rx="4"><title>' + c[1] + " S1+S2 and available: " + fmt(av) + " ha</title></rect>" +
+        '<text x="' + (98 + any / max * 190).toFixed(1) + '" y="' + (y + 20) + '">' + Math.round(av / any * 100) + "%</text>";
+    });
+    g += '<g transform="translate(0,146)"><rect width="12" height="12" y="-10" rx="2" class="avail"/><text x="18">available</text><rect x="100" width="12" height="12" y="-10" rx="2" class="base"/><text x="118">suitable, not available</text></g>';
+    document.getElementById("chart-crops").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 154" role="img" aria-label="Suitable versus available land per crop">' + g + "</svg>");
+  }).catch(function (e) { if (window.console) console.error("[availability charts]", e); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="t d" font-family="Helvetica, Arial, sans-serif">
+<title id="t">Which land is available?</title>
+<desc id="d">A highland scene: cropland tagged in use, open grassland tagged expandable, a terraced slope tagged conditional, and a church forest and a lake tagged excluded.</desc>
+<style>.cloud{animation:drift 11s ease-in-out infinite alternate}.glow{animation:breathe 5s ease-in-out infinite}@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(14px)}}@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.65}}@media (prefers-reduced-motion:reduce){.cloud,.glow{animation:none}}</style>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6f2"/><stop offset="1" stop-color="#f4efe2"/></linearGradient></defs>
+<rect width="640" height="400" fill="url(#sky)"/>
+<circle class="glow" cx="560" cy="64" r="58" fill="#ffe7a3" opacity=".5"/><circle cx="560" cy="64" r="30" fill="#f2c14e"/>
+<g class="cloud" fill="#fff" opacity=".95"><ellipse cx="150" cy="62" rx="46" ry="16"/><ellipse cx="176" cy="52" rx="30" ry="20"/><ellipse cx="126" cy="58" rx="22" ry="14"/></g>
+<path d="M0 182 L40 160 L110 160 L150 136 L250 136 L290 162 L380 166 L430 130 L560 130 L600 158 L640 156 L640 400 L0 400 Z" fill="#b9cfa4"/>
+<path d="M0 230 C120 200 230 214 330 196 S520 186 640 204 V400 H0Z" fill="#9dbb7f"/>
+<!-- terraced slope (conditional) -->
+<g stroke="#7d9a5d" stroke-width="3" fill="none"><path d="M430 206 C480 196 540 196 600 206"/><path d="M420 222 C480 212 545 212 612 222"/><path d="M412 238 C480 228 550 228 624 238"/></g>
+<!-- ground -->
+<path d="M0 262 C160 246 330 254 640 244 V400 H0Z" fill="#c8b483"/>
+<!-- cropland strips (in use) -->
+<g transform="translate(24 270) skewX(-12)">
+  <rect width="70" height="54" fill="#e9c46a"/><rect x="74" width="70" height="54" fill="#d9b54a"/><rect x="148" width="64" height="54" fill="#e9c46a"/>
+  <rect y="58" width="96" height="46" fill="#d9b54a"/><rect x="100" y="58" width="112" height="46" fill="#e9c46a"/>
+  <g stroke="#b08d2e" stroke-width="1.4" opacity=".7"><path d="M6 14 h56 M6 28 h56 M6 42 h56 M80 14 h56 M80 28 h56 M80 42 h56"/></g>
+</g>
+<!-- open grassland (expandable), dashed outline -->
+<path d="M262 278 h132 l14 74 h-158 z" fill="#a7c957" stroke="#3f6b34" stroke-width="2.5" stroke-dasharray="8 6"/>
+<g stroke="#6f8f3a" stroke-width="2" stroke-linecap="round"><path d="M290 316 l3 -9 l3 9 M330 300 l3 -9 l3 9 M362 330 l3 -9 l3 9 M306 338 l3 -9 l3 9"/></g>
+<!-- church forest (protected) with a round church -->
+<g><circle cx="508" cy="292" r="44" fill="#2d6a4f"/><circle cx="470" cy="312" r="26" fill="#2d6a4f"/><circle cx="548" cy="314" r="28" fill="#2d6a4f"/>
+<path d="M494 300 h28 v-16 l-14 -10 l-14 10 z" fill="#efe3c8" stroke="#6b4f2a" stroke-width="1.5"/><path d="M490 285 l18 -14 l18 14" fill="#9a4a28"/>
+<path d="M508 271 v-10 M504 265 h8" stroke="#6b4f2a" stroke-width="2"/></g>
+<!-- lake (excluded) -->
+<ellipse cx="590" cy="372" rx="62" ry="18" fill="#5aa0c8"/>
+<!-- status tags -->
+<g font-size="12" font-weight="bold">
+  <g transform="translate(70 246)"><rect x="-6" y="-14" width="62" height="20" rx="10" fill="#3f6b34"/><text x="25" fill="#fff" text-anchor="middle">in use</text></g>
+  <g transform="translate(300 262)"><rect x="-6" y="-14" width="90" height="20" rx="10" fill="#8cc37a"/><text x="39" fill="#1f2a20" text-anchor="middle">expandable</text></g>
+  <g transform="translate(470 196)"><rect x="-6" y="-14" width="96" height="20" rx="10" fill="#e3a64b"/><text x="42" fill="#1f2a20" text-anchor="middle">conditional</text></g>
+  <g transform="translate(470 352)"><rect x="-6" y="-14" width="82" height="20" rx="10" fill="#8a8476"/><text x="35" fill="#fff" text-anchor="middle">excluded</text></g>
+</g>
+</svg>

@@ -1,0 +1,54 @@
+{
+ "note": "Synthetic 16 km landscape; indicative rules v0.1. Not real land.",
+ "total_ha": 25600.0,
+ "hectares_by_status": {
+  "EXCLUDED": 7400.0,
+  "CONDITIONAL": 3943.75,
+  "EXPANDABLE": 731.25,
+  "IN_USE": 13525.0
+ },
+ "reason_hectares": {
+  "forest": 4481.25,
+  "open water": 1043.75,
+  "wetland": 431.25,
+  "built-up": 306.25,
+  "protected area": 175.0,
+  "very steep slope": 2525.0,
+  "river or lake buffer": 1387.5,
+  "bare rock or soil": 25.0,
+  "terraces needed": 8612.5,
+  "communal grazing": 1656.25,
+  "far from a road": 8637.5
+ },
+ "suitable_anywhere_ha": {
+  "teff": 23075.0,
+  "bread_wheat": 19912.5,
+  "maize": 19468.75
+ },
+ "available_and_suitable_ha": {
+  "teff": {
+   "S1": 9493.75,
+   "S2": 4762.5,
+   "S3": 0.0,
+   "N": 0.0
+  },
+  "bread_wheat": {
+   "S1": 8806.25,
+   "S2": 4356.25,
+   "S3": 0.0,
+   "N": 1093.75
+  },
+  "maize": {
+   "S1": 7575.0,
+   "S2": 5462.5,
+   "S3": 0.0,
+   "N": 1218.75
+  }
+ },
+ "rules": {
+  "max_slope_pct": 30.0,
+  "terrace_slope_pct": 15.0,
+  "water_buffer_m": 30.0,
+  "remote_road_km": 5.0
+ }
+}
