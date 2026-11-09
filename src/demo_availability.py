@@ -129,6 +129,29 @@ def maps_svg(cover, status, plannable, road_line, path: Path, cell: int = 4) -> 
     path.write_text("\n".join(p), encoding="utf-8")
 
 
+def write_handoff(layers, lc, av, rules, path: Path) -> None:
+    """
+    Module 1 -> module 2 hand-off (Phase 1): the grids the next module needs, in one versioned file.
+    Stage branches cannot import each other's code, so modules exchange data, never code.
+    """
+    def grid(a, dp=0):
+        return [[round(float(v), dp) if dp else int(round(float(v))) for v in row] for row in np.asarray(a)]
+    handoff = {
+        "contract": "aiae.phase1.available_land", "version": "0.1", "producer": "stage/01-land-intelligence src/demo_availability.py",
+        "note": "Synthetic 16 km landscape; no real land. Rows run north to south, columns west to east.",
+        "grid": {"rows": N, "cols": N, "cell_m": rules.cell_size_m},
+        "codes": {"status": {s.name: int(s) for s in AvailabilityStatus}, "cover": {c.name: int(c) for c in LandCover}},
+        "layers": {
+            "status": grid(av.status), "cover": grid(lc["cover"]),
+            "altitude_m": grid(layers["altitude_m"]), "slope_pct": grid(layers["slope_pct"], 1),
+            "rain_season_mm": grid(layers["rain_season_mm"]), "soil_depth_cm": grid(layers["soil_depth_cm"]),
+            "drainage_class": grid(layers["drainage_class"], 1), "road_km": grid(lc["road_km"], 2),
+        },
+    }
+    path.write_text(json.dumps(handoff, separators=(",", ":")), encoding="utf-8")
+    print(f"  [DEBUG] wrote {path.relative_to(ROOT)} ({path.stat().st_size // 1024} KB, contract {handoff['contract']} v{handoff['version']})")
+
+
 def main() -> int:
     try:
         layers = synthetic_landscape()
@@ -169,6 +192,7 @@ def main() -> int:
                "rules": {"max_slope_pct": rules.max_slope_pct, "terrace_slope_pct": rules.terrace_slope_pct,
                          "water_buffer_m": rules.water_buffer_m, "remote_road_km": rules.remote_road_km}}
         (ROOT / "assets" / "demo-availability.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
+        write_handoff(layers, lc, av, rules, ROOT / "assets" / "handoff-available-land.json")
         print("  [DEBUG] wrote assets/availability-maps.svg and assets/demo-availability.json")
         return 0
     except (KeyError, ValueError) as e:
