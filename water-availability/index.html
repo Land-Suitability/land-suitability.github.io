@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Availability Mapping | Stage 02 | AIAE</title>
+  <meta name="description" content="Phase 1, module 2: where water can come from for the available land, and how much each month. Streams and their sustainable flow, groundwater potential, springs, and water access for every available field.">
+  <link rel="canonical" href="https://land-suitability.github.io/stages/02-water-resources/water-availability/">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#3f6b34">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Water availability mapping | AIAE Stage 02">
+  <meta property="og:description" content="Streams, groundwater and springs, and how every available field can reach water: Phase 1, module 2.">
+  <meta property="og:url" content="https://land-suitability.github.io/stages/02-water-resources/water-availability/">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social/02-water-resources.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="../assets/stage.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .chart { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .chart h3 { margin: 0 0 4px; font-size: 16px; } .chart p.note { margin: 0 0 10px; }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .chart svg text { fill: var(--text); font-size: 13px; } .chart svg .muted { fill: var(--muted); }
+    .chart svg .base { fill: var(--muted); opacity: .3; } .chart svg .ok { fill: #1f63b8; }
+    .pipeline { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 12px 0 0; }
+    .pipeline span { padding: 8px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface); font-size: 14px; }
+    .pipeline span.here { border: 2px solid var(--accent); font-weight: 700; }
+    .pipeline i { color: var(--muted); font-style: normal; }
+    .acc { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #fff; }
+    .acc-g { background: #1f4e8c; } .acc-p { background: #3a73b0; } .acc-w { background: #2f7f76; } .acc-h { background: #e3a64b; color: #1f2a20; }
+  </style>
+</head>
+<body class="d-plan">
+<!--
+  Phase 1, module 2: water availability mapping. Lives on branch `stage/02-water-resources`, published at
+  /stages/02-water-resources/water-availability/. Reads module 1's hand-off (data/handoff-module1.json).
+  Code: src/water_res/mapping.py, src/water_res/handoff.py; demo: src/demo_water_map.py.
+-->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><span class="brand-mark">AIAE</span><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#chain" aria-current="page">Value chain</a>
+      <a href="/roadmap.html">Phase 1 roadmap</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <p class="breadcrumb"><a href="/">Home</a> / <a href="/roadmap.html">Phase 1 roadmap</a> / <a href="../">Stage 02</a> / Water availability mapping</p>
+
+  <section class="stage-hero has-art">
+    <img class="stage-art" src="../assets/water-availability-hero.svg" alt="">
+    <span class="pill">Plan · Phase 1 · Module 2</span>
+    <h1>Water availability mapping</h1>
+    <p class="lead">Module 1 found the land that may be farmed. This module maps where water can come from for that land: the streams and what they can give each month, the groundwater, the springs, and for every available field the cheapest way to reach water.</p>
+    <div class="meta">
+      <span class="status">Status: methodology v0.1, synthetic demo</span>
+      <span>Code <code>src/water_res/mapping.py</code></span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>84%</b><span>of available land can reach some water source</span></div>
+      <div class="stat"><b>22%</b><span>of that land has water for irrigated wheat in February</span></div>
+      <div class="stat"><b>35 km</b><span>of stream still flowing at 5 l/s in March</span></div>
+      <div class="stat"><b>6</b><span>spring sites at the foot of steep slopes</span></div>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <a class="chip" href="#position">Phase 1</a>
+      <a class="chip" href="#why">Why</a>
+      <a class="chip" href="#domain-model">Domain model</a>
+      <a class="chip" href="#methods">Methods</a>
+      <a class="chip" href="#amhara">Amhara context</a>
+      <a class="chip" href="#data">Data</a>
+      <a class="chip" href="#demo">Demo</a>
+      <a class="chip" href="#try">Try it</a>
+      <a class="chip" href="#outputs">Outputs</a>
+      <a class="chip" href="#roadmap">Next</a>
+    </nav>
+  </section>
+
+  <section id="position">
+    <h2>Where this sits in Phase 1</h2>
+    <p class="section-intro">Each module reads the previous module's output. This one starts from module 1's hand-off file: the available land and the terrain, on the same grid. Its own output, the water availability map, is what module 3 combines with the land to judge irrigated suitability.</p>
+    <div class="pipeline" aria-label="Phase 1 sequence">
+      <span><a href="/stages/01-land-intelligence/availability/">1 Land availability and suitability</a></span><i>&rarr;</i>
+      <span class="here">2 Water availability mapping</span><i>&rarr;</i>
+      <span>3 Irrigated land suitability</span><i>&rarr;</i><span>4 High-value crop guidance</span>
+    </div>
+    <p style="margin-top:12px"><a class="btn" href="/roadmap.html">See the full Phase 1 roadmap &rarr;</a> <a class="btn" href="../">The stage 02 water budget</a></p>
+  </section>
+
+  <section id="why">
+    <h2>Why map the water, not only budget it</h2>
+    <p class="section-intro"><strong>Analogy: the size of the household's water tank versus a map of the taps and wells.</strong> The stage 02 budget tells a cluster how much water it has each month. It cannot say which field can reach which source, or whether a source that reaches a field has enough water for it. A map answers both.</p>
+    <div class="grid cols-3">
+      <div class="card"><h3>Reachable is not enough</h3><p>In the demo, 84% of the available land can reach some source, but in February there is water for irrigated wheat on only 22% of that land.</p></div>
+      <div class="card"><h3>Cheapest way first</h3><p>A gravity canal costs far less to run than a pump, and a pump less than a borehole. Each field gets the cheapest option that works.</p></div>
+      <div class="card"><h3>Rivers keep their share</h3><p>30% of every stream's flow stays in the river, and only 40% of groundwater recharge may be pumped, the same rules as the stage 02 budget.</p></div>
+    </div>
+  </section>
+
+  <section id="domain-model">
+    <h2>Domain model</h2>
+    <p class="section-intro">Three kinds of source are mapped from the terrain and the land data, each as <strong>WaterPoints</strong> with twelve monthly sustainable volumes. A water access service then gives every available field an access class and a serving source.</p>
+    <figure class="diagram"><img src="../assets/water-availability-domain.svg" alt="Domain model: module 1's hand-off feeds stream, groundwater and water point mapping; the water access service, with its rules, produces the water availability map for module 3."></figure>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>AvailableLandGrid</td><td>Input</td><td>Module 1's hand-off: available land, terrain, rainfall and soil drainage on one grid, checked against its contract when loaded.</td></tr>
+          <tr><td>StreamNetwork</td><td>Value</td><td>Cells that collect at least 2 km&sup2; of upstream area, traced downhill from the terrain.</td></tr>
+          <tr><td>GroundwaterPotential</td><td>Value</td><td>A 0 to 1 index from six weighted factors, in five classes from very low to very high.</td></tr>
+          <tr><td>WaterPoint</td><td>Entity</td><td>A stream reach, spring or shallow-groundwater site, with twelve monthly sustainable volumes and a confidence level.</td></tr>
+          <tr><td>AccessClass</td><td>Enum</td><td><span class="acc acc-g">gravity</span> <span class="acc acc-p">pumped</span> <span class="acc acc-w">shallow wells</span> <span class="acc acc-h">harvest only</span></td></tr>
+          <tr><td>WaterAvailabilityMap</td><td>Output</td><td>Per field: access class, source, distance and lift. Per source: dependent hectares and water in the leanest month.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="methods">
+    <h2>Methods</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Streams and their flow</h3><p>The terrain is filled so every cell drains, each cell sends its water to the steepest downhill neighbour (D8), and upstream area is added up. Monthly flow = upstream area &times; specific runoff, high in Kiremt and low in Bega. 70% of it is usable; a reach counts as a source if it still gives 5 l/s in the leanest month.</p></div>
+      <div class="card"><h3>Groundwater potential</h3><p>A weighted overlay of six factors scored 0 to 1: geology 30% (alluvium high, fractured basalt moderate, massive basalt low), fractures 20%, slope 15%, rainfall 15%, stream density 10% and soil drainage 10%. Recharge = season rainfall &times; a coefficient by geology; 40% of it may be pumped.</p></div>
+      <div class="card"><h3>Springs</h3><p>Candidate spring sites are gentle cells at the foot of steep ground with moderate or better groundwater potential. Yields of 2 to 8 l/s fall to about half in the dry months; 30% is left for drinking water.</p></div>
+      <div class="card"><h3>Water access</h3><p>For every available field, in order of cost: a gravity canal from a higher source within 3 km (losing 2 m per km plus 2 m freeboard), a pump within 1.5 km and 30 m of lift, shallow wells where groundwater potential is high, otherwise rainwater harvesting. Among reachable sources, the one with most water in its leanest month wins.</p></div>
+    </div>
+    <div class="callout"><strong>Storage matters.</strong> Streams and springs have no storage, so the peak-demand month decides how much land they can water. An aquifer stores the rains, so shallow wells are judged on a year's sustainable recharge against the whole season's demand.</div>
+  </section>
+
+  <section id="amhara">
+    <h2>Amhara-specific considerations</h2>
+    <div class="grid cols-2">
+      <div class="card"><h3>Blue Nile headwaters</h3><p>Much of Amhara drains to Lake Tana and the Abay (Blue Nile). Highland streams flood in Kiremt and shrink to a trickle by March, so the dry months decide what irrigation is possible.</p></div>
+      <div class="card"><h3>Springs and hand-dug wells</h3><p>Springs at the foot of escarpments and hand-dug wells on valley floors already water many homesteads and small plots; mapping them protects drinking water first.</p></div>
+      <div class="card"><h3>Small-scale schemes</h3><p>River diversions and small dams are common. Their command areas and water-user associations are key inputs before any new source is promised.</p></div>
+      <div class="card"><h3>Volcanic geology</h3><p>Fractured and weathered basalts store water along fractures; massive trap basalt stores little; valley alluvium stores most. Geology is the strongest groundwater factor here.</p></div>
+      <div class="card"><h3>Downstream users</h3><p>Every diversion takes water someone downstream relies on. Environmental flow and downstream rights are kept in the rules, not left to negotiation later.</p></div>
+      <div class="card"><h3>Rainwater harvesting</h3><p>Ponds and tanks are the fallback where no other source reaches; they suit supplementary irrigation of small, high-value plots more than whole fields.</p></div>
+    </div>
+  </section>
+
+  <section id="data">
+    <h2>Data sources</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Source</th><th>Resolution</th><th>Used for</th><th>Access</th></tr></thead>
+        <tbody>
+          <tr><td>Available land and terrain</td><td>Module 1 hand-off (stage 01)</td><td>grid</td><td>Which fields to assess; elevation and slope</td><td>Project</td></tr>
+          <tr><td>Streams and catchments</td><td>Copernicus DEM GLO-30; HydroSHEDS / HydroRIVERS</td><td>30 to 90 m</td><td>Stream network, upstream area</td><td>Open</td></tr>
+          <tr><td>River flow</td><td>Gauging stations (national water ministry); regional flow studies</td><td>stations</td><td>Monthly specific runoff, calibration</td><td>By agreement</td></tr>
+          <tr><td>Rainfall</td><td>CHIRPS v2</td><td>~5 km</td><td>Runoff and recharge</td><td>Open</td></tr>
+          <tr><td>Geology and fractures</td><td>Geological survey maps; lineaments from the DEM and Landsat</td><td>map scale</td><td>Groundwater potential factors</td><td>Open / by agreement</td></tr>
+          <tr><td>Wells, boreholes, springs</td><td>Woreda water office inventories; field survey</td><td>points</td><td>Validation, yields</td><td>By agreement</td></tr>
+          <tr><td>Existing schemes</td><td>Regional irrigation office; water-user associations</td><td>polygons</td><td>Command areas already in use</td><td>By agreement</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="demo">
+    <h2>Demo on module 1's landscape</h2>
+    <p class="section-intro">The same made-up 16 km landscape as module 1, read from its hand-off file. Streams, groundwater and springs are derived here; the irrigated-wheat demand comes from the stage 02 budget (2,714 m&sup3; per hectare in February, 8,340 m&sup3; over the season). <strong>No real water data.</strong></p>
+    <figure class="diagram"><img src="../assets/water-maps.svg" alt="Three synthetic maps: streams and springs over the terrain, groundwater potential classes, and water access classes for the available land."></figure>
+    <div class="grid cols-2" style="margin-top:16px">
+      <div class="chart" id="chart-access"><h3>How the available land reaches water</h3><p class="note">14,256 ha of available land from module 1, by access class.</p></div>
+      <div class="chart" id="chart-enough"><h3>Reachable is not the same as enough</h3><p class="note">Land a source reaches, and land it has water for in February (irrigated wheat).</p></div>
+    </div>
+    <div class="callout"><strong>What this shows.</strong> Most available land can reach water: by gravity from a stream or spring higher up (62%), by a short pumped lift (5%) or from shallow wells (17%); 16% would have to harvest rain. But in February, when wheat needs most and streams give least, there is water for only about 2,600 ha of the 12,000 ha that some source reaches. Small springs reach large areas yet can water only a few hectares. Module 3 must therefore treat water, not land, as the limit, and plan staggered planting, efficient methods or storage.</div>
+  </section>
+
+  <section id="try">
+    <h2>Try it: can this field get water?</h2>
+    <p class="section-intro">Describe one field and its nearest stream. The same order and rules as <code>water_access()</code> give the access class, and the stream's dry-season flow shows how many hectares it can water.</p>
+    <div class="calc" id="calc-wa">
+      <div>
+        <div class="field"><label for="wa-d">Distance to the stream</label><output id="wa-d-o"></output><input type="range" id="wa-d" min="0.1" max="6" step="0.1" value="1.2" data-unit="km"></div>
+        <div class="field"><label for="wa-h">Stream elevation minus field elevation</label><output id="wa-h-o"></output><input type="range" id="wa-h" min="-60" max="60" step="1" value="8" data-unit="m"></div>
+        <div class="field"><label for="wa-q">Stream flow in the driest month</label><output id="wa-q-o"></output><input type="range" id="wa-q" min="0" max="200" step="1" value="30" data-unit="l/s"><small>30% stays in the river.</small></div>
+        <div class="field"><label for="wa-gw">Groundwater potential at the field</label><output id="wa-gw-o"></output>
+          <select id="wa-gw"><option value="1">Very low</option><option value="2">Low</option><option value="3" selected>Moderate</option><option value="4">High</option><option value="5">Very high</option></select></div>
+        <div class="field"><label for="wa-a">Field area</label><output id="wa-a-o"></output><input type="range" id="wa-a" min="1" max="100" step="1" value="20" data-unit="ha"></div>
+      </div>
+      <div class="result" aria-live="polite">
+        <div class="big" id="wa-big"></div>
+        <div id="wa-detail" class="note" style="font-size:14px;color:var(--text)"></div>
+        <div class="verdict" id="wa-v"></div>
+        <p class="note">Indicative rules: gravity canal up to 3 km losing 2 m per km plus 2 m freeboard; pump up to 1.5 km and 30 m lift; wells where potential is high. Wheat demand 2,714 m&sup3; per hectare in February.</p>
+      </div>
+    </div>
+    <script>
+    (function () {
+      "use strict";
+      function $(id) { return document.getElementById(id); }
+      var root = $("calc-wa"); if (!root) return;
+      try {
+        root.querySelectorAll("input[type=range]").forEach(function (r) {
+          var o = $(r.id + "-o"), show = function () { o.textContent = r.value + " " + r.dataset.unit; }; show(); r.addEventListener("input", show); });
+        var PEAK = 2714, SEC_FEB = 28 * 86400;
+        function update() {
+          var d = +$("wa-d").value, h = +$("wa-h").value, q = +$("wa-q").value, gw = +$("wa-gw").value, area = +$("wa-a").value;
+          var need = d * 1000 * 0.002 + 2, usable = q >= 5, cls, how;
+          if (usable && d <= 3 && h >= need) { cls = ["gravity canal", "acc-g"]; how = "The stream is " + h + " m above the field; a " + d.toFixed(1) + " km canal needs " + need.toFixed(1) + " m."; }
+          else if (usable && d <= 1.5 && -h <= 30) { cls = ["pumped lift", "acc-p"]; how = "Lift " + Math.max(0, -h) + " m over " + d.toFixed(1) + " km."; }
+          else if (gw >= 4) { cls = ["shallow wells", "acc-w"]; how = "No stream within reach, but groundwater potential is high."; }
+          else { cls = ["harvest only", "acc-h"]; how = !usable ? "The stream gives under 5 l/s when it matters." : "The stream is too far or too low, and groundwater potential is not high."; }
+          $("wa-big").innerHTML = '<span class="acc ' + cls[1] + '" style="font-size:20px;padding:4px 14px">' + cls[0] + "</span>";
+          var detail = how, v = $("wa-v");
+          if (cls[1] === "acc-g" || cls[1] === "acc-p") {
+            var ha = q * 0.7 / 1000 * SEC_FEB / PEAK;
+            detail += " In February the stream can water about <b>" + ha.toFixed(1) + " ha</b> of irrigated wheat.";
+            v.className = "verdict " + (ha >= area ? "good" : ha >= area / 3 ? "warn" : "bad");
+            v.textContent = ha >= area ? "Enough water for the whole field, if no one else draws on this stream." :
+              "Water for only " + Math.round(ha / area * 100) + "% of the field in February: plant in stages, use drip, or store water.";
+          } else if (cls[1] === "acc-w") {
+            v.className = "verdict warn"; v.textContent = "Shallow wells can water a small part of the field: about 1 ha in 20 on a typical year's recharge.";
+          } else { v.className = "verdict bad"; v.textContent = "Supplementary irrigation of small plots from ponds or tanks only."; }
+          $("wa-detail").innerHTML = detail; $("wa-gw-o").textContent = "";
+        }
+        root.querySelectorAll("input, select").forEach(function (e) { e.addEventListener("input", update); e.addEventListener("change", update); });
+        update();
+      } catch (e) { root.insertAdjacentHTML("beforeend", "<p class=\"note\">Calculator error: " + e.message + "</p>"); if (window.console) console.error("[calc-wa]", e); }
+    })();
+    </script>
+  </section>
+
+  <section id="outputs">
+    <h2>Output: what module 3 receives</h2>
+    <p class="section-intro">For every available field: how it can reach water and from which source. For every source: how much land depends on it and how much water it has in its leanest month. Module 3 adds the irrigation land factors to this.</p>
+<pre><code>{
+  "field": {"cell": [47, 31], "access": "GRAVITY", "source": "ST-53-41",
+            "distance_km": 2.92, "lift_m": -40.0},
+  "source": {"id": "ST-53-41", "kind": "stream", "confidence": "indicative",
+             "sustainable_m3": [62475, 46856, 40609, 46856, 78094, 187425,
+                                859031, 1249500, 937125, 546656, 234281, 124950],
+             "dependent_ha": 306.2, "water_for_wheat_ha_in_feb": 17.3},
+  "rules_version": "0.1",
+  "from_module_1": {"branch": "stage/01-land-intelligence", "commit": "c75805e"}
+}</code></pre>
+    <p class="note">A real record from the demo (<code>example_record</code> in <code>assets/demo-water-availability.json</code>): the field sits 40 m below a stream 2.9 km away, so a gravity canal can reach it, but in February that stream has water for 17 of the 306 hectares that depend on it.</p>
+  </section>
+
+  <section id="roadmap">
+    <h2>What comes next</h2>
+    <div class="grid cols-3">
+      <div class="card"><h3>Validate</h3><p>Check the stream network and spring sites against the woreda water office's inventory and a field walk; calibrate runoff with any gauged stream.</p></div>
+      <div class="card"><h3>Real layers</h3><p>Replace the synthetic terrain, geology and runoff with the DEM, the geological map and regional flow records for the pilot woreda.</p></div>
+      <div class="card"><h3>Module 3</h3><p>Irrigated land suitability: which available land with water access can be irrigated well, by surface, sprinkler or drip.</p></div>
+    </div>
+  </section>
+
+  <section id="code">
+    <h2>Code on this branch</h2>
+<pre><code>src/water_res/handoff.py     reads and checks module 1's hand-off file
+src/water_res/mapping.py     streams, flow, groundwater potential, water points, access
+src/demo_water_map.py        synthetic demo on module 1's landscape (maps, hectares, JSON)
+data/handoff-module1.json    module 1's output, with the commit it came from
+tests/test_mapping.py        unit tests for every rule</code></pre>
+<pre><code>git switch stage/02-water-resources
+python3 src/demo_water_map.py
+python3 tests/test_mapping.py</code></pre>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>Amhara Integrated Agriculture Ecosystem. Phase 1, module 2.</span>
+    <span>Synthetic data only. No personal data.</span>
+  </div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  fetch("../assets/demo-water-availability.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) {
+    var fmt = function (v) { return Math.round(v).toLocaleString("en-US"); };
+    var a = d.access_ha, total = d.available_ha, x = 0, bar = "", labels = "";
+    [["GRAVITY", "gravity canal", "#1f4e8c"], ["PUMPED", "pumped lift", "#3a73b0"], ["GROUNDWATER", "shallow wells", "#2f7f76"], ["HARVEST_ONLY", "harvest only", "#e3a64b"]].forEach(function (p, k) {
+      var w = a[p[0]] / total * 380;
+      bar += '<rect x="' + x.toFixed(1) + '" y="10" width="' + Math.max(0, w - 2).toFixed(1) + '" height="34" rx="4" fill="' + p[2] + '"><title>' + p[1] + ": " + fmt(a[p[0]]) + " ha</title></rect>";
+      labels += '<g transform="translate(0,' + (66 + k * 22) + ')"><rect width="12" height="12" rx="2" y="-10" fill="' + p[2] + '"/><text x="18">' + p[1] + " " + Math.round(a[p[0]] / total * 100) + '% <tspan class="muted">(' + fmt(a[p[0]]) + " ha)</tspan></text></g>";
+      x += w;
+    });
+    document.getElementById("chart-access").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 146" role="img" aria-label="Available land by water access class">' + bar + labels + "</svg>");
+    var rows = [["All sources", d.reached_ha, d.irrigable_by_water_ha]].concat(d.top_sources.slice(0, 4).map(function (s) {
+      return [s.id.replace("ST-", "stream ").replace("SP-", "spring "), s.dependent_ha, Math.min(s.dependent_ha, s.water_for_ha)]; }));
+    var g = "", max = d.reached_ha;
+    rows.forEach(function (r, k) {
+      var y = 6 + k * 30, sc = k === 0 ? 135 / max : 135 / Math.max.apply(null, rows.slice(1).map(function (q) { return q[1]; }));
+      g += '<text x="0" y="' + (y + 16) + '"' + (k === 0 ? ' font-weight="700"' : "") + ">" + r[0] + "</text>" +
+        '<rect class="base" x="104" y="' + y + '" width="' + (r[1] * sc).toFixed(1) + '" height="20" rx="4"><title>' + r[0] + " reaches " + fmt(r[1]) + " ha</title></rect>" +
+        '<rect class="ok" x="104" y="' + y + '" width="' + Math.max(1.5, r[2] * sc).toFixed(1) + '" height="20" rx="4"><title>' + r[0] + " has water for " + fmt(r[2]) + " ha in February</title></rect>" +
+        '<text x="' + (110 + r[1] * sc).toFixed(1) + '" y="' + (y + 15) + '" class="muted">' + fmt(r[2]) + " of " + fmt(r[1]) + " ha</text>";
+      if (k === 0) g += '<line x1="0" x2="380" y1="' + (y + 26) + '" y2="' + (y + 26) + '" stroke="currentColor" opacity=".15"/>';
+    });
+    g += '<g transform="translate(0,172)"><rect width="12" height="12" y="-10" rx="2" class="ok"/><text x="18">water in February</text><rect x="150" width="12" height="12" y="-10" rx="2" class="base"/><text x="168">reached, no water</text></g>';
+    document.getElementById("chart-enough").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 180" role="img" aria-label="Land reached by sources versus land they have water for in February">' + g + "</svg>");
+  }).catch(function (e) { if (window.console) console.error("[water charts]", e); });
+})();
+</script>
+</body>
+</html>

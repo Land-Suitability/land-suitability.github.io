@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-labelledby="t d" font-family="Helvetica, Arial, sans-serif">
+<title id="t">Where can the water come from?</title>
+<desc id="d">A highland valley: a stream feeds a gravity canal to fields below, a pump lifts water from the stream, a spring flows at the foot of a slope, a farmer draws from a shallow well, and a harvesting pond collects rain.</desc>
+<style>.cloud{animation:drift 11s ease-in-out infinite alternate}.glow{animation:breathe 5s ease-in-out infinite}.flow{animation:run 1.6s linear infinite}@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(14px)}}@keyframes breathe{0%,100%{opacity:.35}50%{opacity:.65}}@keyframes run{to{stroke-dashoffset:-16}}@media (prefers-reduced-motion:reduce){.cloud,.glow,.flow{animation:none}}</style>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6f2"/><stop offset="1" stop-color="#f4efe2"/></linearGradient></defs>
+<rect width="640" height="400" fill="url(#sky)"/>
+<circle class="glow" cx="90" cy="66" r="56" fill="#ffe7a3" opacity=".5"/><circle cx="90" cy="66" r="28" fill="#f2c14e"/>
+<g class="cloud" fill="#fff" opacity=".95"><ellipse cx="420" cy="58" rx="46" ry="16"/><ellipse cx="446" cy="48" rx="30" ry="20"/><ellipse cx="396" cy="54" rx="22" ry="14"/></g>
+<path d="M0 170 L60 150 L140 152 L190 118 L300 118 L340 150 L640 140 L640 400 L0 400 Z" fill="#b9cfa4"/>
+<path d="M330 160 C420 130 520 150 640 132 L640 400 L330 400 Z" fill="#a3be8a"/>
+<path d="M0 238 C150 214 300 228 640 214 V400 H0Z" fill="#9dbb7f"/>
+<path d="M0 290 C180 270 380 282 640 270 V400 H0Z" fill="#c8b483"/>
+<!-- stream from the hills down to the right -->
+<path d="M210 120 C230 170 300 190 360 215 S520 262 640 268" fill="none" stroke="#4f97c9" stroke-width="9" stroke-linecap="round"/>
+<path d="M210 120 C230 170 300 190 360 215 S520 262 640 268" fill="none" stroke="#9fd0ee" stroke-width="3" stroke-linecap="round"/>
+<!-- gravity canal off the stream to fields lower down on the left -->
+<path class="flow" d="M300 196 C240 222 160 236 70 252" fill="none" stroke="#2a78d6" stroke-width="4" stroke-dasharray="10 6" stroke-linecap="round"/>
+<g transform="translate(40 262) skewX(-12)"><rect width="64" height="34" fill="#7fb069"/><rect x="68" width="64" height="34" fill="#93c47d"/><g stroke="#5a8f3c" stroke-width="1.4"><path d="M6 10 h52 M6 22 h52 M74 10 h52 M74 22 h52"/></g></g>
+<!-- pump on the stream bank, lifting to a terrace above -->
+<g transform="translate(470 232)"><rect x="-14" y="-12" width="28" height="18" rx="3" fill="#5d6d7e"/><circle cx="0" cy="-3" r="5" fill="#cfd8dc"/><path d="M14 -6 C40 -10 52 -30 70 -40" fill="none" stroke="#2a78d6" stroke-width="3.5"/></g>
+<g transform="translate(540 186) skewX(-10)"><rect width="70" height="22" fill="#7fb069"/></g>
+<!-- spring at the foot of the slope -->
+<g transform="translate(400 172)"><path d="M-10 0 q10 -14 20 0" fill="#7d6a4a"/><path class="flow" d="M0 0 C4 12 -6 22 6 34" fill="none" stroke="#2a78d6" stroke-width="3" stroke-dasharray="6 5"/><circle cx="0" cy="-2" r="4" fill="#9fd0ee"/></g>
+<!-- shallow well with a farmer -->
+<g transform="translate(250 318)"><ellipse cx="0" cy="0" rx="22" ry="8" fill="#6b5a3e"/><ellipse cx="0" cy="-2" rx="16" ry="5" fill="#2f5d8a"/>
+  <path d="M-20 -2 v-30 M20 -2 v-30 M-24 -32 h48" stroke="#5d4a2a" stroke-width="3"/><path d="M4 -32 v18" stroke="#5d4a2a" stroke-width="1.5"/><rect x="0" y="-16" width="8" height="8" fill="#9a4a28"/>
+  <g transform="translate(40 2)"><circle cy="-38" r="6" fill="#6b4a32"/><path d="M-6 -31 h12 l3 22 h-18 z" fill="#3f6b34"/><path d="M-4 -9 v9 M4 -9 v9" stroke="#3a2e22" stroke-width="3"/></g></g>
+<!-- harvesting pond -->
+<g transform="translate(470 344)"><path d="M-62 0 C-50 -18 50 -18 62 0 C50 14 -50 14 -62 0 Z" fill="#7aa9c9" stroke="#6b5a3e" stroke-width="3"/><path d="M-30 -2 q10 -4 20 0 M6 2 q10 -4 20 0" stroke="#d3e8f3" stroke-width="2" fill="none"/></g>
+<!-- access tags -->
+<g font-size="12" font-weight="bold">
+  <g transform="translate(110 222)"><rect x="-6" y="-14" width="104" height="20" rx="10" fill="#1f4e8c"/><text x="46" fill="#fff" text-anchor="middle">gravity canal</text></g>
+  <g transform="translate(478 196)"><rect x="-6" y="-14" width="88" height="20" rx="10" fill="#4a86c5"/><text x="38" fill="#fff" text-anchor="middle">pumped lift</text></g>
+  <g transform="translate(410 160)"><rect x="-6" y="-14" width="56" height="20" rx="10" fill="#2a78d6"/><text x="22" fill="#fff" text-anchor="middle">spring</text></g>
+  <g transform="translate(196 270)"><rect x="-6" y="-14" width="96" height="20" rx="10" fill="#2f7f76"/><text x="42" fill="#fff" text-anchor="middle">shallow well</text></g>
+  <g transform="translate(424 316)"><rect x="-6" y="-14" width="96" height="20" rx="10" fill="#e3a64b"/><text x="42" fill="#1f2a20" text-anchor="middle">harvest pond</text></g>
+</g>
+</svg>

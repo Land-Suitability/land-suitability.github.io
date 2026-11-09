@@ -15,16 +15,27 @@ published under `/stages/02-water-resources/`.
 | `src/water_res/` | Python package: domain model, FAO-56 hydrology (Ra, Hargreaves ET0, Kc, effective rain), monthly budget |
 | `src/demo.py` | Synthetic lake-shore cluster demo (writes `assets/demo-water-budget.json` for the chart) |
 | `tests/test_water.py` | Unit tests, including FAO-56 Example 8 |
+| `water-availability/index.html` | Phase 1, module 2: water availability mapping page (maps, access classes, calculator) |
+| `src/water_res/mapping.py` | Streams and monthly flow (fill, D8), groundwater potential, water points, water access per field |
+| `src/water_res/handoff.py` | Reads and checks module 1's hand-off (`data/handoff-module1.json`) |
+| `src/demo_water_map.py` | Mapping demo on module 1's landscape (writes `assets/water-maps.svg`, `assets/demo-water-availability.json`) |
+| `tests/test_mapping.py` | Unit tests for the mapping rules |
 
 ```bash
 pip install numpy scipy        # scipy is optional; it is used for the crop-mix optimisation step
 python3 src/demo.py
 python3 tests/test_water.py    # or: python3 -m pytest tests
+python3 src/demo_water_map.py
+python3 tests/test_mapping.py
 ```
 
 Key design decision: the water budget passed to stage 04 is **twelve monthly limits**, not one
 seasonal total, because the lean dry-season month usually decides the irrigable area.
 Groundwater supply always needs field hydrogeology; satellite data alone cannot establish it.
+
+Phase 1 hand-off: `data/handoff-module1.json` is a copy of stage 01's
+`assets/handoff-available-land.json` with the source commit recorded under `provenance`. Refresh it
+when module 1 changes; the loader rejects an unknown contract or version.
 
 ## Rules
 

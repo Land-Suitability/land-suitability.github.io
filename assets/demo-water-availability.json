@@ -1,0 +1,130 @@
+{
+ "note": "Synthetic landscape from module 1; indicative rules v0.1. Not real water.",
+ "provenance": {
+  "branch": "stage/01-land-intelligence",
+  "commit": "c75805e",
+  "path": "assets/handoff-available-land.json"
+ },
+ "available_ha": 14256.25,
+ "access_ha": {
+  "HARVEST_ONLY": 2256.25,
+  "GROUNDWATER": 2387.5,
+  "PUMPED": 743.75,
+  "GRAVITY": 8868.75
+ },
+ "stream_km": 72.75,
+ "usable_stream_km": 35.25,
+ "springs": 6,
+ "gw_share": {
+  "VERY_LOW": 0.04638671875,
+  "LOW": 0.111328125,
+  "MODERATE": 0.36962890625,
+  "HIGH": 0.26806640625,
+  "VERY_HIGH": 0.20458984375
+ },
+ "lean_month": "Mar",
+ "peak_demand_month": "Feb",
+ "wheat_peak_m3_per_ha": 2713.9712888492345,
+ "reached_ha": 12000.0,
+ "irrigable_by_water_ha": 2604.7392312466272,
+ "groundwater_irrigable_ha": 112.67555867942922,
+ "surface_irrigable_ha": 2492.063672567199,
+ "wheat_season_m3_per_ha": 8339.554833479193,
+ "top_sources": [
+  {
+   "id": "SP-1",
+   "kind": "spring",
+   "dependent_ha": 987.5,
+   "water_for_ha": 2.5518919525544757
+  },
+  {
+   "id": "SP-3",
+   "kind": "spring",
+   "dependent_ha": 762.5,
+   "water_for_ha": 2.3188805550570653
+  },
+  {
+   "id": "SP-5",
+   "kind": "spring",
+   "dependent_ha": 637.5,
+   "water_for_ha": 2.2468502465491658
+  },
+  {
+   "id": "ST-53-41",
+   "kind": "stream",
+   "dependent_ha": 306.25,
+   "water_for_ha": 17.26482892155715
+  },
+  {
+   "id": "ST-24-31",
+   "kind": "stream",
+   "dependent_ha": 293.75,
+   "water_for_ha": 35.835401206929546
+  },
+  {
+   "id": "ST-23-30",
+   "kind": "stream",
+   "dependent_ha": 243.75,
+   "water_for_ha": 36.028844668235514
+  }
+ ],
+ "runoff_mm": [
+  4.0,
+  3.0,
+  2.6,
+  3.0,
+  5.0,
+  12.0,
+  55.0,
+  80.0,
+  60.0,
+  35.0,
+  15.0,
+  8.0
+ ],
+ "example_record": {
+  "field": {
+   "cell": [
+    47,
+    31
+   ],
+   "access": "GRAVITY",
+   "source": "ST-53-41",
+   "distance_km": 2.92,
+   "lift_m": -40.0
+  },
+  "source": {
+   "id": "ST-53-41",
+   "kind": "stream",
+   "confidence": "indicative",
+   "sustainable_m3": [
+    62475,
+    46856,
+    40609,
+    46856,
+    78094,
+    187425,
+    859031,
+    1249500,
+    937125,
+    546656,
+    234281,
+    124950
+   ],
+   "dependent_ha": 306.2,
+   "water_for_wheat_ha_in_feb": 17.3
+  },
+  "rules_version": "0.1",
+  "from_module_1": {
+   "branch": "stage/01-land-intelligence",
+   "commit": "c75805e"
+  }
+ },
+ "rules": {
+  "environmental_flow_fraction": 0.3,
+  "gravity_max_km": 3.0,
+  "pump_max_km": 1.5,
+  "pump_max_lift_m": 30.0,
+  "recharge_share": 0.4
+ }
+}

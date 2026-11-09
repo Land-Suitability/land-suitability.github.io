@@ -2,6 +2,9 @@
 from .budget import build_budget, check_allocation, total_supply
 from .domain import (MONTHS, ClusterWaterContext, Confidence, CropCoefficients, IrrigatedCropPlan, Method,
                      MonthlySeries, SourceType, WaterBudget, WaterSource)
+from .handoff import AvailableLandGrid, load_handoff
+from .mapping import (AccessClass, Geology, GwClass, MappingRules, WaterAvailabilityMap, WaterPoint, d8_receivers,
+                      fill_depressions, flow_accumulation, groundwater_potential, stream_flow_m3, water_access)
 from .hydrology import effective_rainfall, et0_hargreaves, extraterrestrial_radiation, irrigation_demand, kc_daily
 
 __all__ = [
@@ -9,4 +12,7 @@ __all__ = [
     "MonthlySeries", "SourceType", "WaterBudget", "WaterSource", "build_budget", "check_allocation",
     "total_supply", "effective_rainfall", "et0_hargreaves", "extraterrestrial_radiation",
     "irrigation_demand", "kc_daily",
+    "AvailableLandGrid", "load_handoff", "AccessClass", "Geology", "GwClass", "MappingRules", "WaterAvailabilityMap",
+    "WaterPoint", "d8_receivers", "fill_depressions", "flow_accumulation", "groundwater_potential", "stream_flow_m3",
+    "water_access",
 ]

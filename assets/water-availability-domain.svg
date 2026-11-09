@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 330" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Domain model: module 1's available land and terrain feed stream, groundwater and spring mapping; water access rules give each available field an access class and a source; the water availability map goes to module 3.">
+<rect width="1030" height="330" fill="#fbfaf6"/>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0,0 L10,5 L0,10 z" fill="#555"/></marker></defs>
+<text x="515" y="28" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2a20">Water availability domain model</text>
+<g font-size="12" fill="#1f2a20">
+  <rect x="20" y="52" width="200" height="232" rx="8" fill="#f1e8d6" stroke="#74582a"/>
+  <text x="120" y="74" text-anchor="middle" font-weight="bold">AvailableLandGrid (input)</text>
+  <text x="34" y="100">hand-off from module 1:</text><text x="34" y="122">status: in use, expandable, ...</text><text x="34" y="144">altitude, slope</text><text x="34" y="166">season rainfall</text><text x="34" y="188">soil drainage and depth</text><text x="34" y="214" fill="#5d665e">contract checked on load</text><text x="34" y="234" fill="#5d665e">(version, layers, shapes)</text>
+  <rect x="268" y="52" width="216" height="72" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="376" y="74" text-anchor="middle" font-weight="bold">StreamNetwork and flow</text>
+  <text x="282" y="96">fill, D8, upstream area</text><text x="282" y="114">monthly flow, 30% kept in river</text>
+  <rect x="268" y="132" width="216" height="72" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="376" y="154" text-anchor="middle" font-weight="bold">GroundwaterPotential</text>
+  <text x="282" y="176">6 weighted factors, 5 classes</text><text x="282" y="194">recharge by geology, 40% usable</text>
+  <rect x="268" y="212" width="216" height="72" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="376" y="234" text-anchor="middle" font-weight="bold">WaterPoint (entity)</text>
+  <text x="282" y="256">stream, spring or groundwater</text><text x="282" y="274">12 monthly sustainable volumes</text>
+  <rect x="532" y="52" width="210" height="110" rx="8" fill="#1f2a20"/>
+  <text x="637" y="74" text-anchor="middle" font-weight="bold" fill="#fff">Water access service</text>
+  <text x="546" y="100" fill="#fff">water_access(): gravity, then</text><text x="546" y="118" fill="#fff">pumped, then wells, then</text><text x="546" y="136" fill="#fff">harvest; biggest source wins</text>
+  <rect x="532" y="180" width="210" height="104" rx="8" fill="#dde8f3" stroke="#2f5d8a"/>
+  <text x="637" y="202" text-anchor="middle" font-weight="bold">MappingRules (value)</text>
+  <text x="546" y="226">gravity canal up to 3 km</text><text x="546" y="244">pump up to 1.5 km, 30 m lift</text><text x="546" y="262">at least 5 l/s in the lean month</text>
+  <rect x="790" y="52" width="220" height="232" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
+  <text x="900" y="74" text-anchor="middle" font-weight="bold">WaterAvailabilityMap</text>
+  <text x="804" y="100">per available field:</text><text x="804" y="120">access class, serving source,</text><text x="804" y="140">distance and lift</text>
+  <text x="804" y="168">per source:</text><text x="804" y="188">dependent hectares, water</text><text x="804" y="208">in the leanest month</text>
+  <text x="804" y="240" font-weight="bold">to module 3</text><text x="804" y="258">(irrigated land suitability)</text>
+</g>
+<g stroke="#555" stroke-width="1.8" fill="none" marker-end="url(#a)">
+  <path d="M220 110 L266 92"/><path d="M220 168 L266 168"/><path d="M220 226 L266 246"/>
+  <path d="M484 88 L530 100"/><path d="M484 168 L530 130"/><path d="M484 248 L530 140"/>
+  <path d="M637 180 L637 164"/><path d="M742 107 L788 120"/>
+</g>
+</svg>
