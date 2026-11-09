@@ -113,6 +113,8 @@
       { title: "Data spine: every hand-off", href: "/data-spine.html", sub: "Which stage sends which record to which", icon: "d-move", domain: "" },
       { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" },
       { title: "Calculators: one per stage", href: "/tools.html", sub: "Suitability, water, contracts, storage, settlement…", icon: "d-produce", domain: "" },
+      { title: "Phase 1 roadmap: one module at a time", href: "/roadmap.html", sub: "Land, water, irrigated suitability, high-value crops", icon: "d-plan", domain: "" },
+      { title: "Land availability (Phase 1, module 1a)", href: "/stages/01-land-intelligence/availability/", sub: "In use, expandable, conditional, excluded", icon: "i-01", domain: "plan" },
       { title: "Pilot map: the chain on one map", href: "/pilot-map.html", sub: "Fictional woreda with a layer per stage", icon: "i-01", domain: "" },
       { title: "People in the chain: who does what", href: "/people.html", sub: "Ten roles and the stages they lead", icon: "i-07", domain: "" },
       { title: "Findings: what the demos show", href: "/findings.html", sub: "One chart per stage, synthetic data", icon: "d-sell", domain: "" },
@@ -376,7 +378,14 @@
       if (amH && !am.querySelector(".stage-strip")) {
         var centre = (me.number - 0.5) * 200;                // panorama: 2400 px wide, 200 px per stage
         amH.insertAdjacentHTML("afterend", '<div class="page-banner stage-strip" role="img" aria-label="Illustration: stage ' + me.number +
-          ' on the chain, in a highland setting" style="background-position: calc(50% + ' + (1200 - centre) + 'px) 66%"></div>');
+          ' on the chain, in a highland setting"></div>');
+        var strip = am.querySelector(".stage-strip");
+        // centre on this stage, but never past the panorama's edges (stages 01 and 12 sit at the ends)
+        var place = function () {
+          var w = strip.clientWidth || 0, x = Math.min(0, Math.max(w - 2400, w / 2 - centre));
+          strip.style.backgroundPosition = Math.round(x) + "px 66%";
+        };
+        place(); window.addEventListener("resize", place);
       }
 
       // cross-links from this stage's calculator and demo to the hub's collections

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phase 1 Roadmap | AIAE</title>
+  <meta name="description" content="Phase 1 of the Amhara Integrated Agriculture Ecosystem, built one module at a time: agricultural land availability and suitability, water resource availability mapping, irrigated land suitability, and high-value crop production guidance.">
+  <link rel="canonical" href="https://land-suitability.github.io/roadmap.html">
+  <meta property="og:title" content="Phase 1: built one module at a time">
+  <meta property="og:description" content="Land availability and suitability, water availability mapping, irrigated land suitability, high-value crop guidance.">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 22px 0 8px; counter-reset: m; }
+    .flow .f { position: relative; padding: 14px 16px 14px 18px; background: var(--surface); border: 1px solid var(--border); border-left: 5px solid var(--d); margin-right: 22px; border-radius: 12px; }
+    .flow .f:not(:last-child)::after { content: ""; position: absolute; right: -19px; top: 50%; width: 14px; height: 14px; border-top: 3px solid var(--muted); border-right: 3px solid var(--muted); transform: translateY(-50%) rotate(45deg); }
+    .flow .f b { display: block; font-size: 15px; line-height: 1.3; } .flow .f small { color: var(--muted); font-size: 12.5px; }
+    .flow .f .n { font-size: 12px; font-weight: 800; color: var(--d); text-transform: uppercase; letter-spacing: .05em; }
+    @media (max-width: 900px) { .flow { grid-template-columns: 1fr; gap: 18px; } .flow .f { margin-right: 0; }
+      .flow .f:not(:last-child)::after { right: 50%; top: auto; bottom: -16px; transform: translateX(50%) rotate(135deg); } }
+    .module { display: grid; grid-template-columns: 64px 1fr; gap: 18px; padding: 22px 0; border-top: 1px solid var(--border); }
+    .module .num { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; background: var(--d-bg); color: var(--d); }
+    .module .num svg { width: 30px; height: 30px; }
+    .module h2 { margin: 0 0 4px; font-size: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .module .q { font-size: 17px; color: var(--muted); margin: 0 0 10px; }
+    .module .analogy { font-style: italic; color: var(--muted); margin: 0 0 12px; }
+    .module .cols { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 900px) { .module { grid-template-columns: 1fr; } .module .cols { grid-template-columns: 1fr; } }
+    .module .box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+    .module .box h3 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+    .module ul { margin: 0; padding-left: 18px; } .module li { margin: 4px 0; font-size: 14.5px; }
+    .parts { list-style: none; padding: 0 !important; } .parts li { display: flex; gap: 8px; align-items: baseline; }
+    .out { margin-top: 10px; padding: 10px 14px; border-radius: 10px; background: var(--d-bg); font-size: 14.5px; }
+    .out b { color: var(--d); }
+    .badge { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11.5px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+    .st-done { background: #3f6b34; color: #fff; } .st-build { background: #1f63b8; color: #fff; } .st-next { background: #e3a64b; color: #1f2a20; } .st-plan { background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); }
+    .where { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:4px">
+    <span class="eyebrow">Build roadmap</span>
+    <h1>Phase 1: built one module at a time</h1>
+    <p class="lead">The twelve stages describe the whole system. Phase 1 builds its foundation in a fixed order, and each module is finished before the next one starts: first the land, then the water, then where the two meet for irrigation, and finally what to grow there.</p>
+    <p class="note">Sequence set with the project's academic lead. Each module's output is the next module's input.</p>
+  </section>
+
+  <div class="flow" aria-label="Phase 1 sequence">
+      <div class="f d-plan"><span class="n">Module 1 · <span class="badge st-done">v0.1 built</span></span><b>Agricultural land availability and suitability</b><small>AvailableLand</small></div>
+      <div class="f d-produce"><span class="n">Module 2 · <span class="badge st-build">in progress</span></span><b>Water resource availability mapping</b><small>WaterAvailabilityMap</small></div>
+      <div class="f d-plan"><span class="n">Module 3 · <span class="badge st-plan">planned</span></span><b>Irrigated land suitability analysis</b><small>IrrigatedSuitability</small></div>
+      <div class="f d-sell"><span class="n">Module 4 · <span class="badge st-plan">planned</span></span><b>High-value crop production guidance</b><small>CropGuide</small></div>
+  </div>
+
+  <section class="module d-plan" id="module-1">
+    <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg></div>
+    <div>
+      <h2>Module 1: Agricultural land availability and suitability <span class="badge st-done">v0.1 built</span></h2>
+      <p class="q">Which land may be farmed, and how well would each crop grow there?</p>
+      <p class="analogy">First the land&#x27;s calendar (is it free?), then its skills (is it good?).</p>
+      <div class="cols">
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/01-land-intelligence/availability/">1a Land availability: in use, expandable, conditional, excluded</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/01-land-intelligence/">1b Land suitability: FAO, AHP and deep learning, S1 to N per crop</a></span></li></ul></div>
+        <div class="box"><h3>Inputs</h3><ul><li>Land cover</li><li>Elevation and slope</li><li>Soils</li><li>Season rainfall and temperature</li><li>Protected areas, church forests, exclosures</li><li>Roads and communal grazing</li></ul></div>
+        <div class="box"><h3>Done when</h3><ul><li>Thresholds agreed with the woreda office and kebele land committees</li><li>Synthetic layers replaced by the pilot woreda&#x27;s real layers</li><li>Cropland, forest and suitability checked against field visits</li></ul></div>
+      </div>
+      <div class="out"><b>Hands to the next module:</b> AvailableLand: hectares available and S1 or S2 per crop and cluster</div>
+      <div class="where"><a class="chip" href="/stages/01-land-intelligence/">Stage 01</a></div>
+    </div>
+  </section>
+  <section class="module d-produce" id="module-2">
+    <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg></div>
+    <div>
+      <h2>Module 2: Water resource availability mapping <span class="badge st-build">in progress</span></h2>
+      <p class="q">Where can water come from for that land, and how much in each month?</p>
+      <p class="analogy">A map of the wells and taps, not just the size of the tank.</p>
+      <div class="cols">
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/">2a Monthly water budget for a cluster (river, wells, environmental flow)</a></span></li><li><span class="badge st-next">next</span><span>2b Water source maps: rivers and flow, springs, ponds, groundwater potential</span></li><li><span class="badge st-plan">planned</span><span>2c Water access per land cell: nearest source, distance, height to lift</span></li></ul></div>
+        <div class="box"><h3>Inputs</h3><ul><li>AvailableLand from module 1</li><li>River network and flow records</li><li>Rainfall and evapotranspiration</li><li>Geology and recharge for groundwater</li><li>Existing schemes and water-user associations</li></ul></div>
+        <div class="box"><h3>Done when</h3><ul><li>Source maps checked with woreda water office records</li><li>Monthly volumes within agreed environmental-flow limits</li><li>Every available cell has a water-access class</li></ul></div>
+      </div>
+      <div class="out"><b>Hands to the next module:</b> WaterAvailabilityMap: per cell, the reachable sources and the water they can give each month</div>
+      <div class="where"><a class="chip" href="/stages/02-water-resources/">Stage 02</a></div>
+    </div>
+  </section>
+  <section class="module d-plan" id="module-3">
+    <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg></div>
+    <div>
+      <h2>Module 3: Irrigated land suitability analysis <span class="badge st-plan">planned</span></h2>
+      <p class="q">Which available land can be irrigated well, by which method?</p>
+      <p class="analogy">Good land and water are not enough; they must meet: water has to reach the field at the right height and soil.</p>
+      <div class="cols">
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-plan">planned</span><span>3a Irrigation land factors: slope, soil depth, texture, drainage, salinity</span></li><li><span class="badge st-plan">planned</span><span>3b Water access from module 2: source, distance, lift, command area</span></li><li><span class="badge st-plan">planned</span><span>3c Classes S1 to N per method: surface, sprinkler, drip</span></li></ul></div>
+        <div class="box"><h3>Inputs</h3><ul><li>AvailableLand from module 1</li><li>WaterAvailabilityMap from module 2</li><li>Soil physical properties</li><li>Irrigation method requirements</li></ul></div>
+        <div class="box"><h3>Done when</h3><ul><li>Classes checked against existing irrigation schemes</li><li>Command areas agreed with water-user associations</li><li>Monthly water limits respected in every command area</li></ul></div>
+      </div>
+      <div class="out"><b>Hands to the next module:</b> IrrigatedSuitability: S1 to N per method, and irrigable command areas with their water</div>
+      <div class="where"><a class="chip" href="/stages/01-land-intelligence/">Stage 01</a><a class="chip" href="/stages/02-water-resources/">Stage 02</a></div>
+    </div>
+  </section>
+  <section class="module d-sell" id="module-4">
+    <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg></div>
+    <div>
+      <h2>Module 4: High-value crop production guidance <span class="badge st-plan">planned</span></h2>
+      <p class="q">Which high-value crops suit each irrigable area, and how should they be grown?</p>
+      <p class="analogy">The menu is written only after we know the kitchen and the ingredients.</p>
+      <div class="cols">
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-plan">planned</span><span>4a Crop requirements for onion, tomato, pepper, potato and garlic</span></li><li><span class="badge st-plan">planned</span><span>4b Crop choice per command area: water per month, margin, market window</span></li><li><span class="badge st-plan">planned</span><span>4c Production guides: calendar, inputs, irrigation schedule, post-harvest care</span></li></ul></div>
+        <div class="box"><h3>Inputs</h3><ul><li>IrrigatedSuitability from module 3</li><li>Monthly water from module 2</li><li>Prices and market windows (stage 05)</li><li>Agronomic practice from research partners</li></ul></div>
+        <div class="box"><h3>Done when</h3><ul><li>Guides reviewed by extension and research partners</li><li>Recommendations tested on demonstration plots</li><li>Farmers and development agents can use them in the field</li></ul></div>
+      </div>
+      <div class="out"><b>Hands to the next module:</b> CropGuide: recommended crops per command area, with calendar, inputs and irrigation schedule</div>
+      <div class="where"><a class="chip" href="/stages/04-crop-planning/">Stage 04</a><a class="chip" href="/stages/07-farm-production/">Stage 07</a></div>
+    </div>
+  </section>
+
+  <section style="padding-top:26px">
+    <h2>How each module is finished</h2>
+    <div class="principles">
+      <div class="card"><h3>Domain model first</h3><p>The words, records and rules are agreed before code: what "available", "water access" or "irrigable" mean, and who decides the thresholds.</p></div>
+      <div class="card"><h3>Code with tests</h3><p>Python (PyTorch where learning helps), with tests for every rule and clear error messages when data is missing or misaligned.</p></div>
+      <div class="card"><h3>Demo, then real data</h3><p>A synthetic demo shows how the method behaves; the pilot woreda's real layers replace it, with field checks.</p></div>
+      <div class="card"><h3>A page and a hand-off</h3><p>Each module gets a page with maps and a calculator, and a defined record that the next module reads.</p></div>
+    </div>
+  </section>
+
+  <section style="padding-top:22px">
+    <h2>Phase 1 and the twelve stages</h2>
+    <p class="section-intro">Phase 1 does not replace the chain; it builds the chain's foundation first. Modules 1 and 2 deepen stages 01 and 02, module 3 joins them, and module 4 feeds the planning and field stages. Later phases complete the rest of the chain, from inputs to the market.</p>
+    <p><a class="btn" href="/#chain">See all twelve stages</a> <a class="btn" href="/pilot-map.html">See them on the pilot map</a></p>
+  </section>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>Status reflects the synthetic-demo versions on this site; real-data versions follow field validation.</span><span><a href="/">Back to the hub</a></span></div></div>
+</footer>
+</body>
+</html>

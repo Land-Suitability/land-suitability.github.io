@@ -611,9 +611,9 @@ a.gl-term { color: inherit; text-decoration: underline dotted; text-decoration-c
 a.gl-term:hover, a.gl-term:focus-visible { text-decoration-style: solid; }
 a.gl-term::after { content: attr(data-def); position: absolute; left: 0; top: calc(100% + 8px); width: max-content; max-width: min(300px, 78vw);
   background: #1f2a20; color: #fff; font-size: 13px; font-weight: 400; line-height: 1.45; padding: 8px 11px; border-radius: 9px;
-  box-shadow: 0 8px 22px rgba(0,0,0,.25); white-space: normal; z-index: 30; opacity: 0; pointer-events: none; transform: translateY(-3px);
-  transition: opacity .12s ease, transform .12s ease; }
-a.gl-term:hover::after, a.gl-term:focus-visible::after { opacity: 1; transform: none; }
+  box-shadow: 0 8px 22px rgba(0,0,0,.25); white-space: normal; z-index: 30; pointer-events: none;
+  display: none; }                                   /* not rendered until needed: a hidden tooltip must not widen the page */
+a.gl-term:hover::after, a.gl-term:focus-visible::after { display: block; }
 @media (hover: none) { a.gl-term::after { display: none; } }
 
 /* printing: drop interactive-only parts, keep diagrams and tables whole, always print in light colours */
@@ -634,3 +634,18 @@ a.gl-term:hover::after, a.gl-term:focus-visible::after { opacity: 1; transform: 
 
 /* wide tables scroll inside their wrapper on every page (stage pages also style it in stage.css) */
 .table-wrap { overflow-x: auto; }
+
+/* hub: Phase 1 band */
+.phase-band { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 14px 18px; border-radius: 16px;
+  background: var(--surface); border: 1px solid var(--border); border-left: 5px solid var(--accent); text-decoration: none; color: var(--text);
+  transition: box-shadow .2s ease, transform .2s ease; }
+.phase-band:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); transform: translateY(-1px); }
+.pb-head { display: flex; flex-direction: column; } .pb-head .eyebrow { margin: 0; } .pb-head b { font-size: 17px; }
+.pb-steps { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.pb { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); }
+.pb i { font-style: normal; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 800;
+  border: 2px solid var(--border); color: var(--muted); }
+.pb.done { color: var(--text); } .pb.done i { background: var(--accent); border-color: var(--accent); color: var(--accent-contrast); }
+.pb.now { color: var(--text); font-weight: 600; } .pb.now i { border-color: var(--accent); color: var(--accent); }
+.pb-go { font-weight: 700; color: var(--accent); white-space: nowrap; }
+@media (max-width: 900px) { .phase-band { grid-template-columns: 1fr; gap: 10px; } }

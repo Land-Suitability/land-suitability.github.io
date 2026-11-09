@@ -52,6 +52,7 @@ assets/data/glossary.json      glossary terms (used by glossary.html and for in-
 findings.html                  one chart per stage demo result (synthetic data)
 pilot-map.html                 illustrated, layered map of a fictional pilot woreda
 people.html                    who does what: ten roles and the stages they lead or support
+roadmap.html                   Phase 1 build roadmap: four modules, built one at a time
 brief.html                     two-page concept brief (rendered to assets/AIAE-concept-brief.pdf)
 404.html, robots.txt, sitemap.xml
 stages.json                    single source of truth: project, domains, 12 stages
@@ -72,6 +73,7 @@ tools/make_tools_page.py       rebuild tools.html (calculators index)
 tools/make_findings_page.py    rebuild findings.html (one chart per stage demo)
 tools/make_pilot_map.py        rebuild pilot-map.html and assets/img/pilot-map.svg
 tools/make_people_page.py      rebuild people.html and assets/img/people-row.svg
+tools/make_roadmap_page.py     rebuild roadmap.html (edit MODULES as each module lands)
 tools/sweep_pages.js           check every page for JS errors, failed requests, overflow and broken images
 tools/render_media.js          regenerate social cards and the brief PDF (Playwright)
 tools/create_stage_branches.py create the 12 orphan stage branches
