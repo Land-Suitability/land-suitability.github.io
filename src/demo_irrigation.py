@@ -137,7 +137,10 @@ def main() -> int:
                            "best_method": max(IrrigationMethod, key=lambda m: sum(c.irrigable_ha(m.value) for c in wells)).value,
                            "suitable_ha": {m.value: round(sum(c.suitable_ha(m.value) for c in wells), 1) for m in IrrigationMethod},
                            "irrigable_ha": {m.value: round(sum(c.irrigable_ha(m.value) for c in wells), 1) for m in IrrigationMethod},
-                           "sustainable_m3": [round(v) for v in np.sum([c.sustainable_m3 for c in wells], axis=0)]})
+                           # only the water each site can use on its own suitable land (wells are local: water
+                           # from a site with no suitable land cannot irrigate land at another site)
+                           "sustainable_m3": [round(v) for v in np.sum([np.asarray(c.sustainable_m3) * min(1.0, c.suitable_ha("drip") / c.water_limited_ha["drip"])
+                                                                         for c in wells if c.water_limited_ha["drip"] > 0], axis=0)]})
             print(f"  [DEBUG] {len(wells)} shallow-well sites pooled: irrigable with drip {pooled[0]['irrigable_ha']['drip']:,.1f} ha")
         handoff = {"contract": "aiae.phase1.irrigated_suitability", "version": "0.1", "producer": "stage/02-water-resources src/demo_irrigation.py",
                    "note": "Command areas with irrigable land and their water. Synthetic; indicative v0.1.",
