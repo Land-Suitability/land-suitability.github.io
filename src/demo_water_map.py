@@ -23,7 +23,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from water_res import (MONTHS, AccessClass, Confidence, Geology, GwClass, MappingRules, WaterPoint,  # noqa: E402
-                       build_budget, d8_receivers, fill_depressions, flow_accumulation, groundwater_potential,
+                       build_budget, d8_receivers, et0_hargreaves, fill_depressions, flow_accumulation, groundwater_potential,
                        load_handoff, stream_flow_m3, water_access)
 from demo import PLANS, RAIN, TMAX, TMIN, make_cluster  # noqa: E402  (stage 02 budget inputs)
 
@@ -156,6 +156,35 @@ def maps_svg(g, stream, rec, upstream_km2, springs, gw_cls, wam, path: Path, cel
     path.write_text("\n".join(p), encoding="utf-8")
 
 
+def write_handoff(g, wam, gw_cls, path: Path) -> None:
+    """
+    Module 2 -> module 3 hand-off (Phase 1): access per field, every serving source with its monthly
+    sustainable water, and the monthly climate, so later modules need no code from this branch.
+    """
+    used = sorted({s for s in wam.source_id.ravel() if s})
+    index = {sid: k for k, sid in enumerate(used)}
+    src_grid = [[index.get(wam.source_id[i, j], -1) for j in range(g.shape[1])] for i in range(g.shape[0])]
+    clean = lambda a, dp: [[None if np.isnan(v) else round(float(v), dp) for v in row] for row in a]
+    et0 = et0_hargreaves(11.8, TMIN, TMAX)
+    handoff = {
+        "contract": "aiae.phase1.water_availability", "version": "0.1", "producer": "stage/02-water-resources src/demo_water_map.py",
+        "note": "Synthetic landscape from module 1; indicative rules v0.1. Rows north to south, columns west to east.",
+        "grid": {"rows": g.shape[0], "cols": g.shape[1], "cell_m": g.cell_m},
+        "codes": {"access": {c.name: int(c) for c in AccessClass}, "gw_class": {c.name: int(c) for c in GwClass}},
+        "layers": {"access": [[int(v) for v in row] for row in wam.access], "source": src_grid,
+                   "distance_km": clean(wam.distance_km, 2), "lift_m": clean(wam.lift_m, 1),
+                   "gw_class": [[int(v) for v in row] for row in gw_cls]},
+        "sources": [{"id": sid, "kind": wam.points[sid].kind, "water_body": wam.points[sid].water_body, "cell": list(wam.points[sid].cell),
+                     "elevation_m": round(wam.points[sid].elevation_m, 1), "confidence": wam.points[sid].confidence.value,
+                     "sustainable_m3": [round(v, 1) for v in wam.points[sid].sustainable_m3]} for sid in used],
+        "climate": {"months": list(MONTHS), "et0_mm_day": [round(float(v), 2) for v in et0], "rain_mm": list(RAIN.values),
+                    "source": "stage 02 demo inputs (synthetic, 11.8 N)"},
+        "from_module_1": g.provenance,
+    }
+    path.write_text(json.dumps(handoff, separators=(",", ":")), encoding="utf-8")
+    print(f"  [DEBUG] wrote {path.relative_to(ROOT)} ({path.stat().st_size // 1024} KB, {len(used)} sources, contract {handoff['contract']} v{handoff['version']})")
+
+
 def main() -> int:
     try:
         rules = MappingRules()
@@ -187,10 +216,19 @@ def main() -> int:
         for c in GwClass:
             print(f"  {c.name:10s} {(gw_cls == c).mean():6.1%}")
         springs = find_springs(g, gw_idx, gw_cls, stream)
+        # every intake belongs to the stream network (basin) it drains to: follow the flow to the outlet
+        n_cols = g.shape[1]
+
+        def outlet(i, j):
+            k = i * n_cols + j
+            while rec[k] >= 0 and stream.ravel()[rec[k]]:
+                k = rec[k]
+            return divmod(int(k), n_cols)
         points = []
         for i, j in zip(*np.nonzero(usable)):
+            oi, oj = outlet(i, j)
             points.append(WaterPoint(f"ST-{i:02d}-{j:02d}", "stream", (int(i), int(j)), float(g.layers["altitude_m"][i, j]),
-                                     tuple(float(v) for v in sustainable[:, i, j]), Confidence.INDICATIVE))
+                                     tuple(float(v) for v in sustainable[:, i, j]), Confidence.INDICATIVE, group=f"BASIN-{oi:02d}-{oj:02d}"))
         dry_factor = np.array([.6, .55, .5, .5, .6, .8, 1, 1, 1, .9, .8, .7])
         for s, (i, j) in enumerate(springs):
             ls = 2 + 6 * float(gw_idx[i, j])                       # 2 to 8 l/s, higher where potential is higher
@@ -217,39 +255,42 @@ def main() -> int:
         print(f"\n== Can the water irrigate the land it reaches? (irrigated wheat, peak {MONTHS[peak]}: {wheat[peak]:,.0f} m3/ha) ==")
         # streams and springs have no storage: the peak month decides. An aquifer stores the rains, so
         # shallow wells are judged on a year's sustainable recharge against the whole season's demand.
+        # intakes along one stream network share its water (capped by the outlet's flow), so count per water body
         season_demand = float(wheat.sum())
-        dep = wam.dependent_ha()
+        bodies = wam.water_bodies()
         irrigable_by_water, gw_ha, surf_ha = 0.0, 0.0, 0.0
         sources_summary = []
-        for pid, dha in sorted(dep.items(), key=lambda x: -x[1]):
-            p = wam.points[pid]
-            if p.kind == "groundwater":
-                ha_water = sum(p.sustainable_m3) / season_demand
+        for bid, b in sorted(bodies.items(), key=lambda x: -x[1]["dependent_ha"]):
+            dha, w = b["dependent_ha"], b["sustainable_m3"]
+            if b["kind"] == "groundwater":
+                ha_water = float(w.sum()) / season_demand
                 gw_ha += min(dha, ha_water)
             else:
-                ha_water = p.sustainable_m3[peak] / wheat[peak]
+                ha_water = float(w[peak]) / wheat[peak]
                 surf_ha += min(dha, ha_water)
-                sources_summary.append({"id": pid, "kind": p.kind, "dependent_ha": dha, "water_for_ha": ha_water})
+                sources_summary.append({"id": bid, "kind": b["kind"], "intakes": len(b["points"]), "dependent_ha": dha, "water_for_ha": ha_water})
             irrigable_by_water += min(dha, ha_water)
-        reach_ha = sum(dep.values())
+        reach_ha = sum(b["dependent_ha"] for b in bodies.values())
+        n_basins = sum(1 for b in bodies.values() if b["kind"] == "stream")
         print(f"  land that some source reaches: {reach_ha:,.0f} ha; water for irrigated wheat in {MONTHS[peak]}: about {irrigable_by_water:,.0f} ha "
               f"({irrigable_by_water / reach_ha:.0%}): streams and springs {surf_ha:,.0f} ha, shallow wells {gw_ha:,.0f} ha "
-              f"(wells judged on a year's recharge against the season's {season_demand:,.0f} m3/ha)")
+              f"(wells judged on a year's recharge against the season's {season_demand:,.0f} m3/ha); {n_basins} stream basins share the stream water")
         top = sorted(sources_summary, key=lambda s: -s["dependent_ha"])[:6]
         for s in top:
-            print(f"  [DEBUG] {s['id']:10s} {s['kind']:7s} serves {s['dependent_ha']:6,.0f} ha, water for {s['water_for_ha']:6,.0f} ha in {MONTHS[peak]}")
+            print(f"  [DEBUG] {s['id']:14s} {s['kind']:7s} {s['intakes']:3d} intake(s) serve {s['dependent_ha']:6,.0f} ha, water for {s['water_for_ha']:6,.0f} ha in {MONTHS[peak]}")
 
         # one real record of the output contract, for the page: a field served by the busiest stream source
         best = next(t for t in top if t["kind"] == "stream")
-        fi, fj = [int(v) for v in np.argwhere(wam.source_id == best["id"])[0]]
-        sp = wam.points[best["id"]]
-        example = {"field": {"cell": [fi, fj], "access": AccessClass(int(wam.access[fi, fj])).name, "source": best["id"],
+        intake = bodies[best["id"]]["points"][0]
+        fi, fj = [int(v) for v in np.argwhere(wam.source_id == intake)[0]]
+        example = {"field": {"cell": [fi, fj], "access": AccessClass(int(wam.access[fi, fj])).name, "intake": intake,
                              "distance_km": round(float(wam.distance_km[fi, fj]), 2), "lift_m": round(float(wam.lift_m[fi, fj]), 1)},
-                   "source": {"id": sp.point_id, "kind": sp.kind, "confidence": sp.confidence.value,
-                              "sustainable_m3": [round(v) for v in sp.sustainable_m3],
-                              "dependent_ha": round(best["dependent_ha"], 1), "water_for_wheat_ha_in_feb": round(best["water_for_ha"], 1)},
+                   "water_body": {"id": best["id"], "kind": "stream basin", "intakes": best["intakes"], "confidence": "indicative",
+                                  "sustainable_m3": [round(float(v)) for v in bodies[best["id"]]["sustainable_m3"]],
+                                  "dependent_ha": round(best["dependent_ha"], 1), "water_for_wheat_ha_in_feb": round(best["water_for_ha"], 1)},
                    "rules_version": "0.1", "from_module_1": {k: g.provenance.get(k) for k in ("branch", "commit")}}
         maps_svg(g, stream, rec, upstream_km2, springs, gw_cls, wam, ROOT / "assets" / "water-maps.svg")
+        write_handoff(g, wam, gw_cls, ROOT / "assets" / "handoff-water-availability.json")
         out = {"note": "Synthetic landscape from module 1; indicative rules v0.1. Not real water.",
                "provenance": g.provenance, "available_ha": avail_ha, "access_ha": {k: v for k, v in ha.items() if k != "NOT_ASSESSED"},
                "stream_km": float(stream.sum() * g.cell_m / 1000), "usable_stream_km": float(usable.sum() * g.cell_m / 1000),
@@ -257,7 +298,7 @@ def main() -> int:
                "lean_month": MONTHS[lean], "peak_demand_month": MONTHS[peak], "wheat_peak_m3_per_ha": float(wheat[peak]),
                "reached_ha": reach_ha, "irrigable_by_water_ha": irrigable_by_water, "groundwater_irrigable_ha": gw_ha,
                "surface_irrigable_ha": surf_ha, "wheat_season_m3_per_ha": season_demand,
-               "top_sources": top, "runoff_mm": RUNOFF_MM, "example_record": example,
+               "top_sources": top, "stream_basins": n_basins, "runoff_mm": RUNOFF_MM, "example_record": example,
                "rules": {"environmental_flow_fraction": rules.environmental_flow_fraction, "gravity_max_km": rules.gravity_max_km,
                          "pump_max_km": rules.pump_max_km, "pump_max_lift_m": rules.pump_max_lift_m, "recharge_share": rules.recharge_share}}
         (ROOT / "assets" / "demo-water-availability.json").write_text(json.dumps(out, indent=1), encoding="utf-8")

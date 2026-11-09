@@ -94,6 +94,17 @@ def test_leanest_month_per_hectare():
     assert month == "Jan" and per_ha == 1000.0       # 1 ha cell (100 m) depends on S1
 
 
+def test_intakes_on_one_stream_share_its_water():
+    elev = np.array([[100.0, 100.0, 0.0, 0.0]])
+    avail = np.array([[True, True, False, False]])
+    up = WaterPoint("UP", "stream", (0, 2), 110.0, tuple([400.0] * 12), group="BASIN-1")
+    down = WaterPoint("DOWN", "stream", (0, 3), 108.0, tuple([1000.0] * 12), group="BASIN-1")
+    m = water_access(avail, elev, [up, down], np.ones((1, 4), int), np.zeros((1, 4)), 100.0)
+    bodies = m.water_bodies()
+    assert list(bodies) == ["BASIN-1"]
+    assert bodies["BASIN-1"]["sustainable_m3"][0] == 1000.0     # the outlet flow, not 400 + 1000
+
+
 def test_handoff_contract_is_enforced():
     with tempfile.TemporaryDirectory() as d:
         p = Path(d) / "h.json"

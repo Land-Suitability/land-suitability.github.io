@@ -26,48 +26,55 @@
  "peak_demand_month": "Feb",
  "wheat_peak_m3_per_ha": 2713.9712888492345,
  "reached_ha": 12000.0,
- "irrigable_by_water_ha": 2604.7392312466272,
+ "irrigable_by_water_ha": 346.62340803819137,
  "groundwater_irrigable_ha": 112.67555867942922,
- "surface_irrigable_ha": 2492.063672567199,
+ "surface_irrigable_ha": 233.9478493587619,
  "wheat_season_m3_per_ha": 8339.554833479193,
  "top_sources": [
   {
+   "id": "BASIN-13-00",
+   "kind": "stream",
+   "intakes": 38,
+   "dependent_ha": 3575.0,
+   "water_for_ha": 71.42899808722665
+  },
+  {
+   "id": "BASIN-53-16",
+   "kind": "stream",
+   "intakes": 19,
+   "dependent_ha": 1912.5,
+   "water_for_ha": 45.410852541574684
+  },
+  {
    "id": "SP-1",
    "kind": "spring",
+   "intakes": 1,
    "dependent_ha": 987.5,
    "water_for_ha": 2.5518919525544757
   },
   {
+   "id": "BASIN-00-15",
+   "kind": "stream",
+   "intakes": 19,
+   "dependent_ha": 956.25,
+   "water_for_ha": 25.05092823912214
+  },
+  {
    "id": "SP-3",
    "kind": "spring",
+   "intakes": 1,
    "dependent_ha": 762.5,
    "water_for_ha": 2.3188805550570653
   },
   {
    "id": "SP-5",
    "kind": "spring",
+   "intakes": 1,
    "dependent_ha": 637.5,
    "water_for_ha": 2.2468502465491658
-  },
-  {
-   "id": "ST-53-41",
-   "kind": "stream",
-   "dependent_ha": 306.25,
-   "water_for_ha": 17.26482892155715
-  },
-  {
-   "id": "ST-24-31",
-   "kind": "stream",
-   "dependent_ha": 293.75,
-   "water_for_ha": 35.835401206929546
-  },
-  {
-   "id": "ST-23-30",
-   "kind": "stream",
-   "dependent_ha": 243.75,
-   "water_for_ha": 36.028844668235514
   }
  ],
+ "stream_basins": 6,
  "runoff_mm": [
   4.0,
   3.0,
@@ -85,34 +92,35 @@
  "example_record": {
   "field": {
    "cell": [
-    47,
-    31
+    12,
+    0
    ],
    "access": "GRAVITY",
-   "source": "ST-53-41",
-   "distance_km": 2.92,
-   "lift_m": -40.0
+   "intake": "ST-14-01",
+   "distance_km": 0.56,
+   "lift_m": -13.0
   },
-  "source": {
-   "id": "ST-53-41",
-   "kind": "stream",
+  "water_body": {
+   "id": "BASIN-13-00",
+   "kind": "stream basin",
+   "intakes": 38,
    "confidence": "indicative",
    "sustainable_m3": [
-    62475,
-    46856,
-    40609,
-    46856,
-    78094,
-    187425,
-    859031,
-    1249500,
-    937125,
-    546656,
-    234281,
-    124950
+    258475,
+    193856,
+    168009,
+    193856,
+    323094,
+    775425,
+    3554031,
+    5169500,
+    3877125,
+    2261656,
+    969281,
+    516950
    ],
-   "dependent_ha": 306.2,
-   "water_for_wheat_ha_in_feb": 17.3
+   "dependent_ha": 3575.0,
+   "water_for_wheat_ha_in_feb": 71.4
   },
   "rules_version": "0.1",
   "from_module_1": {

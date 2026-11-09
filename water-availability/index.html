@@ -63,7 +63,7 @@
     </div>
     <div class="stats">
       <div class="stat"><b>84%</b><span>of available land can reach some water source</span></div>
-      <div class="stat"><b>22%</b><span>of that land has water for irrigated wheat in February</span></div>
+      <div class="stat"><b>3%</b><span>of that land has water for irrigated wheat in February</span></div>
       <div class="stat"><b>35 km</b><span>of stream still flowing at 5 l/s in March</span></div>
       <div class="stat"><b>6</b><span>spring sites at the foot of steep slopes</span></div>
     </div>
@@ -87,7 +87,7 @@
     <div class="pipeline" aria-label="Phase 1 sequence">
       <span><a href="/stages/01-land-intelligence/availability/">1 Land availability and suitability</a></span><i>&rarr;</i>
       <span class="here">2 Water availability mapping</span><i>&rarr;</i>
-      <span>3 Irrigated land suitability</span><i>&rarr;</i><span>4 High-value crop guidance</span>
+      <span><a href="../irrigated-suitability/">3 Irrigated land suitability</a></span><i>&rarr;</i><span>4 High-value crop guidance</span>
     </div>
     <p style="margin-top:12px"><a class="btn" href="/roadmap.html">See the full Phase 1 roadmap &rarr;</a> <a class="btn" href="../">The stage 02 water budget</a></p>
   </section>
@@ -96,7 +96,7 @@
     <h2>Why map the water, not only budget it</h2>
     <p class="section-intro"><strong>Analogy: the size of the household's water tank versus a map of the taps and wells.</strong> The stage 02 budget tells a cluster how much water it has each month. It cannot say which field can reach which source, or whether a source that reaches a field has enough water for it. A map answers both.</p>
     <div class="grid cols-3">
-      <div class="card"><h3>Reachable is not enough</h3><p>In the demo, 84% of the available land can reach some source, but in February there is water for irrigated wheat on only 22% of that land.</p></div>
+      <div class="card"><h3>Reachable is not enough</h3><p>In the demo, 84% of the available land can reach some source, but in February there is water for irrigated wheat on only about 3% of that land (some 350 ha).</p></div>
       <div class="card"><h3>Cheapest way first</h3><p>A gravity canal costs far less to run than a pump, and a pump less than a borehole. Each field gets the cheapest option that works.</p></div>
       <div class="card"><h3>Rivers keep their share</h3><p>30% of every stream's flow stays in the river, and only 40% of groundwater recharge may be pumped, the same rules as the stage 02 budget.</p></div>
     </div>
@@ -115,7 +115,7 @@
           <tr><td>GroundwaterPotential</td><td>Value</td><td>A 0 to 1 index from six weighted factors, in five classes from very low to very high.</td></tr>
           <tr><td>WaterPoint</td><td>Entity</td><td>A stream reach, spring or shallow-groundwater site, with twelve monthly sustainable volumes and a confidence level.</td></tr>
           <tr><td>AccessClass</td><td>Enum</td><td><span class="acc acc-g">gravity</span> <span class="acc acc-p">pumped</span> <span class="acc acc-w">shallow wells</span> <span class="acc acc-h">harvest only</span></td></tr>
-          <tr><td>WaterAvailabilityMap</td><td>Output</td><td>Per field: access class, source, distance and lift. Per source: dependent hectares and water in the leanest month.</td></tr>
+          <tr><td>WaterAvailabilityMap</td><td>Output</td><td>Per field: access class, intake, distance and lift. Per water body (a stream basin, spring or well site): dependent hectares and water in the leanest month.</td></tr>
         </tbody>
       </table>
     </div>
@@ -129,6 +129,7 @@
       <div class="card"><h3>Springs</h3><p>Candidate spring sites are gentle cells at the foot of steep ground with moderate or better groundwater potential. Yields of 2 to 8 l/s fall to about half in the dry months; 30% is left for drinking water.</p></div>
       <div class="card"><h3>Water access</h3><p>For every available field, in order of cost: a gravity canal from a higher source within 3 km (losing 2 m per km plus 2 m freeboard), a pump within 1.5 km and 30 m of lift, shallow wells where groundwater potential is high, otherwise rainwater harvesting. Among reachable sources, the one with most water in its leanest month wins.</p></div>
     </div>
+    <div class="callout"><strong>Intakes share a stream.</strong> Every intake belongs to the stream network it drains to. All intakes in one network draw on one supply, capped by the flow at the network's outlet, so the same water is never counted twice. The demo has six such stream basins.</div>
     <div class="callout"><strong>Storage matters.</strong> Streams and springs have no storage, so the peak-demand month decides how much land they can water. An aquifer stores the rains, so shallow wells are judged on a year's sustainable recharge against the whole season's demand.</div>
   </section>
 
@@ -168,9 +169,9 @@
     <figure class="diagram"><img src="../assets/water-maps.svg" alt="Three synthetic maps: streams and springs over the terrain, groundwater potential classes, and water access classes for the available land."></figure>
     <div class="grid cols-2" style="margin-top:16px">
       <div class="chart" id="chart-access"><h3>How the available land reaches water</h3><p class="note">14,256 ha of available land from module 1, by access class.</p></div>
-      <div class="chart" id="chart-enough"><h3>Reachable is not the same as enough</h3><p class="note">Land a source reaches, and land it has water for in February (irrigated wheat).</p></div>
+      <div class="chart" id="chart-enough"><h3>Reachable is not the same as enough</h3><p class="note">Land a water body reaches, and land it has water for in February (irrigated wheat).</p></div>
     </div>
-    <div class="callout"><strong>What this shows.</strong> Most available land can reach water: by gravity from a stream or spring higher up (62%), by a short pumped lift (5%) or from shallow wells (17%); 16% would have to harvest rain. But in February, when wheat needs most and streams give least, there is water for only about 2,600 ha of the 12,000 ha that some source reaches. Small springs reach large areas yet can water only a few hectares. Module 3 must therefore treat water, not land, as the limit, and plan staggered planting, efficient methods or storage.</div>
+    <div class="callout"><strong>What this shows.</strong> Most available land can reach water: by gravity from a stream or spring higher up (62%), by a short pumped lift (5%) or from shallow wells (17%); 16% would have to harvest rain. But in February, when wheat needs most and streams give least, there is water for only about 350 ha of the 12,000 ha that some source reaches: 234 ha from the six stream basins and springs, 113 ha from shallow wells. Many intakes along one stream share its water, and small springs reach large areas yet can water only a few hectares. Module 3 must therefore treat water, not land, as the limit, and plan efficient methods, smaller high-value plots, staggered planting or storage.</div>
   </section>
 
   <section id="try">
@@ -230,18 +231,19 @@
 
   <section id="outputs">
     <h2>Output: what module 3 receives</h2>
-    <p class="section-intro">For every available field: how it can reach water and from which source. For every source: how much land depends on it and how much water it has in its leanest month. Module 3 adds the irrigation land factors to this.</p>
+    <p class="section-intro">For every available field: how it can reach water and from which source. For every water body (a stream basin shared by its intakes, a spring or a well site): how much land depends on it and how much water it has in its leanest month. Module 3 adds the irrigation land factors to this.</p>
 <pre><code>{
-  "field": {"cell": [47, 31], "access": "GRAVITY", "source": "ST-53-41",
-            "distance_km": 2.92, "lift_m": -40.0},
-  "source": {"id": "ST-53-41", "kind": "stream", "confidence": "indicative",
-             "sustainable_m3": [62475, 46856, 40609, 46856, 78094, 187425,
-                                859031, 1249500, 937125, 546656, 234281, 124950],
-             "dependent_ha": 306.2, "water_for_wheat_ha_in_feb": 17.3},
+  "field": {"cell": [12, 0], "access": "GRAVITY", "intake": "ST-14-01",
+            "distance_km": 0.56, "lift_m": -13.0},
+  "water_body": {"id": "BASIN-13-00", "kind": "stream basin", "intakes": 38,
+                 "confidence": "indicative",
+                 "sustainable_m3": [258475, 193856, 168009, 193856, 323094, 775425,
+                                    3554031, 5169500, 3877125, 2261656, 969281, 516950],
+                 "dependent_ha": 3575.0, "water_for_wheat_ha_in_feb": 71.4},
   "rules_version": "0.1",
   "from_module_1": {"branch": "stage/01-land-intelligence", "commit": "c75805e"}
 }</code></pre>
-    <p class="note">A real record from the demo (<code>example_record</code> in <code>assets/demo-water-availability.json</code>): the field sits 40 m below a stream 2.9 km away, so a gravity canal can reach it, but in February that stream has water for 17 of the 306 hectares that depend on it.</p>
+    <p class="note">A real record from the demo (<code>example_record</code> in <code>assets/demo-water-availability.json</code>): the field is 13 m below an intake 0.56 km away, so a gravity canal reaches it; but the 38 intakes of its stream basin serve 3,575 ha and the basin has water for about 71 ha of irrigated wheat in February.</p>
   </section>
 
   <section id="roadmap">
@@ -249,7 +251,7 @@
     <div class="grid cols-3">
       <div class="card"><h3>Validate</h3><p>Check the stream network and spring sites against the woreda water office's inventory and a field walk; calibrate runoff with any gauged stream.</p></div>
       <div class="card"><h3>Real layers</h3><p>Replace the synthetic terrain, geology and runoff with the DEM, the geological map and regional flow records for the pilot woreda.</p></div>
-      <div class="card"><h3>Module 3</h3><p>Irrigated land suitability: which available land with water access can be irrigated well, by surface, sprinkler or drip.</p></div>
+      <div class="card"><h3>Module 3</h3><p><a href="../irrigated-suitability/">Irrigated land suitability</a>: which available land with water access can be irrigated well, by surface, sprinkler or drip.</p></div>
     </div>
   </section>
 
@@ -286,7 +288,7 @@ python3 tests/test_mapping.py</code></pre>
     });
     document.getElementById("chart-access").insertAdjacentHTML("beforeend", '<svg viewBox="0 0 380 146" role="img" aria-label="Available land by water access class">' + bar + labels + "</svg>");
     var rows = [["All sources", d.reached_ha, d.irrigable_by_water_ha]].concat(d.top_sources.slice(0, 4).map(function (s) {
-      return [s.id.replace("ST-", "stream ").replace("SP-", "spring "), s.dependent_ha, Math.min(s.dependent_ha, s.water_for_ha)]; }));
+      return [s.id.replace("BASIN-", "basin ").replace("SP-", "spring "), s.dependent_ha, Math.min(s.dependent_ha, s.water_for_ha)]; }));
     var g = "", max = d.reached_ha;
     rows.forEach(function (r, k) {
       var y = 6 + k * 30, sc = k === 0 ? 135 / max : 135 / Math.max.apply(null, rows.slice(1).map(function (q) { return q[1]; }));

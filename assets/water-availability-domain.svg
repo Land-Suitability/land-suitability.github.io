@@ -24,7 +24,7 @@
   <rect x="790" y="52" width="220" height="232" rx="8" fill="#f5e1d7" stroke="#9a4a28" stroke-width="2"/>
   <text x="900" y="74" text-anchor="middle" font-weight="bold">WaterAvailabilityMap</text>
   <text x="804" y="100">per available field:</text><text x="804" y="120">access class, serving source,</text><text x="804" y="140">distance and lift</text>
-  <text x="804" y="168">per source:</text><text x="804" y="188">dependent hectares, water</text><text x="804" y="208">in the leanest month</text>
+  <text x="804" y="168">per water body:</text><text x="804" y="188">dependent hectares, water</text><text x="804" y="208">in the leanest month</text>
   <text x="804" y="240" font-weight="bold">to module 3</text><text x="804" y="258">(irrigated land suitability)</text>
 </g>
 <g stroke="#555" stroke-width="1.8" fill="none" marker-end="url(#a)">

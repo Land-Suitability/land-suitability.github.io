@@ -103,6 +103,11 @@ class WaterPoint:
     elevation_m: float
     sustainable_m3: tuple[float, ...]   # 12 months, January first
     confidence: Confidence = Confidence.INDICATIVE
+    group: str = ""                     # points drawing on one water body (e.g. one stream basin) share its water
+
+    @property
+    def water_body(self) -> str:
+        return self.group or self.point_id
 
     @property
     def leanest_month(self) -> int:
@@ -125,15 +130,35 @@ class WaterAvailabilityMap:
         ids, counts = np.unique(self.source_id[self.source_id != ""], return_counts=True)
         return {str(i): float(n * self.cell_ha) for i, n in zip(ids, counts)}
 
-    def leanest_month_m3_per_ha(self) -> dict[str, tuple[str, float]]:
-        """Each surface source's sustainable water per dependent hectare in its leanest month."""
-        out = {}
+    def water_bodies(self) -> dict[str, dict]:
+        """
+        Group served points by the water body they draw on. Intakes along one stream network share
+        one supply, capped by the flow at the network's outlet: the month-by-month maximum over its
+        points (flow only grows downstream). Counting each intake's own flow would count the same
+        water several times.
+        """
+        out: dict[str, dict] = {}
         for pid, ha in self.dependent_ha().items():
             p = self.points[pid]
-            if p.kind == "groundwater" or ha <= 0:
+            b = out.setdefault(p.water_body, {"kind": p.kind, "points": [], "dependent_ha": 0.0, "sustainable_m3": np.zeros(12)})
+            b["points"].append(pid)
+            b["dependent_ha"] += ha
+        for body in out.values():
+            members = [self.points[q] for q in body["points"]]
+            if body["kind"] == "stream":
+                body["sustainable_m3"] = np.max([m.sustainable_m3 for m in members], axis=0)
+            else:
+                body["sustainable_m3"] = np.sum([m.sustainable_m3 for m in members], axis=0)
+        return out
+
+    def leanest_month_m3_per_ha(self) -> dict[str, tuple[str, float]]:
+        """Each surface water body's sustainable water per dependent hectare in its leanest month."""
+        out = {}
+        for bid, b in self.water_bodies().items():
+            if b["kind"] == "groundwater" or b["dependent_ha"] <= 0:
                 continue
-            m = p.leanest_month
-            out[pid] = (MONTHS[m], p.sustainable_m3[m] / ha)
+            m = int(np.argmin(b["sustainable_m3"]))
+            out[bid] = (MONTHS[m], float(b["sustainable_m3"][m] / b["dependent_ha"]))
         return out
 
 
