@@ -68,8 +68,8 @@
 
   <div class="flow" aria-label="Phase 1 sequence">
       <div class="f d-plan"><span class="n">Module 1 · <span class="badge st-done">v0.1 built</span></span><b>Agricultural land availability and suitability</b><small>AvailableLand</small></div>
-      <div class="f d-produce"><span class="n">Module 2 · <span class="badge st-build">in progress</span></span><b>Water resource availability mapping</b><small>WaterAvailabilityMap</small></div>
-      <div class="f d-plan"><span class="n">Module 3 · <span class="badge st-plan">planned</span></span><b>Irrigated land suitability analysis</b><small>IrrigatedSuitability</small></div>
+      <div class="f d-produce"><span class="n">Module 2 · <span class="badge st-done">v0.1 built</span></span><b>Water resource availability mapping</b><small>WaterAvailabilityMap</small></div>
+      <div class="f d-plan"><span class="n">Module 3 · <span class="badge st-next">next</span></span><b>Irrigated land suitability analysis</b><small>IrrigatedSuitability</small></div>
       <div class="f d-sell"><span class="n">Module 4 · <span class="badge st-plan">planned</span></span><b>High-value crop production guidance</b><small>CropGuide</small></div>
   </div>
 
@@ -91,11 +91,11 @@
   <section class="module d-produce" id="module-2">
     <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg></div>
     <div>
-      <h2>Module 2: Water resource availability mapping <span class="badge st-build">in progress</span></h2>
+      <h2>Module 2: Water resource availability mapping <span class="badge st-done">v0.1 built</span></h2>
       <p class="q">Where can water come from for that land, and how much in each month?</p>
       <p class="analogy">A map of the wells and taps, not just the size of the tank.</p>
       <div class="cols">
-        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/">2a Monthly water budget for a cluster (river, wells, environmental flow)</a></span></li><li><span class="badge st-next">next</span><span>2b Water source maps: rivers and flow, springs, ponds, groundwater potential</span></li><li><span class="badge st-plan">planned</span><span>2c Water access per land cell: nearest source, distance, height to lift</span></li></ul></div>
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/">2a Monthly water budget for a cluster (river, wells, environmental flow)</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/water-availability/">2b Water source maps: streams and monthly flow, springs, groundwater potential</a></span></li><li><span class="badge st-done">v0.1 built</span><span><a href="/stages/02-water-resources/water-availability/">2c Water access per available field: gravity, pumped, shallow wells or harvest only</a></span></li></ul></div>
         <div class="box"><h3>Inputs</h3><ul><li>AvailableLand from module 1</li><li>River network and flow records</li><li>Rainfall and evapotranspiration</li><li>Geology and recharge for groundwater</li><li>Existing schemes and water-user associations</li></ul></div>
         <div class="box"><h3>Done when</h3><ul><li>Source maps checked with woreda water office records</li><li>Monthly volumes within agreed environmental-flow limits</li><li>Every available cell has a water-access class</li></ul></div>
       </div>
@@ -106,11 +106,11 @@
   <section class="module d-plan" id="module-3">
     <div class="num"><svg aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg></div>
     <div>
-      <h2>Module 3: Irrigated land suitability analysis <span class="badge st-plan">planned</span></h2>
+      <h2>Module 3: Irrigated land suitability analysis <span class="badge st-next">next</span></h2>
       <p class="q">Which available land can be irrigated well, by which method?</p>
       <p class="analogy">Good land and water are not enough; they must meet: water has to reach the field at the right height and soil.</p>
       <div class="cols">
-        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-plan">planned</span><span>3a Irrigation land factors: slope, soil depth, texture, drainage, salinity</span></li><li><span class="badge st-plan">planned</span><span>3b Water access from module 2: source, distance, lift, command area</span></li><li><span class="badge st-plan">planned</span><span>3c Classes S1 to N per method: surface, sprinkler, drip</span></li></ul></div>
+        <div class="box"><h3>Parts</h3><ul class="parts"><li><span class="badge st-next">next</span><span>3a Irrigation land factors: slope, soil depth, texture, drainage, salinity</span></li><li><span class="badge st-plan">planned</span><span>3b Water access from module 2: source, distance, lift, command area</span></li><li><span class="badge st-plan">planned</span><span>3c Classes S1 to N per method: surface, sprinkler, drip</span></li></ul></div>
         <div class="box"><h3>Inputs</h3><ul><li>AvailableLand from module 1</li><li>WaterAvailabilityMap from module 2</li><li>Soil physical properties</li><li>Irrigation method requirements</li></ul></div>
         <div class="box"><h3>Done when</h3><ul><li>Classes checked against existing irrigation schemes</li><li>Command areas agreed with water-user associations</li><li>Monthly water limits respected in every command area</li></ul></div>
       </div>
