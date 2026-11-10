@@ -44,6 +44,27 @@
     });
   }
 
+  // a "Collaborate" link in every header, and the maker's credit in every footer (stage branches included)
+  function collabLink() {
+    var nav = document.querySelector(".site-header .nav");
+    if (!nav || nav.querySelector(".nav-collab")) return;
+    var a = document.createElement("a");
+    a.className = "nav-collab"; a.href = "/contact.html"; a.textContent = "Collaborate";
+    if (/\/contact\.html$/.test(location.pathname)) a.setAttribute("aria-current", "page");
+    nav.insertBefore(a, nav.querySelector("button") || null);
+  }
+
+  function credit() {
+    document.querySelectorAll("footer").forEach(function (f) {
+      if (f.querySelector(".credit")) return;
+      var host = f.querySelector(".fine") || f.querySelector(".container") || f;
+      var span = document.createElement("span");
+      span.className = "credit";
+      span.innerHTML = 'Made by <a href="https://getnet-demil.github.io">Getnet Demil</a>';
+      host.appendChild(span);
+    });
+  }
+
   // stage branches carry an older text badge; show the shared logo everywhere
   function brandLogo() {
     var mark = document.querySelector(".brand .brand-mark");
@@ -113,6 +134,7 @@
       { title: "Data spine: every hand-off", href: "/data-spine.html", sub: "Which stage sends which record to which", icon: "d-move", domain: "" },
       { title: "Glossary", href: "/glossary.html", sub: "Terms from kebele to shadow price", icon: "u-search", domain: "" },
       { title: "Calculators: one per stage", href: "/tools.html", sub: "Suitability, water, contracts, storage, settlement…", icon: "d-produce", domain: "" },
+      { title: "Collaborate: get in touch", href: "/contact.html", sub: "Research, data, field partners, students, funding", icon: "d-sell", domain: "" },
       { title: "Phase 1 roadmap: one module at a time", href: "/roadmap.html", sub: "Land, water, irrigated suitability, high-value crops", icon: "d-plan", domain: "" },
       { title: "Land availability (Phase 1, module 1a)", href: "/stages/01-land-intelligence/availability/", sub: "In use, expandable, conditional, excluded", icon: "i-01", domain: "plan" },
       { title: "Water availability mapping (Phase 1, module 2)", href: "/stages/02-water-resources/water-availability/", sub: "Streams, groundwater, springs, access per field", icon: "i-02", domain: "plan" },
@@ -475,7 +497,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode, glossTerms];
+    var steps = [favicon, brandLogo, stageNav, collabLink, credit, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode, glossTerms];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();

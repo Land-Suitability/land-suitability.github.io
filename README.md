@@ -53,6 +53,7 @@ findings.html                  one chart per stage demo result (synthetic data)
 pilot-map.html                 illustrated, layered map of a fictional pilot woreda
 people.html                    who does what: ten roles and the stages they lead or support
 roadmap.html                   Phase 1 build roadmap: four modules, built one at a time
+contact.html                   collaboration form (posts to Formspree; the endpoint is the form's action)
 brief.html                     two-page concept brief (rendered to assets/AIAE-concept-brief.pdf)
 404.html, robots.txt, sitemap.xml
 stages.json                    single source of truth: project, domains, 12 stages

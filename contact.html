@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collaborate | AIAE</title>
+  <meta name="description" content="Collaborate on the Amhara Integrated Agriculture Ecosystem: researchers, data holders, field partners, students, engineers and funders can get in touch.">
+  <link rel="canonical" href="https://land-suitability.github.io/contact.html">
+  <meta property="og:title" content="Collaborate on the Amhara Integrated Agriculture Ecosystem">
+  <meta property="og:description" content="Research, data, field validation, students, technology or funding: tell us how you would like to take part.">
+  <meta property="og:image" content="https://land-suitability.github.io/assets/img/social-card.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#3f6b34">
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js"></script>
+  <style>
+    .collab { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 26px; align-items: start; margin-top: 18px; }
+    @media (max-width: 960px) { .collab { grid-template-columns: 1fr; } }
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
+    .form-card fieldset { border: 0; margin: 0 0 18px; padding: 0; }
+    .form-card legend { font-weight: 800; font-size: 16px; margin-bottom: 10px; padding: 0; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 640px) { .row2 { grid-template-columns: 1fr; } }
+    .f { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+    .f label, .f .lab { font-size: 14px; font-weight: 600; }
+    .f .req { color: #b3261e; }
+    .f small { color: var(--muted); font-size: 12.5px; }
+    .f input[type=text], .f input[type=email], .f select, .f textarea {
+      font: inherit; font-size: 15px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); width: 100%; }
+    .f textarea { min-height: 140px; resize: vertical; }
+    .f input:focus-visible, .f select:focus-visible, .f textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+    .checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+    .checks label { display: flex; gap: 9px; align-items: flex-start; padding: 9px 11px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 14px; background: var(--bg); }
+    .checks label:has(input:checked) { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+    .checks label:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .checks input { margin-top: 3px; accent-color: var(--accent); width: 16px; height: 16px; flex: 0 0 auto; }
+    .checks small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; }
+    .consent { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; margin: 6px 0 16px; }
+    .consent input { margin-top: 3px; width: 16px; height: 16px; accent-color: var(--accent); flex: 0 0 auto; }
+    #collab-form [hidden] { display: none !important; }   /* flex and grid rows must still honour the hidden attribute */
+    .hp { position: absolute; left: -5000px; width: 1px; height: 1px; overflow: hidden; }
+    .err { color: #b3261e; font-size: 13.5px; font-weight: 600; min-height: 0; }
+    :root[data-theme="dark"] .err, :root[data-theme="dark"] .f .req { color: #ff9a8f; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .err, :root:not([data-theme="light"]) .f .req { color: #ff9a8f; } }
+    .submit-row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+    .submit-row button { font: inherit; font-weight: 700; font-size: 16px; padding: 12px 22px; border-radius: 12px; border: 0; background: var(--accent); color: var(--accent-contrast); cursor: pointer; }
+    .submit-row button[disabled] { opacity: .6; cursor: progress; }
+    .status { border-radius: 12px; padding: 14px 16px; margin-top: 16px; font-size: 15px; }
+    .status.ok { background: color-mix(in srgb, var(--accent) 14%, var(--surface)); border: 1px solid var(--accent); }
+    .status.bad { background: color-mix(in srgb, #b3261e 10%, var(--surface)); border: 1px solid #b3261e; }
+    .side .card { margin-bottom: 14px; }
+    .side h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 16px; }
+    .side h3 .icon { width: 26px; height: 26px; padding: 4px; border-radius: 8px; background: var(--surface-2); color: var(--accent); }
+    .side p { margin: 0; font-size: 14px; color: var(--muted); }
+    .people-strip { width: 100%; height: auto; display: block; border-radius: 16px; border: 1px solid var(--border); margin-top: 6px; }
+    :root[data-theme="dark"] .people-strip { filter: brightness(.9); }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .people-strip { filter: brightness(.9); } }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="/"><img class="brand-logo" src="/assets/img/favicon.svg" alt=""><span>Amhara Integrated Agriculture Ecosystem</span></a>
+    <button class="nav-toggle" data-nav-toggle aria-expanded="false">Menu</button>
+    <nav class="nav" aria-label="Main">
+      <a href="/#loop">The loop</a>
+      <a href="/#chain">Stages</a>
+      <a href="/how-it-works.html">How it works</a>
+      <a href="/data-spine.html">Data spine</a>
+      <a href="/glossary.html">Glossary</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle colour theme">Theme</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero" style="padding-bottom:4px">
+    <span class="eyebrow">Get involved</span>
+    <h1>Collaborate on the ecosystem</h1>
+    <p class="lead">The project is at concept stage and open to partners: researchers, holders of land, water or market data, field partners in Amhara, students, engineers and funders. Tell us who you are and how you would like to take part; we will reply by email.</p>
+    <img class="people-strip" src="/assets/img/people-row.svg" alt="Ten roles in the chain, drawn as generic figures.">
+  </section>
+
+  <div class="collab">
+    <form class="form-card" id="collab-form" action="https://formspree.io/f/xrppnlka" method="POST">
+      <input type="hidden" name="_subject" id="f-subject" value="AIAE collaboration request">
+      <div class="hp" aria-hidden="true"><label for="f-gotcha">Leave this empty</label><input type="text" id="f-gotcha" name="_gotcha" tabindex="-1" autocomplete="off"></div>
+
+      <fieldset>
+        <legend>About you</legend>
+        <div class="row2">
+          <div class="f"><label for="f-name">Full name <span class="req">*</span></label><input type="text" id="f-name" name="name" autocomplete="name" required maxlength="120"></div>
+          <div class="f"><label for="f-email">Email <span class="req">*</span></label><input type="email" id="f-email" name="email" autocomplete="email" required maxlength="160"></div>
+        </div>
+        <div class="row2">
+          <div class="f"><label for="f-org">Organisation</label><input type="text" id="f-org" name="organisation" autocomplete="organization" maxlength="160"></div>
+          <div class="f"><label for="f-country">Country</label><input type="text" id="f-country" name="country" autocomplete="country-name" maxlength="80"></div>
+        </div>
+        <div class="row2">
+          <div class="f"><label for="f-orgtype">Type of organisation <span class="req">*</span></label>
+            <select id="f-orgtype" name="organisation_type" required>
+              <option value="">Choose one</option>
+              <option>University or research institute</option>
+              <option>Government office (federal, regional, zone, woreda)</option>
+              <option>International organisation or NGO</option>
+              <option>Private company</option>
+              <option>Cooperative, union or farmer organisation</option>
+              <option>Funder, donor or investor</option>
+              <option>Student</option>
+              <option>Independent professional</option>
+              <option>Other</option>
+            </select></div>
+          <div class="f"><label for="f-field">Field of expertise <span class="req">*</span></label>
+            <select id="f-field" name="field_of_expertise" required>
+              <option value="">Choose one</option>
+              <optgroup label="Land and water">
+                <option>Soil science and land evaluation</option>
+                <option>Hydrology and water resources</option>
+                <option>Irrigation engineering</option>
+                <option>Climate and agro-meteorology</option>
+                <option>Remote sensing and GIS</option>
+              </optgroup>
+              <optgroup label="Crops and farming">
+                <option>Agronomy and crop science</option>
+                <option>Horticulture (high-value crops)</option>
+                <option>Plant protection</option>
+                <option>Agricultural extension and rural development</option>
+              </optgroup>
+              <optgroup label="Markets and systems">
+                <option>Agricultural economics and markets</option>
+                <option>Supply chain, storage and logistics</option>
+                <option>Policy and governance</option>
+                <option>Finance, credit and insurance</option>
+              </optgroup>
+              <optgroup label="Data and technology">
+                <option>Data science and machine learning</option>
+                <option>Software and platform engineering</option>
+                <option>Operations research and optimisation</option>
+              </optgroup>
+              <option>Other</option>
+            </select></div>
+        </div>
+        <div class="f" id="f-other-wrap" hidden><label for="f-other">Your field, in a few words</label><input type="text" id="f-other" name="field_other" maxlength="120"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>How would you like to collaborate? <span class="req">*</span></legend>
+        <div class="checks" id="g-how">
+          <label><input type="checkbox" name="collaboration" value="Research partnership"><span>Research partnership<small>joint studies, publications</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Data sharing"><span>Data sharing<small>land, soil, water, climate, market data</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Field validation and pilot"><span>Field validation and pilot<small>woreda, kebele, demonstration plots</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Students and supervision"><span>Students and supervision<small>MSc or PhD topics, internships</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Technical contribution"><span>Technical contribution<small>code, models, GIS, platform</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Funding or investment"><span>Funding or investment<small>grants, programmes, private capital</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Advisory and review"><span>Advisory and review<small>methods, thresholds, ethics</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Training and extension"><span>Training and extension<small>development agents, cooperatives</small></span></label>
+          <label><input type="checkbox" name="collaboration" value="Other"><span>Something else<small>tell us in the message</small></span></label>
+        </div>
+        <p class="err" id="e-how" role="alert"></p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Which parts interest you most?</legend>
+        <div class="checks">
+          <label><input type="checkbox" name="interest" value="Phase 1: land availability and suitability"><span>Land availability and suitability<small>Phase 1, module 1</small></span></label>
+          <label><input type="checkbox" name="interest" value="Phase 1: water availability mapping"><span>Water availability mapping<small>Phase 1, module 2</small></span></label>
+          <label><input type="checkbox" name="interest" value="Phase 1: irrigated land suitability"><span>Irrigated land suitability<small>Phase 1, module 3</small></span></label>
+          <label><input type="checkbox" name="interest" value="Phase 1: high-value crop guidance"><span>High-value crop guidance<small>Phase 1, module 4</small></span></label>
+          <label><input type="checkbox" name="interest" value="Produce: inputs, field operations, monitoring"><span>Inputs, field work, monitoring<small>stages 06 to 08</small></span></label>
+          <label><input type="checkbox" name="interest" value="Move: harvest, storage, logistics"><span>Harvest, storage, logistics<small>stages 09 to 11</small></span></label>
+          <label><input type="checkbox" name="interest" value="Sell and learn: markets, settlement, impact"><span>Markets, settlement, impact<small>stages 05 and 12</small></span></label>
+          <label><input type="checkbox" name="interest" value="The whole system"><span>The whole system<small>all twelve stages</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Practicalities</legend>
+        <div class="row2">
+          <div class="f"><label for="f-commit">Expected involvement</label>
+            <select id="f-commit" name="involvement">
+              <option value="">Choose one</option>
+              <option>A first conversation</option>
+              <option>Occasional advice</option>
+              <option>Part-time collaboration</option>
+              <option>A funded joint project</option>
+              <option>Not sure yet</option>
+            </select></div>
+          <div class="f"><label for="f-when">When could you start?</label>
+            <select id="f-when" name="timeline">
+              <option value="">Choose one</option>
+              <option>Now</option>
+              <option>Within 3 months</option>
+              <option>Within 6 to 12 months</option>
+              <option>Just exploring</option>
+            </select></div>
+        </div>
+        <div class="row2">
+          <div class="f"><label for="f-contact">Preferred way to talk</label>
+            <select id="f-contact" name="preferred_contact">
+              <option>Email</option>
+              <option>Video call</option>
+              <option>In person in Ethiopia</option>
+            </select></div>
+          <div class="f"><label for="f-lang">Preferred language</label>
+            <select id="f-lang" name="language">
+              <option>English</option>
+              <option>Amharic</option>
+            </select></div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><label for="f-msg">Your message <span class="req">*</span></label></legend>
+        <div class="f"><textarea id="f-msg" name="message" required minlength="20" maxlength="4000" aria-describedby="f-msg-help"></textarea>
+          <small id="f-msg-help">What you would bring, what you hope to get from it, and any links (publications, datasets, projects). Please do not include personal data about farmers.</small></div>
+      </fieldset>
+
+      <label class="consent"><input type="checkbox" id="f-consent" name="consent" value="yes" required><span>I agree that my details are used only to reply to this request. They are sent through Formspree, a form service, and are never published on this site. <span class="req">*</span></span></label>
+      <p class="err" id="e-form" role="alert"></p>
+
+      <div class="submit-row"><button type="submit" id="f-submit">Send collaboration request</button><span class="note" id="f-hint">We usually reply within a week.</span></div>
+      <div id="f-status" class="status" hidden tabindex="-1"></div>
+    </form>
+
+    <aside class="side" aria-label="Who we are looking for">
+      <div class="card"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-01"/></svg>Researchers</h3><p>Soil, water, climate, crops, economics: help calibrate the thresholds and test the methods of each module.</p></div>
+      <div class="card"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-02"/></svg>Data holders</h3><p>Soil samples, gauged river flows, well inventories, prices: the synthetic layers wait to be replaced by real ones.</p></div>
+      <div class="card"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-07"/></svg>Field partners</h3><p>Woreda offices, cooperatives and development agents to host a pilot and demonstration plots.</p></div>
+      <div class="card"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-04"/></svg>Students and engineers</h3><p>Thesis topics and code contributions across the twelve stages; every stage has open issues to work on.</p></div>
+      <div class="card"><h3><svg class="icon" aria-hidden="true"><use href="/assets/img/icons.svg#i-12"/></svg>Funders</h3><p>Phase 1 is built on synthetic data; the next step is validation in one pilot woreda.</p></div>
+      <p class="note">Partners named on this site are potential partners only; sending this form does not create an agreement.</p>
+    </aside>
+  </div>
+</main>
+
+<footer class="footer-v2">
+  <div class="container"><div class="fine"><span>Your details are used only to reply. No personal farmer data is collected anywhere on this site.</span><span class="credit">Made by <a href="https://getnet-demil.github.io">Getnet Demil</a></span></div></div>
+</footer>
+<script>
+(function () {
+  "use strict";
+  var form = document.getElementById("collab-form");
+  if (!form) return;
+  var ISSUES = "https://github.com/Land-Suitability/land-suitability.github.io/issues/new";
+  form.noValidate = true;                      // the script validates; without JavaScript the browser does
+  function $(id) { return document.getElementById(id); }
+  try {
+    var field = $("f-field"), otherWrap = $("f-other-wrap");
+    field.addEventListener("change", function () { otherWrap.hidden = field.value !== "Other"; });
+
+    function check() {
+      var problems = [];
+      $("e-how").textContent = "";
+      [["f-name", "your name"], ["f-email", "a valid email"], ["f-orgtype", "your type of organisation"], ["f-field", "your field of expertise"], ["f-msg", "a message of at least 20 characters"]].forEach(function (p) {
+        var el = $(p[0]), bad = !el.checkValidity();
+        el.setAttribute("aria-invalid", bad ? "true" : "false");
+        if (bad) problems.push(p[1]);
+      });
+      if (!form.querySelector('input[name="collaboration"]:checked')) { problems.push("at least one way to collaborate"); $("e-how").textContent = "Choose at least one way to collaborate."; }
+      if (!$("f-consent").checked) problems.push("your consent");
+      return problems;
+    }
+
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var problems = check(), status = $("f-status");
+      $("e-form").textContent = problems.length ? "Please add " + problems.join(", ") + "." : "";
+      if (problems.length) {
+        var first = form.querySelector('[aria-invalid="true"]') || form.querySelector('input[name="collaboration"]') || $("f-consent");
+        if (first) first.focus();
+        return;
+      }
+      $("f-subject").value = "AIAE collaboration: " + (field.value === "Other" && $("f-other").value ? $("f-other").value : field.value) + " (" + $("f-name").value + ")";
+      var btn = $("f-submit");
+      btn.disabled = true; btn.textContent = "Sending…";
+      fetch(form.action, { method: "POST", body: new FormData(form), headers: { Accept: "application/json" } })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (data) { return { ok: r.ok, data: data }; }); })
+        .then(function (res) {
+          if (!res.ok) {
+            var msg = res.data && res.data.errors ? res.data.errors.map(function (e) { return e.message; }).join(" ") : "The form service did not accept the message.";
+            throw new Error(msg);
+          }
+          form.querySelectorAll("fieldset, .consent, .submit-row").forEach(function (el) { el.hidden = true; });
+          status.className = "status ok"; status.hidden = false;
+          status.innerHTML = "<strong>Thank you.</strong> Your collaboration request has been sent. We will reply to the email address you gave.";
+          status.focus();
+        })
+        .catch(function (e) {
+          if (window.console) console.error("[collaborate] send failed", e);
+          status.className = "status bad"; status.hidden = false;
+          status.innerHTML = "<strong>The message could not be sent.</strong> " + e.message.replace(/[<>&]/g, "") +
+            ' Please try again in a moment, or <a href="' + ISSUES + '?title=' + encodeURIComponent("Collaboration: " + field.value) + '">open an issue on GitHub</a> instead.';
+          status.focus();
+          btn.disabled = false; btn.textContent = "Send collaboration request";
+        });
+    });
+  } catch (e) {
+    if (window.console) console.error("[collaborate] form setup failed", e);
+  }
+})();
+</script>
+</body>
+</html>

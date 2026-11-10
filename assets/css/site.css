@@ -649,3 +649,16 @@ a.gl-term:hover::after, a.gl-term:focus-visible::after { display: block; }
 .pb.now { color: var(--text); font-weight: 600; } .pb.now i { border-color: var(--accent); color: var(--accent); }
 .pb-go { font-weight: 700; color: var(--accent); white-space: nowrap; }
 @media (max-width: 900px) { .phase-band { grid-template-columns: 1fr; gap: 10px; } }
+
+/* "Collaborate" in the header and the maker's credit in the footer */
+.nav a.nav-collab { color: var(--accent); font-weight: 700; border: 1.5px solid var(--accent); border-radius: 999px; }
+.nav a.nav-collab:hover, .nav a.nav-collab[aria-current="page"] { background: var(--accent); color: var(--accent-contrast); }
+.credit a { font-weight: 700; }
+.site-footer .container { flex-wrap: wrap; gap: 6px 18px; }
+/* mid-width screens: the header keeps the logo and the short name so the nav (with "Collaborate") fits */
+@media (max-width: 1100px) and (min-width: 981px) {
+  .site-header .brand span { font-size: 0; }
+  .site-header .brand span::after { content: "AIAE"; font-size: 17px; font-weight: 800; }
+}
+.tool-btn, .tool-btn kbd { white-space: nowrap; }
+@media (max-width: 1360px) and (min-width: 981px) { .site-header .tool-btn kbd { display: none; } }
