@@ -11,6 +11,20 @@
   function icon(id, cls) { return '<svg class="icon' + (cls ? " " + cls : "") + '" aria-hidden="true"><use href="' + ICONS + "#" + id + '"/></svg>'; }
   function log(msg, e) { if (window.console) console.warn("[site] " + msg, e || ""); }
 
+  // ---------------- privacy-friendly visit counting (GoatCounter: no cookies, no personal data)
+  // Put the GoatCounter site code here to switch counting on (e.g. "aiae" for aiae.goatcounter.com).
+  // Empty means off. Counting only runs on the public domain, never on local copies or previews.
+  var GOATCOUNTER_CODE = "";
+  function analytics() {
+    if (!GOATCOUNTER_CODE || !/^[a-z0-9-]+$/.test(GOATCOUNTER_CODE)) return;
+    if (location.hostname !== "land-suitability.github.io") return;
+    if (document.querySelector("script[data-goatcounter]")) return;
+    var s = document.createElement("script");
+    s.async = true; s.src = "https://gc.zgo.at/count.js";
+    s.setAttribute("data-goatcounter", "https://" + GOATCOUNTER_CODE + ".goatcounter.com/count");
+    document.head.appendChild(s);
+  }
+
   // theme must apply before first paint to avoid a flash
   var saved = safeGet("aiae-theme");
   if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
@@ -497,7 +511,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var steps = [favicon, brandLogo, stageNav, collabLink, credit, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode, glossTerms];
+    var steps = [analytics, favicon, brandLogo, stageNav, collabLink, credit, themeToggle, mobileNav, palette, progressAndTop, reveal, stagePage, scrollableTables, lightbox, countUp, shortcuts, panorama, copyCode, glossTerms];
     steps.forEach(function (fn) { try { fn(); } catch (e) { log(fn.name + " failed", e); } });
   });
 })();

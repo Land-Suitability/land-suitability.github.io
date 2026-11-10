@@ -284,6 +284,7 @@
           form.querySelectorAll("fieldset, .consent, .submit-row").forEach(function (el) { el.hidden = true; });
           status.className = "status ok"; status.hidden = false;
           status.innerHTML = "<strong>Thank you.</strong> Your collaboration request has been sent. We will reply to the email address you gave.";
+          try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "collaboration-request-sent", title: "Collaboration request sent", event: true }); } catch (e2) { /* counting must never break the form */ }
           status.focus();
         })
         .catch(function (e) {

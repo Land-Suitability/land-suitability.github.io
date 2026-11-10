@@ -100,6 +100,14 @@ twelve stage pages without editing the branches:
 - Copy buttons on code blocks; identifiers and short values in tables never break mid-word
 - Keyboard shortcuts: `?` for help, `t` for theme, `[` and `]` for previous and next stage
 
+## Visitor statistics
+
+Visits are counted with [GoatCounter](https://www.goatcounter.com): no cookies, no personal data,
+so no consent banner is needed. The switch is one line in `assets/js/site.js`:
+`var GOATCOUNTER_CODE = "";` (empty = off). Counting runs only on `land-suitability.github.io`, never on
+local copies or previews, and covers every page including the stage branches (they load `site.js`).
+Successful collaboration requests are recorded as the event `collaboration-request-sent`.
+
 ## Common tasks
 
 ```bash
