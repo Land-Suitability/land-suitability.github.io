@@ -104,7 +104,7 @@ twelve stage pages without editing the branches:
 
 Visits are counted with [GoatCounter](https://www.goatcounter.com): no cookies, no personal data,
 so no consent banner is needed. The switch is one line in `assets/js/site.js`:
-`var GOATCOUNTER_CODE = "";` (empty = off). Counting runs only on `land-suitability.github.io`, never on
+`var GOATCOUNTER_CODE = "aiae";` (empty = off; dashboard: aiae.goatcounter.com). Counting runs only on `land-suitability.github.io`, never on
 local copies or previews, and covers every page including the stage branches (they load `site.js`).
 Successful collaboration requests are recorded as the event `collaboration-request-sent`.
 

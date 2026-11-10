@@ -14,7 +14,7 @@
   // ---------------- privacy-friendly visit counting (GoatCounter: no cookies, no personal data)
   // Put the GoatCounter site code here to switch counting on (e.g. "aiae" for aiae.goatcounter.com).
   // Empty means off. Counting only runs on the public domain, never on local copies or previews.
-  var GOATCOUNTER_CODE = "";
+  var GOATCOUNTER_CODE = "aiae";
   function analytics() {
     if (!GOATCOUNTER_CODE || !/^[a-z0-9-]+$/.test(GOATCOUNTER_CODE)) return;
     if (location.hostname !== "land-suitability.github.io") return;
