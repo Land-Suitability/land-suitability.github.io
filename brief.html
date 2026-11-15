@@ -10,7 +10,9 @@
     @page { size: A4; margin: 0; }
     :root { --ink: #1f2a20; --muted: #5d665e; --line: #ddd8cb; --plan: #74582a; --produce: #3f6b34; --move: #2f5d8a; --sell: #9a4a28; --bg: #fbfaf6; }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Ethiopic", Arial, sans-serif; color: var(--ink); background: #e9e7e0; }
+    @font-face { font-family: "Outfit"; src: url("/assets/fonts/outfit-variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+    h1, h2, h3 { letter-spacing: -0.02em; }
+    body { margin: 0; font-family: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Ethiopic", Arial, sans-serif; color: var(--ink); background: #e9e7e0; }
     .page { width: 210mm; height: 297mm; margin: 10mm auto; background: var(--bg); position: relative; overflow: hidden; padding: 14mm 14mm 12mm; box-shadow: 0 4px 24px rgba(0,0,0,.12);
       page-break-after: always; break-after: page; display: flex; flex-direction: column; }
     @media print { h1 .g { background: none; color: var(--produce); }
