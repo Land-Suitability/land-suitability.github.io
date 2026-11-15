@@ -23,7 +23,7 @@
 
   --radius: 12px;
   --shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 4px 14px rgba(0, 0, 0, .05);
-  --maxw: 1120px;
+  --maxw: 1760px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Ethiopic", "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -75,7 +75,7 @@ body {
 a { color: var(--link); }
 img { max-width: 100%; height: auto; }
 h1, h2, h3 { line-height: 1.25; }
-.container { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(16px, 3vw, 48px); }
 
 /* ---------- header / nav */
 .site-header {
@@ -112,7 +112,7 @@ h1, h2, h3 { line-height: 1.25; }
 .hero { padding: 64px 0 40px; }
 .eyebrow { text-transform: uppercase; letter-spacing: .08em; font-size: 13px; font-weight: 700; color: var(--accent); }
 .hero h1 { font-size: clamp(30px, 5vw, 48px); margin: 8px 0 12px; }
-.hero p.lead { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 760px; }
+.hero p.lead { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 880px; }
 .principle {
   margin-top: 24px; padding: 16px 20px; border-left: 4px solid var(--accent);
   background: var(--surface); border-radius: 0 var(--radius) var(--radius) 0; box-shadow: var(--shadow);
@@ -128,7 +128,7 @@ h1, h2, h3 { line-height: 1.25; }
 /* ---------- sections */
 section { padding: 40px 0; }
 section > .container > h2 { font-size: clamp(24px, 3.2vw, 32px); margin: 0 0 8px; }
-.section-intro { color: var(--muted); max-width: 760px; margin: 0 0 24px; }
+.section-intro { color: var(--muted); max-width: 880px; margin: 0 0 24px; }
 
 .grid { display: grid; gap: 16px; }
 .grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
@@ -662,3 +662,15 @@ a.gl-term:hover::after, a.gl-term:focus-visible::after { display: block; }
 }
 .tool-btn, .tool-btn kbd { white-space: nowrap; }
 @media (max-width: 1360px) and (min-width: 981px) { .site-header .tool-btn kbd { display: none; } }
+
+/* wide screens: use the full width (content up to 1760px) */
+@media (min-width: 1280px) {
+  /* hub hero: headline and illustrated landscape side by side */
+  .hero-v2 > .container { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(32px, 3vw, 56px); align-items: center; }
+  .hero-v2 > .container > * { grid-column: 1 / -1; }
+  .hero-v2 > .container > .hero-text { grid-column: 1; max-width: none; }
+  .hero-v2 > .container > .scene { grid-column: 2; margin-top: 0; }
+  .hero-v2 .btn-row { flex-wrap: wrap; }
+}
+/* stage-card illustrations keep a sensible height when cards get wide */
+.stage-thumb { max-height: 210px; }
